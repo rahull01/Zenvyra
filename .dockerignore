@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.github
+backend/target
+dist
+build
+.env
+.env.local
+.env.production
+.vscode
+.idea
+*.log
+README.md

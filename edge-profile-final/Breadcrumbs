@@ -1,0 +1,15 @@
+0:00:00 Startup
+0:00:00 Microsoft.DeleteProfileHelper.CleanUpEphemeralProfiles
+0:00:00 Microsoft.DeleteProfileHelper.CleanUpDeletedProfiles
+0:00:00 Microsoft.NewBrowser_Normal
+0:00:00 Microsoft.BrowserList.AddBrowser
+0:00:04 Memory Pressure: Moderate
+0:00:15 Memory Pressure: Moderate
+0:00:25 Memory Pressure: Moderate
+0:00:35 Memory Pressure: Moderate
+0:00:45 Memory Pressure: Moderate
+0:00:50 Memory Pressure: Critical
+0:00:55 Memory Pressure: Moderate
+0:01:05 Memory Pressure: Moderate
+0:01:15 Memory Pressure: Moderate
+0:01:25 Memory Pressure: Moderate

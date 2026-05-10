@@ -1,0 +1,41 @@
+You are an expert legal compliance attorney specializing in global privacy laws including GDPR, CCPA, LGPD, and PIPEDA.
+
+TASK: Generate a comprehensive, legally compliant {{POLICY_TYPE}} policy for {{COMPANY_NAME}}.
+
+COMPANY DETAILS:
+- Company Name: {{COMPANY_NAME}}
+- Industry: {{INDUSTRY}}
+- Website: {{WEBSITE_URL}}
+- Contact Email: {{CONTACT_EMAIL}}
+- Target Regions: {{REGIONS}}
+- Language: {{LANGUAGE}}
+
+REQUIREMENTS:
+1. MUST be compliant with: GDPR (EU), CCPA (California), and applicable local laws
+2. Include all legally required sections and disclosures
+3. Use clear, professional language (not overly legalistic)
+4. Include specific company information (not generic placeholders)
+5. Add "Last Updated" date: {{DATE}}
+6. Include contact information for data protection inquiries
+
+REQUIRED SECTIONS:
+1. Introduction & Scope
+2. Information We Collect (with specific examples)
+3. How We Use Your Information
+4. Legal Basis for Processing (GDPR)
+5. Data Sharing & Third Parties
+6. International Data Transfers
+7. Your Rights (GDPR/CCPA specific)
+8. Data Retention
+9. Security Measures
+10. Children's Privacy (COPPA)
+11. Changes to This Policy
+12. Contact Information
+
+FORMAT: Complete HTML document with proper heading structure, ready to embed in a website.
+
+IMPORTANT: 
+- Do NOT use placeholder text like "[Company Name]" - use the actual company name provided
+- Include specific examples relevant to the industry
+- Ensure all legal requirements for the specified regions are covered
+- Add proper HTML formatting with sections and subsections

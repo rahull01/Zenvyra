@@ -1,0 +1,23 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/complianceai}
+
+logging:
+  level:
+    root: DEBUG
+    com.complianceai: TRACE
+    org.springframework.web: DEBUG
+
+# Development settings
+app:
+  dev-mode: true
+  mock-payments: true
+
+# CORS - Allow all in dev
+cors:
+  allowed-origins: "*"

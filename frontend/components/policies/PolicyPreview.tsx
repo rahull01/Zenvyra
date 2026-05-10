@@ -1,0 +1,128 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { X, Download, Copy, CheckCircle, Globe, Calendar, Building2 } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+
+interface PolicyPreviewProps {
+    policy: {
+        title: string;
+        content: string;
+        companyName: string;
+        website: string;
+        lastUpdated: string;
+        language: string;
+    };
+    onClose: () => void;
+}
+
+export default function PolicyPreview({ policy, onClose }: PolicyPreviewProps) {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(policy.content);
+        setCopied(true);
+        toast.success("Copied to clipboard!");
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    const handleDownload = () => {
+        const blob = new Blob([policy.content], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${policy.title.toLowerCase().replace(/\s+/g, "-")}.html`;
+        a.click();
+        URL.revokeObjectURL(url);
+        toast.success("Downloaded!");
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+        >
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="glass-card rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+            >
+                {/* Header */}
+                <div className="flex items-center justify-between p-6 border-b border-surface-800/50">
+                    <div>
+                        <h2 className="text-heading-2">{policy.title}</h2>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-surface-500">
+                            <span className="flex items-center gap-1">
+                                <Building2 className="w-4 h-4" />
+                                {policy.companyName}
+                            </span>
+                            <span className="flex items-center gap-1">
+                                <Globe className="w-4 h-4" />
+                                {policy.website}
+                            </span>
+                            <span className="flex items-center gap-1">
+                                <Calendar className="w-4 h-4" />
+                                {policy.lastUpdated}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={handleCopy}
+                            className="p-2 hover:bg-surface-800 rounded-lg transition-colors"
+                        >
+                            {copied ? <CheckCircle className="w-5 h-5 text-success" /> : <Copy className="w-5 h-5 text-surface-400" />}
+                        </button>
+                        <button
+                            onClick={handleDownload}
+                            className="p-2 hover:bg-surface-800 rounded-lg transition-colors"
+                        >
+                            <Download className="w-5 h-5 text-surface-400" />
+                        </button>
+                        <button
+                            onClick={onClose}
+                            className="p-2 hover:bg-surface-800 rounded-lg transition-colors"
+                        >
+                            <X className="w-5 h-5 text-surface-400" />
+                        </button>
+                    </div>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 overflow-auto p-8">
+                    <div className="max-w-3xl mx-auto prose prose-invert">
+                        <div className="p-8 rounded-2xl bg-surface-900/50 border border-surface-800/50">
+                            <h1 className="text-3xl font-bold text-surface-100 mb-6">{policy.title}</h1>
+                            <div className="text-sm text-surface-500 mb-8 pb-8 border-b border-surface-800/50">
+                                <p>Effective Date: {policy.lastUpdated}</p>
+                                <p>Company: {policy.companyName}</p>
+                                <p>Website: {policy.website}</p>
+                            </div>
+                            <div className="text-surface-300 leading-relaxed whitespace-pre-wrap">
+                                {policy.content}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer */}
+                <div className="p-4 border-t border-surface-800/50 bg-surface-900/50">
+                    <div className="flex items-center justify-between">
+                        <p className="text-xs text-surface-500">
+                            This policy was generated by ComplianceAI Pro AI
+                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="px-3 py-1 bg-brand-500/20 text-brand-400 rounded-full text-xs font-medium">
+                                {policy.language}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+}

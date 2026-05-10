@@ -1,0 +1,19 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'frontend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+        working-directory: frontend
+      - name: Build
+        run: npm run build
+        working-directory: frontend
