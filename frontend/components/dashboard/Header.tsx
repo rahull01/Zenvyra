@@ -1,202 +1,341 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-    Bell, Search, Settings, User, ChevronDown,
-    CheckCircle, AlertTriangle, Info, Zap, ShieldCheck
+    Bell, Search, Settings, User, ChevronDown, CheckCircle2,
+    AlertTriangle, Info, Command, LayoutDashboard, Scan, FileText,
+    ShieldCheck, Activity, Users, Globe, CreditCard, X, ArrowRight, LogOut
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const notifications = [
-    {
-        id: "1",
-        type: "success",
-        title: "Scan Analysis Complete",
-        message: "acme.com scored 87/100",
-        time: "2 min ago",
-        read: false,
-    },
-    {
-        id: "2",
-        type: "warning",
-        title: "SSL Certificate Alert",
-        message: "shop.acme.com certificate expires in 7 days",
-        time: "1 hour ago",
-        read: false,
-    },
-    {
-        id: "3",
-        type: "info",
-        title: "Protocol Update",
-        message: "Auto-fix for cookie banners is now available",
-        time: "3 hours ago",
-        read: true,
-    },
+// ─── Data ─────────────────────────────────────────────────────────────────────
+
+const ROUTE_LABELS: Record<string, string> = {
+    "/dashboard": "Dashboard",
+    "/dashboard/ai-insights": "AI Insights",
+    "/dashboard/monitoring": "Monitoring",
+    "/dashboard/cookies": "Consent Center",
+    "/dashboard/audit": "Audit Logs",
+    "/scan": "Magic Scanner",
+    "/policies": "Policies",
+    "/websites": "Websites",
+    "/team": "Team",
+    "/settings": "Settings",
+    "/billing": "Billing",
+};
+
+const COMMAND_ITEMS = [
+    { label: "Go to Dashboard", href: "/dashboard", icon: LayoutDashboard, category: "Navigation" },
+    { label: "Go to Scanner", href: "/scan", icon: Scan, category: "Navigation" },
+    { label: "Go to Policies", href: "/policies", icon: FileText, category: "Navigation" },
+    { label: "Go to Consent Center", href: "/dashboard/cookies", icon: ShieldCheck, category: "Navigation" },
+    { label: "Go to Monitoring", href: "/dashboard/monitoring", icon: Activity, category: "Navigation" },
+    { label: "Go to Team", href: "/team", icon: Users, category: "Navigation" },
+    { label: "Go to Websites", href: "/websites", icon: Globe, category: "Navigation" },
+    { label: "Go to Billing", href: "/billing", icon: CreditCard, category: "Account" },
+    { label: "Go to Settings", href: "/settings", icon: Settings, category: "Account" },
 ];
 
-export default function Header() {
-    const [showNotifications, setShowNotifications] = useState(false);
-    const [showProfile, setShowProfile] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
+const NOTIFICATIONS = [
+    { id: "1", type: "success", title: "Scan Complete", message: "acme.com scored 87/100", time: "2 min ago", read: false },
+    { id: "2", type: "warning", title: "SSL Alert", message: "shop.acme.com expires in 7 days", time: "1 hr ago", read: false },
+    { id: "3", type: "info", title: "Update Available", message: "Auto-fix for cookie banners ready", time: "3 hr ago", read: true },
+];
 
-    const unreadCount = notifications.filter((n) => !n.read).length;
+// ─── Breadcrumbs ──────────────────────────────────────────────────────────────
 
-    const getNotificationIcon = (type: string) => {
-        switch (type) {
-            case "success": return <CheckCircle className="w-5 h-5 text-emerald-600" />;
-            case "warning": return <AlertTriangle className="w-5 h-5 text-amber-600" />;
-            default: return <Info className="w-5 h-5 text-brand-600" />;
-        }
-    };
+function Breadcrumbs() {
+    const pathname = usePathname();
+    const segments = pathname.split("/").filter(Boolean);
+
+    const crumbs = segments.reduce<{ label: string; href: string }[]>((acc, seg, i) => {
+        const href = "/" + segments.slice(0, i + 1).join("/");
+        const label = ROUTE_LABELS[href] ?? seg.charAt(0).toUpperCase() + seg.slice(1);
+        acc.push({ label, href });
+        return acc;
+    }, []);
+
+    if (crumbs.length === 0) return null;
 
     return (
-        <header className="h-24 bg-white/40 backdrop-blur-3xl flex items-center justify-between px-10 sticky top-0 z-30 border-b border-slate-200/50">
-            {/* Atmospheric Background */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="premium-noise opacity-[0.02]" />
-            </div>
-            {/* Command Search */}
-            <div className="relative group w-[400px]">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-transform duration-500 group-focus-within:translate-x-1">
-                    <Search className="h-4 h-4 text-slate-400 group-focus-within:text-brand-600 transition-colors" />
-                </div>
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Execute system command or search..."
-                    className="w-full pl-12 pr-6 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-brand-500/50 focus:ring-8 focus:ring-brand-500/5 transition-all duration-500"
-                />
-                <div className="absolute inset-y-0 right-4 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <kbd className="px-2 py-1 bg-slate-100 border border-slate-200 rounded-md text-[10px] font-black text-slate-400">⌘</kbd>
-                    <kbd className="px-2 py-1 bg-slate-100 border border-slate-200 rounded-md text-[10px] font-black text-slate-400">K</kbd>
-                </div>
-            </div>
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm">
+            {crumbs.map((crumb, i) => (
+                <React.Fragment key={crumb.href}>
+                    {i > 0 && <span className="text-gray-300">/</span>}
+                    {i < crumbs.length - 1 ? (
+                        <Link href={crumb.href} className="text-gray-400 hover:text-termly-navy transition-colors font-medium">
+                            {crumb.label}
+                        </Link>
+                    ) : (
+                        <span className="text-termly-navy font-semibold">{crumb.label}</span>
+                    )}
+                </React.Fragment>
+            ))}
+        </nav>
+    );
+}
 
-            {/* Global Actions */}
-            <div className="flex items-center gap-6">
-                {/* System Status */}
-                <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-emerald-500/5 border border-emerald-500/10 rounded-full">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Protocol Active</span>
+// ─── Command Palette ──────────────────────────────────────────────────────────
+
+function CommandPalette({ onClose }: { onClose: () => void }) {
+    const [query, setQuery] = useState("");
+    const [selected, setSelected] = useState(0);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const filtered = COMMAND_ITEMS.filter(
+        (item) =>
+            item.label.toLowerCase().includes(query.toLowerCase()) ||
+            item.category.toLowerCase().includes(query.toLowerCase())
+    );
+
+    useEffect(() => {
+        inputRef.current?.focus();
+        setSelected(0);
+    }, [query]);
+
+    const handleKey = useCallback((e: KeyboardEvent) => {
+        if (e.key === "Escape") onClose();
+        if (e.key === "ArrowDown") setSelected((s) => Math.min(s + 1, filtered.length - 1));
+        if (e.key === "ArrowUp") setSelected((s) => Math.max(s - 1, 0));
+        if (e.key === "Enter" && filtered[selected]) {
+            window.location.href = filtered[selected].href;
+            onClose();
+        }
+    }, [filtered, selected, onClose]);
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+    }, [handleKey]);
+
+    const grouped = filtered.reduce<Record<string, typeof COMMAND_ITEMS>>((acc, item) => {
+        acc[item.category] = [...(acc[item.category] ?? []), item];
+        return acc;
+    }, {});
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh]" onClick={onClose}>
+            <div className="absolute inset-0 bg-termly-navy/40 backdrop-blur-sm" />
+            <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: -8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: -8 }}
+                transition={{ duration: 0.15 }}
+                className="relative w-full max-w-xl bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+            >
+                {/* Search Input */}
+                <div className="flex items-center gap-3 px-4 border-b border-gray-100">
+                    <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                    <input
+                        ref={inputRef}
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder="Search or jump to..."
+                        className="flex-1 h-14 text-sm text-termly-navy placeholder-gray-400 bg-transparent outline-none font-medium"
+                    />
+                    <button onClick={onClose} className="p-1 rounded hover:bg-gray-100 transition-colors">
+                        <X className="w-4 h-4 text-gray-400" />
+                    </button>
                 </div>
 
-                {/* Notifications Dropdown */}
-                <div className="relative">
+                {/* Results */}
+                <div className="max-h-[60vh] overflow-y-auto py-2">
+                    {filtered.length === 0 ? (
+                        <p className="py-8 text-center text-sm text-gray-400">No results for &ldquo;{query}&rdquo;</p>
+                    ) : (
+                        Object.entries(grouped).map(([category, items]) => (
+                            <div key={category}>
+                                <p className="px-4 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-gray-400">{category}</p>
+                                {items.map((item, idx) => {
+                                    const globalIdx = filtered.indexOf(item);
+                                    return (
+                                        <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            onClick={onClose}
+                                            className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
+                                                selected === globalIdx
+                                                    ? "bg-termly-blue/8 text-termly-blue"
+                                                    : "text-[#4B5563] hover:bg-gray-50"
+                                            }`}
+                                            onMouseEnter={() => setSelected(globalIdx)}
+                                        >
+                                            <div className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 ${selected === globalIdx ? "bg-termly-blue text-white" : "bg-gray-100 text-gray-500"}`}>
+                                                <item.icon className="w-3.5 h-3.5" />
+                                            </div>
+                                            <span className="flex-1 font-medium">{item.label}</span>
+                                            <ArrowRight className={`w-3 h-3 opacity-0 transition-opacity ${selected === globalIdx ? "opacity-100" : ""}`} />
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {/* Footer hints */}
+                <div className="flex items-center gap-4 border-t border-gray-100 px-4 py-2.5 text-[10px] text-gray-400">
+                    <span className="flex items-center gap-1"><kbd className="bg-gray-100 px-1.5 py-0.5 rounded text-[9px] font-mono">↑↓</kbd> Navigate</span>
+                    <span className="flex items-center gap-1"><kbd className="bg-gray-100 px-1.5 py-0.5 rounded text-[9px] font-mono">↵</kbd> Open</span>
+                    <span className="flex items-center gap-1"><kbd className="bg-gray-100 px-1.5 py-0.5 rounded text-[9px] font-mono">Esc</kbd> Close</span>
+                </div>
+            </motion.div>
+        </div>
+    );
+}
+
+// ─── Notification icon ────────────────────────────────────────────────────────
+
+function NotifIcon({ type }: { type: string }) {
+    if (type === "success") return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+    if (type === "warning") return <AlertTriangle className="w-4 h-4 text-amber-500" />;
+    return <Info className="w-4 h-4 text-termly-blue" />;
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+
+export default function Header() {
+    const [showCmd, setShowCmd] = useState(false);
+    const [showNotif, setShowNotif] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
+    const unread = NOTIFICATIONS.filter((n) => !n.read).length;
+
+    // Global Cmd+K listener
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+                e.preventDefault();
+                setShowCmd((v) => !v);
+            }
+        };
+        window.addEventListener("keydown", handler);
+        return () => window.removeEventListener("keydown", handler);
+    }, []);
+
+    // Close dropdowns on outside click
+    useEffect(() => {
+        const handler = () => { setShowNotif(false); setShowProfile(false); };
+        if (showNotif || showProfile) window.addEventListener("click", handler, { once: true });
+    }, [showNotif, showProfile]);
+
+    return (
+        <>
+            <AnimatePresence>
+                {showCmd && <CommandPalette onClose={() => setShowCmd(false)} />}
+            </AnimatePresence>
+
+            <header className="h-14 bg-white/80 backdrop-blur-[8px] sticky top-0 z-30 border-b border-gray-200/80 flex items-center gap-4 px-6">
+                {/* Breadcrumbs */}
+                <div className="flex-1">
+                    <Breadcrumbs />
+                </div>
+
+                {/* Command Palette Trigger */}
+                <button
+                    onClick={() => setShowCmd(true)}
+                    className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm text-gray-400 hover:border-gray-300 hover:text-gray-600 transition-colors"
+                >
+                    <Command className="w-3.5 h-3.5" />
+                    <span className="text-xs font-medium">Search…</span>
+                    <div className="flex items-center gap-0.5 ml-2">
+                        <kbd className="text-[9px] font-mono bg-white border border-gray-200 px-1 rounded">⌘</kbd>
+                        <kbd className="text-[9px] font-mono bg-white border border-gray-200 px-1 rounded">K</kbd>
+                    </div>
+                </button>
+
+                {/* Notifications */}
+                <div className="relative" onClick={(e) => e.stopPropagation()}>
                     <button
-                        onClick={() => setShowNotifications(!showNotifications)}
-                        className="relative p-3.5 bg-white border border-slate-100 rounded-2xl hover:border-brand-500/20 hover:shadow-card transition-all duration-500 group"
+                        onClick={() => { setShowNotif((v) => !v); setShowProfile(false); }}
+                        className="relative p-2 rounded-md text-gray-400 hover:text-termly-navy hover:bg-gray-100 transition-colors"
                     >
-                        <Bell className="w-5 h-5 text-slate-500 group-hover:text-brand-600 transition-colors" />
-                        {unreadCount > 0 && (
-                            <span className="absolute top-0 right-0 -translate-y-1/3 translate-x-1/3 w-5 h-5 bg-brand-600 text-[10px] font-black text-white rounded-full flex items-center justify-center border-2 border-white shadow-glow">
-                                {unreadCount}
-                            </span>
+                        <Bell className="w-4 h-4" />
+                        {unread > 0 && (
+                            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-red-500 ring-2 ring-white" />
                         )}
                     </button>
 
                     <AnimatePresence>
-                        {showNotifications && (
+                        {showNotif && (
                             <motion.div
-                                initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                                className="absolute right-0 top-full mt-4 w-[400px] glass-morphism rounded-3xl z-50 overflow-hidden"
+                                initial={{ opacity: 0, y: 6 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 6 }}
+                                transition={{ duration: 0.12 }}
+                                className="absolute right-0 top-full mt-1.5 w-80 bg-white rounded-xl shadow-termly-hover border border-gray-200 z-50 overflow-hidden"
                             >
-                                <div className="absolute inset-0 premium-noise opacity-[0.03] pointer-events-none" />
-                                <div className="p-6 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <Zap className="w-4 h-4 text-brand-600" />
-                                        <h3 className="font-display font-black text-slate-900 uppercase tracking-widest text-xs">Intelligence Feed</h3>
-                                    </div>
-                                    <button className="text-[10px] font-black text-brand-600 uppercase hover:underline">Clear All</button>
+                                <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/50">
+                                    <h3 className="text-xs font-semibold text-termly-navy uppercase tracking-wider">Notifications</h3>
+                                    <button className="text-[10px] font-semibold text-termly-blue hover:underline">Mark all read</button>
                                 </div>
-                                <div className="max-h-[500px] overflow-auto">
-                                    {notifications.map((notification) => (
-                                        <div
-                                            key={notification.id}
-                                            className={`flex items-start gap-4 p-6 transition-all duration-500 hover:bg-slate-50 cursor-pointer ${!notification.read ? "bg-brand-500/5" : ""}`}
-                                        >
-                                            <div className="p-2 bg-white rounded-xl shadow-sm">
-                                                {getNotificationIcon(notification.type)}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-bold text-slate-900">{notification.title}</p>
-                                                <p className="text-xs text-slate-500 mt-1 leading-relaxed">{notification.message}</p>
-                                                <p className="text-[10px] font-bold text-slate-400 mt-3 flex items-center gap-2">
-                                                    <div className="w-1 h-1 rounded-full bg-slate-300" />
-                                                    {notification.time}
-                                                </p>
-                                            </div>
-                                            {!notification.read && (
-                                                <div className="w-2 h-2 bg-brand-600 rounded-full shadow-glow" />
-                                            )}
+                                {NOTIFICATIONS.map((n) => (
+                                    <div key={n.id} className={`flex gap-3 px-4 py-3 border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors ${!n.read ? "bg-blue-50/30" : ""}`}>
+                                        <div className="mt-0.5 flex-shrink-0"><NotifIcon type={n.type} /></div>
+                                        <div>
+                                            <p className="text-xs font-semibold text-termly-navy">{n.title}</p>
+                                            <p className="text-[11px] text-gray-500 mt-0.5">{n.message}</p>
+                                            <p className="text-[10px] text-gray-400 mt-1">{n.time}</p>
                                         </div>
-                                    ))}
+                                        {!n.read && <div className="ml-auto mt-1 w-1.5 h-1.5 rounded-full bg-termly-blue flex-shrink-0" />}
+                                    </div>
+                                ))}
+                                <div className="px-4 py-2.5 bg-gray-50/50 text-center">
+                                    <Link href="/dashboard" className="text-xs font-semibold text-termly-blue hover:underline">View all</Link>
                                 </div>
-                                <button className="w-full py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-slate-800 transition-colors">
-                                    View Full History
-                                </button>
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
 
-                {/* Profile Intelligence */}
-                <div className="relative">
+                {/* Profile */}
+                <div className="relative" onClick={(e) => e.stopPropagation()}>
                     <button
-                        onClick={() => setShowProfile(!showProfile)}
-                        className="flex items-center gap-4 p-2 pr-5 bg-white border border-slate-100 rounded-full hover:border-brand-500/20 hover:shadow-card transition-all duration-500 group"
+                        onClick={() => { setShowProfile((v) => !v); setShowNotif(false); }}
+                        className="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-gray-100 transition-colors"
                     >
-                        <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white text-sm font-black shadow-lg group-hover:scale-105 transition-transform">
-                            JD
-                        </div>
-                        <div className="hidden md:block text-left">
-                            <p className="text-xs font-black text-slate-900 leading-none">John Doe</p>
-                            <div className="flex items-center gap-1.5 mt-1">
-                                <ShieldCheck className="w-3 h-3 text-brand-600" />
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">Enterprise Tier</span>
-                            </div>
-                        </div>
-                        <ChevronDown className="w-4 h-4 text-slate-300 group-hover:text-slate-900 transition-colors" />
+                        <div className="w-6 h-6 rounded-full bg-termly-navy flex items-center justify-center text-white text-[10px] font-bold">JD</div>
+                        <span className="hidden md:block text-xs font-semibold text-termly-navy">John Doe</span>
+                        <ChevronDown className="w-3 h-3 text-gray-400" />
                     </button>
 
                     <AnimatePresence>
                         {showProfile && (
                             <motion.div
-                                initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                                className="absolute right-0 top-full mt-4 w-72 glass-morphism rounded-3xl z-50 overflow-hidden"
+                                initial={{ opacity: 0, y: 6 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 6 }}
+                                transition={{ duration: 0.12 }}
+                                className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-xl shadow-termly-hover border border-gray-200 z-50 overflow-hidden"
                             >
-                                <div className="absolute inset-0 premium-noise opacity-[0.03] pointer-events-none" />
-                                <div className="p-6 bg-slate-900 text-white text-center relative overflow-hidden">
-                                    <div className="absolute inset-0 bg-brand-500/20 blur-3xl rounded-full" />
-                                    <div className="relative z-10 w-16 h-16 rounded-full bg-white/10 mx-auto flex items-center justify-center text-2xl font-black mb-3">JD</div>
-                                    <p className="relative z-10 font-display font-black text-white">John Doe</p>
-                                    <p className="relative z-10 text-[10px] font-bold text-white/50 uppercase tracking-widest mt-1">john@acme.com</p>
+                                <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/50">
+                                    <p className="text-xs font-bold text-termly-navy">John Doe</p>
+                                    <p className="text-[10px] text-gray-400 mt-0.5">john@acme.com</p>
                                 </div>
-                                <div className="p-4 bg-white">
+                                <div className="p-1.5">
                                     {[
-                                        { label: "Account Config", icon: Settings, href: "/settings" },
-                                        { label: "Billing & Ledger", icon: User, href: "/billing" },
-                                    ].map((item, i) => (
-                                        <Link
-                                            key={i}
-                                            href={item.href}
-                                            className="flex items-center gap-4 px-4 py-3.5 hover:bg-slate-50 rounded-2xl text-xs font-bold text-slate-600 hover:text-slate-900 transition-all duration-300"
-                                        >
-                                            <item.icon className="w-4 h-4" />
+                                        { label: "Settings", icon: Settings, href: "/settings" },
+                                        { label: "Account", icon: User, href: "/billing" },
+                                    ].map((item) => (
+                                        <Link key={item.href} href={item.href} className="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-[#4B5563] hover:bg-gray-100 hover:text-termly-navy transition-colors">
+                                            <item.icon className="w-3.5 h-3.5 text-gray-400" />
                                             {item.label}
                                         </Link>
                                     ))}
+                                </div>
+                                <div className="p-1.5 border-t border-gray-100">
+                                    <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-red-600 hover:bg-red-50 transition-colors">
+                                        <LogOut className="w-3.5 h-3.5" />
+                                        Sign out
+                                    </button>
                                 </div>
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
-            </div>
-        </header>
+            </header>
+        </>
     );
 }

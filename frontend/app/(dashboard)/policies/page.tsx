@@ -1,7 +1,8 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import api from "@/lib/api";
 import {
     Plus, FileText, Globe, Languages, Copy, Download,
     Eye, Edit, Trash2, Check, ChevronDown, Sparkles, X, Shield, Cookie, Scale
@@ -90,6 +91,25 @@ export default function PoliciesPage() {
     const [selectedType, setSelectedType] = useState("");
     const [selectedLanguage, setSelectedLanguage] = useState("en");
     const [previewPolicy, setPreviewPolicy] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadPolicies = async () => {
+            setLoading(true);
+            try {
+                const response = await api.get<Policy[]>("/policies");
+                if (Array.isArray(response.data) && response.data.length > 0) {
+                    setPolicies(response.data);
+                }
+            } catch (error) {
+                toast.error("Unable to load live policies. Using sample data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadPolicies();
+    }, []);
 
     const handleGenerate = async () => {
         if (!selectedType) {
@@ -98,24 +118,35 @@ export default function PoliciesPage() {
         }
 
         setGenerating(true);
-        // Simulate AI generation
-        await new Promise(resolve => setTimeout(resolve, 3000));
 
-        const newPolicy: Policy = {
-            id: Date.now().toString(),
-            type: selectedType,
-            title: policyTypes.find(t => t.id === selectedType)?.name || "New Policy",
-            language: languages.find(l => l.code === selectedLanguage)?.name || "English",
-            status: "draft",
-            lastUpdated: "Just now",
-            website: "northline.app",
-        };
+        try {
+            const title = policyTypes.find(t => t.id === selectedType)?.name || "New Policy";
+            const response = await api.post("/policies", {
+                type: selectedType,
+                name: title,
+                language: selectedLanguage,
+            });
 
-        setPolicies(prev => [newPolicy, ...prev]);
-        setGenerating(false);
-        setShowGenerator(false);
-        setSelectedType("");
-        toast.success("Policy generated successfully!");
+            const createdPolicy = response.data;
+            const newPolicy: Policy = {
+                id: createdPolicy.id || Date.now().toString(),
+                type: createdPolicy.type || selectedType,
+                title: createdPolicy.title || title,
+                language: languages.find(l => l.code === selectedLanguage)?.name || "English",
+                status: createdPolicy.status || "draft",
+                lastUpdated: "Just now",
+                website: createdPolicy.website || "northline.app",
+            };
+
+            setPolicies(prev => [newPolicy, ...prev]);
+            setShowGenerator(false);
+            setSelectedType("");
+            toast.success("Policy draft created successfully.");
+        } catch (error: any) {
+            toast.error(error?.response?.data?.message || "Failed to generate policy");
+        } finally {
+            setGenerating(false);
+        }
     };
 
     const getStatusColor = (status: string) => {

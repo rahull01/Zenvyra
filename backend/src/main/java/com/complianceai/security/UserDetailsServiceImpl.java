@@ -1,5 +1,6 @@
 package com.complianceai.security;
 
+import com.complianceai.model.User;
 import com.complianceai.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
+                .filter(User::isEnabled)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
     }
 }

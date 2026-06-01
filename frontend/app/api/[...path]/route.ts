@@ -1,13 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
+const API_BASE_URL = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 async function handleRequest(
     request: NextRequest,
     { params }: { params: { path: string[] } }
 ) {
-    const path = params.path.join("/");
-    const url = `${API_BASE_URL}/api/${path}${request.nextUrl.search}`;
+    const pathSegments = params.path;
+    const search = request.nextUrl.search || "";
+
+    let url: string;
+    if (pathSegments.length > 0 && pathSegments[0] === "v1") {
+        const trimmedPath = pathSegments.slice(1).join("/");
+        url = `${API_BASE_URL}/api/v1/${trimmedPath}${search}`;
+    } else {
+        url = `${API_BASE_URL}/${pathSegments.join("/")}${search}`;
+    }
 
     const headers: Record<string, string> = {
         "Content-Type": "application/json",
@@ -28,12 +36,19 @@ async function handleRequest(
                 : undefined,
         });
 
-        const data = await response.text();
+        const contentType = response.headers.get("content-type") || "application/json";
+        const isBinary = contentType.includes("zip") || 
+                         contentType.includes("image") || 
+                         contentType.includes("pdf") || 
+                         contentType.includes("octet-stream");
+
+        const data = isBinary ? await response.arrayBuffer() : await response.text();
 
         return new NextResponse(data, {
             status: response.status,
             headers: {
-                "Content-Type": response.headers.get("content-type") || "application/json",
+                "Content-Type": contentType,
+                "Content-Disposition": response.headers.get("content-disposition") || "",
             },
         });
     } catch (error) {

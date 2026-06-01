@@ -6,7 +6,23 @@ import { Check, ChevronDown, ChevronUp } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-const Select = SelectPrimitive.Root
+interface SelectProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root> {
+    className?: string
+}
+
+const Select: React.FC<SelectProps> & {
+    Group: typeof SelectPrimitive.Group
+    Value: typeof SelectPrimitive.Value
+    Trigger: typeof SelectTrigger
+    Content: typeof SelectContent
+    Label: typeof SelectLabel
+    Item: typeof SelectItem
+    Separator: typeof SelectSeparator
+    ScrollUpButton: typeof SelectScrollUpButton
+    ScrollDownButton: typeof SelectScrollDownButton
+} = ({ className, ...props }: SelectProps) => {
+    return <SelectPrimitive.Root {...props} />
+}
 
 const SelectGroup = SelectPrimitive.Group
 
@@ -145,6 +161,16 @@ const SelectSeparator = React.forwardRef<
     />
 ))
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName
+
+Select.Group = SelectGroup
+Select.Value = SelectValue
+Select.Trigger = SelectTrigger
+Select.Content = SelectContent
+Select.Label = SelectLabel
+Select.Item = SelectItem
+Select.Separator = SelectSeparator
+Select.ScrollUpButton = SelectScrollUpButton
+Select.ScrollDownButton = SelectScrollDownButton
 
 export {
     Select,

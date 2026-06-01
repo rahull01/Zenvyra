@@ -8,12 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PolicyRepository extends MongoRepository<Policy, String> {
-
-    List<Policy> findByUserId(String userId);
-
-    List<Policy> findByWebsiteId(String websiteId);
-
-    List<Policy> findByUserIdAndType(String userId, String type);
-
-    List<Policy> findByStatus(String status);
+    List<Policy> findByOrganizationId(String organizationId);
 }

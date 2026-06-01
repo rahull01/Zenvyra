@@ -1,77 +1,142 @@
 package com.complianceai.service;
 
-import com.complianceai.model.Alert;
-import com.complianceai.model.User;
-import com.complianceai.repository.AlertRepository;
-import com.complianceai.repository.UserRepository;
+import com.complianceai.model.Notification;
+import com.complianceai.model.Notification.NotificationType;
+import com.complianceai.model.Notification.Priority;
+import com.complianceai.model.notification.NotificationPreference.NotificationPriority;
+import com.complianceai.repository.NotificationRepository;
+import com.complianceai.service.notification.IntelligentNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Slf4j
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private final AlertRepository alertRepository;
-    private final UserRepository userRepository;
-    private final EmailService emailService;
+    private final NotificationRepository notificationRepository;
+    private final IntelligentNotificationService intelligentNotificationService;
 
-    public void sendLowScoreAlert(String userEmail, String url, double score) {
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        Alert alert = Alert.builder()
-                .userId(user.getId())
-                .type("low_score")
-                .severity("high")
-                .title("Low Compliance Score Detected")
-                .message(String.format("Your website %s has a compliance score of %d/100", url, score))
+    /**
+     * Creates and saves a notification.
+     */
+    public Notification createNotification(String userId, String title, String message, 
+                                        NotificationType type, Priority priority, String actionUrl) {
+        
+        Notification notification = Notification.builder()
+                .userId(userId)
+                .title(title)
+                .message(message)
+                .type(type)
+                .priority(priority)
+                .actionUrl(actionUrl)
                 .read(false)
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        alertRepository.save(alert);
-
-        // Send email notification
-        emailService.sendLowScoreEmail(userEmail, url, score);
-
-        log.info("Low score alert sent to: {}", userEmail);
+        Notification saved = notificationRepository.save(notification);
+        
+        // Intelligent Push Trigger
+        intelligentNotificationService.processNotification(
+            userId, 
+            title, 
+            message, 
+            mapPriority(priority), 
+            actionUrl
+        );
+        
+        // Logic for high priority emails
+        if (priority == Priority.HIGH || priority == Priority.URGENT) {
+            sendEmailNotification(userId, title, message);
+        }
+        
+        return saved;
     }
 
-    public void sendChangeDetectedAlert(String userEmail, String url, String changeType) {
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        Alert alert = Alert.builder()
-                .userId(user.getId())
-                .type("change_detected")
-                .severity("medium")
-                .title("Website Change Detected")
-                .message(String.format("Change detected on %s: %s", url, changeType))
-                .read(false)
-                .createdAt(LocalDateTime.now())
-                .build();
-
-        alertRepository.save(alert);
+    private NotificationPriority mapPriority(Priority priority) {
+        return switch (priority) {
+            case LOW -> NotificationPriority.LOW;
+            case MEDIUM -> NotificationPriority.MEDIUM;
+            case HIGH -> NotificationPriority.HIGH;
+            case URGENT -> NotificationPriority.CRITICAL;
+        };
     }
 
-    public void sendSslExpiryAlert(String userEmail, String url, int daysRemaining) {
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public List<Notification> getUserNotifications(String userId) {
+        return notificationRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    }
 
-        Alert alert = Alert.builder()
-                .userId(user.getId())
-                .type("ssl_expiry")
-                .severity(daysRemaining < 3 ? "critical" : "high")
-                .title("SSL Certificate Expiring Soon")
-                .message(String.format("SSL for %s expires in %d days", url, daysRemaining))
-                .read(false)
-                .createdAt(LocalDateTime.now())
-                .build();
+    public long getUnreadCount(String userId) {
+        return notificationRepository.countByUserIdAndReadFalse(userId);
+    }
 
-        alertRepository.save(alert);
+    public void markAsRead(String notificationId) {
+        notificationRepository.findById(notificationId).ifPresent(n -> {
+            n.setRead(true);
+            notificationRepository.save(n);
+        });
+    }
+
+    private void sendEmailNotification(String userId, String title, String message) {
+        // Mock email sending logic
+        log.info("Sending EMAIL to user {}: [{}] - {}", userId, title, message);
+    }
+
+    // Specialized triggers for convenience
+    public void sendStreakAlert(String userId, int days, boolean atRisk) {
+        String title = atRisk ? "🚨 Streak at risk!" : "🔥 Streak continued!";
+        String msg = atRisk ? 
+            "Your " + days + "-day compliance streak will break in 1 hour! Scan now to save it." :
+            "Great job! You've maintained your compliance for " + days + " days.";
+        
+        createNotification(userId, title, msg, NotificationType.STREAK_ALERT, 
+            atRisk ? Priority.URGENT : Priority.LOW, "/dashboard");
+    }
+
+    public void sendMilestoneAchieved(String userId, String milestoneName, int days) {
+        String title = "🎊 Milestone Achieved: " + milestoneName;
+        String msg = "Incredible! You've reached a " + days + "-day streak. You've earned the " + milestoneName + " badge.";
+        
+        createNotification(userId, title, msg, NotificationType.MILESTONE_ACHIEVED, Priority.HIGH, "/certificates");
+    }
+
+    public void sendIssueDetected(String userId, String websiteUrl, String issueTitle) {
+        String title = "⚠️ New Compliance Issue";
+        String msg = "A new " + issueTitle + " issue was detected on " + websiteUrl + ". Your score has dropped.";
+        
+        createNotification(userId, title, msg, NotificationType.COMPLIANCE_ISSUE, Priority.HIGH, "/scan");
+    }
+
+    public void sendScanSummaryNotification(String userId, String websiteUrl, double oldScore, double newScore, int issueCount) {
+        if (issueCount == 0) return;
+
+        double drop = oldScore - newScore;
+        String title = issueCount == 1 ? "⚠️ Compliance Issue Detected" : "🚨 Multiple Issues Detected";
+        
+        String msg = String.format("%d compliance issues found on %s. Your score dropped from %.0f%% to %.0f%%.", 
+            issueCount, websiteUrl, oldScore, newScore);
+            
+        Priority priority = drop > 20 ? Priority.URGENT : Priority.HIGH;
+        
+        createNotification(userId, title, msg, NotificationType.COMPLIANCE_ISSUE, priority, "/scan");
+    }
+
+    public void sendChangeDetectedAlert(String userId, String websiteUrl, String changeDescription) {
+        String title = "🔄 Change Detected: " + websiteUrl;
+        String msg = "A significant change was detected on your website that may affect your compliance status: " + changeDescription;
+        
+        createNotification(userId, title, msg, NotificationType.COMPLIANCE_ISSUE, Priority.HIGH, "/monitoring");
+    }
+
+    public void sendLowScoreAlert(String userId, String websiteUrl, double score) {
+        String title = "📉 Compliance Score Alert: " + websiteUrl;
+        String msg = String.format("Your compliance score for %s has dropped to %.0f%%. Please review the issues and take action.", 
+            websiteUrl, score);
+        
+        createNotification(userId, title, msg, NotificationType.COMPLIANCE_ISSUE, Priority.HIGH, "/scan");
     }
 }

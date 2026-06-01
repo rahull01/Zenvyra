@@ -1,7 +1,7 @@
 server:
-  port: 8080
+  port: 8081
   servlet:
-    context-path: /api
+    context-path: /api/v1
 
 spring:
   application:
@@ -9,6 +9,21 @@ spring:
 
   profiles:
     active: dev
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:dummy-google-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:dummy-google-client-secret}
+            scope:
+              - openid
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/api/login/oauth2/code/{registrationId}"
+            client-settings:
+              require-proof-key: true
 
   data:
     mongodb:
@@ -47,17 +62,16 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-# JWT Configuration
+# JWT Configuration (JWT_SECRET must be set — min 32 characters)
 app:
   jwt:
-    secret: ${JWT_SECRET:your-256-bit-secret-key-here-change-in-production-min-32-chars}
-    expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
+    secret: ${JWT_SECRET:}
+    expiration: ${JWT_EXPIRATION:86400000}
+    refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+    password-reset-expiration: ${JWT_PASSWORD_RESET_EXPIRATION:3600000}
   url: ${APP_URL:http://localhost:3000}
-
-jwt:
-  secret: ${JWT_SECRET:your-256-bit-secret-key-here-change-in-production-min-32-chars}
-  expiration: 86400000 # 24 hours in milliseconds
-  refresh-expiration: 604800000 # 7 days
+  security:
+    hsts-enabled: ${APP_SECURITY_HSTS_ENABLED:false}
 
 # OpenAI Configuration
 openai:

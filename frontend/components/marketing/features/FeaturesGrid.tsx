@@ -1,62 +1,59 @@
 "use client";
 
 import React from "react";
-
 import { motion } from "framer-motion";
 import { 
     Bell, FileText, Globe, Shield, Sparkles, Wand2, 
-    Zap, Activity, Lock, Cpu, Fingerprint, Database
+    Zap, Activity, Lock, Cpu, Fingerprint, Database,
+    Search, BarChart3, Users, Code2, Scale, RefreshCw
 } from "lucide-react";
 import PageContainer from "@/components/shared/PageContainer";
 import SectionWrapper from "@/components/shared/SectionWrapper";
 
 const features = [
     { 
+        icon: Wand2, 
+        title: "AI Policy Drafting", 
+        description: "Generate bulletproof privacy policies and T&Cs powered by GPT-4 and real-time legal databases.",
+        color: "accent"
+    },
+    { 
+        icon: Search, 
+        title: "Deep Website Scanning", 
+        description: "Our bots crawl every corner of your site to identify hidden cookies and compliance gaps.",
+        color: "info"
+    },
+    { 
+        icon: RefreshCw, 
+        title: "Auto-Update Engine", 
+        description: "Policies automatically update when global regulations change. Never go out of date again.",
+        color: "accent"
+    },
+    { 
         icon: Shield, 
-        title: "Protocol Intelligence", 
-        description: "Deep-scanning of privacy structures, legal frameworks, and jurisdictional consent flows.",
-        color: "brand"
+        title: "Consent Management", 
+        description: "Premium cookie banners with geo-targeted display and granular category controls.",
+        color: "info"
     },
     { 
-        icon: Cpu, 
-        title: "Autonomous Resolution", 
-        description: "AI-generated implementation patterns for banners, scripts, and policy documentation.",
-        color: "emerald"
-    },
-    { 
-        icon: Globe, 
-        title: "Global Node Monitoring", 
-        description: "Real-time jurisdictional tracking across every deployment and system cluster.",
-        color: "brand"
-    },
-    { 
-        icon: Bell, 
-        title: "Sentinel Alerts", 
-        description: "High-fidelity, severity-mapped notifications for security and legal infrastructure owners.",
-        color: "emerald"
+        icon: BarChart3, 
+        title: "Compliance Scoring", 
+        description: "Neural network-based scoring system predicts audit risks with 200+ data points.",
+        color: "accent"
     },
     { 
         icon: Fingerprint, 
-        title: "Identity Audit Logs", 
-        description: "Cryptographically verified history of every policy change and system resolution.",
-        color: "brand"
-    },
-    { 
-        icon: Zap, 
-        title: "Executive Synthesis", 
-        description: "Trust-optimized reporting and dynamic KPI visualization for stakeholders.",
-        color: "emerald"
+        title: "DSAR Automation", 
+        description: "Fully automated Data Subject Access Request handling with encrypted submission logs.",
+        color: "info"
     },
 ];
 
 export default function FeaturesGrid() {
     return (
-        <SectionWrapper className="relative py-24">
-            {/* Background Atmosphere */}
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-1/2 left-[-10%] w-[600px] h-[600px] bg-brand-500/[0.03] blur-[160px] rounded-full" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-emerald-500/[0.03] blur-[160px] rounded-full" />
-            </div>
+        <SectionWrapper className="relative py-32 bg-bg-primary overflow-hidden">
+            {/* Background atmosphere */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 blur-[160px] rounded-full pointer-events-none" />
 
             <PageContainer>
                 <div className="relative z-10 mb-20 text-center">
@@ -64,50 +61,48 @@ export default function FeaturesGrid() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-3 py-1 bg-slate-900 rounded-full mb-6"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-bg-secondary border border-bg-tertiary rounded-full mb-6"
                     >
-                        <Activity className="w-3.5 h-3.5 text-brand-500" />
-                        <span className="text-[10px] font-black text-white uppercase tracking-widest">Core Capabilities</span>
+                        <Zap className="w-4 h-4 text-accent" />
+                        <span className="text-xs font-bold text-text-primary uppercase tracking-widest">Enterprise Grade</span>
                     </motion.div>
-                    <h2 className="text-display-3 font-display font-black text-slate-900 mb-6 leading-tight">
-                        Everything you need to <br/>
-                        <span className="text-brand-600">secure your operations.</span>
+                    <h2 className="text-4xl md:text-6xl font-extrabold text-text-primary mb-6 tracking-tight">
+                        Powering the next generation of <br/>
+                        <span className="text-gradient-accent">Compliance Automation.</span>
                     </h2>
-                    <p className="mx-auto max-w-2xl text-lg text-slate-500 font-medium leading-relaxed">
-                        A high-fidelity workspace engineered for trust, speed, 
-                        and absolute operational clarity in a shifting regulatory landscape.
+                    <p className="mx-auto max-w-2xl text-lg text-text-secondary font-medium leading-relaxed">
+                        A comprehensive suite of AI-driven tools engineered to eliminate legal complexity
+                        and secure your digital presence across 50+ global jurisdictions.
                     </p>
                 </div>
 
-                <div className="relative z-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="relative z-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {features.map((feature, index) => (
-                        <motion.article
+                        <motion.div
                             key={feature.title}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                            className="group premium-card"
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            className="group relative p-8 rounded-2xl bg-bg-primary border border-bg-tertiary hover:border-accent/40 hover:shadow-glow-accent transition-all duration-300"
                         >
-                            <div className="p-8">
-                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${
-                                    feature.color === "brand" ? "bg-brand-50 text-brand-600 shadow-sm" : "bg-emerald-50 text-emerald-600 shadow-sm"
-                                }`}>
-                                    <feature.icon className="w-7 h-7" />
-                                </div>
-                                <h3 className="mt-8 text-xl font-display font-black text-slate-900 group-hover:text-brand-600 transition-colors">
-                                    {feature.title}
-                                </h3>
-                                <p className="mt-3 text-slate-500 text-sm font-medium leading-relaxed">
-                                    {feature.description}
-                                </p>
-                                
-                                <div className="mt-8 flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                    Analyze System
-                                    <ArrowRight className="w-3 h-3" />
-                                </div>
+                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${
+                                feature.color === "accent" ? "bg-accent/10 text-accent shadow-glow-accent/20" : "bg-info/10 text-info shadow-glow-ai"
+                            }`}>
+                                <feature.icon className="w-7 h-7" />
                             </div>
-                        </motion.article>
+                            <h3 className="mt-8 text-xl font-bold text-text-primary group-hover:text-accent transition-colors">
+                                {feature.title}
+                            </h3>
+                            <p className="mt-4 text-text-secondary text-sm font-medium leading-relaxed">
+                                {feature.description}
+                            </p>
+                            
+                            <div className="mt-8 flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                Explore Feature
+                                <ArrowRight className="w-4 h-4" />
+                            </div>
+                        </motion.div>
                     ))}
                 </div>
             </PageContainer>
@@ -116,7 +111,8 @@ export default function FeaturesGrid() {
 }
 
 const ArrowRight = ({ className }: { className?: string }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
 );
+

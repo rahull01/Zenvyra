@@ -6,7 +6,6 @@ import {
     User, Building2, Bell, Shield, Key, Globe,
     Palette, Save, Camera, Trash2, AlertTriangle
 } from "lucide-react";
-import toast from "react-hot-toast";
 
 export default function SettingsPage() {
     const [activeTab, setActiveTab] = useState("profile");
@@ -39,7 +38,6 @@ export default function SettingsPage() {
     const handleSave = async () => {
         setIsSaving(true);
         await new Promise(resolve => setTimeout(resolve, 1000));
-        toast.success("Settings saved successfully");
         setIsSaving(false);
     };
 
@@ -55,10 +53,10 @@ export default function SettingsPage() {
         <div className="space-y-8">
             {/* Header */}
             <div>
-                <h1 className="text-display-3 font-display text-surface-100 mb-2">
+                <h1 className="text-display-3 font-display text-text-primary mb-2">
                     Account Settings
                 </h1>
-                <p className="text-surface-400">
+                <p className="text-text-secondary">
                     Manage your profile, preferences, and security
                 </p>
             </div>
@@ -71,8 +69,8 @@ export default function SettingsPage() {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${activeTab === tab.id
-                                    ? "bg-brand-500/20 text-brand-400"
-                                    : "text-surface-400 hover:bg-surface-800/50 hover:text-surface-300"
+                                    ? "bg-primary/20 text-primary"
+                                    : "text-text-tertiary hover:bg-background-tertiary/50 hover:text-text-secondary"
                                 }`}
                         >
                             <tab.icon className="w-5 h-5" />
@@ -94,16 +92,16 @@ export default function SettingsPage() {
                             <div className="space-y-6">
                                 <div className="flex items-center gap-6 mb-8">
                                     <div className="relative">
-                                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-brand-500 to-accent flex items-center justify-center text-3xl font-bold text-white">
+                                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-3xl font-bold text-white">
                                             AC
                                         </div>
-                                        <button className="absolute bottom-0 right-0 w-8 h-8 bg-surface-800 hover:bg-surface-700 rounded-full flex items-center justify-center border-2 border-surface-900 transition-colors">
-                                            <Camera className="w-4 h-4 text-surface-300" />
+                                        <button className="absolute bottom-0 right-0 w-8 h-8 bg-background-tertiary hover:bg-background-secondary rounded-full flex items-center justify-center border-2 border-background-primary transition-colors">
+                                            <Camera className="w-4 h-4 text-text-secondary" />
                                         </button>
                                     </div>
                                     <div>
                                         <h3 className="text-heading-3">Profile Photo</h3>
-                                        <p className="text-sm text-surface-500">
+                                        <p className="text-sm text-text-tertiary">
                                             JPG, PNG or GIF. Max 2MB.
                                         </p>
                                     </div>
@@ -111,36 +109,36 @@ export default function SettingsPage() {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-surface-300 mb-2">
+                                        <label className="block text-sm font-medium text-text-secondary mb-2">
                                             Full Name
                                         </label>
                                         <input
                                             type="text"
                                             value={profile.fullName}
                                             onChange={(e) => setProfile(prev => ({ ...prev, fullName: e.target.value }))}
-                                            className="w-full px-4 py-3 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 focus:outline-none focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/20 transition-all duration-200"
+                                            className="w-full px-4 py-3 bg-background-tertiary/50 border border-border-medium rounded-xl text-text-primary focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-surface-300 mb-2">
+                                        <label className="block text-sm font-medium text-text-secondary mb-2">
                                             Email Address
                                         </label>
                                         <input
                                             type="email"
                                             value={profile.email}
                                             onChange={(e) => setProfile(prev => ({ ...prev, email: e.target.value }))}
-                                            className="w-full px-4 py-3 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 focus:outline-none focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/20 transition-all duration-200"
+                                            className="w-full px-4 py-3 bg-background-tertiary/50 border border-border-medium rounded-xl text-text-primary focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                                         />
                                     </div>
                                     <div className="md:col-span-2">
-                                        <label className="block text-sm font-medium text-surface-300 mb-2">
+                                        <label className="block text-sm font-medium text-text-secondary mb-2">
                                             Bio
                                         </label>
                                         <textarea
                                             rows={3}
                                             value={profile.bio}
                                             onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
-                                            className="w-full px-4 py-3 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 focus:outline-none focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/20 transition-all duration-200 resize-none"
+                                            className="w-full px-4 py-3 bg-background-tertiary/50 border border-border-medium rounded-xl text-text-primary focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200 resize-none"
                                         />
                                     </div>
                                 </div>
@@ -152,21 +150,21 @@ export default function SettingsPage() {
                                 <h3 className="text-heading-3 mb-6">Company Information</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-surface-300 mb-2">
+                                        <label className="block text-sm font-medium text-text-secondary mb-2">
                                             Company Name
                                         </label>
                                         <input
                                             type="text"
                                             value={profile.company}
                                             onChange={(e) => setProfile(prev => ({ ...prev, company: e.target.value }))}
-                                            className="w-full px-4 py-3 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 focus:outline-none focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/20 transition-all duration-200"
+                                            className="w-full px-4 py-3 bg-background-tertiary/50 border border-border-medium rounded-xl text-text-primary focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-surface-300 mb-2">
+                                        <label className="block text-sm font-medium text-text-secondary mb-2">
                                             Industry
                                         </label>
-                                        <select className="w-full px-4 py-3 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 focus:outline-none focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/20 transition-all duration-200">
+                                        <select className="w-full px-4 py-3 bg-background-tertiary/50 border border-border-medium rounded-xl text-text-primary focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200">
                                             <option>Technology</option>
                                             <option>Healthcare</option>
                                             <option>Finance</option>
@@ -175,16 +173,16 @@ export default function SettingsPage() {
                                         </select>
                                     </div>
                                     <div className="md:col-span-2">
-                                        <label className="block text-sm font-medium text-surface-300 mb-2">
+                                        <label className="block text-sm font-medium text-text-secondary mb-2">
                                             Company Website
                                         </label>
                                         <div className="relative">
-                                            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-500" />
+                                            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary" />
                                             <input
                                                 type="url"
                                                 value={profile.website}
                                                 onChange={(e) => setProfile(prev => ({ ...prev, website: e.target.value }))}
-                                                className="w-full pl-11 pr-4 py-3 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 focus:outline-none focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/20 transition-all duration-200"
+                                                className="w-full pl-11 pr-4 py-3 bg-background-tertiary/50 border border-border-medium rounded-xl text-text-primary focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                                             />
                                         </div>
                                     </div>
@@ -204,10 +202,10 @@ export default function SettingsPage() {
                                         { key: "securityAlerts", label: "Security Alerts", description: "Get notified about security-related changes" },
                                         { key: "teamActivity", label: "Team Activity", description: "Get notified when team members make changes" },
                                     ].map((item) => (
-                                        <div key={item.key} className="flex items-center justify-between p-4 rounded-xl bg-surface-800/30">
+                                        <div key={item.key} className="flex items-center justify-between p-4 rounded-xl bg-background-tertiary/30">
                                             <div>
-                                                <p className="font-medium text-surface-200">{item.label}</p>
-                                                <p className="text-sm text-surface-500">{item.description}</p>
+                                                <p className="font-medium text-text-primary">{item.label}</p>
+                                                <p className="text-sm text-text-tertiary">{item.description}</p>
                                             </div>
                                             <label className="relative inline-flex items-center cursor-pointer">
                                                 <input
@@ -215,7 +213,7 @@ export default function SettingsPage() {
                                                     defaultChecked={notifications[item.key as keyof typeof notifications]}
                                                     className="sr-only peer"
                                                 />
-                                                <div className="w-11 h-6 bg-surface-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                                                <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                             </label>
                                         </div>
                                     ))}
@@ -227,57 +225,57 @@ export default function SettingsPage() {
                             <div className="space-y-6">
                                 <h3 className="text-heading-3 mb-6">Security Settings</h3>
 
-                                <div className="p-4 rounded-xl bg-surface-800/30">
+                                <div className="p-4 rounded-xl bg-background-tertiary/30">
                                     <div className="flex items-center justify-between mb-4">
                                         <div>
-                                            <p className="font-medium text-surface-200">Two-Factor Authentication</p>
-                                            <p className="text-sm text-surface-500">Add an extra layer of security</p>
+                                            <p className="font-medium text-text-primary">Two-Factor Authentication</p>
+                                            <p className="text-sm text-text-tertiary">Add an extra layer of security</p>
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" className="sr-only peer" />
-                                            <div className="w-11 h-6 bg-surface-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                                            <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                         </label>
                                     </div>
                                 </div>
 
-                                <div className="p-4 rounded-xl bg-surface-800/30">
+                                <div className="p-4 rounded-xl bg-background-tertiary/30">
                                     <div className="flex items-center justify-between mb-4">
                                         <div>
-                                            <p className="font-medium text-surface-200">API Key</p>
-                                            <p className="text-sm text-surface-500">For programmatic access</p>
+                                            <p className="font-medium text-text-primary">API Key</p>
+                                            <p className="text-sm text-text-tertiary">For programmatic access</p>
                                         </div>
-                                        <button className="px-4 py-2 bg-surface-800 hover:bg-surface-700 text-surface-300 rounded-lg text-sm transition-all">
+                                        <button className="px-4 py-2 bg-background-tertiary hover:bg-background-secondary text-text-secondary rounded-lg text-sm transition-all">
                                             Regenerate
                                         </button>
                                     </div>
-                                    <div className="flex items-center gap-2 p-3 bg-surface-900 rounded-lg">
-                                        <Key className="w-4 h-4 text-surface-500" />
-                                        <code className="text-sm text-surface-400 font-mono">{security.apiKey}</code>
-                                        <button className="ml-auto text-brand-400 hover:text-brand-300 text-sm">
+                                    <div className="flex items-center gap-2 p-3 bg-background-primary rounded-lg">
+                                        <Key className="w-4 h-4 text-text-tertiary" />
+                                        <code className="text-sm text-text-secondary font-mono">{security.apiKey}</code>
+                                        <button className="ml-auto text-primary hover:text-primary-hover text-sm">
                                             Copy
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="p-4 rounded-xl bg-surface-800/30">
+                                <div className="p-4 rounded-xl bg-background-tertiary/30">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="font-medium text-surface-200">Password</p>
-                                            <p className="text-sm text-surface-500">Last changed {security.lastPasswordChange}</p>
+                                            <p className="font-medium text-text-primary">Password</p>
+                                            <p className="text-sm text-text-tertiary">Last changed {security.lastPasswordChange}</p>
                                         </div>
-                                        <button className="px-4 py-2 bg-surface-800 hover:bg-surface-700 text-surface-300 rounded-lg text-sm transition-all">
+                                        <button className="px-4 py-2 bg-background-tertiary hover:bg-background-secondary text-text-secondary rounded-lg text-sm transition-all">
                                             Change Password
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="p-4 rounded-xl bg-error/10 border border-error/20">
+                                <div className="p-4 rounded-xl bg-status-error/10 border border-status-error/20">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="font-medium text-error">Delete Account</p>
-                                            <p className="text-sm text-surface-500">Permanently delete your account and all data</p>
+                                            <p className="font-medium text-status-error">Delete Account</p>
+                                            <p className="text-sm text-text-tertiary">Permanently delete your account and all data</p>
                                         </div>
-                                        <button className="px-4 py-2 bg-error/20 hover:bg-error/30 text-error rounded-lg text-sm font-medium transition-all">
+                                        <button className="px-4 py-2 bg-status-error/20 hover:bg-status-error/30 text-status-error rounded-lg text-sm font-medium transition-all">
                                             Delete Account
                                         </button>
                                     </div>
@@ -289,19 +287,19 @@ export default function SettingsPage() {
                             <div className="space-y-6">
                                 <h3 className="text-heading-3 mb-6">Appearance</h3>
                                 <div className="space-y-4">
-                                    <div className="flex items-center justify-between p-4 rounded-xl bg-surface-800/30">
+                                    <div className="flex items-center justify-between p-4 rounded-xl bg-background-tertiary/30">
                                         <div>
-                                            <p className="font-medium text-surface-200">Dark Mode</p>
-                                            <p className="text-sm text-surface-500">Toggle dark/light theme</p>
+                                            <p className="font-medium text-text-primary">Dark Mode</p>
+                                            <p className="text-sm text-text-tertiary">Toggle dark/light theme</p>
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" defaultChecked className="sr-only peer" />
-                                            <div className="w-11 h-6 bg-surface-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                                            <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                         </label>
                                     </div>
 
-                                    <div className="p-4 rounded-xl bg-surface-800/30">
-                                        <p className="font-medium text-surface-200 mb-4">Accent Color</p>
+                                    <div className="p-4 rounded-xl bg-background-tertiary/30">
+                                        <p className="font-medium text-text-primary mb-4">Accent Color</p>
                                         <div className="flex gap-3">
                                             {["#0ea5e9", "#f43f5e", "#10b981", "#f59e0b", "#8b5cf6"].map((color) => (
                                                 <button
@@ -313,15 +311,15 @@ export default function SettingsPage() {
                                         </div>
                                     </div>
 
-                                    <div className="p-4 rounded-xl bg-surface-800/30">
-                                        <p className="font-medium text-surface-200 mb-4">Font Size</p>
+                                    <div className="p-4 rounded-xl bg-background-tertiary/30">
+                                        <p className="font-medium text-text-primary mb-4">Font Size</p>
                                         <div className="flex gap-2">
                                             {["Small", "Medium", "Large"].map((size) => (
                                                 <button
                                                     key={size}
                                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${size === "Medium"
-                                                            ? "bg-brand-500/20 text-brand-400 border border-brand-500/50"
-                                                            : "bg-surface-900 text-surface-400 border border-surface-700"
+                                                            ? "bg-primary/20 text-primary border border-primary/50"
+                                                            : "bg-background-primary text-text-tertiary border border-border-medium"
                                                         }`}
                                                 >
                                                     {size}
@@ -334,13 +332,13 @@ export default function SettingsPage() {
                         )}
 
                         {/* Save Button */}
-                        <div className="flex justify-end pt-6 mt-6 border-t border-surface-800/50">
+                        <div className="flex justify-end pt-6 mt-6 border-t border-border-light">
                             <motion.button
                                 onClick={handleSave}
                                 disabled={isSaving}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-400 text-white font-semibold rounded-xl transition-all duration-300 shadow-glow disabled:opacity-50"
+                                className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-xl transition-all duration-300 shadow-button disabled:opacity-50"
                             >
                                 <Save className="w-5 h-5" />
                                 {isSaving ? "Saving..." : "Save Changes"}

@@ -9,7 +9,6 @@ import {
     Download, Share2, RefreshCw
 } from "lucide-react";
 import Link from "next/link";
-import toast from "react-hot-toast";
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid,
     Tooltip, ResponsiveContainer, BarChart, Bar, Cell
@@ -26,7 +25,7 @@ const scoreHistory = [
 ];
 
 const issuesBreakdown = [
-    { category: "Cookies", count: 2, color: "#f59e0b" },
+    { category: "Cookies", count: 2, color: "#E67E22" },
     { category: "Privacy", count: 1, color: "#ef4444" },
     { category: "SSL", count: 0, color: "#10b981" },
     { category: "Accessibility", count: 3, color: "#f43f5e" },
@@ -75,24 +74,23 @@ export default function WebsiteDetailPage() {
         setIsScanning(true);
         // Simulate scan
         await new Promise(resolve => setTimeout(resolve, 2000));
-        toast.success("Scan complete! Score: 89/100");
         setIsScanning(false);
     };
 
     const getSeverityColor = (severity: string) => {
         switch (severity) {
-            case "critical": return "text-error bg-error/20";
-            case "high": return "text-accent bg-accent/20";
-            case "medium": return "text-warning bg-warning/20";
-            default: return "text-success bg-success/20";
+            case "critical": return "text-status-error bg-status-error/10";
+            case "high": return "text-status-warning bg-status-warning/10";
+            case "medium": return "text-status-warning bg-status-warning/10";
+            default: return "text-status-success bg-status-success/10";
         }
     };
 
     const getStatusIcon = (status: string) => {
         switch (status) {
-            case "open": return <AlertTriangle className="w-4 h-4 text-warning" />;
-            case "in_progress": return <Clock className="w-4 h-4 text-brand-400" />;
-            case "resolved": return <CheckCircle className="w-4 h-4 text-success" />;
+            case "open": return <AlertTriangle className="w-4 h-4 text-status-warning" />;
+            case "in_progress": return <Clock className="w-4 h-4 text-primary" />;
+            case "resolved": return <CheckCircle className="w-4 h-4 text-status-success" />;
             default: return null;
         }
     };
@@ -104,19 +102,19 @@ export default function WebsiteDetailPage() {
                 <div className="flex items-center gap-4">
                     <Link
                         href="/websites"
-                        className="p-2 hover:bg-surface-800 rounded-lg transition-colors"
+                        className="p-2 hover:bg-background-tertiary rounded-lg transition-colors"
                     >
-                        <ArrowLeft className="w-5 h-5 text-surface-400" />
+                        <ArrowLeft className="w-5 h-5 text-text-tertiary" />
                     </Link>
                     <div>
-                        <h1 className="text-display-3 font-display text-surface-100">
+                        <h1 className="text-display-3 font-display text-text-primary">
                             Acme Main Site
                         </h1>
                         <a
                             href="https://acme.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-surface-500 hover:text-brand-400 flex items-center gap-1 transition-colors"
+                            className="text-sm text-text-tertiary hover:text-primary flex items-center gap-1 transition-colors"
                         >
                             <Globe className="w-3 h-3" />
                             https://acme.com
@@ -127,16 +125,16 @@ export default function WebsiteDetailPage() {
                     <button
                         onClick={handleScan}
                         disabled={isScanning}
-                        className="flex items-center gap-2 px-4 py-2 bg-brand-500/20 hover:bg-brand-500/30 text-brand-400 rounded-xl transition-all duration-200"
+                        className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl transition-all duration-200"
                     >
                         <RefreshCw className={`w-4 h-4 ${isScanning ? "animate-spin" : ""}`} />
                         {isScanning ? "Scanning..." : "Scan Now"}
                     </button>
-                    <button className="p-2 hover:bg-surface-800 rounded-lg transition-colors">
-                        <Bell className="w-5 h-5 text-surface-400" />
+                    <button className="p-2 hover:bg-background-tertiary rounded-lg transition-colors">
+                        <Bell className="w-5 h-5 text-text-tertiary" />
                     </button>
-                    <button className="p-2 hover:bg-surface-800 rounded-lg transition-colors">
-                        <Settings className="w-5 h-5 text-surface-400" />
+                    <button className="p-2 hover:bg-background-tertiary rounded-lg transition-colors">
+                        <Settings className="w-5 h-5 text-text-tertiary" />
                     </button>
                 </div>
             </div>
@@ -152,7 +150,7 @@ export default function WebsiteDetailPage() {
                                 cy="80"
                                 r="70"
                                 fill="none"
-                                stroke="#1e293b"
+                                stroke="#1A1A2E"
                                 strokeWidth="12"
                             />
                             <circle
@@ -169,14 +167,14 @@ export default function WebsiteDetailPage() {
                             />
                             <defs>
                                 <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stopColor="#0ea5e9" />
+                                    <stop offset="0%" stopColor="#E67E22" />
                                     <stop offset="100%" stopColor="#10b981" />
                                 </linearGradient>
                             </defs>
                         </svg>
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
-                            <span className="text-4xl font-bold text-surface-100">87</span>
-                            <span className="text-sm text-surface-500">/100</span>
+                            <span className="text-4xl font-bold text-text-primary">87</span>
+                            <span className="text-sm text-text-tertiary">/100</span>
                         </div>
                     </div>
 
@@ -188,12 +186,12 @@ export default function WebsiteDetailPage() {
                             { label: "Uptime", value: "99.9%", change: "+0.1%", trend: "up" },
                             { label: "Next Scan", value: "22h", change: "Scheduled", trend: "stable" },
                         ].map((stat) => (
-                            <div key={stat.label} className="p-4 rounded-xl bg-surface-800/50">
-                                <p className="text-sm text-surface-500 mb-1">{stat.label}</p>
-                                <p className="text-2xl font-bold text-surface-100">{stat.value}</p>
-                                <p className={`text-xs mt-1 ${stat.trend === "up" ? "text-success" :
-                                        stat.trend === "down" ? "text-success" :
-                                            "text-surface-500"
+                            <div key={stat.label} className="p-4 rounded-xl bg-background-tertiary/50">
+                                <p className="text-sm text-text-tertiary mb-1">{stat.label}</p>
+                                <p className="text-2xl font-bold text-text-primary">{stat.value}</p>
+                                <p className={`text-caption mt-1 ${stat.trend === "up" ? "text-status-success" :
+                                        stat.trend === "down" ? "text-status-success" :
+                                            "text-text-tertiary"
                                     }`}>
                                     {stat.change}
                                 </p>
@@ -204,7 +202,7 @@ export default function WebsiteDetailPage() {
             </div>
 
             {/* Tabs */}
-            <div className="flex items-center gap-1 p-1 bg-surface-800/50 rounded-xl w-fit">
+            <div className="flex items-center gap-1 p-1 bg-background-tertiary/50 rounded-xl w-fit">
                 {[
                     { id: "overview", label: "Overview", icon: Shield },
                     { id: "issues", label: "Issues", icon: AlertTriangle },
@@ -215,8 +213,8 @@ export default function WebsiteDetailPage() {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${activeTab === tab.id
-                                ? "bg-brand-500/20 text-brand-400"
-                                : "text-surface-400 hover:text-surface-300"
+                                ? "bg-primary/10 text-primary"
+                                : "text-text-tertiary hover:text-text-secondary"
                             }`}
                     >
                         <tab.icon className="w-4 h-4" />
@@ -236,7 +234,7 @@ export default function WebsiteDetailPage() {
                     <div className="glass-card rounded-2xl p-6">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-heading-3">Score Trend</h3>
-                            <div className="flex items-center gap-2 text-success text-sm">
+                            <div className="flex items-center gap-2 text-status-success text-sm">
                                 <TrendingUp className="w-4 h-4" />
                                 +15% this month
                             </div>
@@ -245,24 +243,24 @@ export default function WebsiteDetailPage() {
                             <AreaChart data={scoreHistory}>
                                 <defs>
                                     <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="#E67E22" stopOpacity={0.3} />
+                                        <stop offset="95%" stopColor="#E67E22" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="#1A1A2E" />
                                 <XAxis dataKey="date" stroke="#64748b" fontSize={12} />
                                 <YAxis stroke="#64748b" fontSize={12} domain={[0, 100]} />
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor: "#0f172a",
-                                        border: "1px solid #1e293b",
+                                        backgroundColor: "#1A1A2E",
+                                        border: "1px solid #1A1A2E",
                                         borderRadius: "12px",
                                     }}
                                 />
                                 <Area
                                     type="monotone"
                                     dataKey="score"
-                                    stroke="#0ea5e9"
+                                    stroke="#E67E22"
                                     fillOpacity={1}
                                     fill="url(#colorScore)"
                                     strokeWidth={2}
@@ -276,13 +274,13 @@ export default function WebsiteDetailPage() {
                         <h3 className="text-heading-3 mb-6">Issues by Category</h3>
                         <ResponsiveContainer width="100%" height={250}>
                             <BarChart data={issuesBreakdown} layout="vertical">
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="#1A1A2E" />
                                 <XAxis type="number" stroke="#64748b" fontSize={12} />
                                 <YAxis dataKey="category" type="category" stroke="#64748b" fontSize={12} width={80} />
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor: "#0f172a",
-                                        border: "1px solid #1e293b",
+                                        backgroundColor: "#1A1A2E",
+                                        border: "1px solid #1A1A2E",
                                         borderRadius: "12px",
                                     }}
                                 />
@@ -306,7 +304,7 @@ export default function WebsiteDetailPage() {
                     {recentIssues.map((issue) => (
                         <div
                             key={issue.id}
-                            className="glass-card rounded-xl p-6 hover:border-brand-500/30 transition-all duration-300"
+                            className="glass-card rounded-xl p-6 hover:border-primary/30 transition-all duration-300"
                         >
                             <div className="flex items-start justify-between">
                                 <div className="flex items-start gap-4">
@@ -315,18 +313,18 @@ export default function WebsiteDetailPage() {
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-3 mb-1">
-                                            <h4 className="font-semibold text-surface-100">{issue.title}</h4>
-                                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getSeverityColor(issue.severity)}`}>
+                                            <h4 className="font-semibold text-text-primary">{issue.title}</h4>
+                                            <span className={`px-2 py-0.5 rounded-full text-caption font-medium ${getSeverityColor(issue.severity)}`}>
                                                 {issue.severity}
                                             </span>
                                             {issue.autoFixable && (
-                                                <span className="px-2 py-0.5 bg-brand-500/20 text-brand-400 rounded-full text-xs font-medium">
+                                                <span className="px-2 py-0.5 bg-primary/10 text-primary rounded-full text-caption font-medium">
                                                     Auto-fixable
                                                 </span>
                                             )}
                                         </div>
-                                        <p className="text-sm text-surface-400 mb-2">{issue.description}</p>
-                                        <div className="flex items-center gap-4 text-xs text-surface-500">
+                                        <p className="text-sm text-text-secondary mb-2">{issue.description}</p>
+                                        <div className="flex items-center gap-4 text-caption text-text-tertiary">
                                             <span className="flex items-center gap-1">
                                                 <Clock className="w-3 h-3" />
                                                 {issue.detectedAt}
@@ -340,12 +338,12 @@ export default function WebsiteDetailPage() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     {issue.autoFixable && (
-                                        <button className="px-4 py-2 bg-brand-500/20 hover:bg-brand-500/30 text-brand-400 rounded-lg text-sm font-medium transition-all duration-200">
+                                        <button className="px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-sm font-medium transition-all duration-200">
                                             Auto-Fix
                                         </button>
                                     )}
-                                    <button className="p-2 hover:bg-surface-800 rounded-lg transition-colors">
-                                        <FileText className="w-4 h-4 text-surface-400" />
+                                    <button className="p-2 hover:bg-background-tertiary rounded-lg transition-colors">
+                                        <FileText className="w-4 h-4 text-text-tertiary" />
                                     </button>
                                 </div>
                             </div>
@@ -361,31 +359,31 @@ export default function WebsiteDetailPage() {
                     className="glass-card rounded-2xl overflow-hidden"
                 >
                     <table className="w-full">
-                        <thead className="bg-surface-800/50">
+                        <thead className="bg-background-tertiary/50">
                             <tr>
-                                <th className="text-left px-6 py-4 text-sm font-medium text-surface-400">Date</th>
-                                <th className="text-left px-6 py-4 text-sm font-medium text-surface-400">Score</th>
-                                <th className="text-left px-6 py-4 text-sm font-medium text-surface-400">Issues</th>
-                                <th className="text-left px-6 py-4 text-sm font-medium text-surface-400">Changes</th>
-                                <th className="text-right px-6 py-4 text-sm font-medium text-surface-400">Actions</th>
+                                <th className="text-left px-6 py-4 text-sm font-medium text-text-tertiary">Date</th>
+                                <th className="text-left px-6 py-4 text-sm font-medium text-text-tertiary">Score</th>
+                                <th className="text-left px-6 py-4 text-sm font-medium text-text-tertiary">Issues</th>
+                                <th className="text-left px-6 py-4 text-sm font-medium text-text-tertiary">Changes</th>
+                                <th className="text-right px-6 py-4 text-sm font-medium text-text-tertiary">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-surface-800/50">
+                        <tbody className="divide-y divide-border-light">
                             {scoreHistory.map((entry, i) => (
-                                <tr key={i} className="hover:bg-surface-800/30 transition-colors">
-                                    <td className="px-6 py-4 text-sm text-surface-300">{entry.date}</td>
+                                <tr key={i} className="hover:bg-background-tertiary/30 transition-colors">
+                                    <td className="px-6 py-4 text-sm text-text-secondary">{entry.date}</td>
                                     <td className="px-6 py-4">
-                                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-sm font-medium ${entry.score >= 80 ? "bg-success/20 text-success" :
-                                                entry.score >= 60 ? "bg-warning/20 text-warning" :
-                                                    "bg-error/20 text-error"
+                                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-sm font-medium ${entry.score >= 80 ? "bg-status-success/10 text-status-success" :
+                                                entry.score >= 60 ? "bg-status-warning/10 text-status-warning" :
+                                                    "bg-status-error/10 text-status-error"
                                             }`}>
                                             {entry.score}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-surface-400">{Math.floor(Math.random() * 10)} issues</td>
-                                    <td className="px-6 py-4 text-sm text-surface-400">
+                                    <td className="px-6 py-4 text-sm text-text-tertiary">{Math.floor(Math.random() * 10)} issues</td>
+                                    <td className="px-6 py-4 text-sm text-text-tertiary">
                                         {i > 0 ? (
-                                            <span className={entry.score > scoreHistory[i - 1].score ? "text-success" : "text-error"}>
+                                            <span className={entry.score > scoreHistory[i - 1].score ? "text-status-success" : "text-status-error"}>
                                                 {entry.score > scoreHistory[i - 1].score ? "+" : ""}
                                                 {entry.score - scoreHistory[i - 1].score}
                                             </span>
@@ -393,11 +391,11 @@ export default function WebsiteDetailPage() {
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex items-center justify-end gap-2">
-                                            <button className="p-2 hover:bg-surface-800 rounded-lg transition-colors">
-                                                <Download className="w-4 h-4 text-surface-400" />
+                                            <button className="p-2 hover:bg-background-tertiary rounded-lg transition-colors">
+                                                <Download className="w-4 h-4 text-text-tertiary" />
                                             </button>
-                                            <button className="p-2 hover:bg-surface-800 rounded-lg transition-colors">
-                                                <Share2 className="w-4 h-4 text-surface-400" />
+                                            <button className="p-2 hover:bg-background-tertiary rounded-lg transition-colors">
+                                                <Share2 className="w-4 h-4 text-text-tertiary" />
                                             </button>
                                         </div>
                                     </td>
@@ -417,23 +415,23 @@ export default function WebsiteDetailPage() {
                     <div>
                         <h3 className="text-heading-3 mb-6">Monitoring Settings</h3>
                         <div className="space-y-6">
-                            <div className="flex items-center justify-between p-4 rounded-xl bg-surface-800/30">
+                            <div className="flex items-center justify-between p-4 rounded-xl bg-background-tertiary/30">
                                 <div>
-                                    <p className="font-medium text-surface-200">24/7 Guardian</p>
-                                    <p className="text-sm text-surface-500">Continuous compliance monitoring</p>
+                                    <p className="font-medium text-text-primary">24/7 Guardian</p>
+                                    <p className="text-sm text-text-tertiary">Continuous compliance monitoring</p>
                                 </div>
                                 <label className="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" defaultChecked className="sr-only peer" />
-                                    <div className="w-11 h-6 bg-surface-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                                    <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                 </label>
                             </div>
 
-                            <div className="flex items-center justify-between p-4 rounded-xl bg-surface-800/30">
+                            <div className="flex items-center justify-between p-4 rounded-xl bg-background-tertiary/30">
                                 <div>
-                                    <p className="font-medium text-surface-200">Scan Frequency</p>
-                                    <p className="text-sm text-surface-500">How often to run compliance scans</p>
+                                    <p className="font-medium text-text-primary">Scan Frequency</p>
+                                    <p className="text-sm text-text-tertiary">How often to run compliance scans</p>
                                 </div>
-                                <select className="bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-sm text-surface-300 focus:outline-none focus:border-brand-500/50">
+                                <select className="bg-background-tertiary border border-border-medium rounded-lg px-3 py-2 text-sm text-text-secondary focus:outline-none focus:border-primary/50">
                                     <option>Every hour</option>
                                     <option selected>Every 6 hours</option>
                                     <option>Daily</option>
@@ -441,12 +439,12 @@ export default function WebsiteDetailPage() {
                                 </select>
                             </div>
 
-                            <div className="flex items-center justify-between p-4 rounded-xl bg-surface-800/30">
+                            <div className="flex items-center justify-between p-4 rounded-xl bg-background-tertiary/30">
                                 <div>
-                                    <p className="font-medium text-surface-200">Alert Threshold</p>
-                                    <p className="text-sm text-surface-500">Notify when score drops below</p>
+                                    <p className="font-medium text-text-primary">Alert Threshold</p>
+                                    <p className="text-sm text-text-tertiary">Notify when score drops below</p>
                                 </div>
-                                <select className="bg-surface-800 border border-surface-700 rounded-lg px-3 py-2 text-sm text-surface-300 focus:outline-none focus:border-brand-500/50">
+                                <select className="bg-background-tertiary border border-border-medium rounded-lg px-3 py-2 text-sm text-text-secondary focus:outline-none focus:border-primary/50">
                                     <option>60</option>
                                     <option selected>70</option>
                                     <option>80</option>
@@ -456,15 +454,15 @@ export default function WebsiteDetailPage() {
                         </div>
                     </div>
 
-                    <div className="pt-6 border-t border-surface-800/50">
-                        <h3 className="text-heading-3 mb-6 text-error">Danger Zone</h3>
-                        <div className="p-4 rounded-xl bg-error/10 border border-error/20">
+                    <div className="pt-6 border-t border-border-light">
+                        <h3 className="text-heading-3 mb-6 text-status-error">Danger Zone</h3>
+                        <div className="p-4 rounded-xl bg-status-error/10 border border-status-error/20">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="font-medium text-error">Remove Website</p>
-                                    <p className="text-sm text-surface-500">This will delete all scan history and data</p>
+                                    <p className="font-medium text-status-error">Remove Website</p>
+                                    <p className="text-sm text-text-tertiary">This will delete all scan history and data</p>
                                 </div>
-                                <button className="px-4 py-2 bg-error/20 hover:bg-error/30 text-error rounded-lg text-sm font-medium transition-all duration-200">
+                                <button className="px-4 py-2 bg-status-error/20 hover:bg-status-error/30 text-status-error rounded-lg text-sm font-medium transition-all duration-200">
                                     Remove
                                 </button>
                             </div>

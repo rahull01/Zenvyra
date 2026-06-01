@@ -68,6 +68,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return status != null && "active".equalsIgnoreCase(status.trim());
     }
 }

@@ -1,0 +1,11 @@
+name: complianceai-pro
+version: 1.0.0
+schema: v1
+
+models:
+  - name: Qwen Local
+    provider: ollama
+    model: qwen:0.5b
+    apiBase: http://localhost:11434
+
+allowAnonymousTelemetry: false

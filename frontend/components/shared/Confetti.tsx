@@ -17,9 +17,8 @@ export default function Confetti({ trigger, duration = 3000 }: ConfettiProps) {
         rotation: number;
     }>>([]);
 
-    const colors = ["#0ea5e9", "#10b981", "#f59e0b", "#f43f5e", "#8b5cf6", "#ec4899"];
-
     useEffect(() => {
+        const colors = ["#0ea5e9", "#10b981", "#f59e0b", "#f43f5e", "#8b5cf6", "#ec4899"];
         if (trigger) {
             const newParticles = Array.from({ length: 50 }, (_, i) => ({
                 id: i,

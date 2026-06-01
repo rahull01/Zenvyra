@@ -1,19 +1,28 @@
-import HeroSection from "@/components/marketing/hero/HeroSection";
-import FeaturesGrid from "@/components/marketing/features/FeaturesGrid";
-import HowItWorks from "@/components/marketing/how-it-works/HowItWorks";
-import SocialProof from "@/components/marketing/social-proof/SocialProof";
-import PricingCards from "@/components/marketing/pricing/PricingCards";
-import CTASection from "@/components/marketing/cta/CTASection";
+'use client';
+
+import React from 'react';
+import Hero from '@/components/marketing/Hero';
+import StatsBar from '@/components/marketing/StatsBar';
+import Features from '@/components/marketing/Features';
+import ProductShowcase from '@/components/marketing/ProductShowcase';
+import TrustBadges from '@/components/marketing/TrustBadges';
+import Testimonials from '@/components/marketing/Testimonials';
+import { SolutionsGrid } from '@/components/marketing/SolutionsGrid';
+import { CTABanner } from '@/components/marketing/CTABanner';
+import CookieConsent from '@/components/marketing/CookieConsent';
 
 export default function LandingPage() {
-    return (
-        <main>
-            <HeroSection />
-            <FeaturesGrid />
-            <HowItWorks />
-            <SocialProof />
-            <PricingCards />
-            <CTASection />
-        </main>
-    );
+  return (
+    <main className="min-h-screen bg-background-primary">
+      <Hero />
+      <StatsBar />
+      <Features />
+      <ProductShowcase />
+      <TrustBadges />
+      <Testimonials />
+      <SolutionsGrid />
+      <CTABanner />
+      <CookieConsent />
+    </main>
+  );
 }

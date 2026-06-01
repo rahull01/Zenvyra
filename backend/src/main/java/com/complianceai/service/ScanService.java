@@ -1,19 +1,22 @@
 package com.complianceai.service;
 
+import com.complianceai.agents.model.AgentResponse;
+import com.complianceai.agents.model.Issue;
+import com.complianceai.agents.orchestrator.COO;
 import com.complianceai.dto.request.ScanRequest;
 import com.complianceai.dto.response.ComplianceScoreResponse;
 import com.complianceai.dto.response.ScanResponse;
+import com.complianceai.exception.ApiException;
 import com.complianceai.model.User;
 import com.complianceai.model.Website;
 import com.complianceai.repository.UserRepository;
 import com.complianceai.repository.WebsiteRepository;
+import com.complianceai.util.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -29,195 +32,168 @@ public class ScanService {
     private final UserRepository userRepository;
     private final OpenAiService openAiService;
     private final NotificationService notificationService;
+    private final StreakService streakService;
+    private final SafeWebFetchService safeWebFetchService;
+
+    @Autowired
+    private COO coo;
 
     public ComplianceScoreResponse performFreeScan(String url) {
+        System.out.println("Calling AI Agent pipeline...");
         log.info("Performing free scan for: {}", url);
 
         try {
-            if (!url.startsWith("http")) {
-                url = "https://" + url;
-            }
+            String normalizedUrl = normalizeAndValidateScanUrl(url);
+            
+            // Invoke the new COO Agent pipeline
+            AgentResponse agentResponse = coo.runFullScan(normalizedUrl);
+            
+            // Map agent response directly to DTO format
+            return mapAgentResponseToDto(normalizedUrl, agentResponse);
 
-            Document doc = Jsoup.connect(url)
-                    .timeout(10000)
-                    .userAgent("ComplianceAI-Bot/1.0")
-                    .get();
-
-            List<Website.ComplianceIssue> issues = new ArrayList<>();
-
-            // Check 1: Cookie banner
-            if (!checkCookieBanner(doc)) {
-                issues.add(createIssue("missing_cookie_banner", "high",
-                        "Missing Cookie Consent Banner",
-                        "Your website does not display a cookie consent banner, which is required under GDPR and ePrivacy Directive.",
-                        "Implement a cookie consent banner that allows users to accept or reject non-essential cookies."));
-            }
-
-            // Check 2: Privacy policy
-            if (!checkPrivacyPolicyLink(doc, url)) {
-                issues.add(createIssue("missing_privacy_policy", "critical",
-                        "Privacy Policy Not Found",
-                        "No privacy policy link found in the footer or main navigation.",
-                        "Add a privacy policy page and link it in your website footer."));
-            }
-
-            // Check 3: SSL
-            if (!checkSSLCertificate(url)) {
-                issues.add(createIssue("ssl_invalid", "critical",
-                        "SSL Certificate Invalid or Expired",
-                        "Your website's SSL certificate is invalid or expired.",
-                        "Renew your SSL certificate immediately."));
-            }
-
-            // Check 4: HTTPS redirect
-            if (!checkHttpsRedirect(url)) {
-                issues.add(createIssue("no_https_redirect", "medium",
-                        "HTTP to HTTPS Redirect Missing",
-                        "Your website does not automatically redirect HTTP traffic to HTTPS.",
-                        "Configure your server to redirect all HTTP requests to HTTPS."));
-            }
-
-            Double score = calculateScore(issues);
-
-            return ComplianceScoreResponse.builder()
-                    .url(url)
-                    .score(score)
-                    .issues(issues)
-                    .scanDate(LocalDateTime.now())
-                    .recommendations(generateRecommendations(issues))
-                    .build();
-
+        } catch (IllegalArgumentException e) {
+            throw ApiException.badRequest(e.getMessage());
         } catch (IOException e) {
             log.error("Failed to scan website: {}", url, e);
-            throw new RuntimeException("Failed to scan website: " + e.getMessage());
+            throw ApiException.badRequest("Unable to fetch the target URL. Check the address and try again.");
+        } catch (Exception e) {
+            log.error("AI Agent pipeline execution failed, applying fallback", e);
+            return ComplianceScoreResponse.builder()
+                    .url(url)
+                    .score(0.0)
+                    .issues(new ArrayList<>())
+                    .scanDate(LocalDateTime.now())
+                    .recommendations(List.of("Fallback response: system error running AI agents"))
+                    .build();
         }
     }
 
     public ScanResponse performFullScan(String userEmail, ScanRequest request) {
-        ComplianceScoreResponse basicScan = performFreeScan(request.getUrl());
+        System.out.println("Calling AI Agent pipeline...");
+        log.info("Performing full scan for: {}", request.getUrl());
 
-        String aiAnalysis = openAiService.analyzeCompliance(request.getUrl(), basicScan);
+        try {
+            String normalizedUrl = normalizeAndValidateScanUrl(request.getUrl());
+            
+            // Invoke the new COO Agent pipeline
+            AgentResponse agentResponse = coo.runFullScan(normalizedUrl);
+            ComplianceScoreResponse basicScan = mapAgentResponseToDto(normalizedUrl, agentResponse);
 
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+            User user = userRepository.findByEmail(userEmail)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Website website = Website.builder()
-                .userId(user.getId())
-                .url(request.getUrl())
-                .name(request.getName())
-                .complianceScore(basicScan.getScore())
-                .issues(basicScan.getIssues())
-                .lastScanAt(LocalDateTime.now())
-                .nextScanAt(LocalDateTime.now().plusDays(1))
-                .build();
+            Website website = Website.builder()
+                    .userId(user.getId())
+                    .url(normalizedUrl)
+                    .name(request.getName())
+                    .complianceScore(basicScan.getScore())
+                    .issues(basicScan.getIssues())
+                    .lastScanAt(LocalDateTime.now())
+                    .nextScanAt(LocalDateTime.now().plusDays(1))
+                    .build();
 
-        websiteRepository.save(website);
+            websiteRepository.save(website);
+            streakService.updateStreak(user.getId(), website.getId(), website.getComplianceScore());
 
-        if (basicScan.getScore() < 80.0) {
-            notificationService.sendLowScoreAlert(userEmail, request.getUrl(), basicScan.getScore());
+            if (basicScan.getScore() < 80.0 && !basicScan.getIssues().isEmpty()) {
+                notificationService.sendIssueDetected(user.getId(), normalizedUrl,
+                        basicScan.getIssues().get(0).getTitle());
+            }
+
+            return ScanResponse.builder()
+                    .websiteId(website.getId())
+                    .basicScan(basicScan)
+                    .aiAnalysis(agentResponse.getReport()) // AI analysis is the structured report
+                    .nextScanAt(website.getNextScanAt())
+                    .build();
+        } catch (IllegalArgumentException e) {
+            throw ApiException.badRequest(e.getMessage());
+        } catch (IOException e) {
+            log.error("Failed to perform full scan website: {}", request.getUrl(), e);
+            throw ApiException.badRequest("Unable to fetch the target URL. Check the address and try again.");
         }
-
-        return ScanResponse.builder()
-                .websiteId(website.getId())
-                .basicScan(basicScan)
-                .aiAnalysis(aiAnalysis)
-                .nextScanAt(website.getNextScanAt())
-                .build();
     }
 
     public List<Website.ScanHistory> getScanHistory(String userEmail, String websiteId) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> ApiException.unauthorized("User not found"));
         Website website = websiteRepository.findById(websiteId)
-                .orElseThrow(() -> new RuntimeException("Website not found"));
+                .orElseThrow(() -> ApiException.notFound("Website"));
+        if (!website.getUserId().equals(user.getId())) {
+            throw ApiException.forbidden("You do not have access to this website");
+        }
         return website.getScanHistory();
     }
 
-    private Website.ComplianceIssue createIssue(String type, String severity, String title,
-            String description, String fixSuggestion) {
-        return Website.ComplianceIssue.builder()
-                .type(type)
-                .severity(severity)
-                .title(title)
-                .description(description)
-                .fixSuggestion(fixSuggestion)
-                .autoFixable(true)
-                .fixed(false)
-                .detectedAt(LocalDateTime.now())
-                .build();
+    private String normalizeAndValidateScanUrl(String rawUrl) throws IOException {
+        String normalizedUrl = ValidationUtil.normalizeUrlForFetch(rawUrl);
+        ValidationUtil.ValidationResult safety = ValidationUtil.isSafeUrlForScanning(normalizedUrl);
+        if (!safety.isValid()) {
+            throw new IllegalArgumentException(safety.getErrorMessage());
+        }
+
+        String host = new URL(normalizedUrl).getHost();
+        ValidationUtil.ValidationResult dns = ValidationUtil.validateHostResolvesToPublicAddresses(host);
+        if (!dns.isValid()) {
+            throw new IllegalArgumentException(dns.getErrorMessage());
+        }
+
+        return normalizedUrl;
     }
 
-    private Double calculateScore(List<Website.ComplianceIssue> issues) {
-        Double baseScore = 100.0;
-        for (Website.ComplianceIssue issue : issues) {
-            switch (issue.getSeverity()) {
-                case "critical" -> baseScore -= 25.0;
-                case "high" -> baseScore -= 15.0;
-                case "medium" -> baseScore -= 10.0;
-                case "low" -> baseScore -= 5.0;
+    /**
+     * Maps the structured AgentResponse back into the backward-compatible DTO format.
+     */
+    private ComplianceScoreResponse mapAgentResponseToDto(String url, AgentResponse response) {
+        // Convert Risk Score (where higher is worse) to Compliance Score (where higher is better)
+        Double score = Math.max(0.0, 100.0 - response.getRiskScore());
+        List<Website.ComplianceIssue> issues = new ArrayList<>();
+        List<String> recommendations = new ArrayList<>();
+
+        if (response.getIssues() != null) {
+            for (Issue issue : response.getIssues()) {
+                String severity = issue.getSeverity() != null ? issue.getSeverity().toLowerCase() : "medium";
+                String title = issue.getType() != null ? issue.getType().replace("_", " ") : "Compliance Issue";
+                
+                // Find matching fix suggestion in responses fixes list, or fallback to the issue's own fix description
+                String fixSuggestion = issue.getFix() != null ? issue.getFix() : "Refer to the remediation guide.";
+                if (response.getFixes() != null && issue.getType() != null) {
+                    for (String fix : response.getFixes()) {
+                        if (fix.contains("FIX FOR [" + issue.getType() + "]:")) {
+                            fixSuggestion = fix.replace("FIX FOR [" + issue.getType() + "]:", "").trim();
+                            break;
+                        }
+                    }
+                }
+
+                issues.add(Website.ComplianceIssue.builder()
+                        .type(issue.getType() != null ? issue.getType().toLowerCase() : "generic")
+                        .severity(severity)
+                        .title(title)
+                        .description(issue.getDescription())
+                        .fixSuggestion(fixSuggestion)
+                        .autoFixable(true)
+                        .fixed(false)
+                        .detectedAt(LocalDateTime.now())
+                        .build());
+
+                // Populate DTO recommendations list based on issue characteristics
+                if ("MISSING_POLICY".equals(issue.getType())) {
+                    recommendations.add("Generate a privacy policy using our AI Policy Generator");
+                } else if ("GDPR_NON_COMPLIANT".equals(issue.getType())) {
+                    recommendations.add("Implement CookieYes or OneTrust for cookie consent");
+                } else if ("CCPA_NON_COMPLIANT".equals(issue.getType())) {
+                    recommendations.add("Add a 'Do Not Sell My Personal Information' link to your footer");
+                }
             }
         }
-        return Math.max(0.0, baseScore);
-    }
 
-    private boolean checkCookieBanner(Document doc) {
-        String html = doc.html().toLowerCase();
-        return html.contains("cookie") &&
-                (html.contains("consent") || html.contains("gdpr") || html.contains("ccpa"));
-    }
-
-    private boolean checkPrivacyPolicyLink(Document doc, String baseUrl) {
-        return doc.select("a[href]").stream()
-                .anyMatch(a -> {
-                    String href = a.attr("href").toLowerCase();
-                    String text = a.text().toLowerCase();
-                    return href.contains("privacy") || text.contains("privacy policy");
-                });
-    }
-
-    private boolean checkSSLCertificate(String url) {
-        try {
-            if (!url.startsWith("https"))
-                return false;
-            URL siteUrl = new URL(url);
-            HttpsURLConnection conn = (HttpsURLConnection) siteUrl.openConnection();
-            conn.connect();
-            return conn.getServerCertificates().length > 0;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private boolean checkHttpsRedirect(String url) {
-        try {
-            if (url.startsWith("https")) return true;
-            
-            String httpUrl = url.replace("https://", "http://");
-            URL siteUrl = new URL(httpUrl);
-            HttpsURLConnection.setFollowRedirects(false);
-            java.net.HttpURLConnection conn = (java.net.HttpURLConnection) siteUrl.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("User-Agent", "ComplianceAI-Bot/1.0");
-            
-            int responseCode = conn.getResponseCode();
-            String location = conn.getHeaderField("Location");
-            
-            return (responseCode == 301 || responseCode == 302 || responseCode == 307 || responseCode == 308) 
-                   && location != null && location.startsWith("https");
-        } catch (Exception e) {
-            log.warn("Failed to check HTTPS redirect for {}: {}", url, e.getMessage());
-            return false;
-        }
-    }
-
-    private List<String> generateRecommendations(List<Website.ComplianceIssue> issues) {
-        List<String> recommendations = new ArrayList<>();
-        if (issues.stream().anyMatch(i -> i.getType().equals("missing_cookie_banner"))) {
-            recommendations.add("Implement CookieYes or OneTrust for cookie consent");
-        }
-        if (issues.stream().anyMatch(i -> i.getType().equals("missing_privacy_policy"))) {
-            recommendations.add("Generate a privacy policy using our AI Policy Generator");
-        }
-        return recommendations;
+        return ComplianceScoreResponse.builder()
+                .url(url)
+                .score(score)
+                .issues(issues)
+                .scanDate(LocalDateTime.now())
+                .recommendations(recommendations)
+                .build();
     }
 }

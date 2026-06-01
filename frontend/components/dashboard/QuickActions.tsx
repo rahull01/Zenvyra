@@ -29,8 +29,8 @@ const actions = [
         description: "Scale monitoring infrastructure",
         icon: Globe,
         href: "/websites",
-        color: "text-blue-600",
-        glow: "bg-blue-500/10",
+        color: "text-amber-500",
+        glow: "bg-amber-500/10",
     },
     {
         label: "Node Access",

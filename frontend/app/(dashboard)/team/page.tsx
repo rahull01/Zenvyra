@@ -6,7 +6,6 @@ import {
     Plus, Users, Mail, Shield, Crown, User, Trash2,
     MoreVertical, CheckCircle, XCircle, Search
 } from "lucide-react";
-import toast from "react-hot-toast";
 
 interface TeamMember {
     id: string;
@@ -86,31 +85,29 @@ export default function TeamPage() {
         };
 
         setTeam(prev => [...prev, newMember]);
-        toast.success("Invitation sent successfully");
         setShowInviteModal(false);
         setInviteEmail("");
     };
 
     const handleRemove = (id: string) => {
         setTeam(prev => prev.filter(m => m.id !== id));
-        toast.success("Team member removed");
     };
 
     const getRoleIcon = (role: string) => {
         switch (role) {
             case "owner": return <Crown className="w-4 h-4 text-yellow-400" />;
-            case "admin": return <Shield className="w-4 h-4 text-brand-400" />;
-            case "member": return <User className="w-4 h-4 text-success" />;
-            default: return <User className="w-4 h-4 text-surface-500" />;
+            case "admin": return <Shield className="w-4 h-4 text-primary" />;
+            case "member": return <User className="w-4 h-4 text-status-success" />;
+            default: return <User className="w-4 h-4 text-text-tertiary" />;
         }
     };
 
     const getRoleColor = (role: string) => {
         switch (role) {
             case "owner": return "bg-yellow-500/20 text-yellow-400";
-            case "admin": return "bg-brand-500/20 text-brand-400";
-            case "member": return "bg-success/20 text-success";
-            default: return "bg-surface-800 text-surface-500";
+            case "admin": return "bg-primary/20 text-primary";
+            case "member": return "bg-status-success/20 text-status-success";
+            default: return "bg-background-tertiary text-text-tertiary";
         }
     };
 
@@ -124,10 +121,10 @@ export default function TeamPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-display-3 font-display text-surface-100 mb-2">
+                    <h1 className="text-display-3 font-display text-text-primary mb-2">
                         Team Management
                     </h1>
-                    <p className="text-surface-400">
+                    <p className="text-text-secondary">
                         Manage team members and their permissions
                     </p>
                 </div>
@@ -135,7 +132,7 @@ export default function TeamPage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowInviteModal(true)}
-                    className="flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-400 text-white font-semibold rounded-xl transition-all duration-300 shadow-glow"
+                    className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-xl transition-all duration-300 shadow-button"
                 >
                     <Plus className="w-5 h-5" />
                     Invite Member
@@ -158,94 +155,94 @@ export default function TeamPage() {
                         className="glass-card rounded-2xl p-6"
                     >
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-10 h-10 rounded-lg bg-brand-500/20 flex items-center justify-center">
-                                <stat.icon className="w-5 h-5 text-brand-400" />
+                            <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
+                                <stat.icon className="w-5 h-5 text-primary" />
                             </div>
                         </div>
-                        <p className="text-2xl font-bold text-surface-100 mb-1">{stat.value}</p>
-                        <p className="text-sm text-surface-500">{stat.label}</p>
+                        <p className="text-2xl font-bold text-text-primary mb-1">{stat.value}</p>
+                        <p className="text-sm text-text-tertiary">{stat.label}</p>
                     </motion.div>
                 ))}
             </div>
 
             {/* Search */}
             <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-500" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary" />
                 <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search team members..."
-                    className="w-full pl-12 pr-4 py-3 bg-surface-900/60 border border-surface-800/50 rounded-xl text-surface-100 placeholder-surface-600 focus:outline-none focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/20 transition-all duration-300"
+                    className="w-full pl-12 pr-4 py-3 bg-background-tertiary/60 border border-border-medium rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-300"
                 />
             </div>
 
             {/* Team List */}
             <div className="glass-card rounded-2xl overflow-hidden">
                 <table className="w-full">
-                    <thead className="bg-surface-800/50">
+                    <thead className="bg-background-tertiary/50">
                         <tr>
-                            <th className="text-left px-6 py-4 text-sm font-medium text-surface-400">Member</th>
-                            <th className="text-left px-6 py-4 text-sm font-medium text-surface-400">Role</th>
-                            <th className="text-left px-6 py-4 text-sm font-medium text-surface-400">Status</th>
-                            <th className="text-left px-6 py-4 text-sm font-medium text-surface-400">Last Active</th>
-                            <th className="text-right px-6 py-4 text-sm font-medium text-surface-400">Actions</th>
+                            <th className="text-left px-6 py-4 text-sm font-medium text-text-tertiary">Member</th>
+                            <th className="text-left px-6 py-4 text-sm font-medium text-text-tertiary">Role</th>
+                            <th className="text-left px-6 py-4 text-sm font-medium text-text-tertiary">Status</th>
+                            <th className="text-left px-6 py-4 text-sm font-medium text-text-tertiary">Last Active</th>
+                            <th className="text-right px-6 py-4 text-sm font-medium text-text-tertiary">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-surface-800/50">
+                    <tbody className="divide-y divide-border-light">
                         {filteredTeam.map((member, index) => (
                             <motion.tr
                                 key={member.id}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="hover:bg-surface-800/30 transition-colors"
+                                className="hover:bg-background-tertiary/30 transition-colors"
                             >
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-accent flex items-center justify-center text-white font-bold text-sm">
+                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-white font-bold text-sm">
                                             {member.avatar}
                                         </div>
                                         <div>
-                                            <p className="font-medium text-surface-200">{member.name}</p>
-                                            <p className="text-sm text-surface-500">{member.email}</p>
+                                            <p className="font-medium text-text-primary">{member.name}</p>
+                                            <p className="text-sm text-text-tertiary">{member.email}</p>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${getRoleColor(member.role)}`}>
+                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-caption font-medium ${getRoleColor(member.role)}`}>
                                         {getRoleIcon(member.role)}
                                         {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${member.status === "active"
-                                            ? "bg-success/20 text-success"
+                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-caption font-medium ${member.status === "active"
+                                            ? "bg-status-success/20 text-status-success"
                                             : member.status === "pending"
-                                                ? "bg-warning/20 text-warning"
-                                                : "bg-surface-800 text-surface-500"
+                                                ? "bg-status-warning/20 text-status-warning"
+                                                : "bg-background-tertiary text-text-tertiary"
                                         }`}>
-                                        <span className={`w-1.5 h-1.5 rounded-full ${member.status === "active" ? "bg-success animate-pulse" :
-                                                member.status === "pending" ? "bg-warning" :
-                                                    "bg-surface-600"
+                                        <span className={`w-1.5 h-1.5 rounded-full ${member.status === "active" ? "bg-status-success animate-pulse" :
+                                                member.status === "pending" ? "bg-status-warning" :
+                                                    "bg-text-tertiary"
                                             }`} />
                                         {member.status}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4 text-sm text-surface-400">
+                                <td className="px-6 py-4 text-sm text-text-tertiary">
                                     {member.lastActive}
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <div className="flex items-center justify-end gap-2">
-                                        <button className="p-2 hover:bg-surface-800 rounded-lg transition-colors">
-                                            <Mail className="w-4 h-4 text-surface-400" />
+                                        <button className="p-2 hover:bg-background-tertiary rounded-lg transition-colors">
+                                            <Mail className="w-4 h-4 text-text-tertiary" />
                                         </button>
                                         {member.role !== "owner" && (
                                             <button
                                                 onClick={() => handleRemove(member.id)}
-                                                className="p-2 hover:bg-error/20 rounded-lg transition-colors group"
+                                                className="p-2 hover:bg-status-error/20 rounded-lg transition-colors group"
                                             >
-                                                <Trash2 className="w-4 h-4 text-surface-400 group-hover:text-error transition-colors" />
+                                                <Trash2 className="w-4 h-4 text-text-tertiary group-hover:text-status-error transition-colors" />
                                             </button>
                                         )}
                                     </div>
@@ -261,15 +258,15 @@ export default function TeamPage() {
                 <h3 className="text-heading-3 mb-6">Role Permissions</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {Object.entries(rolePermissions).map(([role, permissions]) => (
-                        <div key={role} className="p-4 rounded-xl bg-surface-800/30">
+                        <div key={role} className="p-4 rounded-xl bg-background-tertiary/30">
                             <div className="flex items-center gap-2 mb-4">
                                 {getRoleIcon(role)}
-                                <span className="font-semibold text-surface-200 capitalize">{role}</span>
+                                <span className="font-semibold text-text-primary capitalize">{role}</span>
                             </div>
                             <ul className="space-y-2">
                                 {permissions.map((perm, i) => (
-                                    <li key={i} className="flex items-center gap-2 text-sm text-surface-400">
-                                        <CheckCircle className="w-3 h-3 text-success flex-shrink-0" />
+                                    <li key={i} className="flex items-center gap-2 text-sm text-text-secondary">
+                                        <CheckCircle className="w-3 h-3 text-status-success flex-shrink-0" />
                                         {perm}
                                     </li>
                                 ))}
@@ -290,24 +287,24 @@ export default function TeamPage() {
                         <h2 className="text-heading-2 mb-4">Invite Team Member</h2>
                         <form onSubmit={handleInvite} className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-surface-300 mb-2">
+                                <label className="block text-sm font-medium text-text-secondary mb-2">
                                     Email Address
                                 </label>
                                 <div className="relative">
-                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-500" />
+                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary" />
                                     <input
                                         type="email"
                                         value={inviteEmail}
                                         onChange={(e) => setInviteEmail(e.target.value)}
                                         placeholder="colleague@company.com"
                                         required
-                                        className="w-full pl-11 pr-4 py-3 bg-surface-800/50 border border-surface-700/50 rounded-xl text-surface-100 placeholder-surface-500 focus:outline-none focus:border-brand-500/50 focus:ring-2 focus:ring-brand-500/20 transition-all duration-200"
+                                        className="w-full pl-11 pr-4 py-3 bg-background-tertiary/50 border border-border-medium rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-surface-300 mb-2">
+                                <label className="block text-sm font-medium text-text-secondary mb-2">
                                     Role
                                 </label>
                                 <div className="grid grid-cols-3 gap-2">
@@ -317,8 +314,8 @@ export default function TeamPage() {
                                             type="button"
                                             onClick={() => setInviteRole(role)}
                                             className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${inviteRole === role
-                                                    ? "bg-brand-500/20 text-brand-400 border border-brand-500/50"
-                                                    : "bg-surface-800/50 text-surface-400 border border-surface-700/50 hover:bg-surface-800"
+                                                    ? "bg-primary/20 text-primary border border-primary/50"
+                                                    : "bg-background-tertiary/50 text-text-tertiary border border-border-medium hover:bg-background-tertiary"
                                                 }`}
                                         >
                                             {role.charAt(0).toUpperCase() + role.slice(1)}
@@ -331,13 +328,13 @@ export default function TeamPage() {
                                 <button
                                     type="button"
                                     onClick={() => setShowInviteModal(false)}
-                                    className="flex-1 py-3 bg-surface-800 hover:bg-surface-700 text-surface-300 font-semibold rounded-xl transition-all duration-200"
+                                    className="flex-1 py-3 bg-background-tertiary hover:bg-background-secondary text-text-secondary font-semibold rounded-xl transition-all duration-200"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 py-3 bg-brand-500 hover:bg-brand-400 text-white font-semibold rounded-xl transition-all duration-300 shadow-glow"
+                                    className="flex-1 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-xl transition-all duration-300 shadow-button"
                                 >
                                     Send Invite
                                 </button>

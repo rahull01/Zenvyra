@@ -1,90 +1,121 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Shield, Globe, AlertTriangle, TrendingUp, TrendingDown, Minus, ArrowUpRight } from "lucide-react";
+import React from "react";
+import { ShieldCheck, Globe, AlertTriangle, TrendingUp, TrendingDown, Minus } from "lucide-react";
 
 const stats = [
-    {
-        label: "Compliance Score",
-        value: "89",
-        change: "+7",
-        trend: "up",
-        icon: Shield,
-        color: "text-brand-600",
-        glow: "bg-brand-500/10",
-    },
-    {
-        label: "Websites Monitored",
-        value: "18",
-        change: "+3",
-        trend: "up",
-        icon: Globe,
-        color: "text-blue-600",
-        glow: "bg-blue-500/10",
-    },
-    {
-        label: "Active Issues",
-        value: "14",
-        change: "-8",
-        trend: "down",
-        icon: AlertTriangle,
-        color: "text-amber-600",
-        glow: "bg-amber-500/10",
-    },
-    {
-        label: "Fix Success Rate",
-        value: "93%",
-        change: "+4",
-        trend: "up",
-        icon: TrendingUp,
-        color: "text-emerald-600",
-        glow: "bg-emerald-500/10",
-    },
+  {
+    label: "Compliance Score",
+    value: "89/100",
+    change: "+7 points",
+    trend: "up" as const,
+    icon: ShieldCheck,
+    chartData: [45, 52, 58, 65, 71, 78, 89],
+    color: "#F59E0B",
+    bgColor: "bg-amber-50/50",
+  },
+  {
+    label: "Websites Monitored",
+    value: "18",
+    change: "+3 this month",
+    trend: "up" as const,
+    icon: Globe,
+    chartData: [12, 12, 13, 14, 15, 15, 18],
+    color: "#F59E0B",
+    bgColor: "bg-amber-50/50",
+  },
+  {
+    label: "Active Violations",
+    value: "14",
+    change: "-8 vs last week",
+    trend: "down" as const,
+    icon: AlertTriangle,
+    chartData: [32, 28, 25, 22, 25, 18, 14],
+    color: "#EF4444",
+    bgColor: "bg-red-50/50",
+  },
+  {
+    label: "Auto-Fix Success Rate",
+    value: "94.2%",
+    change: "+1.2%",
+    trend: "up" as const,
+    icon: TrendingUp,
+    chartData: [88, 89, 88.5, 91, 92, 93, 94.2],
+    color: "#10B981",
+    bgColor: "bg-green-50/50",
+  },
 ];
 
-export default function StatsCards() {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-                <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="premium-card p-8 group cursor-pointer"
-                >
-                    {/* Hover Shine Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white via-white/5 to-brand-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    <div className="relative z-10">
-                        <div className="flex items-start justify-between mb-8">
-                            <div className={`w-14 h-14 rounded-2xl ${stat.glow} flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
-                                <stat.icon className={`w-7 h-7 ${stat.color}`} />
-                            </div>
-                            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold tracking-tight ${
-                                stat.trend === "up" ? "bg-emerald-50 text-emerald-600 border border-emerald-100" :
-                                stat.trend === "down" ? "bg-red-50 text-red-600 border border-red-100" :
-                                "bg-slate-50 text-slate-500 border border-slate-100"
-                            }`}>
-                                {stat.trend === "up" ? <TrendingUp className="w-3.5 h-3.5" /> :
-                                 stat.trend === "down" ? <TrendingDown className="w-3.5 h-3.5" /> :
-                                 <Minus className="w-3.5 h-3.5" />}
-                                {stat.change}
-                            </div>
-                        </div>
+// Simple SVG Sparkline component
+function Sparkline({ data, color }: { data: number[], color: string }) {
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min || 1;
+  
+  const width = 100;
+  const height = 30;
+  const points = data.map((val, i) => {
+    const x = (i / (data.length - 1)) * width;
+    const y = height - ((val - min) / range) * height;
+    return `${x},${y}`;
+  }).join(" ");
 
-                        <div>
-                            <p className="text-4xl font-display font-black text-slate-900 mb-2 group-hover:translate-x-1 transition-transform duration-500">
-                                {stat.value}
-                            </p>
-                            <p className="text-sm font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                                {stat.label}
-                                <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1" />
-                            </p>
-                        </div>
-                    </div>
-                </motion.div>
-            ))}
-        </div>
-    );
+  return (
+    <svg viewBox={`0 -5 ${width} ${height + 10}`} className="w-full h-8 overflow-visible" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id={`gradient-${color}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.2" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <polyline
+        fill="none"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        points={points}
+      />
+      <polygon
+        fill={`url(#gradient-${color})`}
+        points={`${points} ${width},${height} 0,${height}`}
+      />
+    </svg>
+  );
+}
+
+export default function StatsCards() {
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {stats.map((stat, i) => (
+        <article key={stat.label} className="relative overflow-hidden rounded-xl border border-gray-200/50 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:border-gray-300">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${stat.bgColor}`}>
+                <stat.icon className="h-4 w-4" style={{ color: stat.color }} aria-hidden />
+              </div>
+              <p className="text-xs font-semibold text-gray-500">{stat.label}</p>
+            </div>
+            
+            <div className={`flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded bg-gray-50/80 ${
+                stat.trend === "up" ? (stat.color === "#EF4444" ? "text-red-600" : "text-green-600") : 
+                (stat.trend === "down" ? (stat.color === "#EF4444" ? "text-green-600" : "text-red-600") : "text-gray-500")
+            }`}>
+              {stat.trend === "up" ? <TrendingUp className="h-3 w-3" /> : stat.trend === "down" ? <TrendingDown className="h-3 w-3" /> : <Minus className="h-3 w-3" />}
+              {stat.change}
+            </div>
+          </div>
+
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-2xl font-bold tracking-tight text-termly-navy leading-none mb-1">{stat.value}</p>
+            </div>
+            <div className="w-24 flex-shrink-0 opacity-80 mix-blend-multiply">
+               <Sparkline data={stat.chartData} color={stat.color} />
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
 }

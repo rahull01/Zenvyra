@@ -19,7 +19,7 @@
     <description>AI-Powered Compliance Automation</description>
     
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
         <lombok.version>1.18.30</lombok.version>
     </properties>
     
@@ -47,6 +47,11 @@
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         
@@ -58,6 +63,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
         
         <!-- JWT -->
@@ -92,11 +102,17 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
         
-        <!-- JSoup (Web Scraping) -->
+        <!-- Rate Limiting -->
         <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.17.1</version>
+            <groupId>com.bucket4j</groupId>
+            <artifactId>bucket4j-redis</artifactId>
+            <version>8.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.1.8</version>
         </dependency>
         
         <!-- Apache HttpClient -->
@@ -116,6 +132,11 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+    <groupId>org.jsoup</groupId>
+    <artifactId>jsoup</artifactId>
+    <version>1.17.2</version>
+</dependency>
     </dependencies>
     
     <build>
@@ -123,7 +144,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.13.0</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>

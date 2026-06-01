@@ -1,7 +1,8 @@
 ﻿"use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import api from "@/lib/api";
 import {
     ChevronLeft, Save, Download,
     History, Eye, Edit3, Sparkles
@@ -191,21 +192,47 @@ export default function PolicyDetailPage() {
     const [content, setContent] = useState("");
     const [loading, setLoading] = useState(true);
 
-    const policy = useMemo(() => POLICY_LIBRARY[policyId ?? ""] || FALLBACK_POLICY, [policyId]);
+    const [policy, setPolicy] = useState<PolicyRecord | null>(null);
+    const currentPolicy = policy ?? (POLICY_LIBRARY[policyId ?? ""] || FALLBACK_POLICY);
 
     useEffect(() => {
         const fetchPolicy = async () => {
-            await new Promise(resolve => setTimeout(resolve, 900));
-            setContent(policy.content);
-            setLoading(false);
+            if (!policyId) {
+                setContent(FALLBACK_POLICY.content);
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const response = await api.get<PolicyRecord>(`/policies/${policyId}`);
+                setPolicy(response.data);
+                setContent(response.data.content || "");
+            } catch (error) {
+                toast.error("Unable to load policy. Showing fallback content.");
+                setPolicy(null);
+                setContent(FALLBACK_POLICY.content);
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchPolicy();
-    }, [policy]);
+    }, [policyId]);
 
-    const handleSave = () => {
-        toast.success("Policy saved successfully!");
-        setIsEditing(false);
+    const handleSave = async () => {
+        if (!policyId) {
+            toast.error("Invalid policy ID.");
+            return;
+        }
+
+        try {
+            await api.put(`/policies/${policyId}`, { content });
+            setPolicy(prev => prev ? { ...prev, content, lastUpdated: "Just now" } : null);
+            toast.success("Policy saved successfully!");
+            setIsEditing(false);
+        } catch (error) {
+            toast.error("Unable to save policy. Please try again.");
+        }
     };
 
     if (loading) {
@@ -229,10 +256,10 @@ export default function PolicyDetailPage() {
                     </Link>
                     <div>
                         <h1 className="text-heading-1 font-display text-surface-100">
-                            {policy.title}
+                            {currentPolicy.title}
                         </h1>
                         <p className="text-sm text-surface-500">
-                            {policy.website} - Last updated {policy.lastUpdated}
+                            {currentPolicy.website} - Last updated {currentPolicy.lastUpdated}
                         </p>
                     </div>
                 </div>
@@ -300,7 +327,7 @@ export default function PolicyDetailPage() {
                                     Suggestion
                                 </p>
                                 <p className="text-sm text-surface-300">
-                                    {policy.aiSuggestion}
+                                    {currentPolicy.aiSuggestion}
                                 </p>
                             </div>
                             <div className="p-3 rounded-xl bg-success/10 border border-success/20">
@@ -308,7 +335,7 @@ export default function PolicyDetailPage() {
                                     Compliant
                                 </p>
                                 <p className="text-sm text-surface-300">
-                                    {policy.complianceNote}
+                                    {currentPolicy.complianceNote}
                                 </p>
                             </div>
                         </div>

@@ -9,13 +9,13 @@ const systems = [
 
 export default function StatusPage() {
   return (
-    <PageScaffold title="Status" subtitle="Live service health and historical uptime for core platform systems.">
+    <PageScaffold title="System Status" subtitle="Live service health and historical uptime for ComplianceAI Pro core platform systems.">
       <div className="space-y-3">
         {systems.map((system) => (
-          <article key={system.name} className="flex flex-col gap-3 rounded-2xl border border-surface-700 bg-white p-5 shadow-card md:flex-row md:items-center md:justify-between">
+          <article key={system.name} className="flex flex-col gap-3 rounded-2xl border border-border-light bg-white p-5 shadow-card md:flex-row md:items-center md:justify-between">
             <div>
-              <h2 className="text-base font-semibold text-surface-100">{system.name}</h2>
-              <p className="text-sm text-surface-400">30-day uptime: {system.uptime}</p>
+              <h2 className="text-base font-semibold text-text-primary">{system.name}</h2>
+              <p className="text-sm text-text-secondary">30-day uptime: {system.uptime}</p>
             </div>
             <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">{system.status}</span>
           </article>

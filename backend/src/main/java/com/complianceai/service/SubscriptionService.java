@@ -2,19 +2,26 @@ package com.complianceai.service;
 
 import com.complianceai.client.DodoPaymentsClient;
 import com.complianceai.dto.response.SubscriptionResponse;
+import com.complianceai.model.ProcessedWebhook;
 import com.complianceai.model.Subscription;
 import com.complianceai.model.User;
+import com.complianceai.repository.ProcessedWebhookRepository;
 import com.complianceai.repository.SubscriptionRepository;
 import com.complianceai.repository.UserRepository;
+import com.complianceai.security.StandardWebhookSignatureVerifier;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
@@ -27,8 +34,10 @@ public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
+    private final StandardWebhookSignatureVerifier standardWebhookSignatureVerifier;
+    private final ProcessedWebhookRepository processedWebhookRepository;
 
-    @Value("${dodo.webhook-secret}")
+    @Value("${dodo.webhook-secret:}")
     private String webhookSecret;
 
     @Value("${dodo.products.starter}")
@@ -106,13 +115,36 @@ public class SubscriptionService {
         return createCheckoutSession(userEmail, plan);
     }
 
-    public void processWebhookEvent(String signature, String payload) {
-        if (!verifySignature(signature, payload)) {
-            throw new RuntimeException("Invalid webhook signature");
+    public void processWebhookEvent(String webhookId, String webhookTimestamp, String webhookSignatureHeader,
+            String legacySignatureHeader, String rawPayload) {
+        if (webhookSecret == null || webhookSecret.isBlank()) {
+            throw new IllegalStateException("Webhook signing secret is not configured (dodo.webhook-secret)");
+        }
+
+        boolean standardVerified = false;
+        if (webhookSignatureHeader != null && !webhookSignatureHeader.isBlank()) {
+            if (webhookId == null || webhookId.isBlank() || webhookTimestamp == null || webhookTimestamp.isBlank()) {
+                throw new IllegalArgumentException("Standard webhooks require webhook-id and webhook-timestamp headers");
+            }
+            standardVerified = standardWebhookSignatureVerifier.verify(
+                    webhookId, webhookTimestamp, webhookSignatureHeader, rawPayload, webhookSecret);
+        }
+
+        boolean legacyVerified = legacySignatureHeader != null
+                && !legacySignatureHeader.isBlank()
+                && verifyLegacyHexSignature(legacySignatureHeader, rawPayload);
+
+        if (!standardVerified && !legacyVerified) {
+            throw new SecurityException("Invalid webhook signature");
+        }
+
+        if (webhookId != null && !webhookId.isBlank() && processedWebhookRepository.existsById(webhookId)) {
+            log.info("Skipping already-processed webhook {}", webhookId);
+            return;
         }
 
         try {
-            JsonNode event = objectMapper.readTree(payload);
+            JsonNode event = objectMapper.readTree(rawPayload);
             String eventType = event.get("type").asText();
             JsonNode data = event.get("data");
 
@@ -123,6 +155,17 @@ public class SubscriptionService {
                 case "payment.succeeded" -> handlePaymentSucceeded(data);
                 case "payment.failed" -> handlePaymentFailed(data);
                 default -> log.info("Unhandled event type: {}", eventType);
+            }
+
+            if (webhookId != null && !webhookId.isBlank()) {
+                try {
+                    processedWebhookRepository.save(ProcessedWebhook.builder()
+                            .id(webhookId)
+                            .processedAt(Instant.now())
+                            .build());
+                } catch (DuplicateKeyException e) {
+                    log.debug("Webhook {} already recorded", webhookId);
+                }
             }
         } catch (Exception e) {
             log.error("Failed to process webhook", e);
@@ -216,24 +259,42 @@ public class SubscriptionService {
         }
     }
 
-    private boolean verifySignature(String signature, String payload) {
+    private boolean verifyLegacyHexSignature(String signatureHeader, String payload) {
         try {
             Mac mac = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secretKeySpec = new SecretKeySpec(webhookSecret.getBytes(), "HmacSHA256");
-            mac.init(secretKeySpec);
-            byte[] hash = mac.doFinal(payload.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            String expectedSignature = hexString.toString();
-            return expectedSignature.equalsIgnoreCase(signature);
+            mac.init(new SecretKeySpec(decodeWebhookSecretMaterial(webhookSecret), "HmacSHA256"));
+            byte[] expected = mac.doFinal(payload.getBytes(StandardCharsets.UTF_8));
+            byte[] provided = decodeHex(signatureHeader.trim());
+            return provided != null && MessageDigest.isEqual(expected, provided);
         } catch (Exception e) {
-            log.error("Signature verification failed", e);
+            log.error("Legacy webhook signature verification failed", e);
             return false;
         }
+    }
+
+    private static byte[] decodeWebhookSecretMaterial(String secret) {
+        String s = secret.trim();
+        if (s.startsWith("whsec_")) {
+            return Base64.getDecoder().decode(s.substring("whsec_".length()));
+        }
+        return s.getBytes(StandardCharsets.UTF_8);
+    }
+
+    private static byte[] decodeHex(String hex) {
+        if (hex.length() % 2 != 0) {
+            return null;
+        }
+        int len = hex.length() / 2;
+        byte[] data = new byte[len];
+        for (int i = 0; i < len; i++) {
+            int digit1 = Character.digit(hex.charAt(i * 2), 16);
+            int digit2 = Character.digit(hex.charAt(i * 2 + 1), 16);
+            if (digit1 < 0 || digit2 < 0) {
+                return null;
+            }
+            data[i] = (byte) ((digit1 << 4) + digit2);
+        }
+        return data;
     }
 
     private String getProductIdForPlan(String plan) {

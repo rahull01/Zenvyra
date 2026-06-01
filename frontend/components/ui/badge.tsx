@@ -4,21 +4,29 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-    "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2",
+    "inline-flex items-center rounded-full px-2.5 py-1 text-caption font-semibold transition-colors focus:outline-none",
     {
         variants: {
             variant: {
                 default:
-                    "border-transparent bg-brand-500/20 text-brand-400 hover:bg-brand-500/30",
+                    "bg-primary-light text-primary",
                 secondary:
-                    "border-transparent bg-surface-800 text-surface-400 hover:bg-surface-700",
+                    "bg-background-tertiary text-text-secondary",
                 destructive:
-                    "border-transparent bg-error/20 text-error hover:bg-error/30",
-                outline: "text-surface-400 border-surface-700",
+                    "bg-status-error-light text-status-error border border-status-error",
+                outline: "border border-border-light text-text-secondary",
                 success:
-                    "border-transparent bg-success/20 text-success hover:bg-success/30",
+                    "bg-status-success-light text-status-success border border-status-success",
                 warning:
-                    "border-transparent bg-warning/20 text-warning hover:bg-warning/30",
+                    "bg-status-warning-light text-status-warning border border-status-warning",
+                info:
+                    "bg-status-info-light text-status-info border border-status-info",
+                pending:
+                    "bg-status-info-light text-status-info border border-status-info",
+                draft:
+                    "bg-status-warning-light text-status-warning border border-status-warning",
+                expired:
+                    "bg-status-error-light text-status-error border border-status-error",
             },
         },
         defaultVariants: {

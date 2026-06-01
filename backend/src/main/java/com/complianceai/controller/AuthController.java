@@ -1,6 +1,7 @@
 package com.complianceai.controller;
 
 import com.complianceai.dto.request.LoginRequest;
+import com.complianceai.dto.request.RefreshTokenRequest;
 import com.complianceai.dto.request.SignupRequest;
 import com.complianceai.dto.response.AuthResponse;
 import com.complianceai.service.AuthService;
@@ -27,13 +28,18 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refreshToken(@RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(authService.refreshToken(token));
+    public ResponseEntity<AuthResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+        return ResponseEntity.ok(authService.refreshToken(request));
     }
 
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam String email) {
         authService.sendPasswordResetEmail(email);
-        return ResponseEntity.ok("Password reset email sent");
+        return ResponseEntity.ok("If an account exists for that email, password reset instructions have been sent.");
+    }
+
+    @GetMapping("/oauth/google")
+    public ResponseEntity<String> oauthGoogle() {
+        return ResponseEntity.ok("OAuth Google endpoint - redirect handled by Spring Security");
     }
 }

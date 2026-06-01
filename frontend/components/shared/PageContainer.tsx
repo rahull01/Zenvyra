@@ -1,5 +1,10 @@
 import React, { ReactNode } from "react";
 
-export default function PageContainer({ children }: { children: ReactNode }) {
-    return <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>;
+interface PageContainerProps {
+    children: ReactNode;
+    className?: string;
+}
+
+export default function PageContainer({ children, className }: PageContainerProps) {
+    return <div className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 ${className ?? ""}`.trim()}>{children}</div>;
 }

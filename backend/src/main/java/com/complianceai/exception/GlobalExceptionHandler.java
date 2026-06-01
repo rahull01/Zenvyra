@@ -29,6 +29,11 @@ public class GlobalExceptionHandler {
         return createErrorResponse(e.getMessage(), e.getStatus());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException e) {
+        return createErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException e) {
         return createErrorResponse("Invalid email or password", HttpStatus.UNAUTHORIZED);

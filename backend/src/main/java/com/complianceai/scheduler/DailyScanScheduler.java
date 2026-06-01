@@ -64,7 +64,7 @@ public class DailyScanScheduler {
                     // Send alert if score dropped significantly
                     if (result.getScore() < 70) {
                         notificationService.sendLowScoreAlert(
-                                user.getEmail(),
+                                user.getId(),
                                 website.getUrl(),
                                 result.getScore());
                     }

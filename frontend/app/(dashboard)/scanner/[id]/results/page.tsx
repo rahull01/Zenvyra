@@ -1,0 +1,164 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { Scan, AlertTriangle, CheckCircle2, Cookie, ShieldAlert, Cpu, BarChart2 } from "lucide-react";
+import DashboardPageShell from "@/components/dashboard/DashboardPageShell";
+import { Button } from "@/components/ui/button";
+
+const findings = [
+  { name: "_ga", category: "Analytics", risk: "medium", vendor: "Google", desc: "Used to collect statistics on site navigation." },
+  { name: "_fbp", category: "Marketing", risk: "high", vendor: "Meta", desc: "Track users across sites for targeted advertising." },
+  { name: "session_id", category: "Necessary", risk: "low", vendor: "First-party", desc: "Maintains secure session state for logging in." },
+];
+
+const vulnerabilities = [
+  { name: "meta-pixel.js", issue: "Sends telemetry before cookie banner accept", severity: "high" },
+  { name: "ga.js", issue: "Unencrypted storage of client telemetry keys", severity: "medium" },
+];
+
+export default function ScanResultsPage() {
+  const params = useParams();
+  const id = params.id as string;
+
+  return (
+    <DashboardPageShell
+      title="Scan Results Detail"
+      subtitle={`Scan Report #${id} — 47 cookies detected across 12 pages.`}
+      icon={Scan}
+      stats={[
+        { label: "Critical Issues", value: "2" },
+        { label: "Warnings", value: "3", trend: "Review recommended" },
+        { label: "Cookies Found", value: "47" },
+        { label: "Compliance Score", value: "78/100", trend: "Needs remediation" },
+      ]}
+      actions={[
+        { label: "Run New Scan", href: "/dashboard/scanner", primary: false },
+        { label: "Fix with AI", href: "/dashboard/ai-chat", primary: true },
+      ]}
+    >
+      <div className="grid gap-6 lg:grid-cols-12 items-start">
+        {/* Left Side: Table & Vulns */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Cookie Table */}
+          <div className="bg-background-primary border border-border-light rounded-3xl overflow-hidden shadow-card">
+            <div className="p-5 border-b border-border-light flex justify-between items-center bg-background-secondary/40">
+              <h3 className="font-bold text-sm text-text-primary uppercase tracking-wider flex items-center gap-2">
+                <Cookie className="h-4.5 w-4.5 text-primary" />
+                Detected Trackers & Cookies
+              </h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-background-secondary text-caption font-semibold uppercase tracking-wider text-text-primary">
+                  <tr>
+                    <th className="px-5 py-3.5">Cookie Key</th>
+                    <th className="px-5 py-3.5">Classification</th>
+                    <th className="px-5 py-3.5">Provider</th>
+                    <th className="px-5 py-3.5 text-right">Risk Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {findings.map((row) => (
+                    <tr key={row.name} className="border-t border-border-light hover:bg-background-secondary/50">
+                      <td className="px-5 py-4 font-semibold text-text-primary">
+                        <div className="flex flex-col">
+                          <span>{row.name}</span>
+                          <span className="text-caption text-text-muted font-medium mt-0.5">{row.desc}</span>
+                        </div>
+                      </td>
+                      <td className="px-5 py-4 text-text-secondary font-medium">{row.category}</td>
+                      <td className="px-5 py-4 text-text-secondary font-medium">{row.vendor}</td>
+                      <td className="px-5 py-4 text-right">
+                        <span
+                          className={`inline-block px-2.5 py-1 rounded-full text-caption font-bold uppercase tracking-wider ${
+                            row.risk === "high"
+                              ? "bg-status-error/10 text-status-error"
+                              : row.risk === "medium"
+                              ? "bg-status-warning/10 text-status-warning"
+                              : "bg-status-success/10 text-status-success"
+                          }`}
+                        >
+                          {row.risk}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Script Vulnerability assessments */}
+          <div className="bg-background-primary border border-border-light rounded-3xl p-6 shadow-card space-y-4">
+            <h3 className="font-bold text-sm text-text-primary uppercase tracking-wider flex items-center gap-2">
+              <ShieldAlert className="h-4.5 w-4.5 text-status-error" />
+              Script Vulnerabilities
+            </h3>
+            <div className="space-y-3">
+              {vulnerabilities.map((v, idx) => (
+                <div key={idx} className="flex justify-between items-center p-4 bg-background-secondary rounded-2xl border border-border-light">
+                  <div className="space-y-1">
+                    <span className="text-caption font-mono font-bold text-text-primary">{v.name}</span>
+                    <p className="text-caption text-text-secondary">{v.issue}</p>
+                  </div>
+                  <span className={`px-2 py-0.5 rounded text-caption font-bold uppercase ${
+                    v.severity === "high" ? "bg-status-error/10 text-status-error" : "bg-status-warning/10 text-status-warning"
+                  }`}>
+                    {v.severity}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Charts & Tips */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Classification Breakdown */}
+          <div className="bg-background-primary border border-border-light rounded-3xl p-6 shadow-card space-y-4">
+            <h3 className="font-bold text-sm text-text-primary uppercase tracking-wider flex items-center gap-2">
+              <BarChart2 className="h-4.5 w-4.5 text-primary" />
+              Breakdown
+            </h3>
+            <div className="space-y-3">
+              {[
+                { label: "Essential / Necessary", count: 12, pct: 45, color: "bg-status-success" },
+                { label: "Performance / Analytics", count: 18, pct: 35, color: "bg-status-warning" },
+                { label: "Targeting / Marketing", count: 17, pct: 20, color: "bg-status-error" },
+              ].map((item, idx) => (
+                <div key={idx} className="space-y-1">
+                  <div className="flex justify-between text-caption font-semibold">
+                    <span className="text-text-secondary">{item.label}</span>
+                    <span className="text-text-primary font-bold">{item.count} trackers ({item.pct}%)</span>
+                  </div>
+                  <div className="w-full bg-background-secondary h-2 rounded-full overflow-hidden">
+                    <div className={`${item.color} h-full`} style={{ width: `${item.pct}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Remediation Panel */}
+          <div className="bg-secondary-dark text-white p-6 rounded-3xl space-y-4 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(230,126,34,0.1),transparent_50%)]" />
+            <h4 className="font-bold text-sm flex items-center gap-2">
+              <Cpu className="text-primary h-4.5 w-4.5" />
+              Automated Remediation
+            </h4>
+            <p className="text-caption text-text-tertiary leading-relaxed">
+              Enable the automated consent cookie banner configuration. The script blocking engine will dynamically intercept the identified third party trackers until explicit user consent is registered.
+            </p>
+            <Link href="/dashboard/consent/banner" className="block">
+              <Button className="w-full bg-primary hover:bg-primary-hover text-white text-caption font-bold py-2 rounded-xl">
+                Configure Consent Center
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </DashboardPageShell>
+  );
+}

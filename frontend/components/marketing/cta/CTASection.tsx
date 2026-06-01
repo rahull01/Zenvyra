@@ -1,23 +1,22 @@
 "use client";
 
 import React from "react";
-
 import Link from "next/link";
-import { Clock3, ArrowRight, Zap, ShieldCheck } from "lucide-react";
+import { Clock3, ArrowRight, Zap, ShieldCheck, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import PageContainer from "@/components/shared/PageContainer";
 import SectionWrapper from "@/components/shared/SectionWrapper";
+import { Button } from "@/components/ui/button";
 
 export default function CTASection() {
     return (
-        <SectionWrapper className="relative py-24">
+        <SectionWrapper className="relative py-32 bg-bg-base">
             <PageContainer>
-                <div className="relative overflow-hidden rounded-[3rem] bg-slate-900 border border-slate-800 p-12 text-center shadow-premium lg:p-24 group">
+                <div className="relative overflow-hidden rounded-[4rem] bg-bg-primary border border-bg-tertiary p-12 lg:p-24 text-center shadow-2xl group">
                     {/* Animated Background Atmosphere */}
                     <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-brand-500/[0.15] blur-[160px] rounded-full group-hover:scale-110 transition-transform duration-1000" />
-                        <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-emerald-500/[0.1] blur-[160px] rounded-full group-hover:scale-110 transition-transform duration-1000 delay-100" />
-                        <div className="premium-noise opacity-[0.05]" />
+                        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-accent/10 blur-[160px] rounded-full group-hover:scale-110 transition-transform duration-1000" />
+                        <div className="absolute bottom-[-20%] left-[-10%] w-[800px] h-[800px] bg-info/5 blur-[160px] rounded-full group-hover:scale-110 transition-transform duration-1000 delay-100" />
                     </div>
 
                     <div className="relative z-10">
@@ -25,54 +24,60 @@ export default function CTASection() {
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="mx-auto inline-flex items-center gap-2.5 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-8"
+                            className="mx-auto inline-flex items-center gap-2.5 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full mb-8"
                         >
-                            <Clock3 className="h-4 w-4 text-brand-400" />
-                            <span className="text-[10px] font-black text-brand-400 uppercase tracking-widest">
-                                Protocol provisioning active in 30s
+                            <Sparkles className="h-4 w-4 text-accent" />
+                            <span className="text-xs font-bold text-accent uppercase tracking-widest">
+                                Instant compliance setup in 30 seconds
                             </span>
                         </motion.div>
                         
-                        <h2 className="text-display-2 font-display font-black text-white mb-8 tracking-tight max-w-4xl mx-auto">
+                        <h2 className="text-4xl md:text-6xl font-extrabold text-text-primary mb-8 tracking-tight max-w-4xl mx-auto">
                             Ready to operate with <br/>
-                            <span className="text-brand-500 italic">absolute confidence?</span>
+                            <span className="text-gradient-accent">absolute confidence?</span>
                         </h2>
                         
-                        <p className="mx-auto max-w-2xl text-xl text-slate-400 font-medium leading-relaxed mb-12">
-                            Deploy our intelligence engine across your entire infrastructure in minutes. 
-                            Start with a single node and scale to global compliance automation.
+                        <p className="mx-auto max-w-2xl text-xl text-text-secondary font-medium leading-relaxed mb-12">
+                            Join 5,000+ companies automating their global compliance infrastructure 
+                            with AI. Start your free scan today.
                         </p>
                         
                         <div className="flex flex-wrap items-center justify-center gap-6">
-                            <Link 
-                                href="/signup" 
-                                className="brand-button px-10 py-5 text-sm font-black uppercase tracking-[0.2em] flex items-center gap-3 shadow-[0_0_40px_rgba(34,197,94,0.3)] hover:shadow-glow"
+                            <Button
+                                asChild
+                                size="lg"
+                                className="h-16 px-10 rounded-2xl text-xs font-bold uppercase tracking-widest shadow-glow-accent"
                             >
-                                <Zap className="w-4 h-4" />
-                                Initialize Registry
-                            </Link>
-                            <Link 
-                                href="/documentation" 
-                                className="px-10 py-5 text-sm font-black uppercase tracking-[0.2em] text-white border border-white/10 rounded-2xl hover:bg-white/5 transition-all duration-300 flex items-center gap-2"
+                                <Link href="/signup">
+                                    <Zap className="mr-2 h-4 w-4" />
+                                    Get Started Free
+                                </Link>
+                            </Button>
+                            <Button
+                                asChild
+                                variant="outline"
+                                size="lg"
+                                className="h-16 px-10 rounded-2xl text-xs font-bold uppercase tracking-widest border-bg-tertiary text-text-primary hover:bg-bg-secondary"
                             >
-                                Read Protocol
-                                <ArrowRight className="w-4 h-4" />
-                            </Link>
+                                <Link href="/contact">
+                                    Contact Sales
+                                    <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                            </Button>
                         </div>
                         
-                        <div className="mt-12 flex flex-wrap items-center justify-center gap-8">
-                            <div className="flex items-center gap-2">
-                                <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">SOC-2 Type II Certified</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Zero Configuration Required</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Global Data Isolation</span>
-                            </div>
+                        <div className="mt-16 flex flex-wrap items-center justify-center gap-10">
+                            {[
+                                "SOC-2 Type II Certified",
+                                "GDPR & CCPA Compliant",
+                                "99.9% Uptime Guarantee",
+                                "Zero Configuration"
+                            ].map((label) => (
+                                <div key={label} className="flex items-center gap-2">
+                                    <ShieldCheck className="w-5 h-5 text-success" />
+                                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">{label}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -80,3 +85,4 @@ export default function CTASection() {
         </SectionWrapper>
     );
 }
+

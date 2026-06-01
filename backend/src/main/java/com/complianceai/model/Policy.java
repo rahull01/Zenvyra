@@ -21,10 +21,12 @@ public class Policy {
     private String id;
 
     private String userId;
+    private String organizationId;
     private String websiteId;
 
     private String type; // privacy, terms, cookie, gdpr, ccpa
     private String title;
+    private String name;
     private String content; // HTML content
     private String plainText;
     private String language; // en, de, fr, es

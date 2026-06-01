@@ -1,0 +1,11 @@
+{
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "jetro"
+  ],
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-CimInstance *)"
+    ]
+  }
+}

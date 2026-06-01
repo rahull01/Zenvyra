@@ -16,21 +16,35 @@ public class WebhookController {
 
     @PostMapping
     public ResponseEntity<String> handleWebhook(
+            @RequestHeader(value = "webhook-id", required = false) String webhookId,
+            @RequestHeader(value = "webhook-timestamp", required = false) String webhookTimestamp,
+            @RequestHeader(value = "webhook-signature", required = false) String webhookSignature,
             @RequestHeader(value = "X-Dodo-Signature", required = false) String dodoSignature,
             @RequestHeader(value = "Stripe-Signature", required = false) String stripeSignature,
             @RequestBody String payload) {
-        String signature = dodoSignature != null ? dodoSignature : stripeSignature;
 
-        log.info("Received Dodo webhook: {}", payload);
+        String legacySignature = dodoSignature != null && !dodoSignature.isBlank()
+                ? dodoSignature
+                : stripeSignature;
+
+        log.info("Received payment webhook (webhook-id={})", webhookId);
 
         try {
-            if (signature == null || signature.isBlank()) {
-                log.warn("Webhook signature missing");
-                return ResponseEntity.badRequest().body("Missing signature");
-            }
-
-            subscriptionService.processWebhookEvent(signature, payload);
+            subscriptionService.processWebhookEvent(
+                    webhookId,
+                    webhookTimestamp,
+                    webhookSignature,
+                    legacySignature,
+                    payload);
             return ResponseEntity.ok("Webhook processed");
+        } catch (SecurityException e) {
+            log.warn("Webhook signature verification failed");
+            return ResponseEntity.status(401).body("Invalid signature");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (IllegalStateException e) {
+            log.error("Webhook misconfiguration: {}", e.getMessage());
+            return ResponseEntity.status(503).body("Webhook endpoint not configured");
         } catch (Exception e) {
             log.error("Webhook processing failed", e);
             return ResponseEntity.badRequest().body("Invalid webhook");

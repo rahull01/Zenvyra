@@ -1,28 +1,35 @@
 import type { ReactNode } from "react";
-import PageContainer from "@/components/shared/PageContainer";
-import SectionWrapper from "@/components/shared/SectionWrapper";
+import MarketingPageHero from "@/components/marketing/MarketingPageHero";
+import MarketingCTA from "@/components/marketing/MarketingCTA";
 
 type PageScaffoldProps = {
-    title: string;
-    subtitle: string;
-    children: ReactNode;
+  /** Orange label above title — defaults to title when omitted */
+  eyebrow?: string;
+  title: string;
+  subtitle: string;
+  children: ReactNode;
+  showCta?: boolean;
+  heroExtra?: ReactNode;
 };
 
-export default function PageScaffold({ title, subtitle, children }: PageScaffoldProps) {
-    return (
-        <main className="pb-20 pt-28">
-            <SectionWrapper className="pb-10 pt-10 md:pt-16">
-                <PageContainer>
-                    <div className="max-w-3xl">
-                        <p className="text-[10px] font-black uppercase tracking-[0.35em] text-brand-600">Resources</p>
-                        <h1 className="mt-4 text-5xl font-black leading-tight text-slate-950 md:text-6xl">{title}</h1>
-                        <p className="mt-5 text-lg font-medium leading-8 text-slate-600">{subtitle}</p>
-                    </div>
-                </PageContainer>
-            </SectionWrapper>
-            <SectionWrapper className="pt-4">
-                <PageContainer>{children}</PageContainer>
-            </SectionWrapper>
-        </main>
-    );
+export default function PageScaffold({
+  eyebrow,
+  title,
+  subtitle,
+  children,
+  showCta = true,
+  heroExtra,
+}: PageScaffoldProps) {
+  const heroEyebrow = eyebrow ?? title;
+  return (
+    <main className="min-h-screen bg-white">
+      <MarketingPageHero eyebrow={heroEyebrow} title={title} subtitle={subtitle}>
+        {heroExtra}
+      </MarketingPageHero>
+      <section className="py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
+      </section>
+      {showCta && <MarketingCTA />}
+    </main>
+  );
 }

@@ -2,17 +2,21 @@ import { useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
 
-interface ScanResult {
+export interface ScanResult {
     url: string;
     score: number;
+    previousScore?: number;
+    projectedScore?: number;
     issues: Array<{
+        id: string;
         type: string;
-        severity: string;
+        category: string;
+        severity: "low" | "medium" | "high" | "critical";
         title: string;
         description: string;
         fixSuggestion: string;
         autoFixable: boolean;
-        detectedAt: string;
+        detectedAt?: string;
     }>;
     scanDate: string;
     recommendations: string[];

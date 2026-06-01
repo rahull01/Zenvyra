@@ -36,7 +36,7 @@ export function usePolicies() {
     }) => {
         setIsLoading(true);
         try {
-            const response = await api.post("/policies/generate", params);
+            const response = await api.post("/policies", params);
             setPolicies(prev => [response.data, ...prev]);
             toast.success("Policy generated!");
             return response.data;
@@ -79,4 +79,4 @@ export function usePolicies() {
         updatePolicy,
         deletePolicy,
     };
-}
+}
