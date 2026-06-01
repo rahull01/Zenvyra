@@ -30,7 +30,7 @@ export function MarketingCard({
       transition={{ duration: 0.4, delay: index * 0.06 }}
       className="standard-card group h-full !p-6 sm:!p-8"
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-brand-orange-light text-brand-orange transition-transform duration-300 group-hover:scale-110">
+      <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-accent-light text-accent transition-transform duration-300 group-hover:scale-110">
         <Icon className="h-6 w-6" aria-hidden />
       </div>
       <h3 className="mt-5 text-xl font-bold text-text-primary">{title}</h3>
@@ -38,7 +38,7 @@ export function MarketingCard({
       {href && (
         <Link
           href={href}
-          className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-brand-orange hover:text-brand-orange-hover"
+          className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent hover:text-accent-dark"
         >
           {linkLabel}
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

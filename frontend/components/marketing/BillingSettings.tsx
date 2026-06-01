@@ -8,7 +8,7 @@ export const BillingSettings = () => {
   return (
     <div className="p-8 space-y-8">
       {/* Current Plan Card */}
-      <div className="bg-gradient-to-br from-[#2563EB] to-[#7C3AED] rounded-[2rem] p-8 text-white relative overflow-hidden shadow-xl">
+      <div className="bg-gradient-to-br from-[var(--accent)] to-[var(--accent-dark)] rounded-[2rem] p-8 text-white relative overflow-hidden shadow-xl">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32" />
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-1">

@@ -4,41 +4,41 @@ export const useToast = () => {
     return {
         success: (message: string) => hotToast.success(message, {
             style: {
-                background: "#0f172a",
-                color: "#f8fafc",
-                border: "1px solid #1e293b",
+                background: "var(--bg-secondary)",
+                color: "var(--text-primary)",
+                border: "1px solid var(--border-light)",
                 borderRadius: "12px",
                 padding: "12px 16px",
             },
             iconTheme: {
-                primary: "#10b981",
-                secondary: "#0f172a",
+                primary: "var(--success)",
+                secondary: "var(--bg-secondary)",
             },
         }),
         error: (message: string) => hotToast.error(message, {
             style: {
-                background: "#0f172a",
-                color: "#f8fafc",
-                border: "1px solid #1e293b",
+                background: "var(--bg-secondary)",
+                color: "var(--text-primary)",
+                border: "1px solid var(--border-light)",
                 borderRadius: "12px",
                 padding: "12px 16px",
             },
             iconTheme: {
-                primary: "#ef4444",
-                secondary: "#0f172a",
+                primary: "var(--danger)",
+                secondary: "var(--bg-secondary)",
             },
         }),
         info: (message: string) => hotToast(message, {
             style: {
-                background: "#0f172a",
-                color: "#f8fafc",
-                border: "1px solid #1e293b",
+                background: "var(--bg-secondary)",
+                color: "var(--text-primary)",
+                border: "1px solid var(--border-light)",
                 borderRadius: "12px",
                 padding: "12px 16px",
             },
             iconTheme: {
-                primary: "#0ea5e9",
-                secondary: "#0f172a",
+                primary: "var(--info)",
+                secondary: "var(--bg-secondary)",
             },
         }),
     };

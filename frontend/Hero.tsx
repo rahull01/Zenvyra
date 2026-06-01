@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 export const Hero = () => {
   return (
-    <section className="relative w-full min-h-[80vh] flex flex-col items-center justify-center text-center px-6 py-4xl bg-gradient-to-b from-white to-[#F8FAFC]">
+    <section className="relative w-full min-h-[80vh] flex flex-col items-center justify-center text-center px-6 py-4xl bg-gradient-to-b from-background-primary to-background-secondary">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

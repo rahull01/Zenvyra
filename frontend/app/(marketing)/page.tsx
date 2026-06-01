@@ -13,7 +13,7 @@ import CookieConsent from '@/components/marketing/CookieConsent';
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-background-primary">
+    <main className="min-h-screen bg-background-base">
       <Hero />
       <StatsBar />
       <Features />

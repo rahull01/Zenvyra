@@ -84,7 +84,7 @@ export default function AiInsightsDashboardPage() {
       {/* Header */}
       <div>
         <h1 className="text-4xl font-black tracking-tight text-text-primary flex items-center gap-3">
-          <Sparkles className="h-10 w-10 text-primary animate-pulse" /> AI Insights & Copilot Hub
+          <Sparkles className="h-10 w-10 text-accent animate-pulse" /> AI Insights & Copilot Hub
         </h1>
         <p className="text-text-secondary mt-2 max-w-2xl leading-relaxed">
           Forecast compliance performance, remediate accessibility and privacy alerts automatically, and consult the ComplianceAI GPT-4 legal engine in real-time.
@@ -98,17 +98,17 @@ export default function AiInsightsDashboardPage() {
         <div className="lg:col-span-2 space-y-8">
           
           {/* Compliance Trajectory Card */}
-          <div className="rounded-[2.5rem] border border-border-light bg-background-secondary p-8 shadow-card relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-primary/5 rounded-full blur-[50px] -mr-20 -mt-20 pointer-events-none" />
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-border-light bg-surface-card p-8 shadow-card">
+            <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-accent/10 rounded-full blur-[50px] -mr-20 -mt-20 pointer-events-none" />
             
             <div className="flex justify-between items-center pb-6 border-b border-border-light/60">
               <div>
                 <h3 className="text-xl font-bold text-text-primary flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-primary" /> Compliance Trajectory Forecast
+                  <TrendingUp className="h-5 w-5 text-accent" /> Compliance Trajectory Forecast
                 </h3>
-                <p className="text-caption text-text-muted mt-1">Calculated based on 200+ continuous scanning checkpoints</p>
+                <p className="text-caption text-text-secondary mt-1">Calculated based on 200+ continuous scanning checkpoints</p>
               </div>
-              <span className="text-caption font-bold text-primary bg-primary/15 px-3 py-1 rounded-full border border-primary/20">
+              <span className="text-caption font-bold text-accent bg-accent/15 px-3 py-1 rounded-full border border-accent/20">
                 Score Trajectory: +27%
               </span>
             </div>
@@ -118,22 +118,22 @@ export default function AiInsightsDashboardPage() {
                 <AreaChart data={chartData} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="scoreGlow" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#E67E22" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="#E67E22" stopOpacity={0} />
+                      <stop offset="5%" stopColor="var(--accent)" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="var(--accent)" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="8 8" stroke="#1A1A2E" vertical={false} />
-                  <XAxis dataKey="month" stroke="#94a3b8" fontSize={11} fontWeight={700} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={11} fontWeight={700} tickLine={false} axisLine={false} domain={[0, 100]} />
+                  <CartesianGrid strokeDasharray="8 8" stroke="#E5E7EB" vertical={false} />
+                  <XAxis dataKey="month" stroke="var(--text-secondary)" fontSize={11} fontWeight={700} tickLine={false} axisLine={false} />
+                  <YAxis stroke="var(--text-secondary)" fontSize={11} fontWeight={700} tickLine={false} axisLine={false} domain={[0, 100]} />
                   <Tooltip 
                     content={({ active, payload, label }) => {
                       if (active && payload && payload.length) {
                         return (
-                          <div className="bg-secondary-dark border border-border-light p-4 rounded-2xl shadow-modal backdrop-blur-xl">
-                            <p className="text-caption font-black text-text-muted uppercase tracking-wider mb-2">{label} 2026</p>
+                          <div className="bg-background-tertiary border border-border-light p-4 rounded-2xl shadow-modal backdrop-blur-xl">
+                            <p className="text-caption font-black text-text-secondary uppercase tracking-wider mb-2">{label} 2026</p>
                             <div className="space-y-1">
-                              <span className="text-caption font-bold text-text-primary block">Score: <strong className="text-primary">{payload[0].value}%</strong></span>
-                              <span className="text-caption font-bold text-text-muted block">Target: 95%</span>
+                              <span className="text-caption font-bold text-text-primary block">Score: <strong className="text-accent">{payload[0].value}%</strong></span>
+                              <span className="text-caption font-bold text-text-secondary block">Target: 95%</span>
                             </div>
                           </div>
                         );
@@ -144,11 +144,11 @@ export default function AiInsightsDashboardPage() {
                   <Area 
                     type="monotone" 
                     dataKey="score" 
-                    stroke="#E67E22" 
+                    stroke="var(--accent)" 
                     strokeWidth={3} 
                     fill="url(#scoreGlow)" 
                     name="Compliance Score"
-                    activeDot={{ r: 6, fill: "#E67E22", strokeWidth: 0 }}
+                    activeDot={{ r: 6, fill: "var(--accent)", strokeWidth: 0 }}
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -156,9 +156,9 @@ export default function AiInsightsDashboardPage() {
           </div>
 
           {/* Actionable Recommendations list */}
-          <div className="rounded-[2.5rem] border border-border-light bg-background-secondary p-8 shadow-card">
+          <div className="rounded-[2.5rem] border border-border-light bg-surface-card p-8 shadow-card">
             <h3 className="text-xl font-bold text-text-primary mb-6 flex items-center gap-2">
-              <ShieldAlert className="h-6 w-6 text-primary" /> Continuous Monitoring Findings & Remediations
+              <ShieldAlert className="h-6 w-6 text-accent" /> Continuous Monitoring Findings & Remediations
             </h3>
 
             <div className="space-y-4">
@@ -168,7 +168,7 @@ export default function AiInsightsDashboardPage() {
                   className={`p-6 rounded-3xl border transition-all ${
                     a.applied 
                       ? "bg-background-primary/20 border-border-light/40 opacity-70" 
-                      : "bg-background-primary border-border-light hover:border-primary/40"
+                      : "bg-background-primary border-border-light hover:border-accent/40"
                   }`}
                 >
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -176,7 +176,7 @@ export default function AiInsightsDashboardPage() {
                       <div className="flex items-center gap-2.5">
                         <span className={`px-2.5 py-1 rounded-full text-caption font-black uppercase tracking-widest border ${
                           a.type === "critical" ? "bg-status-error/10 border-status-error/20 text-status-error" :
-                          a.type === "high" ? "bg-primary/10 border-primary/20 text-primary" :
+                          a.type === "high" ? "bg-accent/10 border-accent/20 text-accent" :
                           "bg-status-warning/10 border-status-warning/20 text-status-warning"
                         }`}>
                           {a.type}
@@ -196,7 +196,7 @@ export default function AiInsightsDashboardPage() {
                         <Button
                           disabled={applyingId !== null}
                           onClick={() => handleApplyResolution(a.id)}
-                          className="rounded-full bg-primary text-background-primary hover:bg-primary-hover px-5 py-2.5 h-auto font-bold uppercase tracking-wider text-caption shadow-button flex items-center gap-1.5"
+                          className="rounded-full bg-accent text-white hover:bg-accent-hover px-5 py-2.5 h-auto font-bold uppercase tracking-wider text-caption shadow-button flex items-center gap-1.5"
                         >
                           {applyingId === a.id ? (
                             <>
@@ -219,11 +219,11 @@ export default function AiInsightsDashboardPage() {
 
         {/* Right Column: AI Chatbot Companion */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="rounded-[2.5rem] border border-border-light bg-background-secondary p-6 shadow-card flex flex-col min-h-[640px]">
+          <div className="rounded-[2.5rem] border border-border-light bg-surface-card p-6 shadow-card flex flex-col min-h-[640px]">
             
             {/* Chatbot Header */}
             <div className="pb-4 border-b border-border-light flex items-center gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+              <div className="h-10 w-10 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
                 <Cpu className="h-5 w-5 animate-pulse" />
               </div>
               <div>
@@ -246,7 +246,7 @@ export default function AiInsightsDashboardPage() {
                   >
                     <div className={`p-4 rounded-3xl max-w-[85%] text-sm leading-relaxed ${
                       msg.sender === "User"
-                        ? "bg-primary text-background-primary font-semibold"
+                        ? "bg-accent text-white font-semibold"
                         : "bg-background-primary border border-border-light text-text-secondary"
                     }`}>
                       {msg.content}
@@ -257,9 +257,9 @@ export default function AiInsightsDashboardPage() {
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="bg-background-primary border border-border-light p-4 rounded-3xl flex gap-1 items-center">
-                    <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <span className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                   </div>
                 </div>
               )}
@@ -267,13 +267,13 @@ export default function AiInsightsDashboardPage() {
 
             {/* Quick Prompts */}
             <div className="py-4 border-t border-border-light space-y-2">
-              <span className="text-caption font-black uppercase tracking-widest text-text-muted">Quick Queries</span>
+              <span className="text-caption font-black uppercase tracking-widest text-text-secondary">Quick Queries</span>
               <div className="space-y-1">
                 {quickQuestions.map((q, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSendMessage(q)}
-                    className="w-full text-left p-2.5 rounded-xl bg-background-primary/50 border border-border-light hover:border-primary/40 text-caption font-semibold text-text-secondary transition-all truncate"
+                    className="w-full text-left p-2.5 rounded-xl bg-background-primary/50 border border-border-light hover:border-accent/40 text-caption font-semibold text-text-secondary transition-all truncate"
                   >
                     {q}
                   </button>
@@ -289,11 +289,11 @@ export default function AiInsightsDashboardPage() {
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSendMessage(chatInput)}
-                className="flex-1 rounded-full border border-border-light bg-background-primary/80 py-3 px-5 text-sm text-text-primary placeholder:text-text-muted focus:border-primary/40 focus:outline-none"
+                className="flex-1 rounded-full border border-border-light bg-background-primary/80 py-3 px-5 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent/40 focus:outline-none"
               />
               <button
                 onClick={() => handleSendMessage(chatInput)}
-                className="h-11 w-11 rounded-full bg-primary hover:bg-primary-hover text-background-primary flex items-center justify-center shrink-0 shadow-button transition-all"
+                className="h-11 w-11 rounded-full bg-accent hover:bg-accent-hover text-white flex items-center justify-center shrink-0 shadow-button transition-all"
               >
                 <Send className="h-4.5 w-4.5" />
               </button>

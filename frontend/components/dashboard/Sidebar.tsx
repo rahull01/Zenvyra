@@ -37,11 +37,11 @@ export const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[260px] bg-background-primary border-r border-border-light flex flex-col z-50">
+    <aside className="fixed left-0 top-0 h-screen w-[260px] bg-surface-card border-r border-border-light flex flex-col z-50">
       {/* Logo Section */}
-      <div className="h-[72px] px-6 flex items-center border-b border-border-light">
+      <div className="h-[72px] px-6 flex items-center border-b border-border-light bg-transparent">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center shadow-sm">
             <ShieldCheck className="text-white w-5 h-5" />
           </div>
           <span className="font-bold text-xl text-text-primary tracking-tight">ComplianceAI Pro</span>
@@ -54,7 +54,7 @@ export const Sidebar = () => {
         aria-label="Main navigation"
       >
         <div className="space-y-1">
-          <p className="px-3 text-caption font-bold uppercase tracking-[0.05em] text-text-tertiary mb-2">Main Menu</p>
+          <p className="px-3 text-caption font-bold uppercase tracking-[0.05em] text-text-secondary mb-2">Main Menu</p>
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -64,21 +64,21 @@ export const Sidebar = () => {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-body-sm font-medium transition-all duration-200 group",
                   isActive 
-                    ? "bg-primary-light text-primary" 
+                    ? "bg-primary/10 text-accent" 
                     : "text-text-secondary hover:bg-background-secondary hover:text-text-primary"
                 )}
                 aria-current={isActive ? 'page' : undefined}
               >
-                <item.icon className={cn("w-5 h-5", isActive ? "text-primary" : "text-text-tertiary group-hover:text-text-secondary")} />
+                <item.icon className={cn("w-5 h-5", isActive ? "text-accent" : "text-text-tertiary group-hover:text-text-secondary")} />
                 {item.name}
-                {isActive && <div className="ml-auto w-1 h-4 bg-primary rounded-full" />}
+                {isActive && <div className="ml-auto w-1 h-4 bg-accent rounded-full" />}
               </Link>
             );
           })}
         </div>
 
         <div className="space-y-1">
-          <p className="px-3 text-caption font-bold uppercase tracking-[0.05em] text-text-tertiary mb-2">Platform</p>
+          <p className="px-3 text-caption font-bold uppercase tracking-[0.05em] text-text-secondary mb-2">Platform</p>
           {secondaryItems.map((item) => (
             <Link
               key={item.name}
@@ -97,10 +97,10 @@ export const Sidebar = () => {
           <p className="text-body-sm font-semibold text-text-primary">Free Plan</p>
           <p className="text-caption text-text-secondary mt-1">10,000 / 10,000 views</p>
           <div className="w-full bg-background-tertiary h-1.5 rounded-full mt-2 overflow-hidden">
-            <div className="bg-primary h-full w-full" />
+            <div className="bg-accent h-full w-full" />
           </div>
           <button 
-            className="text-caption font-bold text-primary mt-3 hover:underline"
+            className="text-caption font-bold text-accent mt-3 hover:underline"
             aria-label="Upgrade to paid plan"
           >
             Upgrade Now

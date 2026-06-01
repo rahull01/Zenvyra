@@ -21,13 +21,13 @@ export default function AnalyticsPage() {
         {/* Core Charts Area */}
         <div className="lg:col-span-8 space-y-6">
           {/* Conversion rate graph simulated */}
-          <div className="bg-background-primary border border-border-light rounded-3xl p-6 shadow-card space-y-4">
+          <div className="bg-surface-card border border-border-light rounded-3xl p-6 shadow-card space-y-4">
             <div className="flex justify-between items-center border-b border-border-light pb-3">
               <h3 className="font-bold text-sm text-text-primary uppercase tracking-wider flex items-center gap-2">
-                <TrendingUp className="text-primary h-4.5 w-4.5" />
+                <TrendingUp className="text-accent h-4.5 w-4.5" />
                 Opt-in Trends (Last 7 Days)
               </h3>
-              <span className="text-caption font-bold text-text-muted uppercase bg-background-secondary px-2.5 py-1 rounded-full">
+              <span className="text-caption font-bold text-text-secondary uppercase bg-background-tertiary px-2.5 py-1 rounded-full">
                 7D Daily Average
               </span>
             </div>
@@ -44,13 +44,13 @@ export default function AnalyticsPage() {
                 { day: "Sun", val: 88 },
               ].map((item, idx) => (
                 <div key={idx} className="flex-1 flex flex-col items-center gap-2">
-                  <div className="w-full bg-background-secondary rounded-lg h-36 flex items-end">
+                  <div className="w-full bg-background-tertiary rounded-lg h-36 flex items-end">
                     <div
-                      className="bg-primary w-full rounded-lg transition-all duration-500 hover:opacity-80"
+                      className="bg-accent w-full rounded-lg transition-all duration-500 hover:opacity-80"
                       style={{ height: `${item.val}%` }}
                     />
                   </div>
-                  <span className="text-caption font-bold text-text-muted">{item.day}</span>
+                  <span className="text-caption font-bold text-text-secondary">{item.day}</span>
                   <span className="text-caption font-bold text-text-primary">{item.val}%</span>
                 </div>
               ))}
@@ -60,7 +60,7 @@ export default function AnalyticsPage() {
 
         {/* Right Side: Geolocation consent distribution */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-background-primary border border-border-light rounded-3xl p-6 shadow-card space-y-4">
+          <div className="bg-surface-card border border-border-light rounded-3xl p-6 shadow-card space-y-4">
             <h3 className="font-bold text-sm text-text-primary uppercase tracking-wider flex items-center gap-2">
               <Globe2 className="text-primary h-4.5 w-4.5" />
               Regional Performance
@@ -77,7 +77,7 @@ export default function AnalyticsPage() {
                     <span>{r.region}</span>
                     <span className="text-primary">{r.rate}</span>
                   </div>
-                  <div className="flex justify-between text-caption text-text-muted mt-1 font-semibold">
+                  <div className="flex justify-between text-caption text-text-secondary mt-1 font-semibold">
                     <span>{r.status}</span>
                     <span className="text-status-success">✓ Compliant</span>
                   </div>
@@ -87,15 +87,17 @@ export default function AnalyticsPage() {
           </div>
 
           {/* AI Insights Card */}
-          <div className="bg-secondary-dark text-white p-6 rounded-3xl space-y-3 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(230,126,34,0.1),transparent_50%)]" />
-            <h4 className="font-bold text-sm flex items-center gap-1.5">
-              <Sparkles className="text-primary h-4.5 w-4.5" />
-              AI Recommendation
-            </h4>
-            <p className="text-caption text-text-tertiary leading-relaxed">
-              Your opt-in rate is 88.4%. Consider changing banner button colors from dark to brand orange to increase click conversions by up to 4.2% based on aggregate platform models.
-            </p>
+          <div className="relative overflow-hidden rounded-3xl border border-border-light bg-surface-card p-6 shadow-card space-y-3">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(249,115,22,0.08),transparent_50%)]" />
+            <div className="relative">
+              <h4 className="font-bold text-sm flex items-center gap-1.5 text-text-primary">
+                <Sparkles className="text-accent h-4.5 w-4.5" />
+                AI Recommendation
+              </h4>
+              <p className="text-caption text-text-secondary leading-relaxed mt-3">
+                Your opt-in rate is 88.4%. Consider changing banner button colors from dark to brand orange to increase click conversions by up to 4.2% based on aggregate platform models.
+              </p>
+            </div>
           </div>
         </div>
       </div>

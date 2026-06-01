@@ -1,14 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Palette, Globe, Layout, Save, CheckCircle } from "lucide-react";
 import DashboardPageShell from "@/components/dashboard/DashboardPageShell";
 import { Button } from "@/components/ui/button";
 
 export default function WhiteLabelSettingsPage() {
   const [subdomain, setSubdomain] = useState("privacy.mycompany.com");
-  const [primaryColor, setPrimaryColor] = useState("#E67E22");
-  const [textColor, setTextColor] = useState("#1A1A2E");
+  const [primaryColor, setPrimaryColor] = useState("");
+  const [textColor, setTextColor] = useState("");
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const accent = getComputedStyle(root).getPropertyValue("--accent").trim();
+    const textDark = getComputedStyle(root).getPropertyValue("--text-dark").trim();
+
+    if (accent) setPrimaryColor(accent);
+    if (textDark) setTextColor(textDark);
+  }, []);
 
   const handleSave = () => {
   };
@@ -63,7 +72,7 @@ export default function WhiteLabelSettingsPage() {
                     type="text"
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="flex-1 text-sm px-3 rounded-xl border border-border-medium outline-none focus:border-brand-orange bg-bg-secondary text-text-primary"
+                    className="flex-1 text-sm px-3 rounded-xl border border-border-medium outline-none focus:border-accent bg-background-secondary text-text-primary"
                   />
                 </div>
               </div>
@@ -81,7 +90,7 @@ export default function WhiteLabelSettingsPage() {
                     type="text"
                     value={textColor}
                     onChange={(e) => setTextColor(e.target.value)}
-                    className="flex-1 text-sm px-3 rounded-xl border border-border-medium outline-none focus:border-brand-orange bg-bg-secondary text-text-primary"
+                    className="flex-1 text-sm px-3 rounded-xl border border-border-medium outline-none focus:border-accent bg-background-secondary text-text-primary"
                   />
                 </div>
               </div>

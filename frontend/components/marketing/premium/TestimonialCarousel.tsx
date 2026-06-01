@@ -39,28 +39,28 @@ const TESTIMONIALS = [
 
 function Card({ t }: { t: (typeof TESTIMONIALS)[0] }) {
   return (
-    <article className="w-[360px] shrink-0 rounded-2xl border border-[#E5E7EB] bg-white p-7 shadow-termly-soft">
+    <article className="w-[360px] shrink-0 rounded-2xl border border-border-light bg-white p-7 shadow-termly-soft">
       <div className="mb-5 flex items-center justify-between">
-        <div className="flex gap-0.5 text-amber-400" aria-label="5 stars">
+        <div className="flex gap-0.5 text-warning" aria-label="5 stars">
           {[...Array(5)].map((_, i) => (
             <Star key={i} className="h-4 w-4 fill-current" />
           ))}
         </div>
-        <span className="flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700">
+        <span className="flex items-center gap-1 rounded-full bg-status-success/10 px-2.5 py-1 text-[10px] font-bold text-status-success">
           <ShieldCheck className="h-3 w-3" />
           Verified
         </span>
       </div>
-      <blockquote className="mb-6 text-[15px] leading-relaxed text-[#4B5563]">
+      <blockquote className="mb-6 text-[15px] leading-relaxed text-text-muted">
         &ldquo;{t.quote}&rdquo;
       </blockquote>
-      <footer className="flex items-center gap-3 border-t border-[#F1F5F9] pt-5">
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-termly-blue to-termly-navy text-sm font-bold text-white">
+      <footer className="flex items-center gap-3 border-t border-border-light pt-5">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-info to-accent text-sm font-bold text-white">
           {t.avatar}
         </div>
         <div>
-          <p className="text-sm font-bold text-termly-navy">{t.name}</p>
-          <p className="text-xs text-[#4B5563]">
+          <p className="text-sm font-bold text-text-primary">{t.name}</p>
+          <p className="text-xs text-text-muted">
             {t.role} · {t.location}
           </p>
         </div>

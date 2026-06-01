@@ -32,9 +32,9 @@ export default function HeroShowcase() {
         {/* address bar chrome */}
         <div className="flex items-center gap-2 border-b border-border-light bg-bg-secondary px-4 py-3">
           <div className="flex gap-1.5" aria-hidden>
-            <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
-            <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
-            <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+            <span className="h-3 w-3 rounded-full bg-danger" />
+            <span className="h-3 w-3 rounded-full bg-warning" />
+            <span className="h-3 w-3 rounded-full bg-success" />
           </div>
           <div className="mx-auto flex h-8 max-w-[280px] flex-1 items-center rounded-lg bg-white px-3 text-xs text-text-muted border border-border-light">
             <Globe className="mr-2 h-3.5 w-3.5 shrink-0 text-accent" />

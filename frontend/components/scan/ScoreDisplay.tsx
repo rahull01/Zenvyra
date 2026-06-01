@@ -11,9 +11,9 @@ interface ScoreDisplayProps {
 
 export default function ScoreDisplay({ score, previousScore, size = "lg" }: ScoreDisplayProps) {
     const getScoreColor = (s: number) => {
-        if (s >= 80) return { stroke: "#10b981", text: "text-success", bg: "bg-success/20" };
-        if (s >= 60) return { stroke: "#f59e0b", text: "text-warning", bg: "bg-warning/20" };
-        return { stroke: "#ef4444", text: "text-error", bg: "bg-error/20" };
+        if (s >= 80) return { stroke: "var(--success)", text: "text-success", bg: "bg-success/20" };
+        if (s >= 60) return { stroke: "var(--warning)", text: "text-warning", bg: "bg-warning/20" };
+        return { stroke: "var(--danger)", text: "text-error", bg: "bg-error/20" };
     };
 
     const getScoreLabel = (s: number) => {
@@ -44,7 +44,7 @@ export default function ScoreDisplay({ score, previousScore, size = "lg" }: Scor
                     <defs>
                         <linearGradient id={`scoreGradient-${score}`} x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stopColor={colors.stroke} />
-                            <stop offset="100%" stopColor={score >= 60 ? "#10b981" : "#ef4444"} />
+                            <stop offset="100%" stopColor={score >= 60 ? "var(--success)" : "var(--danger)"} />
                         </linearGradient>
                     </defs>
                     <circle
@@ -52,7 +52,7 @@ export default function ScoreDisplay({ score, previousScore, size = "lg" }: Scor
                         cy="50%"
                         r="70"
                         fill="none"
-                        stroke="#1e293b"
+                        stroke="var(--bg-tertiary)"
                         strokeWidth="12"
                     />
                     <motion.circle

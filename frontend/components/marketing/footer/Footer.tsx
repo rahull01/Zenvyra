@@ -38,8 +38,8 @@ export default function Footer() {
       {/* faint glow */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.04]"
         style={{
-          background: "radial-gradient(ellipse at 30% 10%, rgba(245,158,11,0.9) 0%, transparent 60%), "
-                    + "radial-gradient(ellipse at 70% 90%, rgba(217,119,6,0.6) 0%, transparent 50%)",
+          background: "radial-gradient(ellipse at 30% 10%, var(--accent) 0%, transparent 60%), "
+                    + "radial-gradient(ellipse at 70% 90%, var(--accent-dark) 0%, transparent 50%)",
         }}
       />
 
@@ -52,8 +52,8 @@ export default function Footer() {
               <svg className="h-9 w-9 text-white filter drop-shadow-[0_2px_8px_rgba(245,158,11,0.25)]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="logo-grad-footer" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#E67E22" />
-                <stop offset="100%" stopColor="#D35400" />
+                <stop offset="0%" stopColor="var(--accent)" />
+                <stop offset="100%" stopColor="var(--accent-dark)" />
                   </linearGradient>
                 </defs>
                 <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z" fill="url(#logo-grad-footer)" />

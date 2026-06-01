@@ -23,7 +23,7 @@ export const WebsiteList = () => {
             <div className="flex items-center gap-4">
               <div className={cn(
                 "w-12 h-12 rounded-xl flex items-center justify-center transition-colors",
-                site.status === 'Healthy' ? "bg-emerald-50 text-emerald-600" : "bg-amber-50 text-amber-600"
+                site.status === 'Healthy' ? "bg-status-success/10 text-status-success" : "bg-status-warning/10 text-status-warning"
               )}>
                 <Globe className="w-6 h-6" />
               </div>
@@ -32,7 +32,7 @@ export const WebsiteList = () => {
                 <div className="flex items-center gap-2 mt-1">
                   <span className={cn(
                     "text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border",
-                    site.status === 'Healthy' ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-amber-50 text-amber-600 border-amber-100"
+                    site.status === 'Healthy' ? "bg-status-success/10 text-status-success border-status-success/20" : "bg-status-warning/10 text-status-warning border-status-warning/20"
                   )}>
                     {site.status}
                   </span>
@@ -52,7 +52,7 @@ export const WebsiteList = () => {
               <p className="text-[10px] font-bold text-text-tertiary uppercase tracking-widest mb-1">Compliance Score</p>
               <p className={cn(
                 "text-xl font-bold",
-                site.score > 90 ? "text-emerald-600" : "text-amber-600"
+                site.score > 90 ? "text-status-success" : "text-status-warning"
               )}>{site.score}%</p>
             </div>
             <div className="p-3 bg-slate-50 rounded-xl">

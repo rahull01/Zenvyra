@@ -26,22 +26,22 @@ export default function ComplianceChart() {
                 <AreaChart data={data} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
                     <defs>
                         <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#16a34a" stopOpacity={0.15} />
-                            <stop offset="95%" stopColor="#16a34a" stopOpacity={0} />
+                            <stop offset="5%" stopColor="var(--success)" stopOpacity={0.15} />
+                            <stop offset="95%" stopColor="var(--success)" stopOpacity={0} />
                         </linearGradient>
                         <linearGradient id="industryGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#cbd5e1" stopOpacity={0.05} />
-                            <stop offset="95%" stopColor="#cbd5e1" stopOpacity={0} />
+                            <stop offset="5%" stopColor="var(--border-light)" stopOpacity={0.05} />
+                            <stop offset="95%" stopColor="var(--border-light)" stopOpacity={0} />
                         </linearGradient>
                     </defs>
                     <CartesianGrid 
                         strokeDasharray="8 8" 
-                        stroke="#f1f5f9" 
+                        stroke="var(--bg-surface)" 
                         vertical={false} 
                     />
                     <XAxis
                         dataKey="date"
-                        stroke="#94a3b8"
+                        stroke="var(--text-secondary)"
                         fontSize={10}
                         fontWeight={700}
                         tickLine={false}
@@ -49,7 +49,7 @@ export default function ComplianceChart() {
                         dy={10}
                     />
                     <YAxis
-                        stroke="#94a3b8"
+                        stroke="var(--text-secondary)"
                         fontSize={10}
                         fontWeight={700}
                         tickLine={false}
@@ -61,16 +61,16 @@ export default function ComplianceChart() {
                         content={({ active, payload, label }) => {
                             if (active && payload && payload.length) {
                                 return (
-                                    <div className="bg-slate-900 border border-white/10 p-4 rounded-2xl shadow-premium backdrop-blur-xl">
-                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">{label}</p>
+                                    <div className="bg-background-secondary border border-border-light p-4 rounded-2xl shadow-card backdrop-blur-xl">
+                                        <p className="text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] mb-2">{label}</p>
                                         <div className="space-y-1.5">
                                             {payload.map((entry: any, index: number) => (
                                                 <div key={index} className="flex items-center justify-between gap-8">
                                                     <div className="flex items-center gap-2">
                                                         <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-                                                        <span className="text-xs font-bold text-white">{entry.name}</span>
+                                                        <span className="text-xs font-bold text-text-primary">{entry.name}</span>
                                                     </div>
-                                                    <span className="text-xs font-black text-white">{entry.value}%</span>
+                                                    <span className="text-xs font-black text-text-primary">{entry.value}%</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -82,25 +82,25 @@ export default function ComplianceChart() {
                     />
                     <ReferenceLine 
                         y={80} 
-                        stroke="#10b981" 
+                        stroke="var(--success)" 
                         strokeDasharray="4 4" 
                         opacity={0.3} 
-                        label={{ value: 'Target', position: 'insideRight', fill: '#10b981', fontSize: 10, fontWeight: 700 }}
+                        label={{ value: 'Target', position: 'insideRight', fill: 'var(--success)', fontSize: 10, fontWeight: 700 }}
                     />
                     <Area
                         type="monotone"
                         dataKey="score"
-                        stroke="#16a34a"
+                        stroke="var(--success)"
                         strokeWidth={3}
                         fill="url(#scoreGradient)"
                         name="Protocol Score"
                         animationDuration={2000}
-                        activeDot={{ r: 6, strokeWidth: 0, fill: '#16a34a' }}
+                        activeDot={{ r: 6, strokeWidth: 0, fill: 'var(--success)' }}
                     />
                     <Area
                         type="monotone"
                         dataKey="industry"
-                        stroke="#cbd5e1"
+                        stroke="var(--border-light)"
                         strokeWidth={2}
                         strokeDasharray="8 8"
                         fill="url(#industryGradient)"

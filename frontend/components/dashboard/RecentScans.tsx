@@ -41,27 +41,27 @@ const recentScans = [
 
 export default function RecentScans() {
     const getScoreStyles = (score: number) => {
-        if (score >= 90) return "text-emerald-600 bg-emerald-50 border-emerald-100";
-        if (score >= 80) return "text-brand-600 bg-brand-50 border-brand-100";
-        if (score >= 60) return "text-amber-600 bg-amber-50 border-amber-100";
-        return "text-red-600 bg-red-50 border-red-100";
+        if (score >= 90) return "text-status-success bg-status-success/10 border-status-success/20";
+        if (score >= 80) return "text-accent bg-accent/10 border-accent/20";
+        if (score >= 60) return "text-accent bg-accent/10 border-accent/20";
+        return "text-status-error bg-status-error/10 border-status-error/20";
     };
 
     return (
         <div className="premium-card p-8 h-full">
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-brand-500 flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center shadow-md">
                         <ShieldCheck className="w-6 h-6 text-white" />
                     </div>
                     <div>
                         <h3 className="text-heading-3 font-display font-bold text-slate-900 leading-none">Diagnostic Log</h3>
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">Historical Scans</p>
+                        <p className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-2">Historical Scans</p>
                     </div>
                 </div>
                 <Link
                     href="/scan"
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-xs font-black text-slate-600 uppercase tracking-widest hover:bg-brand-500 hover:text-white hover:border-brand-500 transition-all duration-500"
+                    className="flex items-center gap-2 px-4 py-2 bg-background-secondary border border-border-light rounded-xl text-xs font-black text-text-secondary uppercase tracking-widest hover:bg-accent hover:text-white hover:border-accent transition-all duration-500"
                 >
                     Registry
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -75,15 +75,15 @@ export default function RecentScans() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className="group flex items-center gap-5 p-5 rounded-2xl bg-white border border-slate-100 hover:shadow-premium hover:-translate-y-1 hover:border-brand-500/10 transition-all duration-500 cursor-pointer"
+                        className="group flex items-center gap-5 p-5 rounded-2xl bg-white border border-border-light hover:shadow-md hover:-translate-y-1 hover:border-accent/10 transition-all duration-500 cursor-pointer"
                     >
-                        <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-brand-50 transition-colors">
-                            <Globe className="w-6 h-6 text-slate-400 group-hover:text-brand-600 transition-colors" />
+                        <div className="w-12 h-12 rounded-xl bg-background-secondary flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                            <Globe className="w-6 h-6 text-text-secondary group-hover:text-accent transition-colors" />
                         </div>
 
                         <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                                <p className="text-sm font-bold text-slate-900 truncate group-hover:text-brand-600 transition-colors">{scan.url}</p>
+                                <p className="text-sm font-bold text-text-primary truncate group-hover:text-accent transition-colors">{scan.url}</p>
                                 <ExternalLink className="w-3 h-3 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
                             <div className="flex items-center gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
@@ -91,7 +91,7 @@ export default function RecentScans() {
                                     <Clock className="w-3 h-3" />
                                     {scan.scannedAt}
                                 </span>
-                                <span className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-100 rounded-md">
+                                <span className="flex items-center gap-1.5 px-2 py-0.5 bg-background-secondary rounded-md">
                                     {scan.issues} Deviations
                                 </span>
                             </div>

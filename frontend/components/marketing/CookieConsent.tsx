@@ -45,7 +45,7 @@ const CookieConsent = () => {
         className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="bg-[#1A1A2E] border border-border-medium rounded-2xl shadow-2xl p-6 md:p-8">
+          <div className="bg-secondary border border-border-medium rounded-2xl shadow-2xl p-6 md:p-8">
             {!showPreferences ? (
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                 {/* Icon */}

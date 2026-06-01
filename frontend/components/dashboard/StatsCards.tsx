@@ -11,8 +11,8 @@ const stats = [
     trend: "up" as const,
     icon: ShieldCheck,
     chartData: [45, 52, 58, 65, 71, 78, 89],
-    color: "#F59E0B",
-    bgColor: "bg-amber-50/50",
+    color: "var(--accent)",
+    bgColor: "bg-primary/10",
   },
   {
     label: "Websites Monitored",
@@ -21,8 +21,8 @@ const stats = [
     trend: "up" as const,
     icon: Globe,
     chartData: [12, 12, 13, 14, 15, 15, 18],
-    color: "#F59E0B",
-    bgColor: "bg-amber-50/50",
+    color: "var(--accent)",
+    bgColor: "bg-primary/10",
   },
   {
     label: "Active Violations",
@@ -31,8 +31,8 @@ const stats = [
     trend: "down" as const,
     icon: AlertTriangle,
     chartData: [32, 28, 25, 22, 25, 18, 14],
-    color: "#EF4444",
-    bgColor: "bg-red-50/50",
+    color: "var(--danger)",
+    bgColor: "bg-error/10",
   },
   {
     label: "Auto-Fix Success Rate",
@@ -41,8 +41,8 @@ const stats = [
     trend: "up" as const,
     icon: TrendingUp,
     chartData: [88, 89, 88.5, 91, 92, 93, 94.2],
-    color: "#10B981",
-    bgColor: "bg-green-50/50",
+    color: "var(--success)",
+    bgColor: "bg-success/10",
   },
 ];
 
@@ -59,11 +59,12 @@ function Sparkline({ data, color }: { data: number[], color: string }) {
     const y = height - ((val - min) / range) * height;
     return `${x},${y}`;
   }).join(" ");
+  const gradientId = `gradient-${color.replace(/[^a-zA-Z0-9]/g, "")}`;
 
   return (
     <svg viewBox={`0 -5 ${width} ${height + 10}`} className="w-full h-8 overflow-visible" preserveAspectRatio="none">
       <defs>
-        <linearGradient id={`gradient-${color}`} x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor={color} stopOpacity="0.2" />
           <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
@@ -77,7 +78,7 @@ function Sparkline({ data, color }: { data: number[], color: string }) {
         points={points}
       />
       <polygon
-        fill={`url(#gradient-${color})`}
+        fill={`url(#${gradientId})`}
         points={`${points} ${width},${height} 0,${height}`}
       />
     </svg>
@@ -88,18 +89,18 @@ export default function StatsCards() {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat, i) => (
-        <article key={stat.label} className="relative overflow-hidden rounded-xl border border-gray-200/50 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:border-gray-300">
+        <article key={stat.label} className="relative overflow-hidden rounded-xl border border-border-light/50 bg-background-primary p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:border-border-light">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${stat.bgColor}`}>
                 <stat.icon className="h-4 w-4" style={{ color: stat.color }} aria-hidden />
               </div>
-              <p className="text-xs font-semibold text-gray-500">{stat.label}</p>
+              <p className="text-xs font-semibold text-text-secondary">{stat.label}</p>
             </div>
             
-            <div className={`flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded bg-gray-50/80 ${
-                stat.trend === "up" ? (stat.color === "#EF4444" ? "text-red-600" : "text-green-600") : 
-                (stat.trend === "down" ? (stat.color === "#EF4444" ? "text-green-600" : "text-red-600") : "text-gray-500")
+            <div className={`flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded bg-background-tertiary/80 ${
+                stat.trend === "up" ? (stat.color === "var(--danger)" ? "text-error" : "text-success") : 
+                (stat.trend === "down" ? (stat.color === "var(--danger)" ? "text-success" : "text-error") : "text-text-secondary")
             }`}>
               {stat.trend === "up" ? <TrendingUp className="h-3 w-3" /> : stat.trend === "down" ? <TrendingDown className="h-3 w-3" /> : <Minus className="h-3 w-3" />}
               {stat.change}
@@ -108,7 +109,7 @@ export default function StatsCards() {
 
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-2xl font-bold tracking-tight text-termly-navy leading-none mb-1">{stat.value}</p>
+              <p className="text-2xl font-bold tracking-tight text-text-primary leading-none mb-1">{stat.value}</p>
             </div>
             <div className="w-24 flex-shrink-0 opacity-80 mix-blend-multiply">
                <Sparkline data={stat.chartData} color={stat.color} />

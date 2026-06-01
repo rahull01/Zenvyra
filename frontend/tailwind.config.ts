@@ -11,47 +11,80 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Primary Brand Colors - Orange/Gold
-        primary: {
-          DEFAULT: '#E67E22',
-          hover: '#D35400',
-          light: '#FEF3E2',
-          dark: '#B85C00',
-        },
-        // Secondary Dark
-        secondary: {
-          dark: '#1A1A2E',
-          darker: '#0F0F1A',
-        },
-        // Background Colors
+        // Background tokens
         background: {
+          base: '#F8F9FB', // page background
+          primary: '#FFFFFF', // input, cards
+          secondary: '#F1F5F9',
+          tertiary: '#F8FAFC',
+        },
+
+        // Background and surface tokens
+        bg: {
           primary: '#FFFFFF',
-          secondary: '#F8F9FA',
-          tertiary: '#F1F3F5',
+          secondary: '#F1F5F9',
+          tertiary: '#F8FAFC',
         },
-        // Text Colors
+        surface: {
+          card: '#FFFFFF',
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
+        },
+
+        // Text tokens
         text: {
-          primary: '#1A1A2E',
-          secondary: '#4A5568',
-          tertiary: '#A0AEC0',
-          muted: '#718096',
+          primary: '#0F172A',
+          secondary: '#6B7280',
+          muted: '#6B7280',
         },
-        // Border Colors
+
+        // Accent / Brand — keep `primary` for backward compatibility
+        brand: {
+          400: '#FB923C',
+          500: '#F97316',
+          600: '#EA580C',
+          DEFAULT: '#F97316',
+        },
+        primary: {
+          DEFAULT: '#F97316',
+          hover: '#EA580C',
+          light: '#FDE8D9',
+          dark: '#C2410E',
+        },
+        accent: {
+          DEFAULT: '#F97316',
+          hover: '#EA580C',
+          light: '#FDE8D9',
+          dark: '#C2410E',
+        },
+
+        // Border tokens
         border: {
-          light: '#E2E8F0',
-          medium: '#CBD5E0',
-          dark: '#A0AEC0',
+          light: '#E5E7EB',
+          medium: '#D1D5DB',
         },
-        // Status Colors
+
+        // Secondary utilities for legacy pages
+        secondary: {
+          DEFAULT: '#F1F5F9',
+          dark: '#334155',
+          darker: '#0F172A',
+        },
+
+        // Semantic status (kept minimal)
         status: {
           success: '#10B981',
-          'success-light': '#D1FAE5',
-          warning: '#F59E0B',
-          'warning-light': '#FEF3C7',
+          warning: '#F97316',
           error: '#EF4444',
-          'error-light': '#FEE2E2',
-          info: '#3B82F6',
-          'info-light': '#DBEAFE',
+          info: '#06B6D4',
         },
       },
       spacing: {
@@ -126,10 +159,10 @@ const config: Config = {
         },
       },
       backgroundImage: {
-        'hero-gradient': 'linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 50%, #FEF3E2 100%)',
-        'cta-gradient': 'linear-gradient(135deg, #E67E22 0%, #D35400 100%)',
-        'dark-gradient': 'linear-gradient(180deg, #1A1A2E 0%, #0F0F1A 100%)',
-        'card-hover-gradient': 'linear-gradient(135deg, #FFFFFF 0%, #FEF3E2 100%)',
+        'hero-gradient': 'linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-secondary) 50%, var(--accent-light) 100%)',
+        'cta-gradient': 'linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%)',
+        'dark-gradient': 'linear-gradient(180deg, var(--secondary-dark) 0%, var(--secondary-darker) 100%)',
+        'card-hover-gradient': 'linear-gradient(135deg, var(--bg-surface) 0%, var(--accent-light) 100%)',
       },
     },
   },

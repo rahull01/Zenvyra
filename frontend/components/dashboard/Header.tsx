@@ -159,7 +159,7 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
                                             className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                                                 selected === globalIdx
                                                     ? "bg-termly-blue/8 text-termly-blue"
-                                                    : "text-[#4B5563] hover:bg-gray-50"
+                                                    : "text-text-muted hover:bg-gray-50"
                                             }`}
                                             onMouseEnter={() => setSelected(globalIdx)}
                                         >
@@ -190,7 +190,7 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
 // ─── Notification icon ────────────────────────────────────────────────────────
 
 function NotifIcon({ type }: { type: string }) {
-    if (type === "success") return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+    if (type === "success") return <CheckCircle2 className="w-4 h-4 text-status-success" />;
     if (type === "warning") return <AlertTriangle className="w-4 h-4 text-amber-500" />;
     return <Info className="w-4 h-4 text-termly-blue" />;
 }
@@ -319,7 +319,7 @@ export default function Header() {
                                         { label: "Settings", icon: Settings, href: "/settings" },
                                         { label: "Account", icon: User, href: "/billing" },
                                     ].map((item) => (
-                                        <Link key={item.href} href={item.href} className="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-[#4B5563] hover:bg-gray-100 hover:text-termly-navy transition-colors">
+                                        <Link key={item.href} href={item.href} className="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-text-muted hover:bg-gray-100 hover:text-termly-navy transition-colors">
                                             <item.icon className="w-3.5 h-3.5 text-gray-400" />
                                             {item.label}
                                         </Link>

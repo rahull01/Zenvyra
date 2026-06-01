@@ -32,8 +32,8 @@ export default function DashboardPageShell({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-start gap-4">
           {Icon && (
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-orange-light">
-              <Icon className="h-6 w-6 text-brand-orange" aria-hidden />
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent-light">
+              <Icon className="h-6 w-6 text-accent" aria-hidden />
             </div>
           )}
           <div>

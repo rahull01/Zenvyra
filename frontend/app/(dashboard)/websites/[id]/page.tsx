@@ -25,11 +25,11 @@ const scoreHistory = [
 ];
 
 const issuesBreakdown = [
-    { category: "Cookies", count: 2, color: "#E67E22" },
-    { category: "Privacy", count: 1, color: "#ef4444" },
-    { category: "SSL", count: 0, color: "#10b981" },
-    { category: "Accessibility", count: 3, color: "#f43f5e" },
-    { category: "Performance", count: 1, color: "#3b82f6" },
+    { category: "Cookies", count: 2, color: "var(--accent)" },
+    { category: "Privacy", count: 1, color: "var(--danger)" },
+    { category: "SSL", count: 0, color: "var(--success)" },
+    { category: "Accessibility", count: 3, color: "var(--danger)" },
+    { category: "Performance", count: 1, color: "var(--info)" },
 ];
 
 const recentIssues = [
@@ -150,7 +150,7 @@ export default function WebsiteDetailPage() {
                                 cy="80"
                                 r="70"
                                 fill="none"
-                                stroke="#1A1A2E"
+                                stroke="var(--bg-secondary)"
                                 strokeWidth="12"
                             />
                             <circle
@@ -167,8 +167,8 @@ export default function WebsiteDetailPage() {
                             />
                             <defs>
                                 <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stopColor="#E67E22" />
-                                    <stop offset="100%" stopColor="#10b981" />
+                                    <stop offset="0%" stopColor="var(--accent)" />
+                                    <stop offset="100%" stopColor="var(--success)" />
                                 </linearGradient>
                             </defs>
                         </svg>
@@ -243,24 +243,24 @@ export default function WebsiteDetailPage() {
                             <AreaChart data={scoreHistory}>
                                 <defs>
                                     <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#E67E22" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#E67E22" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="var(--accent)" stopOpacity={0.3} />
+                                        <stop offset="95%" stopColor="var(--accent)" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1A1A2E" />
-                                <XAxis dataKey="date" stroke="#64748b" fontSize={12} />
-                                <YAxis stroke="#64748b" fontSize={12} domain={[0, 100]} />
+                                <CartesianGrid strokeDasharray="3 3" stroke="var(--bg-secondary)" />
+                                <XAxis dataKey="date" stroke="var(--text-muted)" fontSize={12} />
+                                <YAxis stroke="var(--text-muted)" fontSize={12} domain={[0, 100]} />
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor: "#1A1A2E",
-                                        border: "1px solid #1A1A2E",
+                                        backgroundColor: "var(--bg-secondary)",
+                                        border: "1px solid var(--border-light)",
                                         borderRadius: "12px",
                                     }}
                                 />
                                 <Area
                                     type="monotone"
                                     dataKey="score"
-                                    stroke="#E67E22"
+                                    stroke="var(--accent)"
                                     fillOpacity={1}
                                     fill="url(#colorScore)"
                                     strokeWidth={2}
@@ -271,16 +271,16 @@ export default function WebsiteDetailPage() {
 
                     {/* Issues Breakdown */}
                     <div className="glass-card rounded-2xl p-6">
-                        <h3 className="text-heading-3 mb-6">Issues by Category</h3>
+                        <h3 className="text-h3 mb-6">Issues by Category</h3>
                         <ResponsiveContainer width="100%" height={250}>
                             <BarChart data={issuesBreakdown} layout="vertical">
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1A1A2E" />
-                                <XAxis type="number" stroke="#64748b" fontSize={12} />
-                                <YAxis dataKey="category" type="category" stroke="#64748b" fontSize={12} width={80} />
+                                <CartesianGrid strokeDasharray="3 3" stroke="var(--bg-secondary)" />
+                                <XAxis type="number" stroke="var(--text-muted)" fontSize={12} />
+                                <YAxis dataKey="category" type="category" stroke="var(--text-muted)" fontSize={12} width={80} />
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor: "#1A1A2E",
-                                        border: "1px solid #1A1A2E",
+                                        backgroundColor: "var(--bg-secondary)",
+                                        border: "1px solid var(--border-light)",
                                         borderRadius: "12px",
                                     }}
                                 />

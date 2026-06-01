@@ -26,7 +26,7 @@ export default function MarketingCTA({
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
             href={primaryHref}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-bold text-brand-orange shadow-lg transition-all hover:-translate-y-0.5 hover:bg-bg-secondary"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-bold text-accent shadow-lg transition-all hover:-translate-y-0.5 hover:bg-bg-secondary"
           >
             {primaryLabel}
             <ArrowRight className="h-5 w-5" />

@@ -40,7 +40,7 @@ export default function ComplianceMap() {
             </div>
 
             <div className="relative rounded-[2rem] bg-bg-secondary/80 border border-bg-tertiary p-6 shadow-glow-ai">
-              <div className="relative h-[420px] rounded-[1.75rem] border border-bg-tertiary bg-[#071827] overflow-hidden">
+              <div className="relative h-[420px] rounded-[1.75rem] border border-bg-tertiary bg-secondary-darker overflow-hidden">
                 <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_20%,rgba(245,158,11,0.35),transparent_0%),radial-gradient(circle_at_80%_80%,rgba(6,182,212,0.25),transparent_0%)]" />
                 <svg viewBox="0 0 900 520" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
                   <path d="M0 120 C120 40 300 0 450 90 C600 180 780 140 900 80 L900 520 L0 520 Z" fill="rgba(255,255,255,0.03)" />

@@ -28,7 +28,7 @@ export default function SolutionsPage() {
 
       <div className="mt-16 standard-card !p-8 sm:!p-10 lg:grid lg:grid-cols-2 lg:gap-12 lg:!transform-none lg:hover:!translate-y-0">
         <div>
-          <p className="text-[13px] font-bold uppercase tracking-[0.15em] text-brand-orange">Why teams choose us</p>
+          <p className="text-[13px] font-bold uppercase tracking-[0.15em] text-accent">Why teams choose us</p>
           <h2 className="mt-4 text-2xl font-bold text-text-primary sm:text-3xl">
             One platform that scales with your compliance program
           </h2>

@@ -24,12 +24,12 @@ export default function ProductPageTemplate({ slug }: Props) {
             transition={{ duration: 0.5 }}
             className="mx-auto max-w-3xl text-center"
           >
-            <p className="mb-4 inline-flex rounded-full bg-brand-orange-light px-4 py-2 text-[13px] font-bold uppercase tracking-[0.15em] text-brand-orange">
+            <p className="mb-4 inline-flex rounded-full bg-accent-light px-4 py-2 text-[13px] font-bold uppercase tracking-[0.15em] text-accent">
               {content.eyebrow}
             </p>
             <h1 className="text-4xl font-extrabold tracking-tight text-text-primary sm:text-5xl lg:text-[56px] lg:leading-[1.1]">
               {content.title}{" "}
-              <span className="text-brand-orange">{content.highlight}</span>
+              <span className="text-accent">{content.highlight}</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary">
               {content.description}
@@ -51,8 +51,8 @@ export default function ProductPageTemplate({ slug }: Props) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div className="feature-card border border-border-light">
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-[14px] bg-brand-orange-light">
-                <Icon className="h-7 w-7 text-brand-orange" aria-hidden />
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-[14px] bg-accent-light">
+                <Icon className="h-7 w-7 text-accent" aria-hidden />
               </div>
               <h2 className="text-2xl font-bold text-text-primary">Built for production teams</h2>
               <p className="mt-4 text-text-secondary leading-relaxed">
@@ -87,7 +87,7 @@ export default function ProductPageTemplate({ slug }: Props) {
           </p>
           <Link
             href="/auth/signup"
-            className="mt-8 inline-flex items-center justify-center rounded-xl bg-white px-8 py-4 text-lg font-bold text-brand-orange shadow-lg transition-all hover:-translate-y-0.5 hover:bg-bg-secondary"
+            className="mt-8 inline-flex items-center justify-center rounded-xl bg-white px-8 py-4 text-lg font-bold text-accent shadow-lg transition-all hover:-translate-y-0.5 hover:bg-bg-secondary"
           >
             Start Free Trial
             <ArrowRight className="ml-2 h-5 w-5" />

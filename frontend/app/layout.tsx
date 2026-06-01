@@ -18,21 +18,21 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">
+      <body className="min-h-screen bg-background-base text-text-primary font-sans antialiased">
         {children}
         <Toaster
           position="top-right"
           toastOptions={{
             style: {
-              background: "#FFFFFF",
-              color: "#0F172A",
-              border: "1px solid #E2E8F0",
+              background: "var(--bg-surface)",
+              color: "var(--text-primary)",
+              border: "1px solid var(--border-light)",
               borderRadius: "8px",
               padding: "16px",
               boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
             },
-            success: { iconTheme: { primary: "#10B981", secondary: "#FFFFFF" } },
-            error: { iconTheme: { primary: "#EF4444", secondary: "#FFFFFF" } },
+            success: { iconTheme: { primary: "var(--success)", secondary: "var(--bg-surface)" } },
+            error: { iconTheme: { primary: "var(--danger)", secondary: "var(--bg-surface)" } },
           }}
         />
       </body>

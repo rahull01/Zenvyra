@@ -4,24 +4,24 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-all duration-250 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/10 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-all duration-250 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/10 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-white px-7 py-3.5 text-base rounded-lg shadow-button hover:bg-primary-hover hover:-translate-y-0.5 hover:shadow-button-hover active:translate-y-0 active:shadow-button",
+          "bg-accent text-white px-7 py-3.5 text-base rounded-xl shadow-card hover:bg-accent-hover hover:-translate-y-0.5 hover:shadow-card-strong active:translate-y-0 active:shadow-card",
         secondary:
-          "bg-transparent border border-border-light text-text-primary px-7 py-3.5 text-base rounded-lg hover:bg-background-secondary hover:border-border-medium hover:-translate-y-0.5 active:bg-background-tertiary",
+          "bg-transparent border border-border-light text-text-primary px-7 py-3.5 text-base rounded-xl hover:bg-background-secondary hover:border-border-light hover:text-text-primary active:bg-background-secondary",
         outline:
-          "bg-transparent border border-border-light text-text-primary px-7 py-3.5 text-base rounded-lg hover:bg-background-secondary hover:border-border-medium hover:-translate-y-0.5 active:bg-background-tertiary",
-        ghost: "bg-transparent text-primary px-5 py-3 text-base rounded-lg hover:bg-primary-light hover:-translate-y-0.5",
-        destructive: "bg-status-error text-white px-7 py-3.5 text-base rounded-lg hover:bg-red-600",
-        link: "h-auto p-0 text-primary underline-offset-4 hover:underline",
+          "bg-transparent border border-border-light text-text-primary px-7 py-3.5 text-base rounded-xl hover:bg-background-secondary hover:border-border-light active:bg-background-secondary",
+        ghost: "bg-transparent text-accent px-5 py-3 text-base rounded-xl hover:bg-accent/10 hover:-translate-y-0.5",
+        destructive: "bg-status-error text-white px-7 py-3.5 text-base rounded-xl hover:bg-status-error/90",
+        link: "h-auto p-0 text-accent underline-offset-4 hover:underline",
       },
       size: {
-        default: "px-7 py-3.5 text-base rounded-lg",
-        sm: "px-4 py-2 text-sm rounded-md",
-        lg: "px-8 py-4 text-lg rounded-xl",
+        default: "px-7 py-3.5 text-base rounded-xl",
+        sm: "px-4 py-2 text-sm rounded-lg",
+        lg: "px-8 py-4 text-lg rounded-2xl",
         icon: "h-10 w-10 p-0 rounded-lg",
       },
     },

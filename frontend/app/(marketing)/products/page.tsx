@@ -65,7 +65,7 @@ export default function ProductsPage() {
             onClick={() => setActiveTab(tab.key)}
             className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all ${
               activeTab === tab.key
-                ? "bg-brand-orange text-white shadow-btn-shadow"
+                ? "bg-accent text-white shadow-btn-shadow"
                 : "border border-border-light bg-white text-text-secondary hover:border-border-medium hover:text-text-primary"
             }`}
           >

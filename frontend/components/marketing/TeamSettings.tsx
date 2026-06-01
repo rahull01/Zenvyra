@@ -57,8 +57,8 @@ export const TeamSettings = () => {
                 <td className="px-6 py-4">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${
                     member.status === 'Active' 
-                      ? 'bg-emerald-50 text-status-success border-emerald-100' 
-                      : 'bg-slate-50 text-text-tertiary border-slate-100'
+                      ? 'bg-status-success/10 text-status-success border-status-success/20' 
+                      : 'bg-background-tertiary/20 text-text-tertiary border-border-light'
                   }`}>
                     {member.status}
                   </span>
@@ -68,7 +68,7 @@ export const TeamSettings = () => {
                     <button className="p-2 text-text-tertiary hover:text-primary hover:bg-primary-light rounded-lg transition-all" title="Edit Role">
                       <UserCog className="w-4 h-4" />
                     </button>
-                    <button className="p-2 text-text-tertiary hover:text-status-error hover:bg-red-50 rounded-lg transition-all" title="Remove Member">
+                    <button className="p-2 text-text-tertiary hover:text-status-error hover:bg-status-error/10 rounded-lg transition-all" title="Remove Member">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>

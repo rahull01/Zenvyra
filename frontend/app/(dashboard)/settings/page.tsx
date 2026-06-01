@@ -35,6 +35,14 @@ export default function SettingsPage() {
         lastPasswordChange: "2 months ago",
     });
 
+    const accentOptions = [
+        "var(--info)",
+        "var(--danger)",
+        "var(--success)",
+        "var(--accent)",
+        "var(--accent-light)",
+    ];
+
     const handleSave = async () => {
         setIsSaving(true);
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -213,7 +221,7 @@ export default function SettingsPage() {
                                                     defaultChecked={notifications[item.key as keyof typeof notifications]}
                                                     className="sr-only peer"
                                                 />
-                                                <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                                <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background-primary after:border-border-light after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                             </label>
                                         </div>
                                     ))}
@@ -233,7 +241,7 @@ export default function SettingsPage() {
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" className="sr-only peer" />
-                                            <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                            <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background-primary after:border-border-light after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                         </label>
                                     </div>
                                 </div>
@@ -294,14 +302,14 @@ export default function SettingsPage() {
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" defaultChecked className="sr-only peer" />
-                                            <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                                <div className="w-11 h-6 bg-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background-primary after:border-border-light after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                                         </label>
                                     </div>
 
                                     <div className="p-4 rounded-xl bg-background-tertiary/30">
                                         <p className="font-medium text-text-primary mb-4">Accent Color</p>
                                         <div className="flex gap-3">
-                                            {["#0ea5e9", "#f43f5e", "#10b981", "#f59e0b", "#8b5cf6"].map((color) => (
+                                            {accentOptions.map((color) => (
                                                 <button
                                                     key={color}
                                                     className="w-10 h-10 rounded-full border-2 border-transparent hover:border-white transition-all"
