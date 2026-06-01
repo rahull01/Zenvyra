@@ -1,7 +1,0 @@
-2026/05/07-13:38:06.728 4b74 Reusing MANIFEST c:\Users\rahul\.gemini\antigravity\scratch\complianceai-pro\edge-profile\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
-2026/05/07-13:38:06.729 4b74 Recovering log #4
-2026/05/07-13:38:06.732 4b74 Level-0 table #6: started
-2026/05/07-13:38:06.736 4b74 Level-0 table #6: 682296 bytes OK
-2026/05/07-13:38:06.737 4b74 Recovering log #5
-2026/05/07-13:38:06.738 4b74 Reusing old log c:\Users\rahul\.gemini\antigravity\scratch\complianceai-pro\edge-profile\Default\EdgeCoupons/coupons_data.db/000005.log 
-2026/05/07-13:38:06.739 4b74 Delete type=0 #4
