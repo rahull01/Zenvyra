@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { GET as getBannerBundle } from "../v1/banner/[siteId]/bundle.js/route";
 
 const API_BASE_URL = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -8,6 +9,16 @@ async function handleRequest(
 ) {
     const pathSegments = params.path;
     const search = request.nextUrl.search || "";
+
+    if (
+        request.method === "GET" &&
+        pathSegments.length === 4 &&
+        pathSegments[0] === "v1" &&
+        pathSegments[1] === "banner" &&
+        pathSegments[3] === "bundle.js"
+    ) {
+        return getBannerBundle(request, { params: { siteId: pathSegments[2] } });
+    }
 
     let url: string;
     if (pathSegments.length > 0 && pathSegments[0] === "v1") {

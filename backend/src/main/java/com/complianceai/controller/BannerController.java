@@ -1,6 +1,8 @@
 package com.complianceai.controller;
 
 import com.complianceai.model.Banner;
+import com.complianceai.model.WebsiteScanResult;
+import com.complianceai.repository.WebsiteScanResultRepository;
 import com.complianceai.service.BannerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -16,6 +19,7 @@ import java.util.List;
 public class BannerController {
 
     private final BannerService bannerService;
+    private final WebsiteScanResultRepository websiteScanResultRepository;
 
     @PostMapping
     public ResponseEntity<Banner> createBanner(
@@ -47,11 +51,30 @@ public class BannerController {
         return ResponseEntity.noContent().build();
     }
 
-    // Public endpoint for the banner script (No Auth)
+    // Public endpoint for the banner config (No Auth)
     @GetMapping("/public/{id}/config")
     public ResponseEntity<Banner> getPublicBannerConfig(@PathVariable String id) {
         Banner banner = bannerService.getBannerById(id);
         return ResponseEntity.ok(banner);
+    }
+
+    // Public endpoint returning classified trackers for the given banner's organization (No Auth)
+    @GetMapping("/public/{id}/trackers")
+    public ResponseEntity<List<WebsiteScanResult.ClassifiedTracker>> getPublicTrackers(@PathVariable String id) {
+        try {
+            Banner banner = bannerService.getBannerById(id);
+            List<WebsiteScanResult> results = websiteScanResultRepository.findByUserId(banner.getOrganizationId());
+            // Return classifiedTrackers from the most recent COMPLETED scan
+            return results.stream()
+                    .filter(r -> r.getStatus() == WebsiteScanResult.ScanStatus.COMPLETED
+                            && r.getClassifiedTrackers() != null
+                            && !r.getClassifiedTrackers().isEmpty())
+                    .reduce((a, b) -> a.getScannedAt().isAfter(b.getScannedAt()) ? a : b)
+                    .map(r -> ResponseEntity.ok(r.getClassifiedTrackers()))
+                    .orElse(ResponseEntity.ok(Collections.emptyList()));
+        } catch (Exception e) {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
     }
 
     // Dynamic Javascript banner loader delivery endpoint

@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.redis.core.RedisTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,9 +36,34 @@ public class ScanService {
     private final NotificationService notificationService;
     private final StreakService streakService;
     private final SafeWebFetchService safeWebFetchService;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     private COO coo;
+
+    private AgentResponse getCachedScan(String url) {
+        try {
+            String json = (String) redisTemplate.opsForValue().get("scan_cache:" + url);
+            if (json != null) {
+                log.info("Cache hit for URL: {}", url);
+                return objectMapper.readValue(json, AgentResponse.class);
+            }
+        } catch (Exception e) {
+            log.error("Failed to read from Redis cache", e);
+        }
+        return null;
+    }
+
+    private void cacheScan(String url, AgentResponse response) {
+        try {
+            String json = objectMapper.writeValueAsString(response);
+            redisTemplate.opsForValue().set("scan_cache:" + url, json, 24, java.util.concurrent.TimeUnit.HOURS);
+            log.info("Cached scan results for URL: {}", url);
+        } catch (Exception e) {
+            log.error("Failed to write to Redis cache", e);
+        }
+    }
 
     public ComplianceScoreResponse performFreeScan(String url) {
         System.out.println("Calling AI Agent pipeline...");
@@ -45,8 +72,13 @@ public class ScanService {
         try {
             String normalizedUrl = normalizeAndValidateScanUrl(url);
             
-            // Invoke the new COO Agent pipeline
-            AgentResponse agentResponse = coo.runFullScan(normalizedUrl);
+            // Check Redis cache first
+            AgentResponse agentResponse = getCachedScan(normalizedUrl);
+            if (agentResponse == null) {
+                // Invoke the new COO Agent pipeline
+                agentResponse = coo.runFullScan(normalizedUrl);
+                cacheScan(normalizedUrl, agentResponse);
+            }
             
             // Map agent response directly to DTO format
             return mapAgentResponseToDto(normalizedUrl, agentResponse);
@@ -75,8 +107,14 @@ public class ScanService {
         try {
             String normalizedUrl = normalizeAndValidateScanUrl(request.getUrl());
             
-            // Invoke the new COO Agent pipeline
-            AgentResponse agentResponse = coo.runFullScan(normalizedUrl);
+            // Check Redis cache first
+            AgentResponse agentResponse = getCachedScan(normalizedUrl);
+            if (agentResponse == null) {
+                // Invoke the new COO Agent pipeline
+                agentResponse = coo.runFullScan(normalizedUrl);
+                cacheScan(normalizedUrl, agentResponse);
+            }
+            
             ComplianceScoreResponse basicScan = mapAgentResponseToDto(normalizedUrl, agentResponse);
 
             User user = userRepository.findByEmail(userEmail)

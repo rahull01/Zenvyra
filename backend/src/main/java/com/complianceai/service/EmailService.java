@@ -117,4 +117,44 @@ public class EmailService {
             log.warn("Could not send low score alert to {}: {}", to, e.getMessage());
         }
     }
+
+    public void sendPolicyAutoUpdatedEmail(
+            String to,
+            String websiteUrl,
+            String policyTitle,
+            java.util.List<String> newDomains,
+            String publicPolicyUrl) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmail);
+        message.setTo(to);
+        message.setSubject("Your hosted policy was updated for " + websiteUrl);
+        message.setText(String.format("""
+                Hi,
+
+                ComplianceAI Pro completed the monthly audit for %s and found new tracking domains:
+
+                %s
+
+                We regenerated "%s" and saved a new timestamped version automatically.
+
+                Public hosted policy:
+                %s
+
+                Please review the update in your dashboard if your legal workflow requires approval.
+
+                Best regards,
+                The ComplianceAI Team
+                """,
+                websiteUrl,
+                String.join("\n", newDomains.stream().map(domain -> "- " + domain).toList()),
+                policyTitle,
+                publicPolicyUrl));
+
+        try {
+            mailSender.send(message);
+            log.info("Policy auto-update email sent to: {}", to);
+        } catch (Exception e) {
+            log.warn("Could not send policy auto-update email to {}: {}", to, e.getMessage());
+        }
+    }
 }

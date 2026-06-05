@@ -2,45 +2,48 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ShieldCheck, Globe2, Clock3, Users } from 'lucide-react';
+
+const stats = [
+  { icon: ShieldCheck, value: '10,000+', label: 'Businesses protected' },
+  { icon: Globe2, value: '150+', label: 'Countries covered' },
+  { icon: Clock3, value: '99.9%', label: 'Platform uptime' },
+  { icon: Users, value: '4.8/5', label: 'Customer satisfaction' },
+];
 
 const StatsBar = () => {
-  const stats = [
-    { number: '10,000+', label: 'Businesses Protected' },
-    { number: '50M+', label: 'Consent Banners Served' },
-    { number: '150+', label: 'Countries Covered' },
-    { number: '99.9%', label: 'Uptime Guaranteed' },
-  ];
-
   return (
-    <section className="bg-background-secondary py-12">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <motion.p 
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center text-body font-medium text-text-secondary mb-8"
-        >
-          Trusted by 10,000+ businesses worldwide
-        </motion.p>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
-            <motion.div 
-              key={index} 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="text-center"
-            >
-              <div className="text-[48px] font-extrabold text-primary leading-tight mb-2">
-                {stat.number}
-              </div>
-              <div className="text-body-sm text-text-tertiary">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
+    <section className="bg-background-secondary py-20">
+      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
+        <div className="mb-12 text-center">
+          <p className="text-eyebrow font-semibold uppercase tracking-[0.25em] text-primary">
+            Built for high-growth teams
+          </p>
+          <h2 className="mt-4 text-h2 font-extrabold text-text-primary">
+            Trusted by modern companies for product-grade compliance
+          </h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {stats.map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="rounded-[32px] border border-border-light bg-white/80 p-8 shadow-sm backdrop-blur-xl"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-5">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <p className="text-4xl font-extrabold text-text-primary">{stat.value}</p>
+                <p className="mt-3 text-body-sm text-text-secondary">{stat.label}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -1,55 +1,104 @@
 "use client";
 
-import { Globe2, ShieldCheck, Users, Award, Layers, Sparkles, Check } from "lucide-react";
+import { Rocket, Users, Building2, Check } from "lucide-react";
 import PageScaffold from "@/components/marketing/PageScaffold";
-import { MarketingCard, MarketingCardGrid } from "@/components/marketing/MarketingCard";
+import Link from "next/link";
 
 const solutions = [
-  { title: "SaaS", description: "Privacy, cookies, terms, and SSO workflows for subscription products.", icon: Globe2, href: "/products/privacy-policy" },
-  { title: "Ecommerce", description: "Returns, cookies, payments, and customer data compliance out of the box.", icon: ShieldCheck, href: "/products/cookie-consent" },
-  { title: "Agencies", description: "Multi-client domains, white-label portals, and bulk scans in one place.", icon: Users, href: "/dashboard/white-label" },
-  { title: "Healthcare", description: "DSAR, privacy, and security controls built for regulated care teams.", icon: Award, href: "/dashboard/dsar" },
-  { title: "Fintech", description: "Automated regulation alerts and legal policy generation for finance.", icon: Layers, href: "/products/ai-assistant" },
-  { title: "Marketplaces", description: "Terms, acceptable use, and third-party risk monitoring at scale.", icon: Sparkles, href: "/products/terms-conditions" },
+  {
+    title: "For Startups",
+    description:
+      "Launch fast without worrying about compliance. Automate privacy, cookies, and legal requirements in minutes.",
+    icon: Rocket,
+    href: "/solutions/startups",
+  },
+  {
+    title: "For Agencies",
+    description:
+      "Manage compliance for multiple clients with one powerful dashboard. Scale your services and build trust.",
+    icon: Users,
+    href: "/solutions/agencies",
+  },
+  {
+    title: "For Enterprise",
+    description:
+      "Enterprise-grade compliance automation with real-time monitoring, audit logs, and advanced security.",
+    icon: Building2,
+    href: "/solutions/enterprise",
+  },
 ];
 
 export default function SolutionsPage() {
   return (
     <PageScaffold
       eyebrow="Solutions"
-      title="Compliance built for your industry"
-      subtitle="ComplianceAI Pro adapts to your market and risk profile — one platform for product, legal, and security teams."
+      title="Built for every stage of growth"
+      subtitle="Whether you're a startup, agency, or enterprise — ComplianceAI Pro adapts to your needs."
     >
-      <MarketingCardGrid>
+      
+      {/* 🔥 MAIN CARDS */}
+      <div className="grid gap-8 md:grid-cols-3">
         {solutions.map((s, i) => (
-          <MarketingCard key={s.title} {...s} index={i} />
-        ))}
-      </MarketingCardGrid>
+          <Link
+            key={s.title}
+            href={s.href}
+            className="group rounded-2xl border border-border-light bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            <s.icon className="h-10 w-10 text-accent" />
+            <h3 className="mt-4 text-xl font-bold text-text-primary">
+              {s.title}
+            </h3>
+            <p className="mt-3 text-sm text-text-secondary leading-relaxed">
+              {s.description}
+            </p>
 
-      <div className="mt-16 standard-card !p-8 sm:!p-10 lg:grid lg:grid-cols-2 lg:gap-12 lg:!transform-none lg:hover:!translate-y-0">
-        <div>
-          <p className="text-[13px] font-bold uppercase tracking-[0.15em] text-accent">Why teams choose us</p>
-          <h2 className="mt-4 text-2xl font-bold text-text-primary sm:text-3xl">
-            One platform that scales with your compliance program
-          </h2>
-          <p className="mt-4 text-text-secondary leading-relaxed">
-            Whether you run one website or hundreds, get shared visibility, audit-ready evidence, and AI-guided fixes.
-          </p>
-        </div>
-        <ul className="mt-8 space-y-4 lg:mt-0">
-          {[
-            "Multi-tenant control center",
-            "Risk-based task orchestration",
-            "Policy version audit history",
-            "Auto-updates when regulations change",
-          ].map((item) => (
-            <li key={item} className="flex items-center gap-3 rounded-lg border border-border-light bg-bg-secondary px-4 py-3">
-              <Check className="h-5 w-5 shrink-0 text-success" />
-              <span className="text-sm font-medium text-text-secondary">{item}</span>
-            </li>
-          ))}
-        </ul>
+            <span className="mt-4 inline-block text-accent font-medium">
+              Explore →
+            </span>
+          </Link>
+        ))}
       </div>
+
+      {/* 🔥 TRUST SECTION */}
+      <div className="mt-20 standard-card !p-10">
+        <div className="grid lg:grid-cols-2 gap-10">
+
+          <div>
+            <p className="text-sm uppercase text-accent font-semibold tracking-wider">
+              Why choose us
+            </p>
+
+            <h2 className="mt-4 text-3xl font-bold text-text-primary">
+              Compliance that grows with your business
+            </h2>
+
+            <p className="mt-4 text-text-secondary">
+              From solo founders to large enterprises, manage compliance with a single AI-powered platform.
+            </p>
+          </div>
+
+          <ul className="space-y-4">
+            {[
+              "AI-powered compliance automation",
+              "Real-time monitoring & alerts",
+              "Audit-ready reports",
+              "Scalable architecture for any size",
+            ].map((item) => (
+              <li
+                key={item}
+                className="flex items-center gap-3 rounded-lg border border-border-light bg-bg-secondary px-4 py-3"
+              >
+                <Check className="h-5 w-5 text-success" />
+                <span className="text-sm font-medium text-text-secondary">
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+        </div>
+      </div>
+
     </PageScaffold>
   );
 }

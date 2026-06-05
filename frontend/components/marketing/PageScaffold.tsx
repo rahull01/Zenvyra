@@ -22,7 +22,7 @@ export default function PageScaffold({
 }: PageScaffoldProps) {
   const heroEyebrow = eyebrow ?? title;
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#F8F9FB]">
       <MarketingPageHero eyebrow={heroEyebrow} title={title} subtitle={subtitle}>
         {heroExtra}
       </MarketingPageHero>

@@ -77,6 +77,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/scan/free").permitAll()
                         .requestMatchers("/scan/free").permitAll()
                         .requestMatchers("/health").permitAll()
+                        .requestMatchers("/banners/public/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/policies/public/**").permitAll()
 
                         .requestMatchers("/dashboard/**").authenticated()
                         .requestMatchers("/websites/**").authenticated()
@@ -90,8 +92,8 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2SuccessHandler))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(rateLimitFilter, org.springframework.security.web.authentication.logout.LogoutFilter.class)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(rateLimitFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }

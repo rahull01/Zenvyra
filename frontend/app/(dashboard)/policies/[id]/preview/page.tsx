@@ -1,20 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { ArrowLeft, Edit, Copy, Check, Printer, FileDown, Globe, Code } from "lucide-react";
+import React from "react";
+import { ArrowLeft, Edit, Printer, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import PolicyEmbedSnippetPanel from "@/components/policies/PolicyEmbedSnippetPanel";
 import Link from "next/link";
 
 export default function PolicyPreviewPage({ params }: { params: { id: string } }) {
-  const [copied, setCopied] = useState(false);
-  const embedCode = `<iframe src="https://cdn.complianceai.pro/policies/${params.id}" width="100%" height="600" frameborder="0"></iframe>`;
-
-  const handleCopyEmbed = () => {
-    navigator.clipboard.writeText(embedCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   const handlePrint = () => {
     window.print();
   };
@@ -74,27 +66,11 @@ export default function PolicyPreviewPage({ params }: { params: { id: string } }
 
         {/* Sidebar Embed Card */}
         <div className="lg:col-span-4 space-y-6 print:hidden">
-          <div className="bg-background-primary border border-border-light rounded-3xl p-6 shadow-card space-y-4">
-            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider flex items-center gap-2">
-              <Code className="text-primary h-4 w-4" />
-              Embed on website
-            </h3>
-            <p className="text-xs text-text-secondary leading-relaxed font-medium">
-              Copy the iframe code snippet below to embed the dynamically hosted version directly onto your website's privacy page.
-            </p>
-            <div className="bg-background-secondary p-3 rounded-2xl border border-border-light">
-              <code className="text-caption font-mono text-text-secondary break-all">
-                {embedCode}
-              </code>
-            </div>
-            <Button
-              onClick={handleCopyEmbed}
-              className="w-full bg-primary hover:bg-primary-hover text-white text-caption font-bold py-2.5 rounded-xl gap-2"
-            >
-              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-              {copied ? "Embed copied" : "Copy Embed Snippet"}
-            </Button>
-          </div>
+          <PolicyEmbedSnippetPanel
+            companySlug="acme-corp"
+            policyType="privacy-policy"
+            publicBaseUrl="https://complianceai.pro"
+          />
 
           <div className="bg-secondary-dark text-white p-6 rounded-3xl space-y-3 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(230,126,34,0.1),transparent_50%)]" />

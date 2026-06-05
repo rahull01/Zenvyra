@@ -10,10 +10,20 @@ import { TermlyButton } from "./TermlyButton";
 import { cn } from "@/lib/utils";
 
 /* ─── Mega-menu panel ─── */
-function MegaMenuPanel({ columns }: { columns: NavMegaColumn[] }) {
+function MegaMenuPanel({
+  columns,
+  onMouseEnter,
+  onMouseLeave,
+}: {
+  columns: NavMegaColumn[];
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}) {
   return (
     <div
-      className="absolute left-1/2 -translate-x-1/2 top-full z-50 mt-2 w-[600px] rounded-2xl border border-all-border-strong bg-white p-6 shadow-termly-soft"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className="absolute left-1/2 -translate-x-1/2 top-full z-50 w-[600px] rounded-2xl border border-all-border-strong bg-white p-6 shadow-termly-soft"
       role="region"
       aria-label="Products menu"
     >
@@ -145,9 +155,11 @@ export default function TermlyNav() {
                 </button>
                 <AnimatePresence>
                   {productsOpen && (
-                    <div onMouseLeave={() => setProductsOpen(false)}>
-                      <MegaMenuPanel columns={item.mega} />
-                    </div>
+                    <MegaMenuPanel
+                      columns={item.mega}
+                      onMouseEnter={() => setProductsOpen(true)}
+                      onMouseLeave={() => setProductsOpen(false)}
+                    />
                   )}
                 </AnimatePresence>
               </div>

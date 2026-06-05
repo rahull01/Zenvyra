@@ -35,8 +35,8 @@ const plans = [
 
 export const SolutionsGrid = () => {
   return (
-    <section className="py-32 bg-background-secondary">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section className="py-24 bg-background-secondary">
+      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,7 +61,7 @@ export const SolutionsGrid = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
               whileHover={{ y: -5 }}
-              className={`relative bg-background-primary rounded-2xl p-8 border transition-all duration-350 ${
+              className={`relative flex h-full flex-col rounded-2xl p-8 border transition-all duration-350 ${
                 plan.popular
                   ? 'border-2 border-primary shadow-card-hover scale-105 z-10'
                   : 'border-border-light shadow-card hover:shadow-card-hover'
@@ -82,7 +82,7 @@ export const SolutionsGrid = () => {
                 </div>
               </div>
 
-              <div className="space-y-4 mb-8 flex-1">
+              <div className="flex-1 space-y-4 mb-8">
                 {plan.features.map((feature, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <Check className="w-4 h-4 text-status-success mt-0.5 shrink-0" />
@@ -94,7 +94,7 @@ export const SolutionsGrid = () => {
               <Button
                 variant={plan.popular ? 'default' : 'outline'}
                 size="default"
-                className="w-full"
+                className="w-full mt-auto"
               >
                 {plan.cta}
               </Button>

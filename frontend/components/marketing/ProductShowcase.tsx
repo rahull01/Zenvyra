@@ -14,66 +14,99 @@ const ProductShowcase = () => {
   ];
 
   return (
-    <section className="py-32 bg-background-primary">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left - Dashboard Mockup */}
-          <motion.div 
+    <section className="py-24 bg-background-primary">
+      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
+        <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] items-center">
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="relative order-2 lg:order-1"
           >
-            <div className="bg-secondary-dark rounded-2xl border border-white/10 shadow-modal p-6">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
+            <div className="rounded-[32px] border border-border-light bg-slate-950/95 shadow-2xl overflow-hidden">
+              <div className="bg-slate-900/90 px-6 py-5 border-b border-white/10 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">Compliance Score</p>
+                  <p className="mt-1 text-3xl font-bold text-white">92%</p>
+                </div>
+                <div className="rounded-full bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">Live</div>
               </div>
-              <div className="space-y-4">
-                <div className="h-4 bg-white/10 rounded w-3/4" />
-                <div className="h-32 bg-white/5 rounded-lg border border-white/10" />
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="h-20 bg-white/5 rounded-lg border border-white/10" />
-                  <div className="h-20 bg-white/5 rounded-lg border border-white/10" />
-                  <div className="h-20 bg-white/5 rounded-lg border border-white/10" />
+              <div className="space-y-6 p-6">
+                <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-6">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm text-white/70">Policy health</p>
+                      <p className="mt-2 text-xl font-semibold text-white">Good</p>
+                    </div>
+                    <div className="rounded-2xl bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">+8% this week</div>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-5">
+                    <p className="text-sm text-white/70">Consent status</p>
+                    <p className="mt-3 text-lg font-semibold text-white">Compliant</p>
+                  </div>
+                  <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-5">
+                    <p className="text-sm text-white/70">Alerts</p>
+                    <p className="mt-3 text-lg font-semibold text-white">2 issues</p>
+                  </div>
+                </div>
+
+                <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-5">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm text-white/70">Next scan</p>
+                      <p className="mt-2 text-lg font-semibold text-white">Today, 11:15 AM</p>
+                    </div>
+                    <div className="rounded-full bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">Auto-scan</div>
+                  </div>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Right - Content */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="space-y-8 order-1 lg:order-2"
           >
-            <h2 className="text-h2 font-extrabold text-text-primary">
-              Powerful Dashboard at Your Fingertips
-            </h2>
+            <div className="space-y-6">
+              <p className="text-eyebrow font-semibold uppercase tracking-[0.25em] text-primary">
+                PRODUCT PREVIEW
+              </p>
+              <h2 className="text-h2 font-extrabold text-text-primary">
+                A dashboard designed around compliance action
+              </h2>
+              <p className="max-w-2xl text-body-lg text-text-secondary leading-relaxed">
+                See compliance status, policy health, and consent automation in one polished interface built for modern teams.
+              </p>
+            </div>
+
             <ul className="space-y-4">
               {features.map((feature, index) => (
-                <motion.li 
-                  key={index} 
+                <motion.li
+                  key={index}
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                   className="flex items-start gap-3"
                 >
-                  <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="mt-1 h-6 w-6 text-primary" />
                   <span className="text-body text-text-secondary">{feature}</span>
                 </motion.li>
               ))}
             </ul>
+
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.46 }}
             >
               <Button variant="default" size="lg">
                 Explore Dashboard

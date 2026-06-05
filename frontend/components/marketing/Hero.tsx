@@ -4,196 +4,121 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Shield, CheckCircle2, Globe, ArrowRight, Check, Lock, FileText, Cookie, BarChart3 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+
+const heroStats = [
+  { label: 'Live website scans', value: '15s' },
+  { label: 'AI policy drafts', value: '1000+' },
+  { label: 'GDPR, CCPA, LGPD', value: '20+' },
+];
 
 const Hero = () => {
   return (
-    <section className="pt-[72px] min-h-screen bg-hero-gradient overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content - Hero Image/Illustration */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative lg:h-[500px] flex items-center justify-center order-2 lg:order-1"
+    <section className="relative overflow-hidden bg-hero-gradient py-20">
+      <div className="absolute inset-x-0 top-0 h-[360px] bg-[radial-gradient(circle_at_top_right,_rgba(255,145,77,0.18),_transparent_34%)] pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-[260px] bg-[radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.12),_transparent_40%)] pointer-events-none" />
+      <div className="relative mx-auto max-w-[1200px] px-6 lg:px-12">
+        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="space-y-6 max-w-3xl"
           >
-            {/* Dashboard Mockup */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative w-full max-w-[500px] animate-float"
-            >
-              <div className="bg-secondary-dark rounded-2xl border border-white/10 shadow-modal p-6">
-                {/* Mockup Header */}
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-3 h-3 rounded-full bg-red-400" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                  <div className="w-3 h-3 rounded-full bg-green-400" />
-                </div>
-                
-                {/* Mockup Content */}
-                <div className="space-y-4">
-                  <div className="h-4 bg-white/10 rounded w-3/4" />
-                  <div className="h-4 bg-white/10 rounded w-1/2" />
-                  <div className="h-32 bg-white/5 rounded-lg border border-white/10" />
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="h-20 bg-white/5 rounded-lg border border-white/10" />
-                    <div className="h-20 bg-white/5 rounded-lg border border-white/10" />
-                  </div>
-                </div>
-              </div>
+            <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs text-white/90 backdrop-blur">
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-white animate-pulse" />
+              Trusted by high-growth product teams
+            </div>
 
-              {/* Floating Elements */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="absolute -top-4 -right-4 bg-background-primary rounded-xl border border-border-light shadow-card p-4 animate-float" 
-                style={{ animationDelay: '0.5s' }}
-              >
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-status-success" />
-                  <span className="text-body-sm font-medium text-text-primary">0 critical issues</span>
-                </div>
-              </motion.div>
+            <h1 className="text-[clamp(2.8rem,4.2vw,4rem)] font-extrabold tracking-tight text-white leading-[1.02]">
+              Built like a modern SaaS product for practical compliance.
+            </h1>
 
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="absolute -bottom-4 -left-4 bg-background-primary rounded-xl border border-border-light shadow-card p-4 animate-float" 
-                style={{ animationDelay: '1s' }}
-              >
-                <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary" />
-                  <span className="text-body-sm font-medium text-text-primary">AI Auto-Fix applied</span>
-                </div>
-              </motion.div>
+            <p className="max-w-xl text-base leading-7 text-white/80">
+              ComplianceAI Pro turns privacy, cookie consent, and policy workflows into a beautiful product experience for teams that ship fast. Live scans, audit-ready policy drafts, consent records, and global law coverage are visible in one dashboard.
+            </p>
 
-              {/* Live monitoring pill */}
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-primary/90 text-white px-4 py-2 rounded-full flex items-center gap-2">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                <span className="text-caption font-semibold">Live monitoring active</span>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Right Content */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6 order-1 lg:order-2"
-          >
-            {/* Eyebrow */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="inline-flex items-center gap-2 bg-primary-light px-4 py-2 rounded-full"
-            >
-              <span className="text-eyebrow font-semibold text-primary uppercase tracking-[0.15em]">
-                AI-POWERED COMPLIANCE AUTOMATION
-              </span>
-            </motion.div>
-
-            {/* H1 */}
-            <motion.h1 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-hero font-extrabold text-text-primary leading-[1.1]"
-            >
-              All-in-One Data Privacy Compliance Solution for Websites & Apps
-            </motion.h1>
-
-            {/* Subtitle */}
-            <motion.p 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-body-lg text-text-secondary max-w-[520px] leading-relaxed"
-            >
-              ComplianceAI Pro is your all-in-one compliance solution for data privacy laws worldwide. Generate policies, scan websites, and manage consent all in one place.
-            </motion.p>
-
-            {/* Feature List */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="space-y-3"
-            >
-              {[
-                { icon: FileText, text: 'Auto-generate legal policies in minutes' },
-                { icon: Cookie, text: 'Cookie consent management & scanning' },
-                { icon: Lock, text: 'GDPR, CCPA, & global compliance' },
-                { icon: BarChart3, text: 'Real-time compliance monitoring' },
-              ].map((feature, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <feature.icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <span className="text-body text-text-secondary">{feature.text}</span>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* URL Input + CTA */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-3"
-            >
-              <input
-                type="text"
-                placeholder="https://yourwebsite.com"
-                className="flex-1 h-[52px] rounded-lg border border-border-light px-4 text-base text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200"
-              />
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <Link href="/auth/signup">
-                <Button variant="default" className="h-[52px] px-7 hover:bg-primary-hover transition-colors">
+                <Button variant="default" size="lg" className="rounded-2xl bg-white text-slate-900 hover:bg-slate-100 shadow-xl">
                   Start Free Scan
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
-            </motion.div>
+              <Link href="/pricing" className="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-7 py-4 text-sm font-semibold text-white/90 transition hover:bg-white/15">
+                See pricing
+              </Link>
+            </div>
 
-            {/* Trust Text */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="flex items-center gap-2 text-body-sm text-text-tertiary"
-            >
-              <span>No credit card required</span>
-              <span className="w-1 h-1 rounded-full bg-border-medium" />
-              <span>Instant scan</span>
-              <span className="w-1 h-1 rounded-full bg-border-medium" />
-              <span>Free setup</span>
-            </motion.div>
-
-            {/* Social Proof */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="pt-6 border-t border-border-light"
-            >
-              <div className="flex items-center gap-4">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-border-medium border-2 border-background-primary" />
-                  ))}
+            <div className="grid gap-3 sm:grid-cols-3">
+              {heroStats.map((stat) => (
+                <div key={stat.label} className="rounded-[28px] border border-white/10 bg-white/10 p-5 text-white/90 backdrop-blur shadow-sm">
+                  <p className="text-2xl font-extrabold tracking-tight">{stat.value}</p>
+                  <p className="mt-2 text-sm uppercase tracking-[0.2em] text-white/70">{stat.label}</p>
                 </div>
-                <div>
-                  <p className="text-body-sm font-semibold text-text-primary">Trusted by 10,000+ businesses</p>
-                  <p className="text-caption text-text-tertiary">Join companies staying compliant</p>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="relative max-w-xl mx-auto overflow-hidden rounded-[30px] border border-white/10 bg-slate-950/90 shadow-[0_32px_90px_rgba(15,23,42,0.22)] lg:mx-0"
+          >
+            <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-slate-900/90 px-5 py-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">Compliance Score</p>
+                <p className="mt-1 text-3xl font-bold text-white">92%</p>
+              </div>
+              <div className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">Live</div>
+            </div>
+            <div className="space-y-5 p-5">
+              <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs text-white/70">Policy health</p>
+                    <p className="mt-2 text-lg font-semibold text-white">Good</p>
+                  </div>
+                  <div className="rounded-2xl bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">+8% week over week</div>
                 </div>
               </div>
-            </motion.div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-4">
+                  <p className="text-xs text-white/70">Consent status</p>
+                  <p className="mt-3 text-base font-semibold text-white">Compliant</p>
+                </div>
+                <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-4">
+                  <p className="text-xs text-white/70">Alerts</p>
+                  <p className="mt-3 text-base font-semibold text-white">2 issues</p>
+                </div>
+              </div>
+
+              <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs text-white/70">Next scan</p>
+                    <p className="mt-2 text-base font-semibold text-white">Today, 11:15 AM</p>
+                  </div>
+                  <div className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">Auto-scan</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="absolute -bottom-10 left-1/2 w-[calc(100%-3rem)] -translate-x-1/2 rounded-[30px] border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur md:left-auto md:right-8 md:w-[20rem] md:-translate-x-0">
+              <div className="text-xs uppercase tracking-[0.2em] text-white/70">Featured workflow</div>
+              <div className="mt-4 grid gap-3">
+                <div className="rounded-3xl bg-slate-950/90 p-4 border border-white/10">
+                  <p className="text-xs text-white/70">Policy update</p>
+                  <p className="mt-2 text-sm font-semibold text-white">Approved 2 minutes ago</p>
+                </div>
+                <div className="rounded-3xl bg-slate-950/90 p-4 border border-white/10">
+                  <p className="text-xs text-white/70">Cookie banner</p>
+                  <p className="mt-2 text-sm font-semibold text-white">Live on 1 site</p>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

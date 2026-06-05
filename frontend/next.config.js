@@ -21,8 +21,20 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
+        source: "/api/:path((?!v1/banner/[^/]+/bundle\\.js$).*)",
         destination: `${process.env.API_BASE_URL || "http://localhost:8080"}/api/:path*`,
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/p/:companySlug/:policyType",
+        headers: [
+          { key: "X-Frame-Options", value: "ALLOWALL" },
+          { key: "Content-Security-Policy", value: "frame-ancestors *" },
+          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+        ],
       },
     ];
   },

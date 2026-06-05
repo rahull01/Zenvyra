@@ -19,7 +19,7 @@ export default function MarketingCTA({
   secondaryLabel = "Talk to Sales",
 }: MarketingCTAProps) {
   return (
-    <section className="bg-cta-banner py-20 sm:py-24">
+    <section className="bg-cta-gradient py-20 sm:py-24">
       <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
         <h2 className="text-3xl font-bold text-white sm:text-4xl">{title}</h2>
         <p className="mt-4 text-lg text-white/85">{subtitle}</p>

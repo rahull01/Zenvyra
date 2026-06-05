@@ -58,4 +58,11 @@ public class PolicyController {
             @RequestBody Map<String, String> request) {
         return ResponseEntity.ok(policyService.draftWithAI(id, request.get("prompt")));
     }
+
+    @GetMapping("/public/{companySlug}/{policyType}")
+    public ResponseEntity<Map<String, Object>> getPublicPolicy(
+            @PathVariable String companySlug,
+            @PathVariable String policyType) {
+        return ResponseEntity.ok(policyService.getPublicPolicy(companySlug, policyType));
+    }
 }
