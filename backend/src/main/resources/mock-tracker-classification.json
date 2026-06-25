@@ -1,0 +1,20 @@
+[
+  {
+    "domain": "google-analytics.com",
+    "serviceName": "Google Analytics",
+    "category": "Analytics",
+    "purposeDescription": "Measures website visits and behavior for analytics reporting."
+  },
+  {
+    "domain": "facebook.com",
+    "serviceName": "Meta Pixel",
+    "category": "Marketing",
+    "purposeDescription": "Supports advertising conversion tracking and audience measurement."
+  },
+  {
+    "domain": "doubleclick.net",
+    "serviceName": "Google DoubleClick",
+    "category": "Advertising",
+    "purposeDescription": "Delivers and measures advertising campaigns."
+  }
+]

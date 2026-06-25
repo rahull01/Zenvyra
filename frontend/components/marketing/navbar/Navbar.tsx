@@ -40,7 +40,7 @@ export default function Navbar() {
                         </div>
                         <div className="flex flex-col">
                             <span className="text-xl font-bold text-text-primary tracking-tight leading-none">
-                                ComplianceAI
+                                Zenvyra
                             </span>
                             <span className="text-[10px] text-text-secondary font-bold tracking-[0.2em] uppercase mt-1">
                                 Enterprise

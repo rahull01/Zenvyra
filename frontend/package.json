@@ -1,9 +1,9 @@
 {
-  "name": "complianceai-pro-frontend",
+  "name": "zenvyra-frontend",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node --use-system-ca ./node_modules/next/dist/bin/next dev",
     "clean": "node -e \"try{require('fs').rmSync('.next',{recursive:true,force:true})}catch(e){}\"",
     "build": "next build",
     "build:clean": "npm run clean && next build",
@@ -33,6 +33,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3",
     "react-hot-toast": "^2.4.1",
+    "react-markdown": "^10.1.0",
     "recharts": "^2.10.4",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
@@ -41,6 +42,7 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",

@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-6 text-lg text-text-secondary leading-relaxed max-w-2xl mx-auto"
             >
-              Comply with GDPR, CCPA, CalOPPA, LGPD, and PIPEDA automatically. Tailored specifically to your app, SaaS, or website operations.
+              Prepare region-aware privacy policy drafts for GDPR, CCPA, CalOPPA, LGPD, and PIPEDA review. Tailored specifically to your app, SaaS, or website operations.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -129,17 +129,17 @@ export default function PrivacyPolicyPage() {
           <div className="grid gap-12 lg:grid-cols-2 items-center">
             <div>
               <h2 className="text-3xl font-extrabold text-text-primary tracking-tight">
-                Designed for developer speed and legal completeness
+                Designed for developer speed and counsel-ready review
               </h2>
               <p className="mt-4 text-text-secondary leading-relaxed">
-                We handle the compliance details so you can focus on building products. From cookies to third-party subprocessors, we ask the right questions and output high-quality, hosted compliance documentation.
+                We structure privacy details so you can focus on building products. From cookies to third-party subprocessors, we ask the right questions and output high-quality, hosted documentation for review.
               </p>
               <ul className="mt-8 space-y-4">
                 {[
                   "Host policies on our lightning-fast CDN or embed as raw HTML",
                   "Consent banner cookies linked automatically for zero-manual syncs",
                   "Includes standard data protection officer (DPO) clauses",
-                  "100% compliant with standard App Store and Google Play requirements",
+                  "Includes review prompts for standard App Store and Google Play privacy requirements",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-text-primary font-medium">
                     <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
@@ -161,7 +161,7 @@ export default function PrivacyPolicyPage() {
                 {`<!DOCTYPE html>
 <html>
 <head>
-  <title>Privacy Policy - ComplianceAI Pro</title>
+  <title>Privacy Policy - Zenvyra</title>
 </head>
 <body>
   <h1>Privacy Policy</h1>
@@ -183,7 +183,7 @@ export default function PrivacyPolicyPage() {
         <PageContainer className="text-center">
           <h2 className="text-3xl font-extrabold text-text-primary">Ready to comply with global laws?</h2>
           <p className="mt-4 text-text-secondary max-w-xl mx-auto">
-            Join thousands of startups, SaaS founders, and enterprise companies using ComplianceAI Pro.
+            Join thousands of startups, SaaS founders, and enterprise companies using Zenvyra.
           </p>
           <div className="mt-8 flex justify-center">
             <Link href="/dashboard/policies/new">

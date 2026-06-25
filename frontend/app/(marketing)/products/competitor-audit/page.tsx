@@ -26,8 +26,8 @@ export default function CompetitorAuditPage() {
       dsarAutomation: 40,
       loadSpeed: 1.6,
     },
-    complianceai: {
-      name: "ComplianceAI Pro",
+    Zenvyra: {
+      name: "Zenvyra",
       policyCoverage: 99,
       bannerCompliance: 100,
       dsarAutomation: 95,
@@ -90,7 +90,7 @@ export default function CompetitorAuditPage() {
           <div className="mx-auto max-w-3xl text-center mb-10">
             <h2 className="text-3xl font-extrabold text-text-primary">How do standard platforms compare?</h2>
             <p className="text-text-secondary mt-2">
-              Select an option below to compare typical solutions against ComplianceAI Pro's automated framework.
+              Select an option below to compare typical solutions against Zenvyra's automated framework.
             </p>
           </div>
 
@@ -126,7 +126,7 @@ export default function CompetitorAuditPage() {
                   <span>Privacy Policy Clause Completeness</span>
                   <div className="flex gap-4">
                     <span className="text-text-muted">{metrics[selectedCompetitor as keyof typeof metrics].name}: {metrics[selectedCompetitor as keyof typeof metrics].policyCoverage}%</span>
-                    <span className="text-primary">ComplianceAI Pro: {metrics.complianceai.policyCoverage}%</span>
+                    <span className="text-primary">Zenvyra: {metrics.Zenvyra.policyCoverage}%</span>
                   </div>
                 </div>
                 <div className="w-full bg-background-secondary h-3 rounded-full overflow-hidden relative">
@@ -136,7 +136,7 @@ export default function CompetitorAuditPage() {
                   />
                   <div
                     className="bg-primary h-full absolute left-0 top-0 transition-all duration-350 opacity-60"
-                    style={{ width: `${metrics.complianceai.policyCoverage}%` }}
+                    style={{ width: `${metrics.Zenvyra.policyCoverage}%` }}
                   />
                 </div>
               </div>
@@ -146,7 +146,7 @@ export default function CompetitorAuditPage() {
                   <span>Geo-Targeted Consent Ban Rate</span>
                   <div className="flex gap-4">
                     <span className="text-text-muted">{metrics[selectedCompetitor as keyof typeof metrics].name}: {metrics[selectedCompetitor as keyof typeof metrics].bannerCompliance}%</span>
-                    <span className="text-primary">ComplianceAI Pro: {metrics.complianceai.bannerCompliance}%</span>
+                    <span className="text-primary">Zenvyra: {metrics.Zenvyra.bannerCompliance}%</span>
                   </div>
                 </div>
                 <div className="w-full bg-background-secondary h-3 rounded-full overflow-hidden relative">
@@ -156,7 +156,7 @@ export default function CompetitorAuditPage() {
                   />
                   <div
                     className="bg-primary h-full absolute left-0 top-0 transition-all duration-350 opacity-60"
-                    style={{ width: `${metrics.complianceai.bannerCompliance}%` }}
+                    style={{ width: `${metrics.Zenvyra.bannerCompliance}%` }}
                   />
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default function CompetitorAuditPage() {
                   <span>DSAR Form Workflow Automation</span>
                   <div className="flex gap-4">
                     <span className="text-text-muted">{metrics[selectedCompetitor as keyof typeof metrics].name}: {metrics[selectedCompetitor as keyof typeof metrics].dsarAutomation}%</span>
-                    <span className="text-primary">ComplianceAI: {metrics.complianceai.dsarAutomation}%</span>
+                    <span className="text-primary">Zenvyra: {metrics.Zenvyra.dsarAutomation}%</span>
                   </div>
                 </div>
                 <div className="w-full bg-background-secondary h-3 rounded-full overflow-hidden relative">
@@ -176,7 +176,7 @@ export default function CompetitorAuditPage() {
                   />
                   <div
                     className="bg-primary h-full absolute left-0 top-0 transition-all duration-350 opacity-60"
-                    style={{ width: `${metrics.complianceai.dsarAutomation}%` }}
+                    style={{ width: `${metrics.Zenvyra.dsarAutomation}%` }}
                   />
                 </div>
               </div>
@@ -186,7 +186,7 @@ export default function CompetitorAuditPage() {
                   Speed Performance Analysis
                 </span>
                 <p className="text-sm text-text-secondary leading-relaxed">
-                  ComplianceAI Pro script size weighs less than 12KB, loading in just <strong>{metrics.complianceai.loadSpeed}s</strong>. Compare this against typical premium tools that load at <strong>{metrics[selectedCompetitor as keyof typeof metrics].loadSpeed}s</strong>, causing web core vitals performance penalties.
+                  Zenvyra script size weighs less than 12KB, loading in just <strong>{metrics.Zenvyra.loadSpeed}s</strong>. Compare this against typical premium tools that load at <strong>{metrics[selectedCompetitor as keyof typeof metrics].loadSpeed}s</strong>, causing web core vitals performance penalties.
                 </p>
               </div>
             </div>

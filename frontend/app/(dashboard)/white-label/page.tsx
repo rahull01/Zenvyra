@@ -53,7 +53,7 @@ export default function WhiteLabelSettingsPage() {
                 className="w-full text-sm px-4 py-3 rounded-xl border border-border-medium outline-none focus:border-primary bg-background-secondary text-text-primary"
               />
               <span className="text-[10px] text-text-muted leading-relaxed block font-semibold">
-                Point your DNS CNAME record to <code>cname.complianceai.pro</code> for automated SSL certificate mapping.
+                Point your DNS CNAME record to <code>cname.zenvyra.com</code> for automated SSL certificate mapping.
               </span>
             </div>
 

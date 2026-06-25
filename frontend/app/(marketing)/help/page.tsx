@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const categories = [
-  { title: "Getting Started", icon: BookOpen, count: 12, description: "New to ComplianceAI Pro? Start here for the basics." },
+  { title: "Getting Started", icon: BookOpen, count: 12, description: "New to Zenvyra? Start here for the basics." },
   { title: "Privacy & Legal", icon: Shield, count: 24, description: "How to generate and manage your legal documents." },
   { title: "Cookie Consent", icon: Settings, count: 18, description: "Setup banners, blocking, and preference centers." },
   { title: "Account & Billing", icon: CreditCard, count: 8, description: "Manage subscriptions, seats, and payment methods." },

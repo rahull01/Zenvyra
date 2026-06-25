@@ -1,18 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { FormEvent, useState } from "react";
-import { motion } from "framer-motion";
 import {
     Plus, Globe, TrendingUp, TrendingDown, Minus,
-    Target, BarChart3, Download, ExternalLink,
-    Award, AlertTriangle
+    ExternalLink, Award
 } from "lucide-react";
 import toast from "react-hot-toast";
-import {
-    RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
-    Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
-    CartesianGrid, Tooltip
-} from "recharts";
+import { runAfterPaint } from "@/lib/performance";
+
+const CompetitorRadarChart = dynamic(() => import("@/components/dashboard/CompetitorRadarChart"), {
+    ssr: false,
+    loading: () => <div aria-hidden="true" className="h-[300px] w-full rounded-xl bg-background-secondary/40" />,
+});
 
 const competitors = [
     {
@@ -65,14 +65,6 @@ const competitors = [
     },
 ];
 
-const radarData = [
-    { subject: "Privacy", A: 90, B: 65, C: 50, fullMark: 100 },
-    { subject: "Cookies", A: 85, B: 80, C: 60, fullMark: 100 },
-    { subject: "SSL", A: 100, B: 100, C: 80, fullMark: 100 },
-    { subject: "Accessibility", A: 80, B: 60, C: 45, fullMark: 100 },
-    { subject: "Performance", A: 70, B: 75, C: 55, fullMark: 100 },
-];
-
 export default function CompetitorsPage() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [newCompetitorUrl, setNewCompetitorUrl] = useState("");
@@ -83,9 +75,9 @@ export default function CompetitorsPage() {
             toast.error("Please enter a competitor URL");
             return;
         }
-        toast.success("Competitor added successfully");
         setShowAddModal(false);
         setNewCompetitorUrl("");
+        runAfterPaint(() => toast.success("Competitor added successfully"));
     };
 
     const getTrendIcon = (current: number, previous: number) => {
@@ -120,15 +112,13 @@ export default function CompetitorsPage() {
                         Track and compare your compliance against competitors
                     </p>
                 </div>
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowAddModal(true)}
+                <button
+                    onClick={() => runAfterPaint(() => setShowAddModal(true))}
                     className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-xl transition-all duration-300 shadow-glow-accent"
                 >
                     <Plus className="w-5 h-5" />
                     Add Competitor
-                </motion.button>
+                </button>
             </div>
 
             {/* Your Score vs Industry */}
@@ -146,45 +136,7 @@ export default function CompetitorsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Radar Chart */}
-                    <ResponsiveContainer width="100%" height={300}>
-                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
-                            <PolarGrid stroke="var(--bg-tertiary)" />
-                            <PolarAngleAxis dataKey="subject" tick={{ fill: "var(--text-secondary)", fontSize: 12 }} />
-                            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: "var(--text-muted)", fontSize: 10 }} />
-                            <Radar
-                                name="You"
-                                dataKey="A"
-                                stroke="var(--info)"
-                                fill="var(--info)"
-                                fillOpacity={0.3}
-                                strokeWidth={2}
-                            />
-                            <Radar
-                                name="Competitor A"
-                                dataKey="B"
-                                stroke="var(--danger)"
-                                fill="var(--danger)"
-                                fillOpacity={0.1}
-                                strokeWidth={2}
-                            />
-                            <Radar
-                                name="Competitor B"
-                                dataKey="C"
-                                stroke="var(--accent)"
-                                fill="var(--accent)"
-                                fillOpacity={0.1}
-                                strokeWidth={2}
-                            />
-                            <Tooltip
-                                contentStyle={{
-                                    backgroundColor: "var(--bg-secondary-darker)",
-                                    border: "1px solid var(--bg-tertiary)",
-                                    borderRadius: "12px",
-                                }}
-                            />
-                        </RadarChart>
-                    </ResponsiveContainer>
+                    <CompetitorRadarChart />
 
                     {/* Ranking */}
                     <div className="space-y-4">
@@ -226,12 +178,9 @@ export default function CompetitorsPage() {
             <div className="space-y-6">
                 <h3 className="text-heading-3">Tracked Competitors</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {competitors.map((competitor, index) => (
-                        <motion.div
+                    {competitors.map((competitor) => (
+                        <div
                             key={competitor.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
                             className="glass-card rounded-2xl p-6 hover:border-primary/30 transition-all duration-300"
                         >
                             <div className="flex items-start justify-between mb-4">
@@ -303,7 +252,7 @@ export default function CompetitorsPage() {
                                     View Report
                                 </button>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -311,11 +260,7 @@ export default function CompetitorsPage() {
             {/* Add Competitor Modal */}
             {showAddModal && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="glass-card rounded-2xl p-8 w-full max-w-md"
-                    >
+                    <div className="glass-card rounded-2xl p-8 w-full max-w-md">
                         <h2 className="text-heading-2 mb-4">Add Competitor</h2>
                         <form onSubmit={handleAddCompetitor} className="space-y-4">
                             <div>
@@ -336,7 +281,7 @@ export default function CompetitorsPage() {
                             <div className="flex gap-3">
                                 <button
                                     type="button"
-                                    onClick={() => setShowAddModal(false)}
+                                    onClick={() => runAfterPaint(() => setShowAddModal(false))}
                                     className="flex-1 py-3 bg-background-secondary hover:bg-background-tertiary text-text-secondary font-semibold rounded-xl transition-all duration-200"
                                 >
                                     Cancel
@@ -349,7 +294,7 @@ export default function CompetitorsPage() {
                                 </button>
                             </div>
                         </form>
-                    </motion.div>
+                    </div>
                 </div>
             )}
         </div>

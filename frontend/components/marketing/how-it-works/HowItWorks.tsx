@@ -84,7 +84,7 @@ export default function HowItWorks() {
                                     <thead>
                                         <tr className="bg-bg-secondary/30">
                                             <th className="px-8 py-4 text-xs font-bold text-text-muted uppercase tracking-widest">Parameter</th>
-                                            <th className="px-8 py-4 text-xs font-bold text-accent uppercase tracking-widest">ComplianceAI Pro</th>
+                                            <th className="px-8 py-4 text-xs font-bold text-accent uppercase tracking-widest">Zenvyra</th>
                                             <th className="px-8 py-4 text-xs font-bold text-text-muted uppercase tracking-widest">Legacy Method</th>
                                         </tr>
                                     </thead>

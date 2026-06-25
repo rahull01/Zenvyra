@@ -1,0 +1,167 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { AlertTriangle, CheckCircle2, FileText, Loader2, ShieldCheck } from "lucide-react";
+import toast from "react-hot-toast";
+import DashboardPageShell from "@/components/dashboard/DashboardPageShell";
+import api from "@/lib/api";
+
+type ProofPack = Record<string, any>;
+
+export default function ProofReportPage({ params }: { params: { id: string } }) {
+  const [report, setReport] = useState<ProofPack | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get<ProofPack>(`/reports/proof-pack/${params.id}`)
+      .then((response) => setReport(response.data))
+      .catch((error) => toast.error(error?.response?.data?.message || "Unable to load proof report"))
+      .finally(() => setLoading(false));
+  }, [params.id]);
+
+  return (
+    <DashboardPageShell
+      title="Proof Report"
+      subtitle="Privacy and AI readiness evidence pack for internal review, customer trust, and counsel handoff."
+      icon={FileText}
+      actions={[{ label: "Back to website", href: `/dashboard/websites/${params.id}` }]}
+    >
+      {loading ? (
+        <div className="standard-card text-center text-text-secondary">
+          <Loader2 className="mx-auto mb-3 h-6 w-6 animate-spin" />
+          Loading proof report...
+        </div>
+      ) : !report ? (
+        <div className="standard-card text-sm text-text-secondary">Proof report not found.</div>
+      ) : (
+        <div className="space-y-6">
+          <section className="standard-card hover:!translate-y-0">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+              <div>
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1 text-xs font-bold uppercase text-accent">
+                  <ShieldCheck className="h-4 w-4" />
+                  Operational readiness evidence
+                </div>
+                <h2 className="text-2xl font-bold text-text-primary">{report.websiteName || report.websiteUrl}</h2>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-text-secondary">{report.executiveSummary}</p>
+              </div>
+              <div className="rounded-lg border border-border-light bg-background-secondary p-4 text-center">
+                <p className="text-xs font-bold uppercase text-text-tertiary">Readiness score</p>
+                <p className="mt-1 text-4xl font-black text-text-primary">{Math.round(report.readinessScore || 0)}</p>
+                <p className="text-sm text-text-secondary">/100</p>
+              </div>
+            </div>
+          </section>
+
+          <div className="grid gap-6 xl:grid-cols-2">
+            <Checklist title="UK GDPR / PECR Review" rows={report.ukGdprPecrChecklist || []} />
+            <Checklist title="US Privacy Review" rows={report.usPrivacyChecklist || []} />
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
+            <Section title="Tracker and Cookie Inventory">
+              <IssueList rows={report.trackerCookieInventorySummary || []} />
+            </Section>
+            <Section title="Fix Plan">
+              <IssueList rows={report.fixPlan || []} fix />
+            </Section>
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-3">
+            <StatusBlock title="Policy Status" data={report.policyStatus} />
+            <StatusBlock title="Consent Evidence" data={report.consentEvidenceSummary} />
+            <StatusBlock title="DSAR Readiness" data={report.dsarReadiness} />
+          </div>
+
+          <Section title="EU AI Act Readiness">
+            <div className="grid gap-3 md:grid-cols-2">
+              <Mini label="Status" value={report.aiActReadiness?.status} />
+              <Mini label="Risk summary" value={report.aiActReadiness?.riskCategorySummary} />
+              <Mini label="Transparency notices" value={report.aiActReadiness?.transparencyNoticeStatus} />
+              <Mini label="Human oversight" value={report.aiActReadiness?.humanOversightStatus} />
+              <Mini label="GPAI docs" value={report.aiActReadiness?.gpaiProviderDocumentationStatus} />
+              <Mini label="Data handling" value={report.aiActReadiness?.dataHandlingNotes} />
+            </div>
+            <IssueList rows={(report.aiActReadiness?.unresolvedGaps || []).map((gap: string) => ({ title: gap, severity: "review" }))} />
+            <p className="mt-4 rounded-lg border border-border-light bg-background-secondary p-3 text-xs leading-5 text-text-secondary">
+              {report.aiActReadiness?.disclaimer}
+            </p>
+          </Section>
+
+          <section className="standard-card hover:!translate-y-0">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <p className="text-sm leading-6 text-text-secondary">{report.disclaimer}</p>
+              <Link href={report.publicCertificateLink || "#"} className="btn-secondary justify-center">
+                <ShieldCheck className="h-4 w-4" />
+                Open public proof
+              </Link>
+            </div>
+          </section>
+        </div>
+      )}
+    </DashboardPageShell>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="standard-card hover:!translate-y-0">
+      <h3 className="mb-4 text-lg font-bold text-text-primary">{title}</h3>
+      {children}
+    </section>
+  );
+}
+
+function Checklist({ title, rows }: { title: string; rows: any[] }) {
+  return (
+    <Section title={title}>
+      <div className="space-y-3">
+        {rows.map((row, index) => (
+          <div key={`${row.label}-${index}`} className="flex gap-3 rounded-lg bg-background-secondary p-3 text-sm text-text-secondary">
+            <CheckCircle2 className="h-5 w-5 text-status-success" />
+            <div>
+              <p className="font-semibold text-text-primary">{row.label}</p>
+              <p>{String(row.status || "reviewed").replaceAll("_", " ")}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function IssueList({ rows, fix = false }: { rows: any[]; fix?: boolean }) {
+  if (rows.length === 0) return <p className="text-sm text-text-secondary">No items to show.</p>;
+  return (
+    <div className="space-y-3">
+      {rows.map((row, index) => (
+        <div key={`${row.title}-${index}`} className="flex gap-3 rounded-lg border border-border-light bg-background-secondary p-3 text-sm">
+          <AlertTriangle className="h-5 w-5 text-status-warning" />
+          <div>
+            <p className="font-semibold text-text-primary">{row.title || row.category || "Review item"}</p>
+            <p className="mt-1 text-text-secondary">{fix ? row.fix || "Review and remediate." : row.severity || "review"}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StatusBlock({ title, data }: { title: string; data: any }) {
+  return (
+    <Section title={title}>
+      <Mini label="Status" value={data?.status} />
+      <p className="mt-3 text-sm leading-6 text-text-secondary">{data?.detail || "Review required."}</p>
+    </Section>
+  );
+}
+
+function Mini({ label, value }: { label: string; value?: string }) {
+  return (
+    <div className="rounded-lg border border-border-light bg-background-secondary p-3">
+      <p className="text-xs font-bold uppercase text-text-tertiary">{label}</p>
+      <p className="mt-1 text-sm font-semibold text-text-primary">{String(value || "review required").replaceAll("_", " ")}</p>
+    </div>
+  );
+}

@@ -39,9 +39,7 @@ const COMMAND_ITEMS = [
 ];
 
 const NOTIFICATIONS = [
-    { id: "1", type: "success", title: "Scan Complete", message: "acme.com scored 87/100", time: "2 min ago", read: false },
-    { id: "2", type: "warning", title: "SSL Alert", message: "shop.acme.com expires in 7 days", time: "1 hr ago", read: false },
-    { id: "3", type: "info", title: "Update Available", message: "Auto-fix for cookie banners ready", time: "3 hr ago", read: true },
+    { id: "1", type: "info", title: "Notifications", message: "Live alerts load in the dashboard top bar", time: "now", read: true },
 ];
 
 // ─── Breadcrumbs ──────────────────────────────────────────────────────────────
@@ -65,11 +63,11 @@ function Breadcrumbs() {
                 <React.Fragment key={crumb.href}>
                     {i > 0 && <span className="text-gray-300">/</span>}
                     {i < crumbs.length - 1 ? (
-                        <Link href={crumb.href} className="text-gray-400 hover:text-termly-navy transition-colors font-medium">
+                        <Link href={crumb.href} className="text-gray-400 hover:text-zenvyra-navy transition-colors font-medium">
                             {crumb.label}
                         </Link>
                     ) : (
-                        <span className="text-termly-navy font-semibold">{crumb.label}</span>
+                        <span className="text-zenvyra-navy font-semibold">{crumb.label}</span>
                     )}
                 </React.Fragment>
             ))}
@@ -117,7 +115,7 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh]" onClick={onClose}>
-            <div className="absolute inset-0 bg-termly-navy/40 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-zenvyra-navy/40 backdrop-blur-sm" />
             <motion.div
                 initial={{ opacity: 0, scale: 0.96, y: -8 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -134,7 +132,7 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder="Search or jump to..."
-                        className="flex-1 h-14 text-sm text-termly-navy placeholder-gray-400 bg-transparent outline-none font-medium"
+                        className="flex-1 h-14 text-sm text-zenvyra-navy placeholder-gray-400 bg-transparent outline-none font-medium"
                     />
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100 transition-colors">
                         <X className="w-4 h-4 text-gray-400" />
@@ -158,12 +156,12 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
                                             onClick={onClose}
                                             className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                                                 selected === globalIdx
-                                                    ? "bg-termly-blue/8 text-termly-blue"
+                                                    ? "bg-zenvyra-blue/8 text-zenvyra-blue"
                                                     : "text-text-muted hover:bg-gray-50"
                                             }`}
                                             onMouseEnter={() => setSelected(globalIdx)}
                                         >
-                                            <div className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 ${selected === globalIdx ? "bg-termly-blue text-white" : "bg-gray-100 text-gray-500"}`}>
+                                            <div className={`w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 ${selected === globalIdx ? "bg-zenvyra-blue text-white" : "bg-gray-100 text-gray-500"}`}>
                                                 <item.icon className="w-3.5 h-3.5" />
                                             </div>
                                             <span className="flex-1 font-medium">{item.label}</span>
@@ -192,7 +190,7 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
 function NotifIcon({ type }: { type: string }) {
     if (type === "success") return <CheckCircle2 className="w-4 h-4 text-status-success" />;
     if (type === "warning") return <AlertTriangle className="w-4 h-4 text-amber-500" />;
-    return <Info className="w-4 h-4 text-termly-blue" />;
+    return <Info className="w-4 h-4 text-zenvyra-blue" />;
 }
 
 // ─── Header ───────────────────────────────────────────────────────────────────
@@ -250,7 +248,7 @@ export default function Header() {
                 <div className="relative" onClick={(e) => e.stopPropagation()}>
                     <button
                         onClick={() => { setShowNotif((v) => !v); setShowProfile(false); }}
-                        className="relative p-2 rounded-md text-gray-400 hover:text-termly-navy hover:bg-gray-100 transition-colors"
+                        className="relative p-2 rounded-md text-gray-400 hover:text-zenvyra-navy hover:bg-gray-100 transition-colors"
                     >
                         <Bell className="w-4 h-4" />
                         {unread > 0 && (
@@ -265,25 +263,25 @@ export default function Header() {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 6 }}
                                 transition={{ duration: 0.12 }}
-                                className="absolute right-0 top-full mt-1.5 w-80 bg-white rounded-xl shadow-termly-hover border border-gray-200 z-50 overflow-hidden"
+                                className="absolute right-0 top-full mt-1.5 w-80 bg-white rounded-xl shadow-zenvyra-hover border border-gray-200 z-50 overflow-hidden"
                             >
                                 <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/50">
-                                    <h3 className="text-xs font-semibold text-termly-navy uppercase tracking-wider">Notifications</h3>
-                                    <button className="text-[10px] font-semibold text-termly-blue hover:underline">Mark all read</button>
+                                    <h3 className="text-xs font-semibold text-zenvyra-navy uppercase tracking-wider">Notifications</h3>
+                                    <button className="text-[10px] font-semibold text-zenvyra-blue hover:underline">Mark all read</button>
                                 </div>
                                 {NOTIFICATIONS.map((n) => (
                                     <div key={n.id} className={`flex gap-3 px-4 py-3 border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors ${!n.read ? "bg-blue-50/30" : ""}`}>
                                         <div className="mt-0.5 flex-shrink-0"><NotifIcon type={n.type} /></div>
                                         <div>
-                                            <p className="text-xs font-semibold text-termly-navy">{n.title}</p>
+                                            <p className="text-xs font-semibold text-zenvyra-navy">{n.title}</p>
                                             <p className="text-[11px] text-gray-500 mt-0.5">{n.message}</p>
                                             <p className="text-[10px] text-gray-400 mt-1">{n.time}</p>
                                         </div>
-                                        {!n.read && <div className="ml-auto mt-1 w-1.5 h-1.5 rounded-full bg-termly-blue flex-shrink-0" />}
+                                        {!n.read && <div className="ml-auto mt-1 w-1.5 h-1.5 rounded-full bg-zenvyra-blue flex-shrink-0" />}
                                     </div>
                                 ))}
                                 <div className="px-4 py-2.5 bg-gray-50/50 text-center">
-                                    <Link href="/dashboard" className="text-xs font-semibold text-termly-blue hover:underline">View all</Link>
+                                    <Link href="/dashboard" className="text-xs font-semibold text-zenvyra-blue hover:underline">View all</Link>
                                 </div>
                             </motion.div>
                         )}
@@ -296,8 +294,8 @@ export default function Header() {
                         onClick={() => { setShowProfile((v) => !v); setShowNotif(false); }}
                         className="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-gray-100 transition-colors"
                     >
-                        <div className="w-6 h-6 rounded-full bg-termly-navy flex items-center justify-center text-white text-[10px] font-bold">JD</div>
-                        <span className="hidden md:block text-xs font-semibold text-termly-navy">John Doe</span>
+                        <div className="w-6 h-6 rounded-full bg-zenvyra-navy flex items-center justify-center text-white text-[10px] font-bold">U</div>
+                        <span className="hidden md:block text-xs font-semibold text-zenvyra-navy">Account</span>
                         <ChevronDown className="w-3 h-3 text-gray-400" />
                     </button>
 
@@ -308,18 +306,18 @@ export default function Header() {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 6 }}
                                 transition={{ duration: 0.12 }}
-                                className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-xl shadow-termly-hover border border-gray-200 z-50 overflow-hidden"
+                                className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-xl shadow-zenvyra-hover border border-gray-200 z-50 overflow-hidden"
                             >
                                 <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/50">
-                                    <p className="text-xs font-bold text-termly-navy">John Doe</p>
-                                    <p className="text-[10px] text-gray-400 mt-0.5">john@acme.com</p>
+                                    <p className="text-xs font-bold text-zenvyra-navy">Account</p>
+                                    <p className="text-[10px] text-gray-400 mt-0.5">Use the account menu for profile details</p>
                                 </div>
                                 <div className="p-1.5">
                                     {[
                                         { label: "Settings", icon: Settings, href: "/settings" },
                                         { label: "Account", icon: User, href: "/billing" },
                                     ].map((item) => (
-                                        <Link key={item.href} href={item.href} className="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-text-muted hover:bg-gray-100 hover:text-termly-navy transition-colors">
+                                        <Link key={item.href} href={item.href} className="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium text-text-muted hover:bg-gray-100 hover:text-zenvyra-navy transition-colors">
                                             <item.icon className="w-3.5 h-3.5 text-gray-400" />
                                             {item.label}
                                         </Link>

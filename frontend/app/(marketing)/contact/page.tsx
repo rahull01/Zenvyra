@@ -43,7 +43,7 @@ export default function ContactPage() {
             <div className="standard-card space-y-6 !transform-none hover:!translate-y-0">
               <h2 className="text-xl font-bold text-text-primary">Reach us directly</h2>
               {[
-                { icon: Mail, label: "Email", value: "hello@complianceai.pro" },
+                { icon: Mail, label: "Email", value: "hello@zenvyra.com" },
                 { icon: Phone, label: "Phone", value: "+1 (415) 555-0124" },
                 { icon: MapPin, label: "Office", value: "San Francisco, CA" },
                 { icon: Clock, label: "Support hours", value: "Mon–Fri, 6am–6pm PT" },

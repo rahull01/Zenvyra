@@ -1,4 +1,4 @@
-﻿import PageScaffold from "@/components/marketing/PageScaffold";
+import PageScaffold from "@/components/marketing/PageScaffold";
 
 const systems = [
   { name: "Scanning API", status: "Operational", uptime: "99.99%" },
@@ -9,7 +9,7 @@ const systems = [
 
 export default function StatusPage() {
   return (
-    <PageScaffold title="System Status" subtitle="Live service health and historical uptime for ComplianceAI Pro core platform systems.">
+    <PageScaffold title="System Status" subtitle="Live service health and historical uptime for Zenvyra core platform systems.">
       <div className="space-y-3">
         {systems.map((system) => (
           <article key={system.name} className="flex flex-col gap-3 rounded-2xl border border-border-light bg-white p-5 shadow-card md:flex-row md:items-center md:justify-between">

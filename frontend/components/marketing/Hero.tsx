@@ -3,121 +3,162 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, BadgeCheck, CheckCircle2, Radar, ShieldCheck } from 'lucide-react';
 
-const heroStats = [
-  { label: 'Live website scans', value: '15s' },
-  { label: 'AI policy drafts', value: '1000+' },
-  { label: 'GDPR, CCPA, LGPD', value: '20+' },
+const scanRows = [
+  { label: 'Cookie consent', value: 'PECR review passed', tone: 'text-orange-300' },
+  { label: 'Privacy policy', value: '2 updates ready', tone: 'text-white' },
+  { label: 'DSAR/CPRA flow', value: 'public proof enabled', tone: 'text-emerald-300' },
 ];
 
 const Hero = () => {
   return (
-    <section className="relative overflow-hidden bg-hero-gradient py-20">
-      <div className="absolute inset-x-0 top-0 h-[360px] bg-[radial-gradient(circle_at_top_right,_rgba(255,145,77,0.18),_transparent_34%)] pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-[260px] bg-[radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.12),_transparent_40%)] pointer-events-none" />
-      <div className="relative mx-auto max-w-[1200px] px-6 lg:px-12">
-        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] items-center">
+    <section className="relative isolate overflow-hidden bg-[#07080b] pb-10 pt-[96px] text-white sm:pb-12 lg:min-h-[calc(100vh-72px)] lg:pt-[104px]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_22%,rgba(249,115,22,0.24),transparent_30%),linear-gradient(115deg,#07080b_0%,#0d1016_48%,#190b04_100%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.16)_1px,transparent_1px)] [background-size:86px_86px]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:radial-gradient(rgba(255,255,255,0.45)_0.7px,transparent_0.7px)] [background-size:18px_18px]" />
+      <div className="relative mx-auto max-w-[1240px] px-6 lg:px-10">
+        <div className="grid items-center gap-8 lg:grid-cols-[0.82fr_1.18fr]">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="space-y-6 max-w-3xl"
+            transition={{ duration: 0.55 }}
+            className="max-w-xl space-y-5"
           >
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs text-white/90 backdrop-blur">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-white animate-pulse" />
-              Trusted by high-growth product teams
+            <div className="inline-flex max-w-full items-center gap-3 rounded-full border border-orange-400/30 bg-white/[0.07] px-4 py-2 text-xs font-semibold text-white/80 shadow-[0_16px_40px_rgba(0,0,0,0.25)] backdrop-blur-2xl">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-60" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-orange-500" />
+              </span>
+              <span className="truncate">All-in-one privacy, cookie, policy, and proof platform</span>
             </div>
 
-            <h1 className="text-[clamp(2.8rem,4.2vw,4rem)] font-extrabold tracking-tight text-white leading-[1.02]">
-              Built like a modern SaaS product for practical compliance.
+            <h1 className="max-w-[680px] !text-[2.55rem] font-extrabold tracking-tight !text-white !leading-[1.02] sm:!text-[3.3rem] lg:!text-[clamp(3rem,4.35vw,4.45rem)]">
+              Compliance proof that turns visitors into{' '}
+              <span className="bg-gradient-to-r from-orange-300 via-orange-500 to-white bg-clip-text text-transparent">
+                confident buyers.
+              </span>
             </h1>
 
-            <p className="max-w-xl text-base leading-7 text-white/80">
-              ComplianceAI Pro turns privacy, cookie consent, and policy workflows into a beautiful product experience for teams that ship fast. Live scans, audit-ready policy drafts, consent records, and global law coverage are visible in one dashboard.
+            <p className="max-w-lg text-base leading-7 text-white/68 sm:text-lg">
+              Scan privacy gaps, fix trust blockers, and publish buyer-ready proof before customers ask.
             </p>
 
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <Link href="/auth/signup">
-                <Button variant="default" size="lg" className="rounded-2xl bg-white text-slate-900 hover:bg-slate-100 shadow-xl">
-                  Start Free Scan
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+            <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
+              <Link
+                href="/auth/signup"
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-4 text-sm font-extrabold text-white shadow-[0_18px_46px_rgba(249,115,22,0.34)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-orange-600 hover:shadow-[0_22px_58px_rgba(249,115,22,0.5)]"
+              >
+                Get Compliance Ready in Minutes
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
-              <Link href="/pricing" className="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-7 py-4 text-sm font-semibold text-white/90 transition hover:bg-white/15">
-                See pricing
+              <Link
+                href="/pricing"
+                className="inline-flex items-center justify-center rounded-xl border border-white/14 bg-white/[0.06] px-6 py-4 text-sm font-bold text-white shadow-sm backdrop-blur-xl transition-all duration-300 hover:border-orange-300/50 hover:bg-white/[0.1]"
+              >
+                View pricing
               </Link>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3">
-              {heroStats.map((stat) => (
-                <div key={stat.label} className="rounded-[28px] border border-white/10 bg-white/10 p-5 text-white/90 backdrop-blur shadow-sm">
-                  <p className="text-2xl font-extrabold tracking-tight">{stat.value}</p>
-                  <p className="mt-2 text-sm uppercase tracking-[0.2em] text-white/70">{stat.label}</p>
-                </div>
-              ))}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1 text-xs font-semibold text-white/58">
+              <span className="inline-flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-orange-400" />
+                No credit card required
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <BadgeCheck className="h-4 w-4 text-orange-400" />
+                Used by 100+ teams
+              </span>
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="relative max-w-xl mx-auto overflow-hidden rounded-[30px] border border-white/10 bg-slate-950/90 shadow-[0_32px_90px_rgba(15,23,42,0.22)] lg:mx-0"
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            animate={{ opacity: 1, y: [0, -8, 0], scale: 1 }}
+            transition={{ duration: 0.55, delay: 0.08 }}
+            whileHover={{ y: -10, scale: 1.01 }}
+            className="relative mx-auto w-full max-w-[720px] lg:mx-0"
           >
-            <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-slate-900/90 px-5 py-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">Compliance Score</p>
-                <p className="mt-1 text-3xl font-bold text-white">92%</p>
+            <div className="absolute -inset-7 rounded-[36px] bg-orange-500/24 blur-3xl" />
+            <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-white/18 via-orange-400/18 to-white/5" />
+            <div className="relative overflow-hidden rounded-2xl border border-white/12 bg-white/[0.08] shadow-[0_34px_100px_rgba(0,0,0,0.45),0_0_70px_rgba(249,115,22,0.16)] backdrop-blur-2xl transition-all duration-300">
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.14),transparent_34%,rgba(249,115,22,0.08))]" />
+              <div className="relative flex items-center justify-between gap-4 border-b border-white/10 bg-black/18 px-5 py-4">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-orange-300">Live compliance view</p>
+                  <p className="mt-1 text-sm text-white/55">scan, policies, consent, proof</p>
+                </div>
+                <div className="flex items-center gap-2 rounded-full border border-orange-300/30 bg-orange-500/12 px-3 py-1.5 text-xs font-bold text-orange-100">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-300 opacity-70" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-orange-400" />
+                  </span>
+                  Auto updating
+                </div>
               </div>
-              <div className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">Live</div>
-            </div>
-            <div className="space-y-5 p-5">
-              <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-xs text-white/70">Policy health</p>
-                    <p className="mt-2 text-lg font-semibold text-white">Good</p>
+
+              <div className="relative grid gap-4 p-5 sm:grid-cols-[0.82fr_1.18fr]">
+                <div className="rounded-xl border border-white/10 bg-black/24 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/52">
+                    <Radar className="h-4 w-4 text-orange-300" />
+                    Score
                   </div>
-                  <div className="rounded-2xl bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">+8% week over week</div>
-                </div>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-4">
-                  <p className="text-xs text-white/70">Consent status</p>
-                  <p className="mt-3 text-base font-semibold text-white">Compliant</p>
-                </div>
-                <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-4">
-                  <p className="text-xs text-white/70">Alerts</p>
-                  <p className="mt-3 text-base font-semibold text-white">2 issues</p>
-                </div>
-              </div>
-
-              <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-4">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-xs text-white/70">Next scan</p>
-                    <p className="mt-2 text-base font-semibold text-white">Today, 11:15 AM</p>
+                  <div className="mt-5 flex items-end gap-2">
+                    <motion.span
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: 0.35 }}
+                      className="text-6xl font-black leading-none text-white"
+                    >
+                      92
+                    </motion.span>
+                    <span className="pb-2 text-sm font-bold text-orange-200">/100</span>
                   </div>
-                  <div className="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">Auto-scan</div>
+                  <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: '92%' }}
+                      transition={{ duration: 0.9, delay: 0.3, ease: 'easeOut' }}
+                      className="h-full rounded-full bg-orange-500 shadow-[0_0_24px_rgba(249,115,22,0.72)]"
+                    />
+                  </div>
+                  <p className="mt-4 text-sm font-semibold text-white/78">Ready for trust review</p>
+                </div>
+
+                <div className="space-y-3">
+                  {scanRows.map((row) => (
+                    <div key={row.label} className="group flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.075] px-4 py-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-300 hover:border-orange-300/30 hover:bg-white/[0.1] hover:shadow-[0_12px_34px_rgba(249,115,22,0.12)]">
+                      <div>
+                        <p className="text-xs text-white/46">{row.label}</p>
+                        <p className={`mt-1 text-sm font-bold ${row.tone}`}>{row.value}</p>
+                      </div>
+                      <BadgeCheck className="h-5 w-5 shrink-0 text-orange-300 transition-transform duration-300 group-hover:scale-110" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="relative mx-5 mb-5 rounded-xl border border-orange-300/24 bg-orange-500/[0.09] p-4 backdrop-blur-xl">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.18em] text-orange-200/75">Proof pack</p>
+                    <p className="mt-1 text-base font-bold text-white">Shareable trust page for buyers</p>
+                    <p className="mt-1 text-xs leading-5 text-white/56">Policies, consent checks, open fixes, and certificate in one public link.</p>
+                  </div>
+                  <Link
+                    href="/auth/signup"
+                    className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-orange-500 px-4 py-3 text-sm font-bold text-white shadow-[0_14px_34px_rgba(249,115,22,0.32)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-orange-600 hover:shadow-[0_18px_44px_rgba(249,115,22,0.48)]"
+                  >
+                    Publish proof
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
                 </div>
               </div>
             </div>
 
-            <div className="absolute -bottom-10 left-1/2 w-[calc(100%-3rem)] -translate-x-1/2 rounded-[30px] border border-white/10 bg-white/10 p-4 shadow-2xl backdrop-blur md:left-auto md:right-8 md:w-[20rem] md:-translate-x-0">
-              <div className="text-xs uppercase tracking-[0.2em] text-white/70">Featured workflow</div>
-              <div className="mt-4 grid gap-3">
-                <div className="rounded-3xl bg-slate-950/90 p-4 border border-white/10">
-                  <p className="text-xs text-white/70">Policy update</p>
-                  <p className="mt-2 text-sm font-semibold text-white">Approved 2 minutes ago</p>
-                </div>
-                <div className="rounded-3xl bg-slate-950/90 p-4 border border-white/10">
-                  <p className="text-xs text-white/70">Cookie banner</p>
-                  <p className="mt-2 text-sm font-semibold text-white">Live on 1 site</p>
-                </div>
-              </div>
+            <div className="absolute -right-3 top-12 hidden rounded-xl border border-orange-300/28 bg-black/52 px-4 py-3 text-white shadow-2xl backdrop-blur-2xl md:flex md:items-center md:gap-3">
+              <ShieldCheck className="h-5 w-5 text-orange-300" />
+              <span className="text-xs font-bold">Buyer proof ready</span>
             </div>
           </motion.div>
         </div>

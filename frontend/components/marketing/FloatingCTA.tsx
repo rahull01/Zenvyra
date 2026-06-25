@@ -25,7 +25,7 @@ export default function FloatingCTA() {
           transition={{ duration: 0.22 }}
           className="fixed bottom-4 left-1/2 z-40 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 md:bottom-6"
         >
-          <div className="rounded-xl border border-border-light bg-white/95 p-3 shadow-termly-soft backdrop-blur-[8px]">
+          <div className="rounded-xl border border-border-light bg-white/95 p-3 shadow-zenvyra-soft backdrop-blur-[8px]">
             <Link
               href="/signup"
               className="btn-secondary w-full"

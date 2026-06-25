@@ -29,7 +29,7 @@ const initialAlerts = [
 ];
 
 const initialChatMessages = [
-  { sender: "AI", content: "Hello! I am your ComplianceAI regulatory copilot. Ask me anything about GDPR, CCPA, accessibility guidelines, or active system risks." }
+  { sender: "AI", content: "Hello! I am your Zenvyra regulatory copilot. Ask me anything about GDPR, CCPA, accessibility guidelines, or active system risks." }
 ];
 
 const quickQuestions = [
@@ -87,7 +87,7 @@ export default function AiInsightsDashboardPage() {
           <Sparkles className="h-10 w-10 text-accent animate-pulse" /> AI Insights & Copilot Hub
         </h1>
         <p className="text-text-secondary mt-2 max-w-2xl leading-relaxed">
-          Forecast compliance performance, remediate accessibility and privacy alerts automatically, and consult the ComplianceAI GPT-4 legal engine in real-time.
+          Forecast compliance performance, remediate accessibility and privacy alerts automatically, and consult the Zenvyra GPT-4 legal engine in real-time.
         </p>
       </div>
 
@@ -227,7 +227,7 @@ export default function AiInsightsDashboardPage() {
                 <Cpu className="h-5 w-5 animate-pulse" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-text-primary">ComplianceAI Brain</h3>
+                <h3 className="text-base font-bold text-text-primary">Zenvyra Brain</h3>
                 <span className="text-caption font-bold text-status-success flex items-center gap-1">
                   <span className="w-1.5 h-1.5 bg-status-success rounded-full animate-ping" /> Online Copilot
                 </span>

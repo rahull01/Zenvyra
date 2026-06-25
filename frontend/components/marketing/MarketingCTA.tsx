@@ -12,7 +12,7 @@ type MarketingCTAProps = {
 
 export default function MarketingCTA({
   title = "Ready to Get Compliant?",
-  subtitle = "Join 10,000+ businesses using ComplianceAI Pro. No credit card required.",
+  subtitle = "Join 10,000+ businesses using Zenvyra. No credit card required.",
   primaryHref = "/auth/signup",
   primaryLabel = "Start Free Trial",
   secondaryHref = "/contact",

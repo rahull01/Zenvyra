@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Boxes, Check, ArrowUpRight, ShieldAlert, Cpu } from "lucide-react";
+import { Boxes, Check, ArrowUpRight, Cpu, Clipboard } from "lucide-react";
 import DashboardPageShell from "@/components/dashboard/DashboardPageShell";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -14,13 +14,68 @@ const initialApps = [
   { id: "wordpress", name: "WordPress Plugin", desc: "Embed policy CDNs directly using our dedicated shortcode module.", connected: true, tag: "CMS Embed" },
 ];
 
+const bannerSnippet = '<script src="https://app.zenvyra.com/api/v1/banner/YOUR_SITE_ID/bundle.js" async></script>';
+const gtmSnippet = "https://app.zenvyra.com/api/v1/banner/YOUR_SITE_ID/bundle.js";
+const reactSnippet = `import Script from "next/script";
+
+export function ZenvyraBanner() {
+  return <Script src="https://app.zenvyra.com/api/v1/banner/YOUR_SITE_ID/bundle.js" strategy="afterInteractive" />;
+}`;
+
+const installGuides = [
+  {
+    name: "Shopify",
+    href: "/docs/shopify-installation-guide",
+    snippet: bannerSnippet,
+    checklist: ["Add storefront snippet", "Review checkout limitations", "Verify certificate badge"],
+  },
+  {
+    name: "WordPress",
+    href: "/docs/wordpress-installation-guide",
+    snippet: bannerSnippet,
+    checklist: ["Install snippet/plugin", "Map cookie categories", "Confirm consent logging"],
+  },
+  {
+    name: "Webflow",
+    href: "/docs/webflow-installation-guide",
+    snippet: bannerSnippet,
+    checklist: ["Paste site custom code", "Publish policies", "Run install verification"],
+  },
+  {
+    name: "WooCommerce",
+    href: "/docs/wordpress-installation-guide",
+    snippet: bannerSnippet,
+    checklist: ["Install through WordPress", "Check cart and checkout pages", "Verify consent logs"],
+  },
+  {
+    name: "Google Tag Manager",
+    href: "/docs/agency-setup-guide",
+    snippet: gtmSnippet,
+    checklist: ["Add Custom HTML tag", "Trigger on all pages", "Confirm Consent Mode v2"],
+  },
+  {
+    name: "Custom React/Next",
+    href: "/docs/agency-setup-guide",
+    snippet: reactSnippet,
+    checklist: ["Add Script component", "Deploy to production", "Verify public bundle loads"],
+  },
+];
+
 export default function IntegrationsPage() {
   const [apps, setApps] = useState(initialApps);
+
+  const [copied, setCopied] = useState("");
 
   const toggleConnection = (id: string, name: string) => {
     setApps(
       apps.map((a) => (a.id === id ? { ...a, connected: !a.connected } : a))
     );
+  };
+
+  const copySnippet = (name: string, value: string) => {
+    navigator.clipboard.writeText(value);
+    setCopied(name);
+    window.setTimeout(() => setCopied(""), 1800);
   };
 
   return (
@@ -70,6 +125,46 @@ export default function IntegrationsPage() {
 
         {/* Developer API panel right */}
         <div className="lg:col-span-4 space-y-6">
+          <div className="bg-background-primary border border-border-light rounded-3xl p-6 shadow-card space-y-4">
+            <h4 className="font-bold text-base text-text-primary">Platform install checklists</h4>
+            <div className="space-y-3">
+              {installGuides.map((guide) => (
+                <div key={guide.name} className="rounded-xl border border-border-light bg-background-secondary p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-bold text-text-primary">{guide.name}</p>
+                    <Link href={guide.href} className="text-xs font-bold text-primary hover:underline">
+                      Guide
+                    </Link>
+                  </div>
+                  <div className="mt-3 space-y-2">
+                    {guide.checklist.map((item) => (
+                      <div key={item} className="flex items-center gap-2 text-xs text-text-secondary">
+                        <Check className="h-3.5 w-3.5 text-status-success" />
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copySnippet(guide.name, guide.snippet)}
+                    className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-border-light bg-background-primary px-3 py-2 text-xs font-bold text-text-primary transition hover:bg-background-tertiary"
+                  >
+                    <Clipboard className="h-3.5 w-3.5" />
+                    {copied === guide.name ? "Copied" : "Copy snippet"}
+                  </button>
+                </div>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => copySnippet("default", bannerSnippet)}
+              className="btn-secondary w-full justify-center"
+            >
+              <Clipboard className="h-4 w-4" />
+              {copied === "default" ? "Copied" : "Copy default banner snippet"}
+            </button>
+          </div>
+
           <div className="bg-secondary-dark text-white p-6 rounded-3xl space-y-3 relative overflow-hidden shadow-card">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(230,126,34,0.1),transparent_50%)]" />
             <div className="h-9 w-9 bg-primary text-white rounded-lg flex items-center justify-center font-bold">

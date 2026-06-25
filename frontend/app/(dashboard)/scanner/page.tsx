@@ -7,79 +7,12 @@ import ScoreDisplay from "@/components/scan/ScoreDisplay";
 import IssuesList from "@/components/scan/IssuesList";
 import FixSuggestions from "@/components/scan/FixSuggestions";
 import { ScanResult, useScan } from "@/hooks/useScan";
-
-const buildDemoResult = (websiteUrl: string): ScanResult => {
-    const normalizedUrl = websiteUrl.startsWith("http") ? websiteUrl : `https://${websiteUrl}`;
-    return {
-        url: normalizedUrl,
-        score: 72,
-        previousScore: 72,
-        projectedScore: 91,
-        scanDate: new Date().toISOString(),
-        summary: "Compliance scan preview with prioritized issues and remediation guidance.",
-        issues: [
-            {
-                id: "cookie-banner-missing",
-                type: "cookie",
-                category: "Consent",
-                severity: "critical",
-                title: "Cookie banner blocks reject action",
-                description: "Users can accept tracking, but reject controls are not equally visible on first interaction.",
-                fixSuggestion: "Add a first-layer reject button and persist consent preference before analytics events fire.",
-                autoFixable: true,
-            },
-            {
-                id: "privacy-policy-link",
-                type: "privacy",
-                category: "Transparency",
-                severity: "high",
-                title: "Privacy policy link not present at checkout",
-                description: "Checkout form collects email and address but does not provide policy access near submission controls.",
-                fixSuggestion: "Insert contextual privacy link below submit button and reference data usage purpose.",
-                autoFixable: true,
-            },
-            {
-                id: "data-retention-clause",
-                type: "privacy",
-                category: "Policy Coverage",
-                severity: "medium",
-                title: "Data retention window not specified",
-                description: "Policy describes collected data categories but omits retention period for customer support records.",
-                fixSuggestion: "Include retention durations for transactional and support data with legal basis references.",
-                autoFixable: false,
-            },
-            {
-                id: "third-party-script",
-                type: "cookie",
-                category: "Tracking",
-                severity: "high",
-                title: "Third-party analytics loads before consent",
-                description: "Tag manager initializes on page load before user consent state is evaluated.",
-                fixSuggestion: "Gate analytics initialization behind explicit consent and update CMP callback sequence.",
-                autoFixable: true,
-            },
-            {
-                id: "dsar-contact",
-                type: "privacy",
-                category: "User Rights",
-                severity: "low",
-                title: "DSAR contact email missing",
-                description: "Policy does not list direct contact channel for access, deletion, and correction requests.",
-                fixSuggestion: "Add a dedicated rights-request email and expected response timeline.",
-                autoFixable: false,
-            },
-        ],
-        recommendations: [
-            "Enable one-click consent preference center to reduce critical privacy risk quickly.",
-            "Publish policy update with retention, legal basis, and DSAR response timelines.",
-            "Run a verification scan after auto-fix deployment to confirm score progression from 72 to 91.",
-        ],
-    };
-};
+import toast from "react-hot-toast";
 
 export default function ScanPage() {
     const [url, setUrl] = useState("");
     const [activeScan, setActiveScan] = useState<ScanResult | null>(null);
+    const [scanError, setScanError] = useState<string | null>(null);
     const { scan, isScanning, lastResult, scanHistory } = useScan();
     const displayedScan = activeScan ?? lastResult;
 
@@ -90,13 +23,15 @@ export default function ScanPage() {
         }
 
         setActiveScan(null);
+        setScanError(null);
 
         try {
             const result = await scan(url);
             setActiveScan(result);
-        } catch (error) {
-            const demoResult = buildDemoResult(url);
-            setActiveScan(demoResult);
+        } catch (error: any) {
+            const message = error?.response?.data?.message || error?.message || "Scan failed";
+            setScanError(message);
+            toast.error(message);
         }
     };
 
@@ -224,6 +159,25 @@ export default function ScanPage() {
             </AnimatePresence>
 
             {/* Results */}
+            <AnimatePresence>
+                {scanError && !isScanning && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="max-w-2xl mx-auto rounded-2xl border border-status-error/30 bg-status-error/10 p-5 text-status-error"
+                    >
+                        <div className="flex items-start gap-3">
+                            <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0" />
+                            <div>
+                                <p className="font-semibold">Scan could not be completed</p>
+                                <p className="mt-1 text-sm">{scanError}</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <AnimatePresence>
                 {displayedScan && !isScanning && (
                     <motion.div

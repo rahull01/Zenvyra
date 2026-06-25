@@ -9,6 +9,8 @@ type PageScaffoldProps = {
   subtitle: string;
   children: ReactNode;
   showCta?: boolean;
+  showHero?: boolean;
+  sectionClassName?: string;
   heroExtra?: ReactNode;
 };
 
@@ -18,15 +20,20 @@ export default function PageScaffold({
   subtitle,
   children,
   showCta = true,
+  showHero = true,
+  sectionClassName,
   heroExtra,
 }: PageScaffoldProps) {
   const heroEyebrow = eyebrow ?? title;
+  const contentSectionClassName = sectionClassName ?? "py-16 sm:py-20 lg:py-24";
   return (
     <main className="min-h-screen bg-[#F8F9FB]">
-      <MarketingPageHero eyebrow={heroEyebrow} title={title} subtitle={subtitle}>
-        {heroExtra}
-      </MarketingPageHero>
-      <section className="py-16 sm:py-20 lg:py-24">
+      {showHero && (
+        <MarketingPageHero eyebrow={heroEyebrow} title={title} subtitle={subtitle}>
+          {heroExtra}
+        </MarketingPageHero>
+      )}
+      <section className={contentSectionClassName}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
       </section>
       {showCta && <MarketingCTA />}

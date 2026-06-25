@@ -1,167 +1,237 @@
-# ComplianceAI Production Launch Runbook
+# Production Launch Runbook
 
-This runbook covers all required credentials, environment variables, integrations, and deployment checks before go-live.
+Last reviewed: 2026-06-07
 
-## 1) Required API Credentials
+This runbook is the go/no-go checklist for a paid beta or public SaaS launch. A checked item means it was verified in the target environment, not only configured locally.
+
+## Launch Gates
+
+| Gate | Paid beta minimum | Public launch minimum |
+| --- | --- | --- |
+| Backend tests | `mvn test` passes | `mvn test` passes in CI |
+| Frontend build | `npm run build` passes | `npm run build` plus lint/type checks pass in CI |
+| Payment | Dodo sandbox webhook verified end to end | Live webhook verified with real product ids |
+| Email | Welcome/reset/alert test emails delivered | Bounce handling and SPF/DKIM/DMARC verified |
+| Monitoring | Error reporting enabled | Error reporting, logs, uptime, alerts enabled |
+| Backups | Automated MongoDB backups configured | Restore drill completed and documented |
+| Legal | UK/US disclaimers visible | Counsel-reviewed UK/US public terms/privacy/disclaimers |
+| Public certificate | PII-redaction checked | Privacy/security review completed |
+
+## Required Credentials
 
 ### OpenAI
-- `OPENAI_API_KEY`
-- Where to get it: OpenAI dashboard → API keys.
-- Used for: policy generation, AI compliance analysis, remediation suggestions.
 
-### Payment Provider (Dodo currently integrated)
+- `OPENAI_API_KEY`
+- `OPENAI_MODEL`
+- Used for policy generation, compliance analysis, and remediation suggestions.
+
+Production requirement:
+
+- Configure timeout, retry/backoff, rate limit, and fallback behavior.
+- Add cost guardrails per account or per scan.
+- Validate AI JSON output before saving or displaying it.
+
+### Payment Provider: Dodo
+
 - `DODO_API_KEY`
 - `DODO_WEBHOOK_SECRET`
-- `DODO_STARTER_PRODUCT_ID`, `DODO_PRO_PRODUCT_ID`, `DODO_ENTERPRISE_PRODUCT_ID`
-- `NEXT_PUBLIC_DODO_CLIENT_ID` (frontend public key/client id)
-- Where to get: Dodo merchant dashboard.
-- Used for: checkout session creation, subscription lifecycle, webhook verification.
+- `DODO_STARTER_PRODUCT_ID`
+- `DODO_PRO_PRODUCT_ID`
+- `DODO_ENTERPRISE_PRODUCT_ID`
+- `NEXT_PUBLIC_DODO_CLIENT_ID`
+- `NEXT_PUBLIC_DODO_ENV=live` for production
 
-### Optional Stripe (if switching provider)
-- `STRIPE_SECRET_KEY`
-- `STRIPE_WEBHOOK_SECRET`
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-- Where to get: Stripe dashboard → Developers.
+Webhook endpoints accepted by the backend:
 
-### Database / Cache
+- `/api/dodo/webhooks`
+- `/api/webhooks/payment`
+- `/api/payments/dodo-webhook`
+
+### Database and Cache
+
 - `MONGODB_URI`
 - `REDIS_URL`
-- Where to get: managed provider dashboards (MongoDB Atlas, Redis Cloud/ElastiCache).
-- Used for: app data storage, monitoring hash/cache state.
 
-### Auth / Security
+Use managed MongoDB/Redis for production. Do not launch public SaaS on a developer laptop, free-tier database without backup, or unmanaged single node.
+
+If you use the local Docker compose file for staging, keep `MONGO_BIND_ADDRESS=127.0.0.1` and `REDIS_BIND_ADDRESS=127.0.0.1` unless a private network/firewall explicitly protects those services. MongoDB and Redis must not be exposed directly to the public internet.
+
+### Auth and Security
+
 - `JWT_SECRET`
-- Where to get: generate securely (`openssl rand -base64 64`).
-- Used for: JWT signing/verification.
+- `CORS_ALLOWED_ORIGINS`
+- `APP_URL`
+- `FRONTEND_URL`
+- `BACKEND_URL`
+- `NEXT_PUBLIC_APP_URL`
+- `NEXT_PUBLIC_API_URL`
+- `NEXT_PUBLIC_WS_URL`
+
+Generate `JWT_SECRET` with at least 64 random bytes and rotate it through the secret manager.
 
 ### Email
-- SMTP mode:
-  - `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS`
-- Resend SMTP shortcut:
-  - `RESEND_API_KEY` (also usable for SMTP user/pass mapping in current backend config)
-- Used for: welcome, password reset, alerts, invitations.
 
-### Domain / URLs
-- `APP_URL` (frontend base URL)
-- `FRONTEND_URL` (for backend references)
-- `BACKEND_URL` (API/public backend URL)
-- `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_WS_URL`
-- `CORS_ALLOWED_ORIGINS`
+SMTP mode:
 
-### Generic compatibility aliases
-- `PAYMENT_API_KEY`, `WEBHOOK_SECRET`
-- Used as optional aliases in backend property resolution.
+- `EMAIL_HOST`
+- `EMAIL_PORT`
+- `EMAIL_USER`
+- `EMAIL_PASS`
 
----
+Resend SMTP mode:
 
-## 2) Production .env Files
+- `RESEND_API_KEY`
 
-- Root combined template: `.env.production.example`
-- Backend template: `backend/.env.production.example`
-- Frontend template: `frontend/.env.production.example`
+Verified flows:
 
-Copy one into real deployment secrets:
-- `cp .env.production.example .env` (or inject values through your secret manager/CI)
+- Signup/welcome.
+- Password reset.
+- Low-score alert.
+- Team invite.
+- Billing/payment issue notification.
 
----
+## Deployment
 
-## 3) Docker + Env Setup
+1. Create deployment secrets from `.env.production.example`, `backend/.env.production.example`, and `frontend/.env.production.example`.
+2. Fill every required value in the production secret store.
+3. Build:
+   - Backend: `mvn -DskipTests compile`
+   - Frontend: `npm run build`
+4. Test:
+   - Backend: `mvn test`
+5. Deploy with Docker or the target platform.
+6. Confirm:
+   - `/health` returns healthy.
+   - `/health/ready` returns healthy only when MongoDB and Redis are reachable.
+   - Frontend can call the backend.
+   - CORS allows only production domains.
+   - No real secret appears in client bundles, logs, screenshots, or docs.
 
-`docker-compose.yml` now supports:
-- `env_file: ./.env` for backend/frontend
-- no hardcoded secrets
-- explicit variable injection for backend and frontend runtime
+## Monitoring and Error Tracking
 
-Deploy:
-1. Create `.env` from `.env.production.example`.
-2. Fill every required variable.
-3. Run:
-   - `docker compose --env-file .env up -d --build`
+At least one error tracker and one log sink must be configured before paid beta.
 
----
+Recommended options:
 
-## 4) Payment Setup
+- Sentry for frontend and backend exceptions.
+- Logtail/Better Stack for structured application logs.
+- CloudWatch, Datadog, or Grafana Cloud for infra metrics and alarms.
 
-Current integration: Dodo.
+Required alerts:
 
-### Required
-- Set `DODO_API_KEY`, `DODO_WEBHOOK_SECRET`, product IDs, and `NEXT_PUBLIC_DODO_CLIENT_ID`.
-- Set `NEXT_PUBLIC_DODO_ENV=live` for production.
+- Backend 5xx rate above threshold.
+- Frontend build/deploy failure.
+- Payment webhook verification failure.
+- Payment webhook delivery backlog.
+- OpenAI 429/5xx spike.
+- Email delivery failure spike.
+- MongoDB storage, CPU, memory, connection, and replication lag.
+- Redis unavailable or high latency.
+- Backup failure.
 
-### Webhook endpoint
-- Use: `https://api.yourdomain.com/api/webhooks/payment`
-- Backend accepts both:
-  - `/api/dodo/webhooks`
-  - `/api/webhooks/payment`
+Minimum log fields:
 
-### Mode handling
-- Sandbox/test: use test keys + test products.
-- Production/live: use live keys + live products + live webhook secret.
+- `requestId`
+- `userId` or `anonymousId` when available
+- `organizationId`
+- `route`
+- `status`
+- `durationMs`
+- `errorCode`
+- `providerEventId` for webhooks
 
----
+Never log:
 
-## 5) OpenAI Setup
+- JWTs.
+- API key secrets.
+- Payment secrets.
+- DSAR private payloads.
+- Full consent IP/user-agent values unless legally required and access-controlled.
 
-1. Create API key in OpenAI dashboard.
-2. Set `OPENAI_API_KEY`.
-3. Optionally tune model via `OPENAI_MODEL`.
+The backend emits an `X-Request-Id` response header and includes the request id in request-completion logs. Forward this header from the reverse proxy and include it in support/debug reports.
 
-Rate limit hardening recommendation:
-- Implement retries with exponential backoff (429/5xx).
-- Add circuit-breaker/fallback response when upstream is unavailable.
+The frontend posts sanitized client crash summaries to `/api/client-errors`. These summaries intentionally avoid full stack traces and page data; connect platform logs or Sentry before public launch for long-term retention and alerting.
 
----
+## MongoDB Backup and Restore Drill
 
-## 6) Email Setup
+Backup is not ready until restore has been tested.
 
-Two supported patterns:
-- SMTP provider (`EMAIL_HOST/PORT/USER/PASS`)
-- Resend via SMTP (`smtp.resend.com`, API key as credentials)
+Paid beta minimum:
 
-Configured flows:
-- welcome emails
-- password reset
-- low-score alerts
-- team invitations
+1. Enable daily automated encrypted MongoDB backups.
+2. Retain at least 7 daily backups.
+3. Confirm backup success alerts are enabled.
+4. Run one restore into a staging database.
+5. Start backend against staging restore with production secrets disabled.
+6. Verify login-disabled admin inspection or direct queries for:
+   - `users`
+   - `websites`
+   - `policies`
+   - `banners`
+   - `consent_logs`
+   - `subscriptions`
+7. Record restore date, backup id, restore duration, and operator.
 
-`APP_URL` is now used for links in email templates.
+Public launch minimum:
 
----
+- Retain 30 daily backups plus monthly archives.
+- Test restore quarterly.
+- Document RPO and RTO.
+- Restrict backup restore permission to named operators.
 
-## 7) Domain + Deployment Config
+## Payment Verification
 
-Set:
-- `APP_URL=https://app.yourdomain.com`
-- `BACKEND_URL=https://api.yourdomain.com`
-- `NEXT_PUBLIC_API_URL=https://api.yourdomain.com/api`
-- `CORS_ALLOWED_ORIGINS=https://app.yourdomain.com,https://www.yourdomain.com`
+Sandbox checklist:
 
-Ensure reverse proxy routes:
-- frontend traffic to Next.js service
-- `/api/*` traffic to Spring backend
+- Create checkout.
+- Complete payment.
+- Receive webhook.
+- Verify signature.
+- Create/update subscription.
+- Idempotently ignore duplicate webhook.
+- Cancel subscription.
+- Reflect cancellation in app access.
 
----
+Live checklist:
 
-## 8) Security Rules
+- Use live product ids and live webhook secret.
+- Run a real low-value transaction.
+- Confirm invoice/receipt.
+- Confirm refund/cancel path.
 
-- Never commit real `.env` values.
-- Keep secrets in secret manager / CI variables / runtime injection.
-- Rotate `JWT_SECRET`, payment keys, webhook secrets periodically.
-- Use minimum 64-char random JWT secret.
-- Restrict CORS to production origins only.
+## Compliance and Legal Disclaimers
 
----
+Required public copy:
 
-## 9) Final Launch Checklist
+- Zenvyra is not a law firm.
+- Generated policies and scan results are not legal advice.
+- Customers should review outputs with qualified counsel.
+- Public certificates are operational evidence, not legal certification.
+- UK workflows are review aids for UK GDPR, PECR, ICO accountability, and DSAR operations.
+- US workflows are review aids for state privacy notices, consumer requests, opt-out signals, and FTC-style transparency.
 
-- [ ] All env variables set in production secret store.
-- [ ] MongoDB and Redis connectivity verified.
-- [ ] JWT secret generated and applied.
-- [ ] OpenAI API key configured and AI endpoints tested.
-- [ ] Payment keys + product IDs configured.
-- [ ] Payment webhook delivery verified at `/api/webhooks/payment`.
-- [ ] Email provider credentials verified (welcome/reset/alert emails sent).
-- [ ] Frontend URLs and backend URLs match deployed domains.
-- [ ] CORS configured to only allowed domains.
-- [ ] Docker compose deployment uses `env_file` and no hardcoded secrets.
-- [ ] Health checks pass and monitoring/logging enabled.
+Required product behavior:
+
+- Show confidence and source of tracker classification where possible.
+- Separate "detected issue" from "legal violation".
+- Avoid guaranteeing UK GDPR, PECR, CCPA/CPRA, or other US state privacy compliance.
+- Keep public certificate pages privacy-safe.
+
+## Final Go/No-Go Checklist
+
+- [ ] Backend `mvn test` green.
+- [ ] Frontend `npm run build` green.
+- [ ] API docs reviewed and match controllers.
+- [ ] Database schema docs reviewed and indexes created.
+- [ ] Payment webhook tested end to end.
+- [ ] Email flows tested.
+- [ ] OpenAI retry, timeout, fallback, validation, and cost guardrails verified.
+- [ ] Consent/audit logs are tamper-evident or at least append-only with hashes.
+- [ ] Public certificate redaction verified.
+- [ ] Legal disclaimers visible in marketing, reports, generated policies, and certificate pages.
+- [ ] Error monitoring enabled.
+- [ ] Structured logs enabled.
+- [ ] Uptime checks enabled.
+- [ ] MongoDB backup restore drill completed.
+- [ ] Git branch clean enough for release review.
+- [ ] CI passes on the release branch.

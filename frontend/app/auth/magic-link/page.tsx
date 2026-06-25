@@ -28,7 +28,7 @@ export default function MagicLinkPage() {
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
             <span className="text-white font-black text-lg">C</span>
           </div>
-          <span className="text-lg font-bold text-white tracking-wide">ComplianceAI Pro</span>
+          <span className="text-lg font-bold text-white tracking-wide">Zenvyra</span>
         </div>
 
         <div className="relative space-y-4 max-w-md">
@@ -44,7 +44,7 @@ export default function MagicLinkPage() {
         </div>
 
         <div className="relative text-xs text-text-tertiary font-semibold uppercase tracking-wider">
-          © 2026 ComplianceAI Pro Enterprise
+          © 2026 Zenvyra Enterprise
         </div>
       </div>
 

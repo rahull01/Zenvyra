@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 const features = [
   {
     title: "AI Policy Generator",
-    description: "Generate attorney-crafted legal policies in minutes. Our AI ensures every clause is compliant with the latest regulations.",
+    description: "Generate counsel-ready policy drafts in minutes. Our AI helps align clauses with current privacy readiness requirements.",
     icon: FileText,
     color: "bg-primary-light text-primary",
     capabilities: ["GDPR & CCPA Ready", "Auto-update logic", "Custom branding", "Multi-language support"]
@@ -22,14 +22,14 @@ const features = [
   },
   {
     title: "Compliance Monitoring",
-    description: "We don't just generate policies; we monitor your site 24/7 for potential violations and tracking changes.",
+    description: "We don't just generate policies; we monitor your site for privacy risk signals and tracking changes.",
     icon: ShieldCheck,
     color: "bg-primary-light text-primary",
     capabilities: ["Daily cookie scans", "DSAR automation", "Risk alerts", "Audit trails"]
   },
   {
     title: "Multi-Region Support",
-    description: "One platform for all your global compliance needs. From GDPR to CCPA, we've got you covered.",
+    description: "One platform for global privacy readiness workflows, from GDPR-style notices to CCPA/CPRA consumer rights evidence.",
     icon: Globe,
     color: "bg-primary-light text-primary",
     capabilities: ["150+ countries", "Auto-detect location", "Region-specific policies", "Local language support"]
@@ -59,10 +59,10 @@ export default function FeaturesPage() {
           FEATURES
         </span>
         <h1 className="text-h1 font-extrabold text-text-primary mt-4 mb-6 tracking-tight">
-          Everything You Need to Stay Compliant
+          Everything You Need to Stay Review-Ready
         </h1>
         <p className="text-body-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
-          From policy generation to real-time monitoring, ComplianceAI Pro provides all the tools you need to stay compliant with global privacy laws.
+          From policy generation to real-time monitoring, Zenvyra provides the tools you need to prepare evidence and stay review-ready across global privacy laws.
         </p>
         <div className="pt-8 flex justify-center gap-4">
           <Button variant="default" size="lg">Get Started Free</Button>
@@ -127,7 +127,7 @@ export default function FeaturesPage() {
             Ready to Get Started?
           </h2>
           <p className="text-body-lg text-text-secondary mb-8">
-            Join 10,000+ businesses using ComplianceAI Pro to stay compliant.
+            Build a repeatable privacy readiness workflow with Zenvyra.
           </p>
           <Button variant="default" size="lg">
             Start Free Trial

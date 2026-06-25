@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
+import { useAuthStore } from "@/hooks/useAuth";
 
 export interface ScanResult {
+    websiteId?: string;
     url: string;
     score: number;
     previousScore?: number;
@@ -23,7 +25,27 @@ export interface ScanResult {
     summary: string;
 }
 
+function normalizeScanResponse(data: any): ScanResult {
+    const scan = data?.basicScan || data;
+    const score = Number(scan?.score ?? 0);
+    const issues = Array.isArray(scan?.issues) ? scan.issues : [];
+    const recommendations = Array.isArray(scan?.recommendations) ? scan.recommendations : [];
+
+    return {
+        websiteId: data?.websiteId,
+        url: scan?.url || data?.url || "",
+        score,
+        previousScore: scan?.previousScore,
+        projectedScore: Math.min(100, Math.round(score + issues.filter((issue: any) => issue.autoFixable).length * 6)),
+        issues,
+        scanDate: scan?.scanDate || new Date().toISOString(),
+        recommendations,
+        summary: data?.aiAnalysis || scan?.summary || "Compliance scan completed with live website data.",
+    };
+}
+
 export function useScan() {
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     const [isScanning, setIsScanning] = useState(false);
     const [lastResult, setLastResult] = useState<ScanResult | null>(null);
     const [scanHistory, setScanHistory] = useState<ScanResult[]>([]);
@@ -32,10 +54,9 @@ export function useScan() {
         setIsScanning(true);
 
         try {
-            // Updated to use the correct free scan endpoint if not logged in
-            const endpoint = localStorage.getItem("token") ? "/scan/full" : "/scan/free";
+            const endpoint = isAuthenticated ? "/scan/full" : "/scan/free";
             const response = await api.post(endpoint, { url, ...options });
-            const data = response.data;
+            const data = normalizeScanResponse(response.data);
 
             setLastResult(data);
             setScanHistory(prev => [data, ...prev].slice(0, 10));
@@ -48,7 +69,7 @@ export function useScan() {
         } finally {
             setIsScanning(false);
         }
-    }, []);
+    }, [isAuthenticated]);
 
     const clearHistory = useCallback(() => {
         setScanHistory([]);

@@ -56,7 +56,7 @@ export default function ProductPageTemplate({ slug }: Props) {
               </div>
               <h2 className="text-2xl font-bold text-text-primary">Built for production teams</h2>
               <p className="mt-4 text-text-secondary leading-relaxed">
-                ComplianceAI Pro combines legal-grade templates with AI assistance so you ship faster
+                Zenvyra combines legal-grade templates with AI assistance so you ship faster
                 without sacrificing audit readiness.
               </p>
             </div>
@@ -83,7 +83,7 @@ export default function ProductPageTemplate({ slug }: Props) {
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">Ready to get compliant?</h2>
           <p className="mt-4 text-lg text-white/85">
-            Join 10,000+ businesses using ComplianceAI Pro. No credit card required.
+            Join 10,000+ businesses using Zenvyra. No credit card required.
           </p>
           <Link
             href="/auth/signup"

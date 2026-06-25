@@ -9,9 +9,9 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-background-primary">
       <Sidebar />
-      <main className="pl-[260px]">
+      <main className="lg:pl-[260px]">
         <TopBar />
-        <div className="p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           {children}
         </div>
       </main>

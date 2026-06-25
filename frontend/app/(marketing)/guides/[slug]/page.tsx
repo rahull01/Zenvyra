@@ -89,7 +89,7 @@ const guideDetails: Record<string, {
         id: "auto-blocking",
         sectionTitle: "2. Configuring Auto-Blocking Engines",
         paragraphs: [
-          "ComplianceAI Pro features a dynamic auto-blocking engine that rewrites scripts on-the-fly. For custom configurations, you can manually mark up scripts by changing the type attribute to 'text/plain' and assigning it a compliance category class.",
+          "Zenvyra features a dynamic auto-blocking engine that rewrites scripts on-the-fly. For custom configurations, you can manually mark up scripts by changing the type attribute to 'text/plain' and assigning it a compliance category class.",
           "Once the user gives consent, our engine automatically flips the type attribute back to 'text/javascript' and executes the target script."
         ]
       }
@@ -332,9 +332,9 @@ export default function GuideDetailPage() {
             <div className="rounded-[2.5rem] border border-bg-tertiary bg-bg-primary p-8 flex items-start gap-5 shadow-lg">
               <HelpCircle className="h-10 w-10 text-accent shrink-0 mt-1" />
               <div>
-                <h4 className="text-lg font-bold text-text-primary">Need professional legal guidance?</h4>
+                <h4 className="text-lg font-bold text-text-primary">Need counsel-reviewed guidance?</h4>
                 <p className="text-sm text-text-secondary mt-2 leading-relaxed">
-                  While our blueprints cover standard procedures, we highly recommend scheduling an audited scan review with our certified AI compliance officers to address custom edge-cases in your data warehouse architecture.
+                  These blueprints support operational readiness. For company-specific legal questions, pair the evidence pack with qualified counsel review.
                 </p>
                 <Button className="mt-5 rounded-full bg-accent text-bg-primary hover:bg-accent-light px-6 py-2.5 h-auto font-bold uppercase tracking-wider text-xs">
                   Request Audited Review

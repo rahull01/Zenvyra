@@ -6,11 +6,32 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
+    redis:
+      url: ${REDIS_URL}
+
+app:
+  url: ${APP_URL}
+  ops-alert-email: ${APP_OPS_ALERT_EMAIL:}
+  security:
+    hsts-enabled: true
+  auth:
+    cookies:
+      secure: true
+  backup:
+    enabled: ${APP_BACKUP_ENABLED:false}
+    provider: ${APP_BACKUP_PROVIDER:}
+    last-restore-drill-at: ${APP_BACKUP_LAST_RESTORE_DRILL_AT:}
+
+frontend:
+  url: ${FRONTEND_URL}
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS}
 
 logging:
   level:
     root: WARN
-    com.complianceai: INFO
+    com.zenvyra: INFO
     org.springframework.security: WARN
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

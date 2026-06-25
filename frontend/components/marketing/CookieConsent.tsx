@@ -4,33 +4,33 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Cookie, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { runAfterPaint, runWhenIdle } from '@/lib/performance';
 
 const CookieConsent = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
 
   useEffect(() => {
-    // Check if user has already consented
-    const hasConsented = localStorage.getItem('cookieConsent');
-    if (!hasConsented) {
-      // Show after a small delay
-      const timer = setTimeout(() => setIsVisible(true), 1500);
-      return () => clearTimeout(timer);
-    }
+    runWhenIdle(() => {
+      const hasConsented = localStorage.getItem('cookieConsent');
+      if (!hasConsented) {
+        window.setTimeout(() => setIsVisible(true), 1500);
+      }
+    });
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem('cookieConsent', 'accepted');
     setIsVisible(false);
+    runWhenIdle(() => localStorage.setItem('cookieConsent', 'accepted'));
   };
 
   const handleDecline = () => {
-    localStorage.setItem('cookieConsent', 'declined');
     setIsVisible(false);
+    runWhenIdle(() => localStorage.setItem('cookieConsent', 'declined'));
   };
 
   const handlePreferences = () => {
-    setShowPreferences(!showPreferences);
+    runAfterPaint(() => setShowPreferences((value) => !value));
   };
 
   if (!isVisible) return null;
@@ -42,7 +42,7 @@ const CookieConsent = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 100 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
+        className="fixed bottom-0 left-0 right-0 z-50 min-h-[180px] p-4 md:p-6"
       >
         <div className="max-w-7xl mx-auto">
           <div className="bg-secondary border border-border-medium rounded-2xl shadow-2xl p-6 md:p-8">

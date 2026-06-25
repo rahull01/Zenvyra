@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import DashboardPageShell from "@/components/dashboard/DashboardPageShell";
 import { Cookie } from "lucide-react";

@@ -78,6 +78,10 @@ const config: Config = {
           dark: '#334155',
           darker: '#0F172A',
         },
+        zenvyra: {
+          navy: '#0F172A',
+          blue: '#2563EB',
+        },
 
         // Semantic status (kept minimal)
         status: {
@@ -127,6 +131,8 @@ const config: Config = {
         'dropdown': '0 10px 40px rgba(0, 0, 0, 0.15)',
         'modal': '0 20px 60px rgba(0, 0, 0, 0.2)',
         'floating': '0 4px 20px rgba(230, 126, 34, 0.15)',
+        'zenvyra-soft': '0 14px 40px rgba(15, 23, 42, 0.10)',
+        'zenvyra-hover': '0 18px 45px rgba(15, 23, 42, 0.16)',
       },
       animation: {
         'float': 'float 4s ease-in-out infinite',
@@ -166,6 +172,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
 export default config;

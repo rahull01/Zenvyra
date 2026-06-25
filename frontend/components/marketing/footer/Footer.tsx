@@ -4,31 +4,54 @@ import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
 const footerLinks = {
+  company: [
+    { label: "About Us", href: "/about" },
+    { label: "Careers", href: "/careers" },
+    { label: "Our Commitment To Privacy", href: "/commitment-to-privacy" },
+    { label: "Our Privacy Center", href: "/privacy-center" },
+    { label: "Our Privacy Policy", href: "/privacy" },
+    { label: "Our Terms of Use", href: "/terms" },
+    { label: "Our Disclaimer", href: "/disclaimer" },
+    { label: "Our Cookie Policy", href: "/cookies" },
+    { label: "Our Sub-Processors", href: "/sub-processors" },
+    { label: "Limit Sensitive Information", href: "/limit-sensitive-info" },
+    { label: "Do Not Sell or Share", href: "/do-not-sell" },
+    { label: "Updates and Press", href: "/press" },
+  ],
   products: [
     { label: "Privacy Policy Generator", href: "/products/privacy-policy" },
+    { label: "Terms and Conditions Generator", href: "/products/terms-conditions" },
+    { label: "Cookie Policy Generator", href: "/products/cookie-policy" },
+    { label: "EULA Generator", href: "/products/eula" },
+    { label: "Acceptable Use Policy Generator", href: "/products/acceptable-use-policy" },
+    { label: "Refund & Return Policy Generator", href: "/products/return-policy" },
+    { label: "Shipping Policy Generator", href: "/products/shipping-policy" },
+    { label: "Disclaimer Generator", href: "/products/disclaimer" },
+    { label: "Consent Management Platform", href: "/products/cookie-consent" },
     { label: "Cookie Consent", href: "/products/cookie-consent" },
     { label: "Cookie Scanner", href: "/products/cookie-scanner" },
-    { label: "Terms & Conditions", href: "/products/terms-conditions" },
-    { label: "AI Assistant", href: "/products/ai-assistant" },
-    { label: "Pricing", href: "/pricing" },
-  ],
-  company: [
-    { label: "About Us",  href: "/about" },
-    { label: "Contact",   href: "/contact" },
-    { label: "Partners",  href: "/partners" },
-    { label: "Press",     href: "/press" },
   ],
   support: [
-    { label: "Help & Support",  href: "/help" },
-    { label: "Documentation",   href: "/documentation" },
-    { label: "System Status",   href: "/status" },
-    { label: "FAQs",             href: "/help" },
+    { label: "Help and Support", href: "/help" },
+    { label: "Product Roadmap", href: "/roadmap" },
+    { label: "Product Releases", href: "/product-releases" },
+    { label: "FAQs", href: "/help" },
+    { label: "Contact Us", href: "/contact" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Partner with Us", href: "/partners" },
+    { label: "Resources", href: "/resources" },
+    { label: "Cookie Preferences", href: "/cookie-preferences" },
+    { label: "Legal Dictionary", href: "/legal-dictionary" },
+    { label: "Security FAQ", href: "/security-faq" },
   ],
-  legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Use",   href: "/terms" },
-    { label: "Cookie Policy",  href: "/cookies" },
-    { label: "GDPR",           href: "/gdpr" },
+  trust: [
+    { label: "Legal Center", href: "/legal" },
+    { label: "Security", href: "/security" },
+    { label: "System Status", href: "/status" },
+    { label: "GDPR Readiness", href: "/gdpr" },
+    { label: "Documentation", href: "/documentation" },
+    { label: "Guides", href: "/guides" },
+    { label: "Blog", href: "/blog" },
   ],
 };
 
@@ -59,11 +82,11 @@ export default function Footer() {
                 <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z" fill="url(#logo-grad-footer)" />
                 <path d="M9 11l2 2 4-4" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span className="text-xl font-black tracking-tight text-white">&nbsp;ComplianceAI Pro</span>
+              <span className="text-xl font-black tracking-tight text-white">&nbsp;Zenvyra</span>
             </Link>
             <p className="max-w-xs text-[15px] leading-relaxed text-text-tertiary">
-              All-in-one data privacy compliance for websites and apps.
-              Generate policies, manage consent, and stay compliant worldwide.
+              Privacy and AI readiness infrastructure for websites and apps.
+              Generate policies, manage consent, and publish proof workflows worldwide.
             </p>
             {/* social row */}
             <div className="flex items-center gap-2">
@@ -77,10 +100,10 @@ export default function Footer() {
 
           {/* link columns */}
           {[
-            { title: "Products", links: footerLinks.products },
             { title: "Company",  links: footerLinks.company },
+            { title: "Products", links: footerLinks.products },
             { title: "Support",  links: footerLinks.support },
-            { title: "Legal",    links: footerLinks.legal },
+            { title: "Trust",    links: footerLinks.trust },
           ].map((col) => (
             <div key={col.title}>
               <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
@@ -105,12 +128,17 @@ export default function Footer() {
         {/* bottom bar */}
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 md:flex-row">
           <p className="text-[12px] text-text-tertiary">
-            © {new Date().getFullYear()} ComplianceAI Pro. All rights reserved.
+            © {new Date().getFullYear()} Zenvyra. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
-            {["Privacy Policy","Cookie Policy","Terms of Use"].map((l) => (
-              <Link key={l} href="#" className="text-[12px] text-text-tertiary hover:text-accent hover:underline">
-                {l}
+            {[
+              { label: "Privacy Policy", href: "/privacy" },
+              { label: "Cookie Policy", href: "/cookies" },
+              { label: "Service Terms", href: "/terms" },
+              { label: "Refund Policy", href: "/refund-policy" },
+            ].map((link) => (
+              <Link key={link.label} href={link.href} className="text-[12px] text-text-tertiary hover:text-accent hover:underline">
+                {link.label}
               </Link>
             ))}
           </div>

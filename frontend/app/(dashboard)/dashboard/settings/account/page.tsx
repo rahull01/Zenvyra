@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 export default function AccountSettingsPage() {
   const [profile, setProfile] = useState({
     fullName: "Alex Rivera",
-    email: "alex@complianceai.pro",
-    companyName: "ComplianceAI Pro Inc",
+    email: "alex@zenvyra.com",
+    companyName: "Zenvyra Inc",
     twoFactor: true,
   });
 

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Shield, Globe, Zap, Server, Layers, Sparkles, CheckCircle } from "lucide-react";
+import { Shield, Globe, Zap, Server, Layers, Sparkles, CheckCircle, BadgeCheck, LockKeyhole, ScanLine } from "lucide-react";
 import PageScaffold from "@/components/marketing/PageScaffold";
 
 const solutionCards = [
@@ -70,16 +70,23 @@ export default function AboutPage() {
         title="Rahul Singh"
         subtitle="Building the future of compliance automation with AI"
         showCta={false}
+        showHero={false}
+        sectionClassName="pb-16 pt-8 sm:pb-20 sm:pt-10 lg:pb-24 lg:pt-12"
       >
       <div className="space-y-12">
-        <section className="rounded-[32px] bg-white p-8 shadow-card-shadow sm:p-10 lg:p-12">
-          <div className="grid gap-8 lg:grid-cols-[0.95fr_0.7fr] lg:items-center">
+        <section className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+          <div className="grid gap-0 lg:grid-cols-[0.98fr_0.72fr] lg:items-stretch">
             <div className="space-y-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-orange-600">Founder</p>
-              <h1 className="text-4xl font-extrabold tracking-tight text-text-primary sm:text-5xl">Rahul Singh</h1>
-              <p className="text-base font-semibold text-orange-600">Founder & CEO</p>
-              <p className="max-w-2xl text-base leading-8 text-text-secondary">
-                Rahul Singh is the founder behind ComplianceAI Pro, building intelligent automation solutions that simplify compliance and risk management using AI, cloud systems, and product-first engineering.
+              <div className="p-8 sm:p-10 lg:p-12">
+              <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-700">
+                <BadgeCheck className="h-4 w-4" />
+                Founder-led compliance platform
+              </div>
+              <h1 className="mt-6 max-w-2xl text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
+                Built by an engineer who knows trust has to ship with the product.
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600">
+                I am Rahul Singh, Founder & CEO of Zenvyra. We help modern teams turn privacy, policy, consent, and proof work into a clear workflow customers can trust.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link
@@ -97,41 +104,56 @@ export default function AboutPage() {
                   Our story
                 </Link>
               </div>
-              <div className="grid grid-cols-3 gap-4 pt-4 text-center">
-                <div className="rounded-3xl bg-orange-50 p-5">
-                  <p className="text-2xl font-bold text-text-primary">10K+</p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.3em] text-orange-600">businesses served</p>
+              <div className="grid gap-3 pt-2 sm:grid-cols-3">
+                <div className="rounded-2xl border border-orange-100 bg-orange-50/70 p-4">
+                  <LockKeyhole className="h-5 w-5 text-orange-600" />
+                  <p className="mt-3 text-sm font-bold text-slate-950">Privacy-first workflows</p>
+                  <p className="mt-1 text-xs leading-5 text-slate-600">Clear evidence, not vague claims.</p>
                 </div>
-                <div className="rounded-3xl bg-orange-50 p-5">
-                  <p className="text-2xl font-bold text-text-primary">150+</p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.3em] text-orange-600">countries covered</p>
+                <div className="rounded-2xl border border-orange-100 bg-orange-50/70 p-4">
+                  <ScanLine className="h-5 w-5 text-orange-600" />
+                  <p className="mt-3 text-sm font-bold text-slate-950">AI-assisted scanning</p>
+                  <p className="mt-1 text-xs leading-5 text-slate-600">Find gaps before buyers do.</p>
                 </div>
-                <div className="rounded-3xl bg-orange-50 p-5">
-                  <p className="text-2xl font-bold text-text-primary">AI-first</p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.3em] text-orange-600">compliance automation</p>
+                <div className="rounded-2xl border border-orange-100 bg-orange-50/70 p-4">
+                  <Shield className="h-5 w-5 text-orange-600" />
+                  <p className="mt-3 text-sm font-bold text-slate-950">Public proof pages</p>
+                  <p className="mt-1 text-xs leading-5 text-slate-600">Show what is ready and reviewed.</p>
                 </div>
+              </div>
+              <div className="flex flex-wrap gap-x-5 gap-y-2 pt-1 text-xs font-semibold text-slate-500">
+                <span className="inline-flex items-center gap-2"><CheckCircle className="h-4 w-4 text-orange-600" /> Founder operated</span>
+                <span className="inline-flex items-center gap-2"><CheckCircle className="h-4 w-4 text-orange-600" /> Product-first engineering</span>
+                <span className="inline-flex items-center gap-2"><CheckCircle className="h-4 w-4 text-orange-600" /> Built for audit-ready trust</span>
+              </div>
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-[32px] border border-border-light bg-slate-50 shadow-card-shadow">
+            <div className="relative min-h-[520px] overflow-hidden border-t border-slate-200 bg-slate-50 lg:border-l lg:border-t-0">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(249,115,22,0.16),transparent_36%)]" />
               <Image
                 src="/rahul.png"
                 alt="Rahul Singh"
                 width={720}
                 height={900}
-                className="aspect-[4/5] w-full object-cover"
+                priority
+                className="relative h-full min-h-[520px] w-full object-cover object-top"
               />
+              <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/70 bg-white/85 p-4 shadow-[0_18px_50px_rgba(15,23,42,0.14)] backdrop-blur-xl">
+                <p className="text-sm font-extrabold text-slate-950">Rahul Singh</p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-orange-600">Founder & CEO</p>
+              </div>
             </div>
           </div>
         </section>
         <section className="rounded-[32px] bg-white p-8 shadow-card-shadow sm:p-10 lg:p-12">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-orange-600">Vision statement</p>
-          <h2 className="mt-4 text-3xl font-bold text-text-primary sm:text-4xl">Why ComplianceAI exists</h2>
+          <h2 className="mt-4 text-3xl font-bold text-text-primary sm:text-4xl">Why Zenvyra exists</h2>
           <p className="mt-6 max-w-3xl text-base leading-8 text-text-secondary">
             The people building websites today are buried in fast-moving rules, inconsistent legal notes, and compliance work that lives outside product. That gap creates late-stage risk, missed deadlines, and customer doubt.
           </p>
           <p className="mt-4 max-w-3xl text-base leading-8 text-text-secondary">
-            ComplianceAI Pro exists to make compliance feel like a product capability: clear, visible, and built into every release so teams can ship confidently and grow without legal surprise.
+            Zenvyra exists to make compliance feel like a product capability: clear, visible, and built into every release so teams can ship confidently and grow without legal surprise.
           </p>
         </section>
 
@@ -177,7 +199,7 @@ export default function AboutPage() {
               Rahul began as a Java backend engineer solving performance and compliance problems for customer-facing platforms. He watched teams lose weeks in legal review and still ship websites with privacy gaps and accessibility risk.
             </p>
             <p className="text-base leading-8">
-              That experience became the mission: stop treating compliance as a checklist and start treating it as a product capability. ComplianceAI Pro is the first product he built where engineering, legal, and operations move together in one dashboard.
+              That experience became the mission: stop treating compliance as a checklist and start treating it as a product capability. Zenvyra is the first product he built where engineering, legal, and operations move together in one dashboard.
             </p>
             <p className="text-base leading-8">
               The same founder who delivered microservices, Kafka pipelines, and Kubernetes deployments now backs this product with real operational rigor and a focus on trust-first outcomes.

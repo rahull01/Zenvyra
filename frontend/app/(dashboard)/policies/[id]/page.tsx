@@ -1,372 +1,206 @@
-﻿"use client";
+"use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import api from "@/lib/api";
-import {
-    ChevronLeft, Save, Download,
-    History, Eye, Edit3, Sparkles
-} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { ChevronLeft, Download, Edit3, Eye, History, Loader2, Save, Sparkles } from "lucide-react";
 import toast from "react-hot-toast";
+import api from "@/lib/api";
 
-type PolicyRecord = {
-    id: string;
-    title: string;
-    website: string;
-    lastUpdated: string;
-    content: string;
-    aiSuggestion: string;
-    complianceNote: string;
+type Policy = {
+  id: string;
+  title?: string;
+  name?: string;
+  type: string;
+  content?: string;
+  plainText?: string;
+  language?: string;
+  status?: string;
+  updatedAt?: string;
+  websiteId?: string;
+  complianceFrameworks?: string[];
 };
-
-const POLICY_LIBRARY: Record<string, PolicyRecord> = {
-    "1": {
-        id: "1",
-        title: "Privacy Policy - SaaS Platform",
-        website: "northline.app",
-        lastUpdated: "3 hours ago",
-        aiSuggestion: "Add a dedicated section clarifying retention windows for support chat transcripts.",
-        complianceNote: "GDPR Articles 13 and 14 coverage is complete for collected personal data categories.",
-        content: `# Privacy Policy - SaaS Platform
-
-Last Updated: April 24, 2026
-
-## 1. Introduction
-Northline Inc. ("Northline", "we", "our") is committed to protecting your personal data while providing our compliance automation services.
-
-## 2. Information We Collect
-- Account data: name, work email, company name, login activity.
-- Product usage data: scans run, monitored domains, issue history.
-- Support data: support requests, chat metadata, and attachments.
-
-## 3. Legal Bases for Processing
-We process data under contract performance, legitimate interests, and legal obligations where applicable.
-
-## 4. How We Use Information
-- Deliver and improve compliance scanning and monitoring features.
-- Provide support and security alerts.
-- Produce audit records and compliance reports requested by customers.
-
-## 5. Data Retention
-- Account data: retained for account lifetime plus 30 days after deletion request.
-- Audit logs: retained for 24 months for regulatory traceability.
-- Support records: retained for 12 months.
-
-## 6. Data Sharing
-We share data only with vetted subprocessors required to operate our service.
-
-## 7. Your Rights
-Users may request access, correction, deletion, portability, or restriction by emailing privacy@northline.app.
-
-## 8. Contact
-Privacy team: privacy@northline.app
-DPO contact: dpo@northline.app
-`,
-    },
-    "2": {
-        id: "2",
-        title: "Terms of Service - Subscription Plans",
-        website: "northline.app",
-        lastUpdated: "1 day ago",
-        aiSuggestion: "Clarify SLA remedies for Enterprise plans when monthly uptime drops below commitment.",
-        complianceNote: "Key subscription, termination, and acceptable use clauses are present and internally consistent.",
-        content: `# Terms of Service - Subscription Plans
-
-Last Updated: April 23, 2026
-
-## 1. Agreement
-By accessing Northline services, you agree to these Terms.
-
-## 2. Subscription and Billing
-- Plans are billed monthly or annually in advance.
-- Trial accounts convert only after explicit customer confirmation.
-- Taxes are applied where required by law.
-
-## 3. Acceptable Use
-Customers must not use the service for unlawful activity, credential stuffing, or unauthorized scanning targets.
-
-## 4. Service Availability
-Northline targets 99.9% monthly uptime for paid plans.
-
-## 5. Termination
-Either party may terminate in accordance with contract terms; data export remains available for 30 days.
-
-## 6. Limitation of Liability
-Liability is limited to fees paid in the preceding 12 months, except where prohibited by law.
-`,
-    },
-    "3": {
-        id: "3",
-        title: "Cookie Policy - Consent Preferences",
-        website: "checkout.northline.app",
-        lastUpdated: "Just now",
-        aiSuggestion: "Add explicit examples for analytics and advertising cookies under each consent category.",
-        complianceNote: "Consent categories and withdrawal controls satisfy baseline ePrivacy expectations.",
-        content: `# Cookie Policy - Consent Preferences
-
-Last Updated: April 24, 2026
-
-## 1. What Are Cookies?
-Cookies are small text files stored on your device to support authentication, preferences, and analytics.
-
-## 2. Cookie Categories
-- Strictly Necessary: required for login and core functionality.
-- Functional: remembers language and region preferences.
-- Analytics: helps us measure product performance.
-- Marketing: used for campaign attribution where consent is given.
-
-## 3. Consent Management
-Users can accept or reject non-essential cookies and update choices through the preference center at any time.
-
-## 4. Third-Party Cookies
-We use selected providers for analytics and security monitoring; full list is available in our subprocessor register.
-
-## 5. Contact
-For cookie-related requests, email privacy@northline.app.
-`,
-    },
-    "4": {
-        id: "4",
-        title: "GDPR Data Processing Notice",
-        website: "docs.northline.app",
-        lastUpdated: "5 days ago",
-        aiSuggestion: "Expand transfer safeguards section with SCC references for all non-EEA subprocessors.",
-        complianceNote: "Data processing roles, lawful basis, and data subject rights are clearly documented.",
-        content: `# GDPR Data Processing Notice
-
-Last Updated: April 19, 2026
-
-## 1. Roles and Responsibilities
-Northline acts as a processor for customer data submitted through product workflows.
-
-## 2. Processing Purposes
-Data is processed for scanning, monitoring, issue reporting, and compliance analytics requested by customers.
-
-## 3. International Transfers
-Where transfers occur outside the EEA, Northline relies on SCCs and supplementary safeguards.
-
-## 4. Security Measures
-Encryption in transit and at rest, access controls, audit logging, and incident response procedures are enforced.
-
-## 5. Data Subject Rights Support
-Northline provides tooling and support for access, correction, deletion, and portability requests.
-`,
-    },
-    "5": {
-        id: "5",
-        title: "CCPA Consumer Rights Notice",
-        website: "northline.app",
-        lastUpdated: "2 hours ago",
-        aiSuggestion: "Add explicit processing disclosure for customer support vendors and retention periods.",
-        complianceNote: "Right-to-know and right-to-delete sections are complete and operational.",
-        content: `# CCPA Consumer Rights Notice
-
-Last Updated: April 24, 2026
-
-## 1. Categories of Personal Information
-Identifiers, internet activity, and customer account information may be collected to provide services.
-
-## 2. Consumer Rights
-California residents may request access, deletion, and correction of personal information.
-
-## 3. Do Not Sell or Share
-Northline does not sell personal information.
-
-## 4. Verification Process
-Requests are verified before action to protect account security.
-
-## 5. Contact
-Submit requests at privacy@northline.app with subject line "CCPA Request".
-`,
-    },
-};
-
-const FALLBACK_POLICY = POLICY_LIBRARY["1"];
 
 export default function PolicyDetailPage() {
-    const { id } = useParams();
-    const policyId = Array.isArray(id) ? id[0] : id;
-    const [isEditing, setIsEditing] = useState(false);
-    const [content, setContent] = useState("");
-    const [loading, setLoading] = useState(true);
+  const { id } = useParams();
+  const policyId = Array.isArray(id) ? id[0] : id;
+  const [isEditing, setIsEditing] = useState(false);
+  const [content, setContent] = useState("");
+  const [policy, setPolicy] = useState<Policy | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-    const [policy, setPolicy] = useState<PolicyRecord | null>(null);
-    const currentPolicy = policy ?? (POLICY_LIBRARY[policyId ?? ""] || FALLBACK_POLICY);
-
-    useEffect(() => {
-        const fetchPolicy = async () => {
-            if (!policyId) {
-                setContent(FALLBACK_POLICY.content);
-                setLoading(false);
-                return;
-            }
-
-            try {
-                const response = await api.get<PolicyRecord>(`/policies/${policyId}`);
-                setPolicy(response.data);
-                setContent(response.data.content || "");
-            } catch (error) {
-                toast.error("Unable to load policy. Showing fallback content.");
-                setPolicy(null);
-                setContent(FALLBACK_POLICY.content);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchPolicy();
-    }, [policyId]);
-
-    const handleSave = async () => {
-        if (!policyId) {
-            toast.error("Invalid policy ID.");
-            return;
-        }
-
-        try {
-            await api.put(`/policies/${policyId}`, { content });
-            setPolicy(prev => prev ? { ...prev, content, lastUpdated: "Just now" } : null);
-            toast.success("Policy saved successfully!");
-            setIsEditing(false);
-        } catch (error) {
-            toast.error("Unable to save policy. Please try again.");
-        }
+  useEffect(() => {
+    if (!policyId) return;
+    let mounted = true;
+    api
+      .get<Policy>(`/policies/${policyId}`)
+      .then((response) => {
+        if (!mounted) return;
+        setPolicy(response.data);
+        setContent(response.data.content || response.data.plainText || "");
+      })
+      .catch((error) => toast.error(error?.response?.data?.message || "Unable to load policy"))
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
+    return () => {
+      mounted = false;
     };
+  }, [policyId]);
 
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center min-h-[400px]">
-                <div className="w-12 h-12 border-4 border-brand-500/30 border-t-brand-500 rounded-full animate-spin" />
-            </div>
-        );
+  const title = policy?.title || policy?.name || "Policy";
+  const frameworkText = useMemo(() => (policy?.complianceFrameworks || []).join(", "), [policy]);
+
+  const handleSave = async () => {
+    if (!policyId) return;
+    setSaving(true);
+    try {
+      const response = await api.put<Policy>(`/policies/${policyId}`, { content });
+      setPolicy(response.data);
+      setContent(response.data.content || "");
+      setIsEditing(false);
+      toast.success("Policy saved.");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Unable to save policy");
+    } finally {
+      setSaving(false);
     }
+  };
 
+  const handleExport = () => {
+    const blob = new Blob([content], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.html`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
+
+  if (loading) {
     return (
-        <div className="max-w-5xl mx-auto space-y-8">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <Link
-                        href="/policies"
-                        className="p-2 hover:bg-surface-800 rounded-xl transition-colors"
-                    >
-                        <ChevronLeft className="w-6 h-6 text-surface-400" />
-                    </Link>
-                    <div>
-                        <h1 className="text-heading-1 font-display text-surface-100">
-                            {currentPolicy.title}
-                        </h1>
-                        <p className="text-sm text-surface-500">
-                            {currentPolicy.website} - Last updated {currentPolicy.lastUpdated}
-                        </p>
-                    </div>
-                </div>
-                <div className="flex items-center gap-3">
-                    <button
-                        onClick={() => setIsEditing(!isEditing)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all duration-200 ${
-                            isEditing
-                            ? "bg-surface-800 border-surface-700 text-surface-100"
-                            : "bg-brand-500/10 border-brand-500/20 text-brand-400 hover:bg-brand-500/20"
-                        }`}
-                    >
-                        {isEditing ? <Eye className="w-4 h-4" /> : <Edit3 className="w-4 h-4" />}
-                        {isEditing ? "Preview" : "Edit"}
-                    </button>
-                    {isEditing ? (
-                        <button
-                            onClick={handleSave}
-                            className="flex items-center gap-2 px-6 py-2 bg-brand-500 hover:bg-brand-400 text-white font-semibold rounded-xl transition-all duration-300 shadow-glow"
-                        >
-                            <Save className="w-4 h-4" />
-                            Save Changes
-                        </button>
-                    ) : (
-                        <button className="flex items-center gap-2 px-6 py-2 bg-surface-800 hover:bg-surface-700 text-surface-100 font-semibold rounded-xl transition-all duration-300">
-                            <Download className="w-4 h-4" />
-                            Export
-                        </button>
-                    )}
-                </div>
-            </div>
-
-            {/* Editor/Preview Area */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                {/* Main Content */}
-                <div className="lg:col-span-3 space-y-6">
-                    <div className="glass-card rounded-2xl overflow-hidden">
-                        {isEditing ? (
-                            <textarea
-                                value={content}
-                                onChange={(e) => setContent(e.target.value)}
-                                className="w-full h-[600px] p-8 bg-transparent text-surface-200 font-mono text-sm focus:outline-none resize-none"
-                            />
-                        ) : (
-                            <div className="p-12 prose prose-invert max-w-none">
-                                <div className="whitespace-pre-wrap text-surface-300 leading-relaxed">
-                                    {content}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {/* Sidebar */}
-                <div className="space-y-6">
-                    {/* AI Suggestions */}
-                    <div className="glass-card rounded-2xl p-6">
-                        <h3 className="text-heading-3 flex items-center gap-2 mb-4">
-                            <Sparkles className="w-5 h-5 text-brand-400" />
-                            AI Insights
-                        </h3>
-                        <div className="space-y-4">
-                            <div className="p-3 rounded-xl bg-brand-500/10 border border-brand-500/20">
-                                <p className="text-xs font-semibold text-brand-400 uppercase tracking-wider mb-1">
-                                    Suggestion
-                                </p>
-                                <p className="text-sm text-surface-300">
-                                    {currentPolicy.aiSuggestion}
-                                </p>
-                            </div>
-                            <div className="p-3 rounded-xl bg-success/10 border border-success/20">
-                                <p className="text-xs font-semibold text-success uppercase tracking-wider mb-1">
-                                    Compliant
-                                </p>
-                                <p className="text-sm text-surface-300">
-                                    {currentPolicy.complianceNote}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Version History */}
-                    <div className="glass-card rounded-2xl p-6">
-                        <h3 className="text-heading-3 flex items-center gap-2 mb-4">
-                            <History className="w-5 h-5 text-surface-400" />
-                            History
-                        </h3>
-                        <div className="space-y-3">
-                            {[
-                                { date: "Today", user: "AI Assistant", type: "Regulation Sync" },
-                                { date: "2 days ago", user: "Legal Team", type: "Manual Review" },
-                                { date: "1 week ago", user: "AI Assistant", type: "Initial Draft" },
-                            ].map((v, i) => (
-                                <div key={i} className="flex items-center justify-between text-sm py-2 border-b border-surface-800/50 last:border-0">
-                                    <div>
-                                        <p className="text-surface-200">{v.type}</p>
-                                        <p className="text-xs text-surface-500">{v.date} by {v.user}</p>
-                                    </div>
-                                    <button className="text-brand-400 hover:text-brand-300 text-xs">
-                                        Restore
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div className="flex min-h-[400px] items-center justify-center text-text-secondary">
+        <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+        Loading policy...
+      </div>
     );
+  }
+
+  if (!policy) {
+    return (
+      <div className="rounded-2xl border border-status-error/30 bg-status-error/10 p-6 text-status-error">
+        Policy could not be loaded.
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-5xl space-y-8">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard/policies" className="rounded-xl p-2 transition-colors hover:bg-background-secondary">
+            <ChevronLeft className="h-6 w-6 text-text-secondary" />
+          </Link>
+          <div>
+            <h1 className="text-3xl font-bold text-text-primary">{title}</h1>
+            <p className="mt-1 text-sm text-text-secondary">
+              {policy.type} | {policy.status || "draft"} | Updated {formatRelative(policy.updatedAt)}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsEditing((value) => !value)}
+            className="flex items-center gap-2 rounded-xl border border-border-light bg-background-secondary px-4 py-2 text-sm font-semibold text-text-primary transition hover:bg-background-tertiary"
+          >
+            {isEditing ? <Eye className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
+            {isEditing ? "Preview" : "Edit"}
+          </button>
+          {isEditing ? (
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="flex items-center gap-2 rounded-xl bg-accent px-6 py-2 text-sm font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
+            >
+              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              Save
+            </button>
+          ) : (
+            <button
+              onClick={handleExport}
+              className="flex items-center gap-2 rounded-xl bg-background-secondary px-6 py-2 text-sm font-semibold text-text-primary transition hover:bg-background-tertiary"
+            >
+              <Download className="h-4 w-4" />
+              Export
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-4">
+        <div className="lg:col-span-3">
+          <div className="overflow-hidden rounded-2xl border border-border-light bg-surface-card shadow-card">
+            {isEditing ? (
+              <textarea
+                value={content}
+                onChange={(event) => setContent(event.target.value)}
+                className="h-[650px] w-full resize-none bg-transparent p-8 font-mono text-sm leading-relaxed text-text-primary outline-none"
+              />
+            ) : (
+              <article className="min-h-[650px] p-10">
+                <div className="whitespace-pre-wrap text-sm leading-7 text-text-primary">{content}</div>
+              </article>
+            )}
+          </div>
+        </div>
+
+        <aside className="space-y-6">
+          <div className="rounded-2xl border border-border-light bg-surface-card p-6 shadow-card">
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-text-primary">
+              <Sparkles className="h-5 w-5 text-accent" />
+              AI Context
+            </h3>
+            <dl className="space-y-3 text-sm">
+              <div>
+                <dt className="text-text-tertiary">Language</dt>
+                <dd className="font-semibold text-text-primary">{policy.language || "en"}</dd>
+              </div>
+              <div>
+                <dt className="text-text-tertiary">Frameworks</dt>
+                <dd className="font-semibold text-text-primary">{frameworkText || "Not set"}</dd>
+              </div>
+              <div>
+                <dt className="text-text-tertiary">Website</dt>
+                <dd className="font-semibold text-text-primary">{policy.websiteId || "Account-wide"}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="rounded-2xl border border-border-light bg-surface-card p-6 shadow-card">
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-text-primary">
+              <History className="h-5 w-5 text-text-secondary" />
+              Version
+            </h3>
+            <p className="text-sm text-text-secondary">Current database record updated {formatRelative(policy.updatedAt)}.</p>
+            <Link href={`/dashboard/policies/${policy.id}/preview`} className="mt-4 inline-block text-sm font-semibold text-accent hover:underline">
+              Open hosted preview
+            </Link>
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+function formatRelative(value?: string) {
+  if (!value) return "recently";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "recently";
+  const minutes = Math.max(0, Math.floor((Date.now() - date.getTime()) / 60000));
+  if (minutes < 1) return "just now";
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hr ago`;
+  return `${Math.floor(hours / 24)} days ago`;
 }

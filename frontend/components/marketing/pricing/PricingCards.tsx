@@ -2,144 +2,107 @@
 
 import React from "react";
 import Link from "next/link";
-import { Check, Zap, Shield, Crown, ArrowRight, Star } from "lucide-react";
+import { ArrowRight, Check, Crown, Shield, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import PageContainer from "@/components/shared/PageContainer";
 import SectionWrapper from "@/components/shared/SectionWrapper";
 import { Button } from "@/components/ui/button";
+import { PRICING_PLANS } from "@/lib/pricing-plans";
 
-const plans = [
-    { 
-        name: "Starter", 
-        price: "$49", 
-        description: "Perfect for single-product startups.", 
-        features: ["1 Domain Scan", "Auto Policy Generation", "Cookie Consent Banner", "7-Day Scan History", "Email Support"],
-        icon: Shield,
-        color: "info"
-    },
-    { 
-        name: "Pro", 
-        price: "$149", 
-        description: "Advanced automation for growth teams.", 
-        features: ["5 Domain Scans", "Deep Vulnerability Analysis", "Custom Policy Branding", "30-Day Scan History", "Priority AI Support", "API Access"], 
-        featured: true,
-        icon: Zap,
-        color: "accent"
-    },
-    { 
-        name: "Enterprise", 
-        price: "Custom", 
-        description: "Global compliance at scale.", 
-        features: ["Unlimited Domains", "SAML / SSO Integration", "Dedicated Legal Review", "Custom Data Locality", "99.9% Uptime SLA", "24/7 Dedicated Support"],
-        icon: Crown,
-        color: "success"
-    },
-];
+const planIcons = {
+  free: Shield,
+  growth: Zap,
+  pro: Zap,
+  agency: Crown,
+};
 
 export default function PricingCards() {
-    return (
-        <SectionWrapper className="relative py-32 bg-bg-base overflow-hidden">
-            {/* Background atmosphere */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 blur-[160px] rounded-full pointer-events-none" />
+  return (
+    <SectionWrapper className="relative overflow-hidden bg-bg-base py-32">
+      <PageContainer>
+        <div className="relative z-10 mb-20 text-center">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2">
+            <span className="text-xs font-bold uppercase tracking-widest text-accent">Backend-Aligned Plans</span>
+          </div>
+          <h2 className="mb-6 text-4xl font-extrabold tracking-tight text-text-primary md:text-6xl">
+            Subscription plans tied to product entitlements.
+          </h2>
+          <p className="mx-auto max-w-2xl text-lg font-medium leading-relaxed text-text-secondary">
+            Public pricing uses the same plan names, website limits, and feature gates enforced by the backend.
+          </p>
+        </div>
 
-            <PageContainer>
-                <div className="relative z-10 mb-20 text-center">
-                    <motion.div 
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full mb-6"
-                    >
-                        <Star className="w-4 h-4 text-accent fill-accent" />
-                        <span className="text-xs font-bold text-accent uppercase tracking-widest">Pricing Built for Scale</span>
-                    </motion.div>
-                    <h2 className="text-4xl md:text-6xl font-extrabold text-text-primary mb-6 tracking-tight">
-                        Transparent Pricing for <br/>
-                        <span className="text-gradient-accent">Global Compliance.</span>
-                    </h2>
-                    <p className="mx-auto max-w-2xl text-lg text-text-secondary font-medium leading-relaxed">
-                        Scale your compliance infrastructure as you grow. No hidden fees, 
-                        no enterprise bloat. Just pure, AI-powered automation.
-                    </p>
+        <div className="relative z-10 grid items-stretch gap-8 md:grid-cols-2 xl:grid-cols-4">
+          {PRICING_PLANS.map((plan, index) => {
+            const Icon = planIcons[plan.id];
+            const featured = plan.id === "pro";
+
+            return (
+              <motion.div
+                key={plan.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative rounded-3xl border p-8 transition-all duration-300 ${
+                  featured
+                    ? "z-20 border-accent bg-bg-primary shadow-glow-accent"
+                    : "border-bg-tertiary bg-bg-secondary/50 hover:border-accent/30"
+                }`}
+              >
+                {featured && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-[10px] font-black uppercase tracking-widest text-bg-primary shadow-lg">
+                    Most Popular
+                  </div>
+                )}
+
+                <div className="mb-8">
+                  <div className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border ${
+                    featured ? "border-accent bg-accent text-bg-primary" : "border-bg-tertiary bg-bg-base text-text-primary"
+                  }`}>
+                    <Icon className="h-7 w-7" />
+                  </div>
+                  <h3 className="mb-2 text-2xl font-bold text-text-primary">{plan.name}</h3>
+                  <p className="text-sm font-medium text-text-secondary">
+                    Backend plan: {plan.backendPlanType}. Limit: {plan.limits.websites} website{plan.limits.websites === 1 ? "" : "s"}.
+                  </p>
                 </div>
 
-                <div className="relative z-10 grid gap-8 md:grid-cols-3 items-center">
-                    {plans.map((plan, index) => (
-                        <motion.div
-                            key={plan.name}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className={`relative rounded-[2.5rem] border p-10 transition-all duration-300 group ${
-                                plan.featured 
-                                ? "bg-bg-primary border-accent shadow-glow-accent scale-105 z-20" 
-                                : "bg-bg-secondary/50 border-bg-tertiary hover:border-accent/30"
-                            }`}
-                        >
-                            {plan.featured && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent text-bg-primary text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">
-                                    Most Popular
-                                </div>
-                            )}
-
-                            <div className="mb-8">
-                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border ${
-                                    plan.featured ? "bg-accent text-bg-primary border-accent shadow-glow-accent" : "bg-bg-base text-text-primary border-bg-tertiary"
-                                }`}>
-                                    <plan.icon className="w-7 h-7" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-text-primary mb-2">
-                                    {plan.name}
-                                </h3>
-                                <p className="text-sm font-medium text-text-secondary">
-                                    {plan.description}
-                                </p>
-                            </div>
-
-                            <div className="mb-8">
-                                <div className="flex items-baseline gap-2">
-                                    <span className="text-5xl font-black text-text-primary tracking-tight">
-                                        {plan.price}
-                                    </span>
-                                    {plan.price !== "Custom" && (
-                                        <span className="text-sm font-bold uppercase tracking-widest text-text-muted">
-                                            / month
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-
-                            <ul className="space-y-4 mb-10">
-                                {plan.features.map((feature) => (
-                                    <li key={feature} className="flex items-center gap-3">
-                                        <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${
-                                            plan.featured ? "bg-accent/20 text-accent" : "bg-bg-tertiary text-text-muted"
-                                        }`}>
-                                            <Check className="w-3.5 h-3.5" strokeWidth={3} />
-                                        </div>
-                                        <span className="text-sm font-medium text-text-secondary">
-                                            {feature}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <Button
-                                asChild
-                                variant={plan.featured ? "default" : "outline"}
-                                className="w-full h-14 rounded-2xl text-xs font-bold uppercase tracking-widest"
-                            >
-                                <Link href={plan.name === "Enterprise" ? "/contact" : "/signup"}>
-                                    {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
-                                    <ArrowRight className="ml-2 w-4 h-4" />
-                                </Link>
-                            </Button>
-                        </motion.div>
-                    ))}
+                <div className="mb-8">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-black tracking-tight text-text-primary">${plan.monthlyPrice}</span>
+                    <span className="text-sm font-bold uppercase tracking-widest text-text-muted">/ month</span>
+                  </div>
                 </div>
-            </PageContainer>
-        </SectionWrapper>
-    );
+
+                <ul className="mb-10 space-y-4">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-center gap-3">
+                      <div className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full ${
+                        featured ? "bg-accent/20 text-accent" : "bg-bg-tertiary text-text-muted"
+                      }`}>
+                        <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                      </div>
+                      <span className="text-sm font-medium text-text-secondary">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Button
+                  asChild
+                  variant={featured ? "default" : "outline"}
+                  className="h-14 w-full rounded-2xl text-xs font-bold uppercase tracking-widest"
+                >
+                  <Link href={plan.id === "agency" ? "/contact" : "/auth/signup"}>
+                    {plan.id === "agency" ? "Contact Sales" : "Get Started"}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </motion.div>
+            );
+          })}
+        </div>
+      </PageContainer>
+    </SectionWrapper>
+  );
 }
-

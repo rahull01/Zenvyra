@@ -28,7 +28,7 @@ const POSTS: Record<
     body: [
       "Regulators continue to prioritize consent transparency and data minimization. Start with an accurate record of processing activities.",
       "Ensure your privacy policy references lawful bases, retention periods, and international transfers. Cookie banners must block non-essential scripts until consent.",
-      "Document DSAR workflows with SLA targets. ComplianceAI Pro automates intake, identity verification, and export packaging.",
+      "Document DSAR workflows with SLA targets. Zenvyra automates intake, identity verification, and export packaging.",
     ],
   },
   "cookie-consent-best-practices": {

@@ -1,10 +1,10 @@
-# ComplianceAI Pro
+# Zenvyra
 
 AI-Powered Compliance Automation SaaS Platform
 
 ## Overview
 
-ComplianceAI Pro is a comprehensive SaaS platform that helps businesses automate compliance monitoring, generate legal documents, and ensure regulatory adherence using advanced AI technology.
+Zenvyra is a comprehensive SaaS platform that helps businesses automate compliance monitoring, generate legal documents, and ensure regulatory adherence using advanced AI technology.
 
 ### Key Features
 
@@ -54,7 +54,7 @@ ComplianceAI Pro is a comprehensive SaaS platform that helps businesses automate
 
 ```bash
 git clone <repository-url>
-cd complianceai-pro
+cd Zenvyra
 ```
 
 ### 2. Environment Configuration
@@ -216,9 +216,9 @@ See `.env.example` for complete configuration.
 ### Project Structure
 
 ```
-complianceai-pro/
+Zenvyra/
 ├── backend/                 # Spring Boot application
-│   ├── src/main/java/complianceai/
+│   ├── src/main/java/Zenvyra/
 │   │   ├── controller/      # REST controllers
 │   │   ├── service/         # Business logic
 │   │   ├── repository/      # Data access
@@ -271,7 +271,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **Documentation**: See `/docs` directory
 - **Issues**: GitHub Issues
 - **Discussions**: GitHub Discussions
-- **Email**: support@complianceai.pro
+- **Email**: support@zenvyra.com
 
 ## Roadmap
 

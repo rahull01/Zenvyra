@@ -1,4 +1,4 @@
-﻿import PageScaffold from "@/components/marketing/PageScaffold";
+import PageScaffold from "@/components/marketing/PageScaffold";
 
 const sections = [
   { title: "Quick start", text: "Connect your domain, run the first scan, and invite owners for legal and engineering." },
@@ -8,7 +8,7 @@ const sections = [
 
 export default function GuidePage() {
   return (
-    <PageScaffold title="Guide" subtitle="A practical walkthrough for setting up ComplianceAI in your workflow.">
+    <PageScaffold title="Guide" subtitle="A practical walkthrough for setting up Zenvyra in your workflow.">
       <div className="space-y-4">
         {sections.map((section) => (
           <article key={section.title} className="rounded-2xl border border-surface-700 bg-white p-6 shadow-card">

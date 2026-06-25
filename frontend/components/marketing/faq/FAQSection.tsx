@@ -7,7 +7,7 @@ import SectionWrapper from "@/components/shared/SectionWrapper";
 import { ChevronDown } from "lucide-react";
 
 const faqs = [
-  { question: "Can ComplianceAI Pro generate policies for my industry?", answer: "Yes. The platform supports SaaS, ecommerce, marketplace, mobile, community, medical, and finance variants with AI-assisted templates." },
+  { question: "Can Zenvyra generate policies for my industry?", answer: "Yes. The platform supports SaaS, ecommerce, marketplace, mobile, community, medical, and finance variants with AI-assisted templates." },
   { question: "Does it support GDPR and CCPA?", answer: "Absolutely. We monitor GDPR, CCPA, LGPD, PIPEDA, POPIA, PDPA, PIPL, and other major regimes with real-time alerts." },
   { question: "How do I deploy a policy to my website?", answer: "Use our direct embed, WordPress, Shopify, or API deployment options and enable auto-updates for live policy changes." },
   { question: "Will it manage cookie consent automatically?", answer: "Yes. The consent manager includes banner themes, auto-blocking, regional rules, logs, and scenario-based preference centers." },
@@ -29,7 +29,7 @@ export default function FAQSection() {
           <p className="text-xs font-bold uppercase tracking-[0.35em] text-accent">FAQ</p>
           <h2 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight">Frequently asked questions</h2>
           <p className="mt-5 max-w-2xl mx-auto text-lg text-text-secondary leading-relaxed">
-            Everything you need to know before you commit to building your compliance stack on ComplianceAI Pro.
+            Everything you need to know before you commit to building your compliance stack on Zenvyra.
           </p>
         </div>
 

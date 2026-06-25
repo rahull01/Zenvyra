@@ -5,7 +5,7 @@ import { Star, ShieldCheck } from "lucide-react";
 const TESTIMONIALS = [
   {
     quote:
-      "ComplianceAI replaced our legacy CMP. Cookie blocking and policy generation saved us days of legal work.",
+      "Zenvyra replaced our legacy CMP. Cookie blocking and policy generation saved us days of legal work.",
     name: "Sarah Jenkins",
     role: "CEO, TechFlow",
     location: "USA",
@@ -39,7 +39,7 @@ const TESTIMONIALS = [
 
 function Card({ t }: { t: (typeof TESTIMONIALS)[0] }) {
   return (
-    <article className="w-[360px] shrink-0 rounded-2xl border border-border-light bg-white p-7 shadow-termly-soft">
+    <article className="w-[360px] shrink-0 rounded-2xl border border-border-light bg-white p-7 shadow-zenvyra-soft">
       <div className="mb-5 flex items-center justify-between">
         <div className="flex gap-0.5 text-warning" aria-label="5 stars">
           {[...Array(5)].map((_, i) => (

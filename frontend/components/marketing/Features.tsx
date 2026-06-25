@@ -2,112 +2,180 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Cookie, Search, Clock, Globe, Users } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import {
+  BadgeCheck,
+  Bot,
+  Braces,
+  Cookie,
+  FileText,
+  Globe2,
+  LifeBuoy,
+  RefreshCw,
+  Search,
+  ShieldCheck,
+  WalletCards,
+  Wrench,
+} from 'lucide-react';
+
+const coverage = [
+  {
+    icon: ShieldCheck,
+    title: 'EU and UK coverage',
+    description:
+      'Map GDPR, UK GDPR, PECR, consent, privacy notices, and DSAR readiness into practical tasks.',
+  },
+  {
+    icon: Globe2,
+    title: 'US state privacy checks',
+    description:
+      'Track CPRA-style disclosures, opt-out language, request forms, sale/share signals, and policy gaps.',
+  },
+  {
+    icon: Cookie,
+    title: 'Cookie and tracker control',
+    description:
+      'Scan pixels, classify cookies, document categories, and prepare banner settings for launch.',
+  },
+];
 
 const features = [
   {
     icon: FileText,
-    title: 'Policy generation in minutes',
-    description: 'AI drafts custom policies that match your business and keep you audit-ready.',
+    title: 'Policy generators',
+    description:
+      'Create privacy, cookie, terms, refund, shipping, EULA, disclaimer, and acceptable-use policies from real business inputs.',
   },
   {
     icon: Cookie,
-    title: 'Consent & cookie automation',
-    description: 'Deploy banner flows, scan trackers, and keep consent records automatically.',
+    title: 'Consent management',
+    description:
+      'Deploy banners, preference centers, consent logs, versioned notices, and region-aware cookie controls.',
   },
   {
     icon: Search,
     title: 'Website risk discovery',
-    description: 'Find hidden cookies, trackers, and compliance drift without manual reviews.',
+    description:
+      'Find hidden pixels, missing policy links, weak request flows, unclassified scripts, and broken trust signals.',
   },
   {
-    icon: Clock,
-    title: 'Live monitoring',
-    description: 'Continuous scanning and alerts mean compliance moves with your site.',
+    icon: RefreshCw,
+    title: 'Always up to date',
+    description:
+      'Keep policy versions, scan records, remediation notes, and proof pages fresh as your website changes.',
   },
   {
-    icon: Globe,
-    title: 'Global regulation coverage',
-    description: 'GDPR, CCPA, LGPD, PIPEDA, and local privacy rules in one dashboard.',
+    icon: Wrench,
+    title: 'Easy to install',
+    description:
+      'Get exact steps for Shopify, WordPress, Webflow, Google Tag Manager, Next.js, and custom websites.',
   },
   {
-    icon: Users,
-    title: 'Team-ready controls',
-    description: 'Give legal, product, and growth teams the visibility they need.',
+    icon: BadgeCheck,
+    title: 'Public certificate',
+    description:
+      'Share a clean verification page with customers, agencies, procurement teams, or internal reviewers.',
+  },
+  {
+    icon: Bot,
+    title: 'AI compliance assistant',
+    description:
+      'Ask what changed, why it matters, what to fix first, and what proof should be sent to a client.',
+  },
+  {
+    icon: Braces,
+    title: 'Developer-ready APIs',
+    description:
+      'Use snippets and API-ready workflows for consent capture, policy embeds, scanner results, and status pages.',
+  },
+  {
+    icon: WalletCards,
+    title: 'Save setup cost',
+    description:
+      'Reduce manual policy drafting, repeated cookie audits, and back-and-forth review work before launch.',
+  },
+  {
+    icon: LifeBuoy,
+    title: 'Human support path',
+    description:
+      'Escalate confusing scan results, implementation questions, and agency handoff work without losing context.',
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-    },
-  },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
 };
 
 const Features = () => {
   return (
-    <section className="py-24 bg-[radial-gradient(circle_at_top_left,_rgba(255,135,55,0.08),_transparent_52%),_radial-gradient(circle_at_bottom_right,_rgba(8,63,102,0.08),_transparent_45%)]">
-      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
+    <section className="bg-slate-50 py-24">
+      <div className="mx-auto max-w-[1200px] px-6 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-14"
+          transition={{ duration: 0.55 }}
+          className="mx-auto mb-14 max-w-3xl text-center"
         >
-          <span className="text-eyebrow font-bold text-primary uppercase tracking-[0.15em]">
-            FEATURE-RICH AUTOMATION
-          </span>
-          <h2 className="text-h2 font-extrabold text-text-primary mt-4 mb-4">
-            Compliance workflows built for product, legal, and ops teams
+          <p className="text-eyebrow font-bold uppercase tracking-[0.15em] text-primary">
+            Complete compliance stack
+          </p>
+          <h2 className="mt-4 text-h2 font-extrabold text-text-primary">
+            Everything you need out of the box
           </h2>
-          <p className="text-body-lg text-text-secondary">
-            From live cookie scans to AI policy drafts and audit-ready consent records, everything is designed to reduce review time and keep your launch schedule moving.
+          <p className="mt-4 text-body-lg text-text-secondary">
+            Visitors should not have to guess what the product does. This page now shows coverage,
+            workflows, proof, implementation help, and limitations in one place.
           </p>
         </motion.div>
 
+        <div className="mb-10 grid gap-5 lg:grid-cols-3">
+          {coverage.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: index * 0.08 }}
+                className="rounded-lg border border-orange-200 bg-white p-8 text-center shadow-[0_18px_48px_rgba(15,23,42,0.06)]"
+              >
+                <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-lg bg-orange-50 text-primary">
+                  <Icon className="h-8 w-8" />
+                </div>
+                <h3 className="text-h4 font-semibold text-text-primary">{item.title}</h3>
+                <p className="mt-3 text-body text-text-secondary">{item.description}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+
         <motion.div
-          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+          transition={{ staggerChildren: 0.06 }}
+          className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
         >
-          {features.map((feature, index) => (
-            <motion.div key={index} variants={itemVariants}>
-              <Card className="p-8 shadow-card hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300 h-full border border-border-light bg-white/90">
-                <CardContent className="p-0">
-                  <div className="w-14 h-14 bg-primary-light rounded-3xl flex items-center justify-center mb-6">
-                    <feature.icon className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="text-h4 font-semibold text-text-primary mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-body text-text-secondary leading-relaxed mb-6">
-                    {feature.description}
-                  </p>
-                  <a href="#" className="text-body-sm font-semibold text-primary hover:text-primary-hover">
-                    Learn more →
-                  </a>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+          {features.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={feature.title}
+                variants={itemVariants}
+                className="rounded-lg border border-slate-200 bg-white p-7 shadow-[0_16px_44px_rgba(15,23,42,0.05)] transition hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_22px_60px_rgba(15,23,42,0.09)]"
+              >
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-orange-50 text-primary">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="text-h4 font-semibold text-text-primary">{feature.title}</h3>
+                <p className="mt-3 text-body-sm leading-relaxed text-text-secondary">
+                  {feature.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>

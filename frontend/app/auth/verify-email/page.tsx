@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, AlertCircle, RefreshCw, ArrowRight, ArrowLeft, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import api from "@/lib/api";
 
 function VerifyEmailForm() {
     const router = useRouter();
@@ -22,14 +23,17 @@ function VerifyEmailForm() {
         }
 
         const verify = async () => {
-            // Simulate API call
-            setTimeout(() => {
+            try {
+                await api.post(`/auth/verify-email?token=${encodeURIComponent(token)}`);
                 setStatus("success");
                 setMessage("Your email address has been successfully verified!");
                 setTimeout(() => {
                     router.push("/onboarding");
                 }, 4000);
-            }, 1500);
+            } catch (error: any) {
+                setStatus("error");
+                setMessage(error?.response?.data?.message || "Email verification failed or the link has expired.");
+            }
         };
 
         verify();
@@ -53,7 +57,7 @@ function VerifyEmailForm() {
                         Security Verification
                     </h1>
                     <p className="mt-2 text-sm text-text-secondary">
-                        ComplianceAI cryptographically signs validation protocols.
+                        Zenvyra cryptographically signs validation protocols.
                     </p>
                 </div>
 

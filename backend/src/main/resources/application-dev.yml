@@ -5,21 +5,22 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/complianceai}
+      uri: ${MONGODB_URI:mongodb://localhost:27017/Zenvyra}
 
 logging:
   level:
     root: DEBUG
-    com.complianceai: TRACE
+    com.zenvyra: TRACE
     org.springframework.web: DEBUG
 
-# Development settings
 app:
   dev-mode: true
-  mock-payments: true
   jwt:
     # Local default only when JWT_SECRET is unset — override in .env for shared environments
     secret: ${JWT_SECRET:dev-only-change-this-32-byte-secret!!}
+  auth:
+    cookies:
+      secure: false
 
 # CORS — wildcard is incompatible with credentials; use explicit dev origins
 cors:

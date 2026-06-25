@@ -211,7 +211,7 @@ export default function CookieScannerProductPage() {
                 Identify consent issues before regulators do
               </h2>
               <p className="mt-4 text-text-secondary leading-relaxed">
-                ComplianceAI Pro's scanning engine maps out the entire behavior of your page, including scripts dynamically added after page load.
+                Zenvyra's scanning engine maps out the entire behavior of your page, including scripts dynamically added after page load.
               </p>
               <ul className="mt-8 space-y-4">
                 {[

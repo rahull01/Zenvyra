@@ -1,4 +1,23 @@
 /** @type {import('next').NextConfig} */
+const isProductionRuntime =
+  process.env.VERCEL_ENV === "production" || process.env.Zenvyra_REQUIRE_PROD_ENV === "true";
+function requiredEnv(name, fallback) {
+  const value = process.env[name];
+  if (value && value.trim()) return value.trim();
+  if (isProductionRuntime) throw new Error(`${name} must be configured for production.`);
+  return fallback;
+}
+
+const policyFrameAncestors = process.env.POLICY_FRAME_ANCESTORS || "'self'";
+const policyPageCsp = [
+  "default-src 'self'",
+  `frame-ancestors ${policyFrameAncestors}`,
+  "base-uri 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' https:",
+].join("; ");
+
 const nextConfig = {
   images: {
     domains: ["localhost"],
@@ -22,7 +41,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path((?!v1/banner/[^/]+/bundle\\.js$).*)",
-        destination: `${process.env.API_BASE_URL || "http://localhost:8080"}/api/:path*`,
+        destination: `${requiredEnv("API_BASE_URL", "http://localhost:8080/api")}/:path*`,
       },
     ];
   },
@@ -31,17 +50,17 @@ const nextConfig = {
       {
         source: "/p/:companySlug/:policyType",
         headers: [
-          { key: "X-Frame-Options", value: "ALLOWALL" },
-          { key: "Content-Security-Policy", value: "frame-ancestors *" },
+          { key: "Content-Security-Policy", value: policyPageCsp },
           { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+          { key: "Cache-Control", value: "public, s-maxage=300, stale-while-revalidate=60" },
         ],
       },
     ];
   },
   env: {
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api",
-    NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/ws",
+    NEXT_PUBLIC_APP_URL: requiredEnv("NEXT_PUBLIC_APP_URL", "http://localhost:3000"),
+    NEXT_PUBLIC_API_URL: requiredEnv("NEXT_PUBLIC_API_URL", "http://localhost:8080/api"),
+    NEXT_PUBLIC_WS_URL: requiredEnv("NEXT_PUBLIC_WS_URL", "ws://localhost:8080/api/ws"),
     NEXT_PUBLIC_DODO_CLIENT_ID: process.env.NEXT_PUBLIC_DODO_CLIENT_ID,
     NEXT_PUBLIC_DODO_ENV: process.env.NEXT_PUBLIC_DODO_ENV || "sandbox",
   },

@@ -39,7 +39,7 @@ export default function ComplianceScorePage() {
               <AlertTriangle className="h-4 w-4" /> Good with warnings
             </span>
             <p className="text-caption text-text-secondary leading-relaxed">
-              Resolve remaining 3 items to achieve a perfect 100% compliant badge.
+              Resolve remaining 3 items to improve your readiness badge.
             </p>
           </div>
         </div>

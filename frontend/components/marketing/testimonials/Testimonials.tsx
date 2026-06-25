@@ -6,7 +6,7 @@ import SectionWrapper from "@/components/shared/SectionWrapper";
 import { Star } from "lucide-react";
 
 const testimonials = [
-  { name: "Maya Li", role: "Head of Legal, Novus Labs", quote: "ComplianceAI Pro made our global policy updates effortless; it’s the first tool our product and legal teams both love.", company: "Novus Labs" },
+  { name: "Maya Li", role: "Head of Legal, Novus Labs", quote: "Zenvyra made our global policy updates effortless; it’s the first tool our product and legal teams both love.", company: "Novus Labs" },
   { name: "Ethan Hart", role: "VP Product, Atlas Commerce", quote: "The instant scan and AI fix suggestions saved us weeks of manual review.", company: "Atlas Commerce" },
   { name: "Priya Shah", role: "Chief Privacy Officer, Lumen Health", quote: "Their consent analytics and DSAR workflows are the most advanced we’ve tested.", company: "Lumen Health" },
   { name: "Rafael Costa", role: "CTO, Orchard AI", quote: "The competitor benchmarking and regulation alerts help us stay ahead in every market.", company: "Orchard AI" },

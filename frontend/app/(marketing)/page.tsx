@@ -1,28 +1,44 @@
-'use client';
+import type { Metadata } from "next";
+import LandingPageClient from "@/components/marketing/LandingPageClient";
 
-import React from 'react';
-import Hero from '@/components/marketing/Hero';
-import StatsBar from '@/components/marketing/StatsBar';
-import Features from '@/components/marketing/Features';
-import ProductShowcase from '@/components/marketing/ProductShowcase';
-import TrustBadges from '@/components/marketing/TrustBadges';
-import Testimonials from '@/components/marketing/Testimonials';
-import { SolutionsGrid } from '@/components/marketing/SolutionsGrid';
-import { CTABanner } from '@/components/marketing/CTABanner';
-import CookieConsent from '@/components/marketing/CookieConsent';
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://zenvyra.com";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: {
+      absolute: "Zenvyra",
+    },
+    description:
+      "Zenvyra helps agencies, SaaS teams, and ecommerce brands scan websites, assess privacy and AI readiness, fix trust gaps, monitor changes, and publish proof packs.",
+    alternates: {
+      canonical: siteUrl,
+    },
+    openGraph: {
+      title: "Privacy and AI compliance proof infrastructure for UK, US, and EU-facing websites",
+      description:
+        "Website scans, privacy and AI readiness checks, consent evidence, public certificates, and monthly proof packs for agencies and growth teams.",
+      url: siteUrl,
+      siteName: "Zenvyra",
+      type: "website",
+      images: [
+        {
+          url: "/images/og-zenvyra.png",
+          width: 1200,
+          height: 630,
+          alt: "Zenvyra enterprise GDPR and cookie consent dashboard",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Zenvyra - Privacy and AI Readiness Proof Packs",
+      description:
+        "Scan websites, identify trust gaps, prepare evidence packs, and publish public readiness certificates without claiming guaranteed legal compliance.",
+      images: ["/images/og-zenvyra.png"],
+    },
+  };
+}
 
 export default function LandingPage() {
-  return (
-    <main className="min-h-screen bg-background-base">
-      <Hero />
-      <StatsBar />
-      <Features />
-      <ProductShowcase />
-      <TrustBadges />
-      <Testimonials />
-      <SolutionsGrid />
-      <CTABanner />
-      <CookieConsent />
-    </main>
-  );
+  return <LandingPageClient />;
 }

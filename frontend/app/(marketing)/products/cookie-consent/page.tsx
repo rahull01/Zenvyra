@@ -49,7 +49,7 @@ export default function CookieConsentPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-6 text-lg text-text-secondary leading-relaxed max-w-2xl mx-auto"
             >
-              Comply with GDPR ePrivacy Directive and CCPA/CPRA regulations. Fully customizable, fast-loading, and responsive on all devices.
+              Prepare consent workflows for GDPR ePrivacy Directive and CCPA/CPRA review. Fully customizable, fast-loading, and responsive on all devices.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 15 }}

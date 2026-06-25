@@ -7,10 +7,10 @@ import { CheckCircle2, ArrowRight } from 'lucide-react';
 
 const ProductShowcase = () => {
   const features = [
-    'Real-time compliance score tracking',
-    'AI-powered policy recommendations',
-    'One-click policy updates',
-    'Team activity monitoring',
+    'Live scan results for cookies, trackers, policies, DSAR, and US privacy notices',
+    'AI-assisted recommendations with implementation steps for common platforms',
+    'One-click policy versioning and public certificate refreshes',
+    'Team activity, audit notes, and client handoff packets in one workspace',
   ];
 
   return (
@@ -27,8 +27,8 @@ const ProductShowcase = () => {
             <div className="rounded-[32px] border border-border-light bg-slate-950/95 shadow-2xl overflow-hidden">
               <div className="bg-slate-900/90 px-6 py-5 border-b border-white/10 flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">Compliance Score</p>
-                  <p className="mt-1 text-3xl font-bold text-white">92%</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">Compliance workspace</p>
+                <p className="mt-1 text-3xl font-bold text-white">92%</p>
                 </div>
                 <div className="rounded-full bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">Live</div>
               </div>
@@ -37,7 +37,7 @@ const ProductShowcase = () => {
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <p className="text-sm text-white/70">Policy health</p>
-                      <p className="mt-2 text-xl font-semibold text-white">Good</p>
+                      <p className="mt-2 text-xl font-semibold text-white">Review ready</p>
                     </div>
                     <div className="rounded-2xl bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">+8% this week</div>
                   </div>
@@ -46,11 +46,11 @@ const ProductShowcase = () => {
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-5">
                     <p className="text-sm text-white/70">Consent status</p>
-                    <p className="mt-3 text-lg font-semibold text-white">Compliant</p>
+                    <p className="mt-3 text-lg font-semibold text-white">Configured</p>
                   </div>
                   <div className="rounded-[28px] border border-white/10 bg-slate-900/90 p-5">
-                    <p className="text-sm text-white/70">Alerts</p>
-                    <p className="mt-3 text-lg font-semibold text-white">2 issues</p>
+                    <p className="text-sm text-white/70">Fix queue</p>
+                    <p className="mt-3 text-lg font-semibold text-white">2 actions</p>
                   </div>
                 </div>
 
@@ -79,10 +79,11 @@ const ProductShowcase = () => {
                 PRODUCT PREVIEW
               </p>
               <h2 className="text-h2 font-extrabold text-text-primary">
-                A dashboard designed around compliance action
+                A dashboard designed around trust, not guesswork
               </h2>
               <p className="max-w-2xl text-body-lg text-text-secondary leading-relaxed">
-                See compliance status, policy health, and consent automation in one polished interface built for modern teams.
+                Give your team one place to understand what is missing, what is fixed, what proof is
+                available, and which items need legal or technical review.
               </p>
             </div>
 

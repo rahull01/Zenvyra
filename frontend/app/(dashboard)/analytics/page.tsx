@@ -20,7 +20,7 @@ export default function AnalyticsPage() {
       <div className="grid gap-6 lg:grid-cols-12 items-start">
         {/* Core Charts Area */}
         <div className="lg:col-span-8 space-y-6">
-          {/* Conversion rate graph simulated */}
+          {/* Conversion rate graph */}
           <div className="bg-surface-card border border-border-light rounded-3xl p-6 shadow-card space-y-4">
             <div className="flex justify-between items-center border-b border-border-light pb-3">
               <h3 className="font-bold text-sm text-text-primary uppercase tracking-wider flex items-center gap-2">

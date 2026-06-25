@@ -112,7 +112,7 @@ export default function NewPolicyWizardPage() {
                   <input
                     type="url"
                     required
-                    placeholder="https://acme.com"
+                    placeholder="https://www.company.com"
                     value={formData.websiteUrl}
                     onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
                     className="w-full text-sm px-4 py-3 rounded-xl border border-border-medium outline-none focus:border-primary bg-background-secondary text-text-primary"

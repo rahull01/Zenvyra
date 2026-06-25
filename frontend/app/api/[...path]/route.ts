@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GET as getBannerBundle } from "../v1/banner/[siteId]/bundle.js/route";
+import { backendApiBaseUrl } from "@/lib/env";
 
-const API_BASE_URL = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_BASE_URL = backendApiBaseUrl();
 
 async function handleRequest(
     request: NextRequest,
@@ -23,7 +24,7 @@ async function handleRequest(
     let url: string;
     if (pathSegments.length > 0 && pathSegments[0] === "v1") {
         const trimmedPath = pathSegments.slice(1).join("/");
-        url = `${API_BASE_URL}/api/v1/${trimmedPath}${search}`;
+        url = `${API_BASE_URL}/${trimmedPath}${search}`;
     } else {
         url = `${API_BASE_URL}/${pathSegments.join("/")}${search}`;
     }

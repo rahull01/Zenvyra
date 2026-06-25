@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 const tiers = [
   {
     name: "Referral Partner",
-    description: "Ideal for consultants and agencies who want to refer clients to ComplianceAI Pro.",
+    description: "Ideal for consultants and agencies who want to refer clients to Zenvyra.",
     benefits: ["15% recurring commission", "Partner dashboard", "Marketing collateral", "Priority support"],
     icon: Users,
   },
@@ -29,7 +29,7 @@ const tiers = [
 export default function PartnersPage() {
   return (
     <PageScaffold
-      title="Partner with ComplianceAI"
+      title="Partner with Zenvyra"
       subtitle="Join the ecosystem building the future of automated compliance operations."
     >
       <div className="grid gap-8 lg:grid-cols-3">

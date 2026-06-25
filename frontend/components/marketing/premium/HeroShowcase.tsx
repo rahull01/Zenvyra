@@ -38,7 +38,7 @@ export default function HeroShowcase() {
           </div>
           <div className="mx-auto flex h-8 max-w-[280px] flex-1 items-center rounded-lg bg-white px-3 text-xs text-text-muted border border-border-light">
             <Globe className="mr-2 h-3.5 w-3.5 shrink-0 text-accent" />
-            app.complianceai.pro/dashboard
+            app.zenvyra.com/dashboard
           </div>
         </div>
 

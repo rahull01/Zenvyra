@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Check, Code, Copy, FileJson, PanelsTopLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PUBLIC_APP_URL } from "@/lib/constants";
 
 type Props = {
   companySlug: string;
@@ -13,48 +14,29 @@ type Props = {
 function buildScriptSnippet(publicBaseUrl: string, companySlug: string, policyType: string) {
   const apiUrl = `${publicBaseUrl}/api/v1/policies/public/${companySlug}/${policyType}`;
 
-  return `<div id="complianceai-privacy-policy"></div>
+  return `<div id="Zenvyra-privacy-policy"></div>
 <script>
-(function(){
-  var target=document.getElementById('complianceai-privacy-policy');
-  if(!target)return;
-  function esc(v){return String(v||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-  function md(src){
-    return String(src||'').split(/\\n{2,}/).map(function(block){
-      var text=block.trim();
-      if(!text)return '';
-      if(text.indexOf('# ')===0)return '<h1>'+esc(text.slice(2))+'</h1>';
-      if(text.indexOf('## ')===0)return '<h2>'+esc(text.slice(3))+'</h2>';
-      if(text.indexOf('### ')===0)return '<h3>'+esc(text.slice(4))+'</h3>';
-      var lines=text.split('\\n');
-      if(lines.every(function(line){return /^[-*]\\s+/.test(line.trim());})){
-        return '<ul>'+lines.map(function(line){return '<li>'+esc(line.trim().replace(/^[-*]\\s+/,''))+'</li>';}).join('')+'</ul>';
-      }
-      return '<p>'+esc(text).replace(/\\n/g,'<br>')+'</p>';
-    }).join('');
-  }
-  fetch('${apiUrl}',{headers:{Accept:'application/json'}})
-    .then(function(res){if(!res.ok)throw new Error('Policy unavailable');return res.json();})
-    .then(function(policy){
-      target.innerHTML='<article class="complianceai-policy"><h1>'+esc(policy.title)+'</h1>'+md(policy.markdown)+'</article>';
-    })
-    .catch(function(){target.textContent='This policy is temporarily unavailable.';});
+(function(){var target=document.getElementById('Zenvyra-privacy-policy');if(!target)return;function esc(v){return String(v||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]);}function md(src){return String(src||'').split(/\\n{2,}/).map(function(block){var text=block.trim();if(!text)return '';if(text.indexOf('# ')===0)return '<h1>'+esc(text.slice(2))+'</h1>';if(text.indexOf('## ')===0)return '<h2>'+esc(text.slice(3))+'</h2>';if(text.indexOf('### ')===0)return '<h3>'+esc(text.slice(4))+'</h3>';var lines=text.split('\\n');if(lines.every(function(line){return /^[-*]\\s+/.test(line.trim());})){return '<ul>'+lines.map(function(line){return '<li>'+esc(line.trim().replace(/^[-*]\\s+/,''))+'</li>';}).join('')+'</ul>';}return '<p>'+esc(text).replace(/\\n/g,'<br>')+'</p>';}).join('');}fetch('${apiUrl}',{headers:{Accept:'application/json'}})
+.then(function(res){if(!res.ok)throw new Error('Policy unavailable');return res.json();})
+.then(function(policy){target.innerHTML='<article class="Zenvyra-policy"><h1>'+esc(policy.title)+'</h1>'+md(policy.markdown)+'</article>';})
+.catch(function(){target.textContent='This policy is temporarily unavailable.';});
 })();
 </script>`;
 }
 
 export default function PolicyEmbedSnippetPanel({
-  companySlug,
-  policyType,
-  publicBaseUrl = "https://complianceai.pro",
-}: Props) {
-  const [copied, setCopied] = useState<"iframe" | "script" | null>(null);
-  const policyUrl = `${publicBaseUrl}/p/${companySlug}/${policyType}`;
+   companySlug,
+   policyType,
+   publicBaseUrl,
+ }: Props) {
+   const [copied, setCopied] = useState<"iframe" | "script" | null>(null);
+   const baseUrl = publicBaseUrl || PUBLIC_APP_URL;
+   const policyUrl = `${baseUrl}/p/${companySlug}/${policyType}`;
 
   const iframeSnippet = `<iframe src="${policyUrl}" style="width:100%; height:800px; border:none;" loading="lazy" title="Hosted ${policyType.replace(/-/g, " ")}"></iframe>`;
   const scriptSnippet = useMemo(
-    () => buildScriptSnippet(publicBaseUrl, companySlug, policyType),
-    [publicBaseUrl, companySlug, policyType]
+    () => buildScriptSnippet(baseUrl, companySlug, policyType),
+    [baseUrl, companySlug, policyType]
   );
 
   const copy = async (kind: "iframe" | "script", value: string) => {

@@ -21,7 +21,7 @@ export default function SecurityPage() {
             </div>
             <h1 className="mt-6 text-5xl md:text-6xl font-extrabold tracking-tight">Enterprise-grade security built into every layer.</h1>
             <p className="mt-6 text-lg text-text-secondary leading-relaxed">
-              ComplianceAI Pro is architected for regulated teams with strong controls, encrypted infrastructure, and continuous audit-ready reporting.
+              Zenvyra is architected for regulated teams with strong controls, encrypted infrastructure, and continuous audit-ready reporting.
             </p>
           </div>
         </PageContainer>

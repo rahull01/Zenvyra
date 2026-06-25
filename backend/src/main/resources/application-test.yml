@@ -1,0 +1,60 @@
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  data:
+    mongodb:
+      uri: ${TEST_MONGODB_URI:mongodb://localhost:27017/Zenvyra_test}
+      auto-index-creation: true
+    redis:
+      url: ${TEST_REDIS_URL:redis://localhost:6379}
+  mail:
+    host: localhost
+    port: 2525
+    username: test
+    password: test
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-google-client
+            client-secret: test-google-secret
+
+app:
+  jwt:
+    secret: test-secret-key-with-at-least-32-characters
+    expiration: 86400000
+    refresh-expiration: 604800000
+    password-reset-expiration: 3600000
+  url: http://localhost:3000
+  security:
+    hsts-enabled: false
+
+openai:
+  api-key: test-openai-disabled
+  model: test-model
+
+tracker:
+  classification:
+    mock-enabled: true
+    mock-resource: mock-tracker-classification.json
+
+dodo:
+  api-key: test_dodo_local_key
+  webhook-secret: whsec_test_local_secret
+  base-url: http://localhost:9999
+  products:
+    growth: test_growth_product
+    pro: test_pro_product
+    agency: test_agency_product
+    setup-package: test_setup_package_product
+
+rate-limit:
+  in-memory-fallback-enabled: true
+
+frontend:
+  url: http://localhost:3000
+cors:
+  allowed-origins: http://localhost:3000

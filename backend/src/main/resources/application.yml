@@ -1,22 +1,19 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
-    context-path: /api/v1
+    context-path: /api
 
 spring:
   application:
-    name: complianceai-pro
-
-  profiles:
-    active: dev
+    name: zenvyra
 
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_CLIENT_ID:dummy-google-client-id}
-            client-secret: ${GOOGLE_CLIENT_SECRET:dummy-google-client-secret}
+            client-id: ${GOOGLE_CLIENT_ID:}
+            client-secret: ${GOOGLE_CLIENT_SECRET:}
             scope:
               - openid
               - email
@@ -27,7 +24,7 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/complianceai}
+      uri: ${MONGODB_URI:mongodb://localhost:27017/Zenvyra}
       auto-index-creation: true
     redis:
       url: ${REDIS_URL:redis://localhost:6379}
@@ -69,9 +66,18 @@ app:
     expiration: ${JWT_EXPIRATION:86400000}
     refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
     password-reset-expiration: ${JWT_PASSWORD_RESET_EXPIRATION:3600000}
+    email-verification-expiration: ${JWT_EMAIL_VERIFICATION_EXPIRATION:86400000}
   url: ${APP_URL:http://localhost:3000}
+  ops-alert-email: ${APP_OPS_ALERT_EMAIL:}
   security:
     hsts-enabled: ${APP_SECURITY_HSTS_ENABLED:false}
+  auth:
+    cookies:
+      secure: ${APP_AUTH_COOKIES_SECURE:false}
+  backup:
+    enabled: ${APP_BACKUP_ENABLED:false}
+    provider: ${APP_BACKUP_PROVIDER:}
+    last-restore-drill-at: ${APP_BACKUP_LAST_RESTORE_DRILL_AT:}
 
 # OpenAI Configuration
 openai:
@@ -86,9 +92,10 @@ dodo:
   webhook-secret: ${DODO_WEBHOOK_SECRET:${WEBHOOK_SECRET:}}
   base-url: ${DODO_BASE_URL:https://api.dodopayments.com}
   products:
-    starter: ${DODO_STARTER_PRODUCT_ID:}
+    growth: ${DODO_GROWTH_PRODUCT_ID:}
     pro: ${DODO_PRO_PRODUCT_ID:}
-    enterprise: ${DODO_ENTERPRISE_PRODUCT_ID:}
+    agency: ${DODO_AGENCY_PRODUCT_ID:${DODO_ENTERPRISE_PRODUCT_ID:}}
+    setup-package: ${DODO_SETUP_PACKAGE_PRODUCT_ID:}
 
 # Frontend URL (CORS)
 frontend:
@@ -100,15 +107,15 @@ cors:
 logging:
   level:
     root: INFO
-    com.complianceai: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.data.mongodb: DEBUG
+    com.zenvyra: INFO
+    org.springframework.security: WARN
+    org.springframework.data.mongodb: WARN
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
 # App Properties
 app-meta:
-  name: ComplianceAI Pro
+  name: Zenvyra
   version: 1.0.0
   description: AI-Powered Compliance Automation
-  support-email: support@complianceai.pro
+  support-email: support@zenvyra.com

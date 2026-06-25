@@ -42,7 +42,7 @@ export default function CookieScannerPage() {
   return (
     <PageScaffold
       title="Free Cookie Scanner"
-      subtitle="Discover every cookie and tracker your website drops on visitors. Stay compliant with GDPR & CCPA cookie laws."
+      subtitle="Discover every cookie and tracker your website drops on visitors. Prepare GDPR and CCPA cookie readiness evidence without legal compliance guarantees."
     >
       <div className="mx-auto max-w-3xl">
         <form onSubmit={handleScan} className="flex flex-col md:flex-row gap-4 p-2 bg-bg-secondary border border-bg-tertiary rounded-[2rem] shadow-2xl">
@@ -145,7 +145,7 @@ export default function CookieScannerPage() {
                 <div className="max-w-xl text-center lg:text-left">
                    <h3 className="text-3xl font-bold text-text-primary">Need an automated banner?</h3>
                    <p className="mt-4 text-text-secondary text-lg leading-relaxed">
-                     ComplianceAI Pro can automatically block these trackers until user consent is given, ensuring you meet GDPR and CCPA requirements instantly.
+                     Zenvyra can automatically block these trackers until user consent is given, ensuring you meet GDPR and CCPA requirements instantly.
                    </p>
                 </div>
                 <Button className="rounded-full px-10 py-7 h-auto text-xl bg-accent text-bg-primary hover:bg-accent-light shadow-glow-accent">

@@ -1,4 +1,4 @@
-﻿import PageScaffold from "@/components/marketing/PageScaffold";
+import PageScaffold from "@/components/marketing/PageScaffold";
 
 const docs = [
   { title: "Getting started", text: "Set up your first workspace, scan target domains, and configure owners." },
@@ -9,7 +9,7 @@ const docs = [
 
 export default function DocumentationPage() {
   return (
-    <PageScaffold title="Documentation" subtitle="Everything you need to implement and operate ComplianceAI effectively.">
+    <PageScaffold title="Documentation" subtitle="Everything you need to implement and operate Zenvyra effectively.">
       <div className="grid gap-4 md:grid-cols-2">
         {docs.map((doc) => (
           <article key={doc.title} className="rounded-2xl border border-surface-700 bg-white p-6 shadow-card">

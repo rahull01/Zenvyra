@@ -67,7 +67,7 @@ export default function AboutUsSection({ embedded = false }: AboutUsSectionProps
               </div>
 
               <p className="mx-auto max-w-lg text-base leading-relaxed text-text-secondary lg:mx-0 lg:text-lg lg:leading-[1.75]">
-                Rahul Singh is the Founder & CEO of ComplianceAI Pro, focused on building intelligent
+                Rahul Singh is the Founder & CEO of Zenvyra, focused on building intelligent
                 automation solutions that simplify compliance and risk management using AI.
               </p>
 
@@ -116,7 +116,7 @@ export default function AboutUsSection({ embedded = false }: AboutUsSectionProps
                 <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-bg-tertiary shadow-card-hover-shadow ring-1 ring-border-light transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.12)]">
                   <Image
                     src={FOUNDER_IMAGE}
-                    alt="Rahul Singh, Founder and CEO of ComplianceAI Pro"
+                    alt="Rahul Singh, Founder and CEO of Zenvyra"
                     fill
                     sizes="(max-width: 768px) 85vw, 380px"
                     className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"

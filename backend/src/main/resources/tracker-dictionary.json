@@ -1,0 +1,410 @@
+[
+  {
+    "domain": "google-analytics.com",
+    "serviceName": "Google Analytics",
+    "category": "Analytics",
+    "purposeDescription": "Used to measure website traffic, user behavior, and campaign performance."
+  },
+  {
+    "domain": "googletagmanager.com",
+    "serviceName": "Google Tag Manager",
+    "category": "Functional",
+    "purposeDescription": "Used to load and manage website tags, analytics scripts, and marketing pixels."
+  },
+  {
+    "domain": "googlesyndication.com",
+    "serviceName": "Google Ads",
+    "category": "Marketing",
+    "purposeDescription": "Used to deliver advertising and measure ad performance across Google services."
+  },
+  {
+    "domain": "doubleclick.net",
+    "serviceName": "Google Marketing Platform",
+    "category": "Marketing",
+    "purposeDescription": "Used for advertising, retargeting, conversion measurement, and campaign attribution."
+  },
+  {
+    "domain": "facebook.net",
+    "serviceName": "Meta Pixel",
+    "category": "Marketing",
+    "purposeDescription": "Used to load Meta advertising pixels for retargeting and conversion measurement."
+  },
+  {
+    "domain": "facebook.com",
+    "serviceName": "Meta",
+    "category": "Marketing",
+    "purposeDescription": "Used for social plugins, advertising pixels, conversion tracking, and retargeting."
+  },
+  {
+    "domain": "connect.facebook.net",
+    "serviceName": "Meta Pixel",
+    "category": "Marketing",
+    "purposeDescription": "Used to load Meta Pixel scripts for advertising attribution and audience building."
+  },
+  {
+    "domain": "hotjar.com",
+    "serviceName": "Hotjar",
+    "category": "Analytics",
+    "purposeDescription": "Used for heatmaps, session recordings, surveys, and behavior analytics."
+  },
+  {
+    "domain": "static.hotjar.com",
+    "serviceName": "Hotjar",
+    "category": "Analytics",
+    "purposeDescription": "Used to load Hotjar analytics scripts for behavior analysis and heatmaps."
+  },
+  {
+    "domain": "segment.com",
+    "serviceName": "Segment",
+    "category": "Analytics",
+    "purposeDescription": "Used to collect and route customer event data to analytics and marketing tools."
+  },
+  {
+    "domain": "cdn.segment.com",
+    "serviceName": "Segment",
+    "category": "Analytics",
+    "purposeDescription": "Used to load Segment analytics libraries for customer event tracking."
+  },
+  {
+    "domain": "mixpanel.com",
+    "serviceName": "Mixpanel",
+    "category": "Analytics",
+    "purposeDescription": "Used for product analytics, event tracking, retention reporting, and funnels."
+  },
+  {
+    "domain": "amplitude.com",
+    "serviceName": "Amplitude",
+    "category": "Analytics",
+    "purposeDescription": "Used for product analytics, behavioral cohorts, and event-based reporting."
+  },
+  {
+    "domain": "clarity.ms",
+    "serviceName": "Microsoft Clarity",
+    "category": "Analytics",
+    "purposeDescription": "Used for heatmaps, session replay, and behavioral analytics."
+  },
+  {
+    "domain": "bing.com",
+    "serviceName": "Microsoft Advertising",
+    "category": "Marketing",
+    "purposeDescription": "Used for ad conversion tracking, remarketing, and campaign measurement."
+  },
+  {
+    "domain": "bat.bing.com",
+    "serviceName": "Microsoft Advertising UET",
+    "category": "Marketing",
+    "purposeDescription": "Used by Microsoft Advertising to track conversions and remarketing audiences."
+  },
+  {
+    "domain": "linkedin.com",
+    "serviceName": "LinkedIn Ads",
+    "category": "Marketing",
+    "purposeDescription": "Used for LinkedIn advertising, conversion tracking, and audience matching."
+  },
+  {
+    "domain": "ads.linkedin.com",
+    "serviceName": "LinkedIn Insight Tag",
+    "category": "Marketing",
+    "purposeDescription": "Used to track LinkedIn ad conversions and build retargeting audiences."
+  },
+  {
+    "domain": "snapchat.com",
+    "serviceName": "Snap Pixel",
+    "category": "Marketing",
+    "purposeDescription": "Used for Snapchat advertising attribution, retargeting, and conversion measurement."
+  },
+  {
+    "domain": "sc-static.net",
+    "serviceName": "Snap Pixel",
+    "category": "Marketing",
+    "purposeDescription": "Used to load Snapchat advertising and conversion tracking scripts."
+  },
+  {
+    "domain": "tiktok.com",
+    "serviceName": "TikTok Pixel",
+    "category": "Marketing",
+    "purposeDescription": "Used for TikTok ad conversion tracking, retargeting, and audience measurement."
+  },
+  {
+    "domain": "analytics.tiktok.com",
+    "serviceName": "TikTok Pixel",
+    "category": "Marketing",
+    "purposeDescription": "Used to collect TikTok advertising attribution and conversion events."
+  },
+  {
+    "domain": "pinterest.com",
+    "serviceName": "Pinterest Tag",
+    "category": "Marketing",
+    "purposeDescription": "Used for Pinterest advertising attribution, retargeting, and conversion tracking."
+  },
+  {
+    "domain": "ct.pinterest.com",
+    "serviceName": "Pinterest Tag",
+    "category": "Marketing",
+    "purposeDescription": "Used to track Pinterest campaign conversions and audience signals."
+  },
+  {
+    "domain": "twitter.com",
+    "serviceName": "X Pixel",
+    "category": "Marketing",
+    "purposeDescription": "Used for X advertising conversion tracking, social embeds, and retargeting."
+  },
+  {
+    "domain": "ads-twitter.com",
+    "serviceName": "X Ads",
+    "category": "Marketing",
+    "purposeDescription": "Used for X advertising attribution and conversion measurement."
+  },
+  {
+    "domain": "intercom.io",
+    "serviceName": "Intercom",
+    "category": "Functional",
+    "purposeDescription": "Used to provide customer support chat, in-app messaging, and help workflows."
+  },
+  {
+    "domain": "intercomcdn.com",
+    "serviceName": "Intercom",
+    "category": "Functional",
+    "purposeDescription": "Used to load Intercom chat and customer messaging assets."
+  },
+  {
+    "domain": "drift.com",
+    "serviceName": "Drift",
+    "category": "Functional",
+    "purposeDescription": "Used for live chat, lead routing, and conversational marketing."
+  },
+  {
+    "domain": "zendesk.com",
+    "serviceName": "Zendesk",
+    "category": "Functional",
+    "purposeDescription": "Used for customer support, help widgets, ticketing, and live chat."
+  },
+  {
+    "domain": "zdassets.com",
+    "serviceName": "Zendesk",
+    "category": "Functional",
+    "purposeDescription": "Used to load Zendesk support widget and help center assets."
+  },
+  {
+    "domain": "hubspot.com",
+    "serviceName": "HubSpot",
+    "category": "Marketing",
+    "purposeDescription": "Used for CRM forms, marketing automation, lead tracking, and analytics."
+  },
+  {
+    "domain": "hs-scripts.com",
+    "serviceName": "HubSpot",
+    "category": "Marketing",
+    "purposeDescription": "Used to load HubSpot marketing automation and analytics scripts."
+  },
+  {
+    "domain": "hs-analytics.net",
+    "serviceName": "HubSpot Analytics",
+    "category": "Analytics",
+    "purposeDescription": "Used to measure visitor activity and marketing campaign performance."
+  },
+  {
+    "domain": "marketo.net",
+    "serviceName": "Adobe Marketo",
+    "category": "Marketing",
+    "purposeDescription": "Used for marketing automation, lead tracking, forms, and attribution."
+  },
+  {
+    "domain": "pardot.com",
+    "serviceName": "Salesforce Account Engagement",
+    "category": "Marketing",
+    "purposeDescription": "Used for B2B marketing automation, lead scoring, and campaign tracking."
+  },
+  {
+    "domain": "salesforceliveagent.com",
+    "serviceName": "Salesforce Live Agent",
+    "category": "Functional",
+    "purposeDescription": "Used to provide live chat and support functionality."
+  },
+  {
+    "domain": "fullstory.com",
+    "serviceName": "FullStory",
+    "category": "Analytics",
+    "purposeDescription": "Used for session replay, product analytics, and user experience diagnostics."
+  },
+  {
+    "domain": "logrocket.com",
+    "serviceName": "LogRocket",
+    "category": "Analytics",
+    "purposeDescription": "Used for session replay, frontend monitoring, and product analytics."
+  },
+  {
+    "domain": "newrelic.com",
+    "serviceName": "New Relic",
+    "category": "Essential",
+    "purposeDescription": "Used for application performance monitoring, reliability, and diagnostics."
+  },
+  {
+    "domain": "nr-data.net",
+    "serviceName": "New Relic Browser",
+    "category": "Essential",
+    "purposeDescription": "Used to collect browser performance and reliability telemetry."
+  },
+  {
+    "domain": "sentry.io",
+    "serviceName": "Sentry",
+    "category": "Essential",
+    "purposeDescription": "Used for error monitoring, diagnostics, and application reliability."
+  },
+  {
+    "domain": "datadoghq-browser-agent.com",
+    "serviceName": "Datadog RUM",
+    "category": "Essential",
+    "purposeDescription": "Used for real user monitoring, performance analytics, and reliability diagnostics."
+  },
+  {
+    "domain": "stripe.com",
+    "serviceName": "Stripe",
+    "category": "Essential",
+    "purposeDescription": "Used to securely process payments and prevent payment fraud."
+  },
+  {
+    "domain": "js.stripe.com",
+    "serviceName": "Stripe.js",
+    "category": "Essential",
+    "purposeDescription": "Used to securely collect payment details and support fraud prevention."
+  },
+  {
+    "domain": "paypal.com",
+    "serviceName": "PayPal",
+    "category": "Essential",
+    "purposeDescription": "Used to process payments, verify transactions, and prevent fraud."
+  },
+  {
+    "domain": "braintreegateway.com",
+    "serviceName": "Braintree",
+    "category": "Essential",
+    "purposeDescription": "Used to process payments and support transaction security."
+  },
+  {
+    "domain": "cloudflare.com",
+    "serviceName": "Cloudflare",
+    "category": "Essential",
+    "purposeDescription": "Used for security, bot protection, performance, and content delivery."
+  },
+  {
+    "domain": "challenges.cloudflare.com",
+    "serviceName": "Cloudflare Turnstile",
+    "category": "Essential",
+    "purposeDescription": "Used for bot detection and abuse prevention."
+  },
+  {
+    "domain": "recaptcha.net",
+    "serviceName": "Google reCAPTCHA",
+    "category": "Essential",
+    "purposeDescription": "Used for bot detection, fraud prevention, and website security."
+  },
+  {
+    "domain": "gstatic.com",
+    "serviceName": "Google Static Assets",
+    "category": "Functional",
+    "purposeDescription": "Used to load Google-hosted static assets such as fonts, scripts, and security resources."
+  },
+  {
+    "domain": "youtube.com",
+    "serviceName": "YouTube",
+    "category": "Functional",
+    "purposeDescription": "Used to embed and play video content on the website."
+  },
+  {
+    "domain": "youtube-nocookie.com",
+    "serviceName": "YouTube Privacy-Enhanced Mode",
+    "category": "Functional",
+    "purposeDescription": "Used to embed YouTube videos with reduced cookie use before playback."
+  },
+  {
+    "domain": "vimeo.com",
+    "serviceName": "Vimeo",
+    "category": "Functional",
+    "purposeDescription": "Used to embed and play video content."
+  },
+  {
+    "domain": "typekit.net",
+    "serviceName": "Adobe Fonts",
+    "category": "Functional",
+    "purposeDescription": "Used to load web fonts and typography assets."
+  },
+  {
+    "domain": "use.typekit.net",
+    "serviceName": "Adobe Fonts",
+    "category": "Functional",
+    "purposeDescription": "Used to load Adobe-hosted web fonts."
+  },
+  {
+    "domain": "fonts.googleapis.com",
+    "serviceName": "Google Fonts",
+    "category": "Functional",
+    "purposeDescription": "Used to load web font stylesheets."
+  },
+  {
+    "domain": "fonts.gstatic.com",
+    "serviceName": "Google Fonts",
+    "category": "Functional",
+    "purposeDescription": "Used to serve Google-hosted web font files."
+  },
+  {
+    "domain": "optimizely.com",
+    "serviceName": "Optimizely",
+    "category": "Analytics",
+    "purposeDescription": "Used for experimentation, A/B testing, personalization, and performance measurement."
+  },
+  {
+    "domain": "cdn.optimizely.com",
+    "serviceName": "Optimizely",
+    "category": "Analytics",
+    "purposeDescription": "Used to load experimentation and personalization scripts."
+  },
+  {
+    "domain": "crazyegg.com",
+    "serviceName": "Crazy Egg",
+    "category": "Analytics",
+    "purposeDescription": "Used for heatmaps, scroll maps, recordings, and website behavior analytics."
+  },
+  {
+    "domain": "mouseflow.com",
+    "serviceName": "Mouseflow",
+    "category": "Analytics",
+    "purposeDescription": "Used for session replay, heatmaps, forms analytics, and user behavior analysis."
+  },
+  {
+    "domain": "adroll.com",
+    "serviceName": "AdRoll",
+    "category": "Marketing",
+    "purposeDescription": "Used for retargeting, advertising attribution, and cross-channel campaign measurement."
+  },
+  {
+    "domain": "criteo.com",
+    "serviceName": "Criteo",
+    "category": "Marketing",
+    "purposeDescription": "Used for personalized advertising, retargeting, and ad performance measurement."
+  },
+  {
+    "domain": "taboola.com",
+    "serviceName": "Taboola",
+    "category": "Marketing",
+    "purposeDescription": "Used for native advertising, recommendations, and campaign measurement."
+  },
+  {
+    "domain": "outbrain.com",
+    "serviceName": "Outbrain",
+    "category": "Marketing",
+    "purposeDescription": "Used for native advertising, content recommendations, and campaign measurement."
+  },
+  {
+    "domain": "quantserve.com",
+    "serviceName": "Quantcast",
+    "category": "Marketing",
+    "purposeDescription": "Used for audience measurement, advertising, and market analytics."
+  },
+  {
+    "domain": "scorecardresearch.com",
+    "serviceName": "Comscore",
+    "category": "Analytics",
+    "purposeDescription": "Used for audience measurement, media analytics, and traffic reporting."
+  }
+]

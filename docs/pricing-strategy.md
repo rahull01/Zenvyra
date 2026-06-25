@@ -1,7 +1,7 @@
-# ComplianceAI Pro Pricing Strategy
+# Zenvyra Pricing Strategy
 
 ## Overview
-ComplianceAI Pro targets businesses that need automated compliance monitoring. Our pricing balances accessibility with enterprise value.
+Zenvyra targets businesses that need automated compliance monitoring. Our pricing balances accessibility with enterprise value.
 
 ## Target Market
 - **SMBs (Small-Medium Businesses)**: 50-500 employees, need basic compliance
@@ -160,7 +160,7 @@ ComplianceAI Pro targets businesses that need automated compliance monitoring. O
 
 **Competitors**:
 - OneTrust: Enterprise-focused, expensive
-- Termly: Basic tools, limited AI
+- Legacy policy tools: Basic tools, limited AI
 - TrustArc: Legacy, complex
 
 **Our Advantages**:

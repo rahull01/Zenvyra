@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import DashboardPageShell from "@/components/dashboard/DashboardPageShell";
 import { HelpCircle } from "lucide-react";
@@ -6,7 +8,7 @@ export default function SupportPage() {
   return (
     <DashboardPageShell
       title="Support"
-      subtitle="Get help with your ComplianceAI Pro account, policies, or website compliance setup."
+      subtitle="Get help with your Zenvyra account, policies, or website compliance setup."
       icon={HelpCircle}
       actions={[
         { label: "Contact support", href: "/contact", primary: true },

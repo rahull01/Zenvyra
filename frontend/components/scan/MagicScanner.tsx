@@ -16,7 +16,8 @@ export default function MagicScanner({ onScanComplete, variant = "page" }: Magic
 
     const handleScan = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!url) {
+        const targetUrl = normalizeInputUrl(url);
+        if (!targetUrl) {
             toast.error("Please enter a website URL");
             return;
         }
@@ -27,13 +28,13 @@ export default function MagicScanner({ onScanComplete, variant = "page" }: Magic
             const response = await fetch("/api/scan/free", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url }),
+                body: JSON.stringify({ url: targetUrl }),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                toast.success(`Scan complete! Score: ${data.score}/100`);
+                toast.success(`Readiness preview complete. Score: ${data.score}/100`);
                 onScanComplete?.(data);
             } else {
                 toast.error(data.message || "Scan failed");
@@ -60,7 +61,7 @@ export default function MagicScanner({ onScanComplete, variant = "page" }: Magic
                         type="url"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
-                        placeholder="https://example.com"
+            placeholder="https://example.com"
                         className={`w-full pl-12 pr-${isHero ? "32" : "40"} bg-surface-900/60 border-2 border-surface-800 rounded-2xl text-surface-100 placeholder-surface-600 focus:outline-none focus:border-brand-500/50 focus:ring-4 focus:ring-brand-500/10 transition-all duration-300 ${isHero ? "py-4" : "py-5 text-lg"
                             }`}
                     />
@@ -100,4 +101,15 @@ export default function MagicScanner({ onScanComplete, variant = "page" }: Magic
             )}
         </motion.div>
     );
+}
+
+function normalizeInputUrl(value: string) {
+    const trimmed = value.trim();
+    if (!trimmed) return "";
+    const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    try {
+        return new URL(withProtocol).toString();
+    } catch {
+        return "";
+    }
 }

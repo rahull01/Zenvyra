@@ -79,7 +79,7 @@ export const PRODUCT_PAGES: Record<string, ProductPageContent> = {
       "Integration with consent banner blocking",
     ],
     ctaLabel: "Run Free Scan",
-    ctaHref: "/compliance-checker",
+    ctaHref: "/free-privacy-scanner",
   },
   eula: {
     slug: "eula",

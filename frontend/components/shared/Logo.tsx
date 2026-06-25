@@ -37,7 +37,7 @@ export default function Logo({ size = "md", showText = true, animated = true }: 
             {showText && (
                 <div>
                     <span className={`${s.text} font-display font-bold text-surface-100`}>
-                        ComplianceAI
+                        Zenvyra
                     </span>
                     <span className="ml-1.5 text-[10px] text-brand-400 font-medium tracking-wider uppercase">
                         Pro

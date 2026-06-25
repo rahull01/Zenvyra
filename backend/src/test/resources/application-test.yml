@@ -13,7 +13,7 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://127.0.0.1:27017/complianceai_test}
+      uri: ${MONGODB_URI:mongodb://127.0.0.1:27017/Zenvyra_test}
     redis:
       host: ${REDIS_HOST:127.0.0.1}
       port: ${REDIS_PORT:6379}
@@ -23,6 +23,9 @@ app:
     secret: ${JWT_SECRET:test-32-byte-secret-for-ci-only-ok-000000}
   security:
     hsts-enabled: false
+  auth:
+    cookies:
+      secure: false
 
 openai:
   api-key: ${OPENAI_API_KEY:sk-test-placeholder}

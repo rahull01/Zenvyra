@@ -2,117 +2,170 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, Star, ArrowRight } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Building2, Check, Globe2, Rocket, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-const plans = [
+const solutions = [
   {
-    name: 'Free',
-    price: '$0',
-    billing: 'forever',
-    features: ['1 basic policy', '10,000 banner views/mo', 'Basic cookie banner', 'Quarterly cookie scans', 'Email support'],
-    cta: 'Get Started Free',
-    popular: false,
+    icon: Rocket,
+    title: 'For startups',
+    text: 'Launch with privacy pages, consent settings, scanner evidence, and customer-facing trust proof.',
+    href: '/solutions/startups',
   },
+  {
+    icon: Building2,
+    title: 'For agencies',
+    text: 'Scan client sites, assign fixes, prepare handoff packets, and publish verified proof pages.',
+    href: '/solutions/agencies',
+  },
+  {
+    icon: Globe2,
+    title: 'For ecommerce',
+    text: 'Review pixels, cookie banners, return/shipping policies, request paths, and checkout disclosures.',
+    href: '/products',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'For SaaS',
+    text: 'Track policies, AI notices, subprocessors, DSAR workflows, security FAQs, and public readiness.',
+    href: '/solutions/enterprise',
+  },
+];
+
+const plans = [
   {
     name: 'Starter',
     price: '$10',
     billing: '/mo',
-    features: ['3 legal policies', '50,000 banner views/mo', 'Custom branded banner', 'Monthly cookie scans', 'Auto policy updates', 'Priority chat support'],
+    features: ['3 policies', 'Monthly scans', 'Cookie banner', 'Policy updates', 'Email support'],
     cta: 'Start Free Trial',
     popular: false,
   },
   {
-    name: 'Pro+',
+    name: 'Pro',
     price: '$15',
     billing: '/mo',
-    features: ['Unlimited policies', 'Unlimited banner views', 'Advanced customization', 'Weekly cookie scans', 'Multi-language (50+)', 'Google Consent Mode', 'IAB TCF 2.3', 'Team members (5)', 'API access', 'Priority support'],
+    features: ['Unlimited policies', 'Weekly scans', 'Consent logs', 'Public certificate', 'Priority support'],
     cta: 'Start Free Trial',
     popular: true,
+  },
+  {
+    name: 'Agency',
+    price: 'Custom',
+    billing: '',
+    features: ['Client workspaces', 'Proof reports', 'Team roles', 'White-label handoff', 'Setup support'],
+    cta: 'Talk to Sales',
+    popular: false,
   },
 ];
 
 export const SolutionsGrid = () => {
   return (
-    <section className="py-24 bg-background-secondary">
-      <div className="max-w-[1200px] mx-auto px-6 lg:px-12">
-        <motion.div 
+    <section className="bg-slate-50 py-24">
+      <div className="mx-auto max-w-[1200px] px-6 lg:px-12">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.55 }}
+          className="mx-auto mb-12 max-w-3xl text-center"
         >
-          <h2 className="text-h2 font-extrabold text-text-primary mb-4">
-            Simple, Transparent Pricing
+          <p className="text-eyebrow font-semibold uppercase tracking-[0.25em] text-primary">
+            Choose your use case
+          </p>
+          <h2 className="mt-3 text-h2 font-extrabold text-text-primary">
+            Compliance workflows for every team
           </h2>
-          <p className="text-body-lg text-text-secondary">
-            Start free, upgrade when you need more
+          <p className="mt-4 text-body-lg text-text-secondary">
+            Make it easy for visitors to recognize themselves and jump into the right path.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="mb-16 grid items-stretch gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {solutions.map((solution, index) => {
+            const Icon = solution.icon;
+            return (
+              <motion.div
+                key={solution.title}
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: index * 0.06 }}
+                className="flex h-full flex-col rounded-lg border border-slate-200 bg-white p-6 shadow-[0_16px_44px_rgba(15,23,42,0.05)]"
+              >
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-orange-50 text-primary">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="text-h4 font-semibold text-slate-950">{solution.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-6 text-slate-600">{solution.text}</p>
+                <Link
+                  href={solution.href}
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-hover"
+                >
+                  Explore
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <div className="mb-12 text-center">
+          <p className="text-eyebrow font-semibold uppercase tracking-[0.25em] text-primary">
+            Simple pricing
+          </p>
+          <h2 className="mt-3 text-h2 font-extrabold text-text-primary">Start small, upgrade when proof matters</h2>
+        </div>
+
+        <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
           {plans.map((plan, index) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
+              key={plan.name}
+              initial={{ opacity: 0, y: 26 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-              whileHover={{ y: -5 }}
-              className={`relative flex h-full flex-col rounded-2xl p-8 border transition-all duration-350 ${
-                plan.popular
-                  ? 'border-2 border-primary shadow-card-hover scale-105 z-10'
-                  : 'border-border-light shadow-card hover:shadow-card-hover'
+              transition={{ duration: 0.45, delay: index * 0.08 }}
+              className={`relative flex h-full flex-col rounded-lg border bg-white p-7 shadow-[0_18px_50px_rgba(15,23,42,0.06)] ${
+                plan.popular ? 'border-primary ring-2 ring-orange-100' : 'border-slate-200'
               }`}
             >
               {plan.popular && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-white text-caption font-bold uppercase tracking-[0.05em] px-4 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap">
-                  <Star className="w-3 h-3 fill-current" />
-                  Most Popular
+                <div className="absolute left-6 top-0 -translate-y-1/2 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-[0.08em] text-white">
+                  Most useful
                 </div>
               )}
 
-              <div className="mb-8">
-                <h3 className="text-h4 font-semibold text-text-primary mb-1">{plan.name}</h3>
-                <div className="flex items-baseline gap-1 mb-2">
+              <div className="mb-7">
+                <h3 className="text-h4 font-semibold text-text-primary">{plan.name}</h3>
+                <div className="mt-3 flex items-baseline gap-1">
                   <span className="text-h2 font-extrabold text-text-primary">{plan.price}</span>
-                  <span className="text-text-tertiary font-medium">{plan.billing}</span>
+                  <span className="font-medium text-text-secondary">{plan.billing}</span>
                 </div>
               </div>
 
-              <div className="flex-1 space-y-4 mb-8">
-                {plan.features.map((feature, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-status-success mt-0.5 shrink-0" />
-                    <span className="text-body-sm text-text-secondary leading-tight">{feature}</span>
+              <div className="mb-8 flex-1 space-y-4">
+                {plan.features.map((feature) => (
+                  <div key={feature} className="flex items-start gap-3">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <span className="text-body-sm text-text-secondary">{feature}</span>
                   </div>
                 ))}
               </div>
 
-              <Button
-                variant={plan.popular ? 'default' : 'outline'}
-                size="default"
-                className="w-full mt-auto"
-              >
-                {plan.cta}
+              <Button asChild variant={plan.popular ? 'default' : 'outline'} className="mt-auto w-full">
+                <Link href={plan.name === 'Agency' ? '/contact' : '/auth/signup'}>{plan.cta}</Link>
               </Button>
             </motion.div>
           ))}
         </div>
 
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="text-center mt-12"
-        >
-          <Link href="/pricing" className="text-primary font-medium hover:underline">
-            View full pricing →
+        <div className="mt-10 flex justify-center">
+          <Link href="/pricing" className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-hover">
+            View full pricing
+            <BadgeCheck className="h-4 w-4" />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

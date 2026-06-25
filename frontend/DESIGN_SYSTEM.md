@@ -1,5 +1,5 @@
 # All — Design System
-> Brand portfolio by By Credgenics | https://termly.io/
+> Brand portfolio by By Credgenics | https://zenvyra.com/
 
 ---
 

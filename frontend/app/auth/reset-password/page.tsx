@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Lock, ArrowRight, Check, ArrowLeft, Shield, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import api from "@/lib/api";
 
 function ResetPasswordForm() {
     const router = useRouter();
@@ -15,28 +16,40 @@ function ResetPasswordForm() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError("");
+
+        if (!token) {
+            setError("Invalid or missing password reset token.");
+            return;
+        }
          
         if (password !== confirmPassword) {
+            setError("Passwords do not match.");
             return;
         }
  
-        if (password.length < 8) {
+        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password)) {
+            setError("Use at least 8 characters with uppercase, lowercase, number, and special character.");
             return;
         }
  
         setIsLoading(true);
  
-        // Simulate API call
-        setTimeout(() => {
+        try {
+            await api.post("/auth/reset-password", { token, password });
             setIsSubmitted(true);
-            setIsLoading(false);
             setTimeout(() => {
                 router.push("/auth/login");
             }, 3000);
-        }, 1000);
+        } catch (error: any) {
+            setError(error?.response?.data?.message || "Unable to reset password. Request a new reset link.");
+        } finally {
+            setIsLoading(false);
+        }
     };
  
     return (
@@ -80,6 +93,11 @@ function ResetPasswordForm() {
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-5">
+                        {error && (
+                            <div className="rounded-xl border border-status-error/20 bg-status-error/10 p-3 text-sm font-medium text-status-error">
+                                {error}
+                            </div>
+                        )}
                         <div className="space-y-2">
                             <label className="block text-caption font-bold uppercase tracking-[0.05em] text-text-secondary">New Password</label>
                             <div className="relative group">
@@ -119,6 +137,10 @@ function ResetPasswordForm() {
                             <div className="flex items-center gap-2.5">
                                 <span className={`h-2 w-2 rounded-full transition-all duration-350 ${/[0-9]/.test(password) ? "bg-status-success shadow-md shadow-status-success/20" : "bg-background-tertiary"}`} />
                                 <span className={/[0-9]/.test(password) ? "text-text-primary font-medium" : "text-text-tertiary"}>Contains at least one number</span>
+                            </div>
+                            <div className="flex items-center gap-2.5">
+                                <span className={`h-2 w-2 rounded-full transition-all duration-350 ${/[A-Z]/.test(password) && /[a-z]/.test(password) && /[@$!%*?&]/.test(password) ? "bg-status-success shadow-md shadow-status-success/20" : "bg-background-tertiary"}`} />
+                                <span className={/[A-Z]/.test(password) && /[a-z]/.test(password) && /[@$!%*?&]/.test(password) ? "text-text-primary font-medium" : "text-text-tertiary"}>Uppercase, lowercase, and special character</span>
                             </div>
                         </div>
 

@@ -12,10 +12,10 @@
         <relativePath/>
     </parent>
     
-    <groupId>com.complianceai</groupId>
-    <artifactId>complianceai-pro</artifactId>
+    <groupId>com.zenvyra</groupId>
+    <artifactId>zenvyra</artifactId>
     <version>1.0.0</version>
-    <name>ComplianceAI Pro</name>
+    <name>Zenvyra</name>
     <description>AI-Powered Compliance Automation</description>
     
     <properties>

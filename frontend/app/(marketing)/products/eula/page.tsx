@@ -72,7 +72,7 @@ export default function EulaGeneratorPage() {
               </div>
               <h3 className="text-lg font-bold text-text-primary mb-2">Mobile Apps</h3>
               <p className="text-text-secondary text-sm leading-relaxed">
-                Fully compatible with Apple App Store standard terms and Google Play developer policies, ensuring fast approvals.
+                Drafted with Apple App Store standard terms and Google Play developer policy review points in mind.
               </p>
             </div>
             <div className="bg-background-primary p-6 rounded-2xl border border-border-light text-center shadow-card">

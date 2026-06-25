@@ -116,7 +116,7 @@ export default function PolicyEditor({ initialContent = "", onSave }: PolicyEdit
             <div className="p-6 min-h-[500px]">
                 {isPreview ? (
                     <div className="prose prose-invert max-w-none">
-                        <div dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br/>') }} />
+                        <div className="whitespace-pre-wrap">{content}</div>
                     </div>
                 ) : (
                     <textarea

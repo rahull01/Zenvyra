@@ -48,8 +48,8 @@ export default function ProductsPage() {
   return (
     <PageScaffold
       eyebrow="Products"
-      title="Everything you need to stay compliant"
-      subtitle="Policy generation, cookie consent, scanning, and AI automation — one trusted platform for modern teams."
+      title="Everything you need to stay review-ready"
+      subtitle="Policy generation, cookie consent, scanning, and AI readiness automation - one trusted platform for modern teams."
       heroExtra={
         <Link href="/auth/signup" className="btn-primary">
           Start free trial

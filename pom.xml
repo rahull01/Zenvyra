@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.complianceai</groupId>
-    <artifactId>complianceai-pro-root</artifactId>
+    <groupId>com.zenvyra</groupId>
+    <artifactId>zenvyra-root</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <name>ComplianceAI Pro Root</name>
-    <description>Root Aggregator for ComplianceAI Pro</description>
+    <name>Zenvyra Root</name>
+    <description>Root Aggregator for Zenvyra</description>
 
     <modules>
         <module>backend</module>

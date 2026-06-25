@@ -22,16 +22,16 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Create non-root user
-RUN addgroup -S complianceai && adduser -S complianceai -G complianceai
+RUN addgroup -S Zenvyra && adduser -S Zenvyra -G Zenvyra
 
 # Copy built jar from build stage
 COPY --from=build /app/target/*.jar app.jar
 
 # Change ownership
-RUN chown -R complianceai:complianceai /app
+RUN chown -R Zenvyra:Zenvyra /app
 
 # Switch to non-root user
-USER complianceai
+USER Zenvyra
 
 # Expose port
 EXPOSE 8080

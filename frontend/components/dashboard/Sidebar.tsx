@@ -1,110 +1,135 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  FileText, 
-  Cookie, 
-  Globe, 
-  BarChart3, 
-  Settings, 
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  BarChart3,
+  Bot,
+  Cookie,
+  CreditCard,
+  FileText,
+  Globe,
   HelpCircle,
-  ShieldCheck
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  Building2,
+  LayoutDashboard,
+  Monitor,
+  ScanLine,
+  Settings,
+  ShieldCheck,
+} from "lucide-react";
+import api from "@/lib/api";
+import { planName } from "@/lib/pricing-plans";
+import { cn } from "@/lib/utils";
 
 const navItems = [
-  { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
-  { 
-    name: 'Policies', 
-    icon: FileText, 
-    href: '/dashboard/policies',
-    children: ['Privacy Policy', 'Terms & Conditions', 'Cookie Policy']
-  },
-  { name: 'Consent', icon: Cookie, href: '/dashboard/consent' },
-  { name: 'Websites', icon: Globe, href: '/dashboard/websites' },
-  { name: 'Analytics', icon: BarChart3, href: '/dashboard/analytics' },
+  { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
+  { name: "Scanner", icon: ScanLine, href: "/dashboard/scanner" },
+  { name: "Websites", icon: Globe, href: "/dashboard/websites" },
+  { name: "Policies", icon: FileText, href: "/dashboard/policies" },
+  { name: "Consent", icon: Cookie, href: "/dashboard/consent" },
+  { name: "AI Act", icon: Bot, href: "/dashboard/ai-act" },
+  { name: "Analytics", icon: BarChart3, href: "/dashboard/analytics" },
+  { name: "Agency Hub", icon: Building2, href: "/dashboard/agency" },
 ];
 
 const secondaryItems = [
-  { name: 'Settings', icon: Settings, href: '/dashboard/settings' },
-  { name: 'Support', icon: HelpCircle, href: '/dashboard/support' },
+  { name: "Admin Ops", icon: Monitor, href: "/dashboard/admin" },
+  { name: "Billing", icon: CreditCard, href: "/dashboard/billing" },
+  { name: "Settings", icon: Settings, href: "/dashboard/settings/account" },
+  { name: "Support", icon: HelpCircle, href: "/dashboard/support" },
 ];
+
+type Usage = {
+  plan: string;
+  limits: Record<string, number>;
+  currentUsage: Record<string, number>;
+};
 
 export const Sidebar = () => {
   const pathname = usePathname();
+  const [usage, setUsage] = useState<Usage | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    api
+      .get<{ data: Usage }>("/dashboard/usage")
+      .then((response) => {
+        if (mounted) setUsage(response.data.data);
+      })
+      .catch(() => {
+        if (mounted) setUsage(null);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const usageSummary = useMemo(() => {
+    const used = Number(usage?.currentUsage?.scans || 0);
+    const total = Number(usage?.limits?.scans || 0);
+    const percent = total > 0 ? Math.min(100, Math.round((used / total) * 100)) : 0;
+    return { used, total, percent };
+  }, [usage]);
+
+  const renderItem = (item: (typeof navItems)[number]) => {
+    const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`));
+    return (
+      <Link
+        key={item.name}
+        href={item.href}
+        className={cn(
+          "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-body-sm font-medium transition-all duration-200",
+          isActive ? "bg-primary/10 text-accent" : "text-text-secondary hover:bg-background-secondary hover:text-text-primary",
+        )}
+        aria-current={isActive ? "page" : undefined}
+      >
+        <item.icon className={cn("h-5 w-5", isActive ? "text-accent" : "text-text-tertiary group-hover:text-text-secondary")} />
+        {item.name}
+        {isActive && <div className="ml-auto h-4 w-1 rounded-full bg-accent" />}
+      </Link>
+    );
+  };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[260px] bg-surface-card border-r border-border-light flex flex-col z-50">
-      {/* Logo Section */}
-      <div className="h-[72px] px-6 flex items-center border-b border-border-light bg-transparent">
+    <aside className="fixed left-0 top-0 z-50 hidden h-screen w-[260px] flex-col border-r border-border-light bg-surface-card lg:flex">
+      <div className="flex h-[72px] items-center border-b border-border-light bg-transparent px-6">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center shadow-sm">
-            <ShieldCheck className="text-white w-5 h-5" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent shadow-sm">
+            <ShieldCheck className="h-5 w-5 text-white" />
           </div>
-          <span className="font-bold text-xl text-text-primary tracking-tight">ComplianceAI Pro</span>
+          <span className="text-xl font-bold tracking-tight text-text-primary">Zenvyra</span>
         </Link>
       </div>
 
-      {/* Navigation */}
-      <nav 
-        className="flex-1 overflow-y-auto p-4 space-y-8 mt-4"
-        aria-label="Main navigation"
-      >
+      <nav className="mt-4 flex-1 space-y-8 overflow-y-auto p-4" aria-label="Main navigation">
         <div className="space-y-1">
-          <p className="px-3 text-caption font-bold uppercase tracking-[0.05em] text-text-secondary mb-2">Main Menu</p>
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-body-sm font-medium transition-all duration-200 group",
-                  isActive 
-                    ? "bg-primary/10 text-accent" 
-                    : "text-text-secondary hover:bg-background-secondary hover:text-text-primary"
-                )}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                <item.icon className={cn("w-5 h-5", isActive ? "text-accent" : "text-text-tertiary group-hover:text-text-secondary")} />
-                {item.name}
-                {isActive && <div className="ml-auto w-1 h-4 bg-accent rounded-full" />}
-              </Link>
-            );
-          })}
+          <p className="mb-2 px-3 text-caption font-bold uppercase tracking-[0.05em] text-text-secondary">Main Menu</p>
+          {navItems.map(renderItem)}
         </div>
 
         <div className="space-y-1">
-          <p className="px-3 text-caption font-bold uppercase tracking-[0.05em] text-text-secondary mb-2">Platform</p>
-          {secondaryItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-body-sm font-medium text-text-secondary hover:bg-background-secondary hover:text-text-primary transition-all duration-200"
-            >
-              <item.icon className="w-5 h-5 text-text-tertiary" />
-              {item.name}
-            </Link>
-          ))}
+          <p className="mb-2 px-3 text-caption font-bold uppercase tracking-[0.05em] text-text-secondary">Platform</p>
+          {secondaryItems.map(renderItem)}
         </div>
       </nav>
 
-      <div className="p-4 border-t border-border-light">
-        <div className="bg-background-secondary rounded-xl p-4">
-          <p className="text-body-sm font-semibold text-text-primary">Free Plan</p>
-          <p className="text-caption text-text-secondary mt-1">10,000 / 10,000 views</p>
-          <div className="w-full bg-background-tertiary h-1.5 rounded-full mt-2 overflow-hidden">
-            <div className="bg-accent h-full w-full" />
+      <div className="border-t border-border-light p-4">
+        <div className="rounded-xl bg-background-secondary p-4">
+          <p className="text-body-sm font-semibold text-text-primary">{planName(usage?.plan)} Plan</p>
+          <p className="mt-1 text-caption text-text-secondary">
+            {usage ? `${usageSummary.used} / ${usageSummary.total} scans` : "Usage loading"}
+          </p>
+          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-background-tertiary">
+            <div className="h-full bg-accent" style={{ width: `${usageSummary.percent}%` }} />
           </div>
-          <button 
-            className="text-caption font-bold text-accent mt-3 hover:underline"
-            aria-label="Upgrade to paid plan"
+          <Link
+            href="/dashboard/billing"
+            className="mt-3 inline-block text-caption font-bold text-accent hover:underline"
+            aria-label="Upgrade plan"
           >
             Upgrade Now
-          </button>
+          </Link>
         </div>
       </div>
     </aside>

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import TermlyNav from "@/components/termly/TermlyNav";
+import ZenvyraNav from "@/components/zenvyra/ZenvyraNav";
 
 const DASHBOARD_PREFIXES = new Set([
   "/dashboard",
@@ -21,5 +21,5 @@ export default function GlobalHeader() {
 
   if (isDashboardRoute) return null;
 
-  return <TermlyNav />;
+  return <ZenvyraNav />;
 }

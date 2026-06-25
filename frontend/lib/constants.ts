@@ -1,7 +1,10 @@
-export const APP_NAME = "ComplianceAI Pro";
+import { publicApiBaseUrl, publicSiteUrl, publicWebSocketUrl } from "./env";
+
+export const APP_NAME = "Zenvyra";
 export const APP_VERSION = "1.0.0";
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1";
+export const API_BASE_URL = publicApiBaseUrl();
+export const PUBLIC_APP_URL = publicSiteUrl();
 
 export const COMPLIANCE_CATEGORIES = [
     "GDPR",
@@ -32,4 +35,10 @@ export const SCAN_LIMITS = {
     [PLANS.ENTERPRISE]: Infinity,
 } as const;
 
-export const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/ws";
+export const WS_URL = publicWebSocketUrl();
+
+export const POLICY_EMBED_CONFIG = {
+    IFRAME_HEIGHT: 800,
+    IFRAME_BORDER: "none",
+    IFRAME_LOADING: "lazy",
+} as const;

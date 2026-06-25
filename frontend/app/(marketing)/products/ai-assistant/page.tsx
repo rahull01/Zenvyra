@@ -65,7 +65,7 @@ export default function AiAssistantPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-text-primary"
             >
-              Your virtual <span className="text-primary">Privacy Counsel</span>, active 24/7.
+              Your virtual <span className="text-primary">Privacy Readiness Assistant</span>, active 24/7.
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 15 }}
@@ -73,7 +73,7 @@ export default function AiAssistantPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-6 text-lg text-text-secondary leading-relaxed max-w-2xl mx-auto"
             >
-              Ask compliance questions, generate customized legal clauses, and auto-detect website tracking loopholes using next-gen legal AI models.
+              Ask privacy readiness questions, draft review-ready clauses, and detect website tracking gaps using AI-assisted workflows.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -98,13 +98,13 @@ export default function AiAssistantPage() {
           <div className="grid gap-12 lg:grid-cols-12 items-center">
             {/* Context Left */}
             <div className="lg:col-span-5">
-              <h2 className="text-3xl font-extrabold text-text-primary">Instant legal guidance, tailored for developers</h2>
+              <h2 className="text-3xl font-extrabold text-text-primary">Instant compliance readiness guidance, tailored for developers</h2>
               <p className="mt-4 text-text-secondary leading-relaxed">
-                Skip expensive legal hours. Our assistant answers specific compliance questions, flags third-party vendor risks, and automatically edits policies when laws update.
+                Prepare better questions for counsel, flag third-party vendor risks, and draft policy updates when privacy requirements change.
               </p>
               <div className="mt-8 space-y-4">
                 {[
-                  "Trained on exact GDPR, CCPA, and HIPAA regulatory briefs",
+                  "Grounded in GDPR, CCPA, and HIPAA readiness references",
                   "Scans website HTML to map cookie behavior against disclosures",
                   "Recommends specific visual controls and banner setups",
                   "Flags unclassified vendors and suggests auto-block rules",
@@ -126,7 +126,7 @@ export default function AiAssistantPage() {
                     <BrainCircuit className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-text-primary">Compliance AI</h4>
+                    <h4 className="text-sm font-bold text-text-primary">Zenvyra</h4>
                     <span className="text-[10px] text-status-success font-semibold flex items-center gap-1">
                       <span className="h-1.5 w-1.5 bg-status-success rounded-full animate-pulse-slow" /> Online & Indexed
                     </span>

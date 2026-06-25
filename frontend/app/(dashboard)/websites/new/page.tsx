@@ -54,7 +54,7 @@ export default function NewWebsitePage() {
             <input
               type="url"
               required
-              placeholder="https://blog.acme.com"
+              placeholder="https://www.company.com"
               value={siteUrl}
               onChange={(e) => setSiteUrl(e.target.value)}
               className="w-full text-sm px-4 py-3 rounded-xl border border-border-medium outline-none focus:border-primary bg-background-secondary text-text-primary"

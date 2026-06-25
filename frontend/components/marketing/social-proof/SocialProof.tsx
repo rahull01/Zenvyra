@@ -9,7 +9,7 @@ import { Quote, Star } from "lucide-react";
 const companies = ["Stripe", "Notion", "Vercel", "Linear", "Figma", "Webflow", "Discord", "Slack"];
 const testimonials = [
     { 
-        quote: "ComplianceAI transformed our legal workflow. We moved from spreadsheet chaos to automated bliss in days.", 
+        quote: "Zenvyra transformed our legal workflow. We moved from spreadsheet chaos to automated bliss in days.", 
         author: "Sarah Chen", 
         role: "Head of Legal, Orbit Labs",
         image: "SC"
