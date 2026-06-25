@@ -80,10 +80,9 @@ export default function OnboardingPage() {
               <ShieldCheck className="h-4 w-4" />
               Founder-led setup intake
             </div>
-            <h1 className="text-3xl font-black tracking-normal text-text-primary">Complete your readiness setup</h1>
+            <h1 className="text-3xl font-black tracking-normal text-text-primary">Complete your AI readiness setup</h1>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-text-secondary">
-              Add the operational details needed for privacy, consent, DSAR, AI Act readiness, certificate, and proof-pack workflows.
-            </p>
+              Inventory AI systems, configure EU AI Act compliance, and establish privacy, consent, DSAR, and proof workflows.</p>
           </div>
           <button type="submit" disabled={saving} className="btn-primary justify-center">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
@@ -100,6 +99,17 @@ export default function OnboardingPage() {
             <Input label="Country/state" value={form.countryState} onChange={(value) => setField("countryState", value)} placeholder="UK / California / EU" />
           </Section>
 
+          <Section title="AI systems and EU AI Act" icon={Bot}>
+            <MultiChoice label="AI tools used" values={form.aiToolsUsed} options={aiTools} onChange={(values) => setField("aiToolsUsed", values)} exclusive="No AI" />
+            <Choice label="Platform access willingness" value={form.platformAccessWillingness} options={accessOptions} onChange={(value) => setField("platformAccessWillingness", value)} icon={Wrench} />
+            <div className="rounded-lg border border-border-light bg-background-secondary p-4 text-sm leading-6 text-text-secondary">
+              <div className="flex gap-3">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 text-status-success" />
+                <p>Inventory your AI systems after setup; we'll assess readiness, classify risk, and prepare required notices.</p>
+              </div>
+            </div>
+          </Section>
+
           <Section title="Website and platform" icon={Globe}>
             <Input label="Website URL" value={form.siteUrl} onChange={(value) => setField("siteUrl", value)} placeholder="https://company.com" />
             <Choice label="Platform" value={form.platform} options={platforms} onChange={(value) => setField("platform", value)} />
@@ -113,17 +123,6 @@ export default function OnboardingPage() {
             <Input label="Cookie banner provider" value={form.cookieBannerProvider} onChange={(value) => setField("cookieBannerProvider", value)} placeholder="Cookiebot, OneTrust, custom, none" />
             <MultiChoice label="Analytics/tracker tools" values={form.trackerTools} options={trackers} onChange={(values) => setField("trackerTools", values)} />
             <Input label="DSAR/consumer request email" value={form.dsarEmail} onChange={(value) => setField("dsarEmail", value)} placeholder="privacy@company.com" />
-          </Section>
-
-          <Section title="AI and implementation access" icon={Bot}>
-            <MultiChoice label="AI tools used" values={form.aiToolsUsed} options={aiTools} onChange={(values) => setField("aiToolsUsed", values)} exclusive="No AI" />
-            <Choice label="Platform access willingness" value={form.platformAccessWillingness} options={accessOptions} onChange={(value) => setField("platformAccessWillingness", value)} icon={Wrench} />
-            <div className="rounded-lg border border-border-light bg-background-secondary p-4 text-sm leading-6 text-text-secondary">
-              <div className="flex gap-3">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 text-status-success" />
-                <p>Auto-fix is available where platform access allows; everywhere else gets guided fix steps and handoff instructions.</p>
-              </div>
-            </div>
           </Section>
         </div>
       </form>

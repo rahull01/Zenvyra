@@ -9,14 +9,14 @@ export async function generateMetadata(): Promise<Metadata> {
       absolute: "Zenvyra",
     },
     description:
-      "Zenvyra helps agencies, SaaS teams, and ecommerce brands scan websites, assess privacy and AI readiness, fix trust gaps, monitor changes, and publish proof packs.",
+      "Zenvyra helps AI-enabled teams prepare EU AI Act readiness evidence, then support it with privacy, cookie, policy, consent, monitoring, and proof workflows.",
     alternates: {
       canonical: siteUrl,
     },
     openGraph: {
-      title: "Privacy and AI compliance proof infrastructure for UK, US, and EU-facing websites",
+      title: "EU AI Act readiness with privacy proof infrastructure",
       description:
-        "Website scans, privacy and AI readiness checks, consent evidence, public certificates, and monthly proof packs for agencies and growth teams.",
+        "AI system inventory, readiness assessments, transparency drafts, website privacy scans, consent evidence, public certificates, and monthly proof packs.",
       url: siteUrl,
       siteName: "Zenvyra",
       type: "website",
@@ -25,15 +25,15 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/images/og-zenvyra.png",
           width: 1200,
           height: 630,
-          alt: "Zenvyra enterprise GDPR and cookie consent dashboard",
+          alt: "Zenvyra EU AI Act readiness and privacy proof dashboard",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Zenvyra - Privacy and AI Readiness Proof Packs",
+      title: "Zenvyra - EU AI Act Readiness Proof Packs",
       description:
-        "Scan websites, identify trust gaps, prepare evidence packs, and publish public readiness certificates without claiming guaranteed legal compliance.",
+        "Inventory AI systems, identify readiness gaps, prepare evidence packs, and publish public trust signals without claiming guaranteed legal compliance.",
       images: ["/images/og-zenvyra.png"],
     },
   };

@@ -146,8 +146,8 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     ],
   },
   "compliance/regions": {
-    title: "Multi-Region Compliance Hub",
-    subtitle: "Configure GDPR, CCPA, PIPEDA, LGPD, and regional requirements in one place.",
+    title: "Multi-Region AI Compliance Hub",
+    subtitle: "Configure EU AI Act, UK AI Bill, and emerging AI regulations in one place.",
     iconName: "Map",
   },
   workflows: {
@@ -156,8 +156,8 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     iconName: "Workflow",
   },
   monitor: {
-    title: "Real-Time Compliance Monitor",
-    subtitle: "Live status for websites, policies, and cookie compliance.",
+    title: "AI Readiness Monitor",
+    subtitle: "Live dashboard for AI systems, risk classification, documentation status, and compliance proof.",
     iconName: "Activity",
   },
   "ai-chat": {

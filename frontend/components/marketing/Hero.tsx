@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { ArrowRight, BadgeCheck, CheckCircle2, Radar, ShieldCheck } from 'lucide-react';
 
 const scanRows = [
-  { label: 'Cookie consent', value: 'PECR review passed', tone: 'text-orange-300' },
-  { label: 'Privacy policy', value: '2 updates ready', tone: 'text-white' },
-  { label: 'DSAR/CPRA flow', value: 'public proof enabled', tone: 'text-emerald-300' },
+  { label: 'AI systems', value: '3 inventoried', tone: 'text-orange-300' },
+  { label: 'Transparency', value: '2 notices ready', tone: 'text-white' },
+  { label: 'Oversight', value: 'human review mapped', tone: 'text-emerald-300' },
 ];
 
 const Hero = () => {
@@ -30,18 +30,18 @@ const Hero = () => {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-60" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-orange-500" />
               </span>
-              <span className="truncate">All-in-one privacy, cookie, policy, and proof platform</span>
+              <span className="truncate">EU AI Act readiness with privacy proof underneath</span>
             </div>
 
             <h1 className="max-w-[680px] !text-[2.55rem] font-extrabold tracking-tight !text-white !leading-[1.02] sm:!text-[3.3rem] lg:!text-[clamp(3rem,4.35vw,4.45rem)]">
-              Compliance proof that turns visitors into{' '}
+              EU AI Act readiness that turns AI risk into{' '}
               <span className="bg-gradient-to-r from-orange-300 via-orange-500 to-white bg-clip-text text-transparent">
-                confident buyers.
+                clear proof.
               </span>
             </h1>
 
             <p className="max-w-lg text-base leading-7 text-white/68 sm:text-lg">
-              Scan privacy gaps, fix trust blockers, and publish buyer-ready proof before customers ask.
+              Inventory AI systems, map transparency and oversight gaps, then support every AI claim with privacy, consent, policy, and monitoring evidence.
             </p>
 
             <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
@@ -49,25 +49,25 @@ const Hero = () => {
                 href="/auth/signup"
                 className="group inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-4 text-sm font-extrabold text-white shadow-[0_18px_46px_rgba(249,115,22,0.34)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-orange-600 hover:shadow-[0_22px_58px_rgba(249,115,22,0.5)]"
               >
-                Get Compliance Ready in Minutes
+                Start AI Act Readiness
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
-                href="/pricing"
+                href="/ai-act"
                 className="inline-flex items-center justify-center rounded-xl border border-white/14 bg-white/[0.06] px-6 py-4 text-sm font-bold text-white shadow-sm backdrop-blur-xl transition-all duration-300 hover:border-orange-300/50 hover:bg-white/[0.1]"
               >
-                View pricing
+                View AI Act workspace
               </Link>
             </div>
 
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1 text-xs font-semibold text-white/58">
               <span className="inline-flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-orange-400" />
-                No credit card required
+                AI inventory first
               </span>
               <span className="inline-flex items-center gap-2">
                 <BadgeCheck className="h-4 w-4 text-orange-400" />
-                Used by 100+ teams
+                Privacy proof included
               </span>
             </div>
           </motion.div>
@@ -85,8 +85,8 @@ const Hero = () => {
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.14),transparent_34%,rgba(249,115,22,0.08))]" />
               <div className="relative flex items-center justify-between gap-4 border-b border-white/10 bg-black/18 px-5 py-4">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-orange-300">Live compliance view</p>
-                  <p className="mt-1 text-sm text-white/55">scan, policies, consent, proof</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-orange-300">EU AI Act view</p>
+                  <p className="mt-1 text-sm text-white/55">inventory, risk, notices, proof</p>
                 </div>
                 <div className="flex items-center gap-2 rounded-full border border-orange-300/30 bg-orange-500/12 px-3 py-1.5 text-xs font-bold text-orange-100">
                   <span className="relative flex h-2 w-2">
@@ -101,7 +101,7 @@ const Hero = () => {
                 <div className="rounded-xl border border-white/10 bg-black/24 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
                   <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/52">
                     <Radar className="h-4 w-4 text-orange-300" />
-                    Score
+                    Readiness
                   </div>
                   <div className="mt-5 flex items-end gap-2">
                     <motion.span
@@ -122,7 +122,7 @@ const Hero = () => {
                       className="h-full rounded-full bg-orange-500 shadow-[0_0_24px_rgba(249,115,22,0.72)]"
                     />
                   </div>
-                  <p className="mt-4 text-sm font-semibold text-white/78">Ready for trust review</p>
+                  <p className="mt-4 text-sm font-semibold text-white/78">Ready for counsel review</p>
                 </div>
 
                 <div className="space-y-3">
@@ -141,15 +141,15 @@ const Hero = () => {
               <div className="relative mx-5 mb-5 rounded-xl border border-orange-300/24 bg-orange-500/[0.09] p-4 backdrop-blur-xl">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.18em] text-orange-200/75">Proof pack</p>
-                    <p className="mt-1 text-base font-bold text-white">Shareable trust page for buyers</p>
-                    <p className="mt-1 text-xs leading-5 text-white/56">Policies, consent checks, open fixes, and certificate in one public link.</p>
+                    <p className="text-xs uppercase tracking-[0.18em] text-orange-200/75">AI readiness pack</p>
+                    <p className="mt-1 text-base font-bold text-white">Evidence your team can review</p>
+                    <p className="mt-1 text-xs leading-5 text-white/56">AI inventory, notices, oversight gaps, privacy evidence, and certificate in one workflow.</p>
                   </div>
                   <Link
                     href="/auth/signup"
                     className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-orange-500 px-4 py-3 text-sm font-bold text-white shadow-[0_14px_34px_rgba(249,115,22,0.32)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-orange-600 hover:shadow-[0_18px_44px_rgba(249,115,22,0.48)]"
                   >
-                    Publish proof
+                    Build evidence
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>
@@ -158,7 +158,7 @@ const Hero = () => {
 
             <div className="absolute -right-3 top-12 hidden rounded-xl border border-orange-300/28 bg-black/52 px-4 py-3 text-white shadow-2xl backdrop-blur-2xl md:flex md:items-center md:gap-3">
               <ShieldCheck className="h-5 w-5 text-orange-300" />
-              <span className="text-xs font-bold">Buyer proof ready</span>
+              <span className="text-xs font-bold">AI evidence ready</span>
             </div>
           </motion.div>
         </div>

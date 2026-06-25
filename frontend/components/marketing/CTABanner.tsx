@@ -20,21 +20,21 @@ export const CTABanner = () => {
         <div className="relative z-10 grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
           <div>
             <p className="text-eyebrow font-semibold uppercase tracking-[0.25em] text-white/80">
-              Ready to protect your business?
+              Ready to make AI readiness visible?
             </p>
             <h2 className="mt-4 text-h2 font-extrabold tracking-tight text-white">
-              Start with a clear scan, then turn gaps into trust signals.
+              Start with an AI system inventory, then turn gaps into trust signals.
             </h2>
             <p className="mt-4 max-w-2xl text-body-lg text-white/90 leading-relaxed">
-              Run the first website scan, create the right policies, configure consent, and prepare
-              proof your team can review before customers ask for it.
+              Add your first AI system, generate readiness evidence, connect the supporting privacy
+              and consent workflows, and prepare proof before customers ask for it.
             </p>
           </div>
 
           <div className="flex flex-col gap-4 sm:flex-row lg:flex-col">
             <Link href="/auth/signup">
               <Button variant="default" size="lg" className="w-full bg-white text-primary hover:bg-slate-100 border-none shadow-xl px-8 py-4">
-                Start Free Scan
+                Start AI Readiness
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>

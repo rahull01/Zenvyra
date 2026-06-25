@@ -15,9 +15,9 @@ const setupPackage = {
   href: "/contact",
   badge: "Fastest to value",
   features: [
-    "Privacy, cookie, terms, refund, and shipping policy drafts",
+    "AI usage, privacy, cookie, terms, refund, and shipping policy drafts",
     "Cookie banner and consent preferences",
-    "Initial audit-ready PDF report",
+    "Initial AI readiness and privacy proof PDF report",
     "Privacy-safe public trust certificate",
     "Shopify, WordPress, Webflow, or custom-code fix steps",
   ],
@@ -25,19 +25,19 @@ const setupPackage = {
 
 const comparisonRows = [
   {
-    feature: "Policy generator",
+    feature: "AI Act readiness",
     legacyTools: "Strong",
-    Zenvyra: "UK/US-focused drafts, plus version history",
+    Zenvyra: "AI inventory, readiness gaps, transparency drafts, and counsel-review evidence",
   },
   {
-    feature: "Cookie consent",
+    feature: "Policy generator",
     legacyTools: "Mature CMP",
-    Zenvyra: "Consent flow plus proof timeline",
+    Zenvyra: "AI usage, privacy, cookie, and product policy drafts plus version history",
   },
   {
     feature: "Website monitoring",
     legacyTools: "Scheduled cookie scans",
-    Zenvyra: "Cookie, policy, DSAR, and tracker drift monitoring for UK/US sites",
+    Zenvyra: "AI readiness, cookie, policy, DSAR, and tracker drift monitoring for UK/US/EU-facing sites",
   },
   {
     feature: "Fix instructions",
@@ -59,7 +59,7 @@ const comparisonRows = [
 const faqs = [
   {
     q: "Is this legal advice?",
-    a: "No. Zenvyra is compliance automation software, not a law firm. It helps UK and US teams create operational proof, detect issues, and maintain policy/consent workflows. High-risk legal decisions should still be reviewed by qualified counsel.",
+    a: "No. Zenvyra is compliance automation software, not a law firm. It helps teams create EU AI Act readiness evidence, detect issues, and maintain policy/consent workflows. High-risk legal decisions should still be reviewed by qualified counsel.",
   },
   {
     q: "Why is there a setup package?",
@@ -67,7 +67,7 @@ const faqs = [
   },
   {
     q: "How is this different from basic policy tools?",
-    a: "Basic policy tools focus on documents and cookie banners. Zenvyra is positioned around continuous proof for UK/US teams: monitoring, public certificates, DSAR deadlines, audit packs, and implementation fixes.",
+    a: "Basic policy tools focus on documents and cookie banners. Zenvyra starts with EU AI Act readiness, then supports it with continuous proof: monitoring, public certificates, DSAR deadlines, audit packs, and implementation fixes.",
   },
   {
     q: "Can agencies resell this?",
@@ -78,7 +78,7 @@ const faqs = [
 const valueCards = [
   {
     title: "Launch proof faster",
-    description: "Go from scan to policy baseline, banner, certificate, and first fix list without stitching together separate tools.",
+    description: "Go from AI inventory to readiness gaps, policy baseline, banner, certificate, and first fix list without stitching together separate tools.",
     icon: Clock3,
     stat: "Same day",
   },
@@ -90,15 +90,15 @@ const valueCards = [
   },
   {
     title: "Monitor drift continuously",
-    description: "Pricing is built around ongoing proof, not one-time documents that go stale after the next marketing release.",
+    description: "Pricing is built around ongoing AI and privacy proof, not one-time documents that go stale after the next marketing release.",
     icon: BarChart3,
     stat: "24/7",
   },
 ];
 
 const implementationSteps = [
-  { title: "Scan your website", text: "Map policies, cookies, trackers, consent states, and trust gaps.", icon: Gauge },
-  { title: "Choose a proof tier", text: "Select the plan based on website count, workflow complexity, and client needs.", icon: BadgeCheck },
+  { title: "Inventory AI systems", text: "Map providers, use cases, EU user exposure, transparency needs, and oversight gaps.", icon: Gauge },
+  { title: "Choose a readiness tier", text: "Select the plan based on AI workflow, website count, and client needs.", icon: BadgeCheck },
   { title: "Ship the first fixes", text: "Use remediation steps and setup support to turn findings into visible progress.", icon: Workflow },
   { title: "Keep evidence current", text: "Monitor changes, publish proof pages, and export reports when teams ask.", icon: ShieldCheck },
 ];
@@ -109,13 +109,13 @@ export default function PricingPage() {
     ...plan,
     price: plan.monthlyPrice === 0 ? "$0 / GBP 0" : `$${plan.monthlyPrice}/mo`,
     description: plan.id === "free"
-      ? "For UK and US founders who want to see privacy risk before buying."
+      ? "For founders who want to see AI and privacy risk before buying."
       : plan.id === "agency"
-        ? "White-label privacy monitoring for UK and US client websites."
-        : "Recurring compliance monitoring aligned with backend product entitlements.",
-    cta: plan.id === "agency" ? "Talk to founder" : plan.id === "free" ? "Start free scan" : "Start monitoring",
+        ? "White-label AI readiness and privacy monitoring for client websites."
+        : "Recurring AI readiness and compliance monitoring aligned with product entitlements.",
+    cta: plan.id === "agency" ? "Talk to founder" : plan.id === "free" ? "Start free scan" : "Start readiness",
     href: plan.id === "agency" ? "/contact" : "/auth/signup",
-    badge: plan.id === "pro" ? "Best self-serve" : plan.id === "agency" ? "Best wedge" : plan.id === "free" ? "No card" : "Recurring proof",
+    badge: plan.id === "pro" ? "Most Popular" : plan.id === "agency" ? "Agency" : plan.id === "free" ? "No card" : "Starter",
     featured: plan.id === "pro",
     variant: plan.id === "pro" ? "default" as const : "outline" as const,
   }));
@@ -126,13 +126,13 @@ export default function PricingPage() {
         <div className="mx-auto max-w-[1200px] text-center">
           <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
             <Sparkles className="h-4 w-4" />
-            UK + US privacy compliance packages
+            EU AI Act readiness packages
           </div>
           <h1 className="mx-auto max-w-4xl text-h1 font-extrabold tracking-tight text-text-primary">
-            Pricing built to get your first proof pack live, not just create another policy page.
+            Pricing built to get your first AI readiness proof pack live, not just create another policy page.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-body-lg leading-relaxed text-text-secondary">
-            Start with a free scan, launch the essentials with guided setup, then keep your UK or US site monitored with reports your customers and clients can trust.
+            Start with AI system readiness, launch the supporting privacy essentials with guided setup, then keep your evidence monitored with reports customers and clients can trust.
           </p>
         </div>
 
@@ -231,7 +231,7 @@ export default function PricingPage() {
               <h2 className="mt-4 text-h2 font-extrabold text-text-primary">Every plan is priced around a real workflow</h2>
             </div>
             <p className="text-body leading-relaxed text-text-secondary">
-              The value is not another generated document. The value is the operating loop: detect, decide, fix, and prove the state of your website over time.
+              The value is not another generated document. The value is the operating loop: inventory, assess, fix, and prove the state of your AI and privacy workflows over time.
             </p>
           </div>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -256,7 +256,7 @@ export default function PricingPage() {
           <div className="mb-10 max-w-3xl">
             <p className="text-eyebrow font-bold uppercase tracking-[0.15em] text-primary">Competitive value</p>
             <h2 className="mt-4 text-h2 font-extrabold text-text-primary">
-              Where Zenvyra goes beyond a policy-and-banner tool for UK and US teams
+              Where Zenvyra goes beyond a policy-and-banner tool for AI-enabled teams
             </h2>
           </div>
 
@@ -291,7 +291,7 @@ export default function PricingPage() {
             <ShieldCheck className="mb-5 h-10 w-10 text-primary" />
             <h2 className="text-h3 font-extrabold text-text-primary">Trust is the product.</h2>
             <p className="mt-4 text-body leading-relaxed text-text-secondary">
-              Early buyers do not switch because the UI has more features. They switch when you show proof, remove setup work, and help them fix problems faster than a self-serve tool. Zenvyra supports operational workflows and is not a substitute for legal advice.
+              Early buyers do not switch because the UI has more features. They switch when you show AI readiness proof, remove setup work, and help them fix problems faster than a self-serve tool. Zenvyra supports operational workflows and is not a substitute for legal advice.
             </p>
           </div>
 

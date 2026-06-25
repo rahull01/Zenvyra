@@ -60,7 +60,7 @@ export default function CompetitorComparisonPage({ params }: PageProps) {
         name: `Is Zenvyra cheaper than ${comparison.name}?`,
         acceptedAnswer: {
           "@type": "Answer",
-          text: `Zenvyra has transparent pricing from $29 to $199 per month. ${comparison.name} is commonly evaluated for ${comparison.positioning}, but Zenvyra is usually more direct for teams that want pricing tied to automated policy updates, tracker classification, consent audit trails, and DSAR workflows.`,
+          text: `Zenvyra has transparent pricing from $19 to $119 per month. ${comparison.name} is commonly evaluated for ${comparison.positioning}, but Zenvyra is usually more direct for teams that want pricing tied to automated policy updates, tracker classification, consent audit trails, and DSAR workflows.`,
         },
       },
       {
@@ -172,7 +172,7 @@ export default function CompetitorComparisonPage({ params }: PageProps) {
             <tbody>
               <tr>
                 <th scope="row">Entry and agency pricing</th>
-                <td>Transparent plans from $29 to $199 per month.</td>
+                <td>Transparent plans from $19 to $119 per month.</td>
                 <td>{comparison.startingPrice}.</td>
               </tr>
               <tr>
@@ -190,7 +190,7 @@ export default function CompetitorComparisonPage({ params }: PageProps) {
 
           <h3>Is Zenvyra cheaper than {comparison.name}?</h3>
           <p>
-            Zenvyra offers transparent pricing from $29 to $199 per month. The better
+            Zenvyra offers transparent pricing from $19 to $119 per month. The better
             comparison is total compliance operating cost: Zenvyra reduces manual policy
             review, tracker monitoring, consent evidence collection, and DSAR deadline management.
           </p>

@@ -6,6 +6,7 @@ import api from "@/lib/api";
 
 type DashboardStats = {
   complianceScore: number;
+  aiSystemsCount?: number;
   totalWebsites: number;
   totalPolicies: number;
   activeAlerts: number;
@@ -35,10 +36,10 @@ export default function StatsCards() {
 
   const cards = useMemo(
     () => [
-      { label: "Compliance Score", value: `${Math.round(stats?.complianceScore || 0)}/100`, icon: ShieldCheck, color: "var(--accent)", bgColor: "bg-primary/10" },
+      { label: "AI Readiness Score", value: `${Math.round(stats?.complianceScore || 0)}/100`, icon: ShieldCheck, color: "var(--accent)", bgColor: "bg-primary/10" },
+      { label: "AI Systems", value: String(stats?.aiSystemsCount || 0), icon: TrendingUp, color: "var(--success)", bgColor: "bg-success/10" },
       { label: "Websites Monitored", value: String(stats?.totalWebsites || 0), icon: Globe, color: "var(--accent)", bgColor: "bg-primary/10" },
       { label: "Active Issues", value: String(stats?.activeAlerts || 0), icon: AlertTriangle, color: "var(--danger)", bgColor: "bg-error/10" },
-      { label: "Policies", value: String(stats?.totalPolicies || 0), icon: TrendingUp, color: "var(--success)", bgColor: "bg-success/10" },
     ],
     [stats],
   );

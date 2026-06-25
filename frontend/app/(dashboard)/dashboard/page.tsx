@@ -12,12 +12,14 @@ import {
   RefreshCw,
   ShieldCheck,
   Sparkles,
+  TrendingUp,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
 
 type DashboardStats = {
   complianceScore: number;
+  aiSystemsCount?: number;
   totalWebsites: number;
   totalPolicies: number;
   activeAlerts: number;
@@ -97,22 +99,22 @@ export default function DashboardPage() {
   const cards = useMemo(
     () => [
       {
-        label: "Compliance Score",
+        label: "AI Readiness Score",
         value: `${Math.round(stats?.complianceScore || 0)}/100`,
         icon: ShieldCheck,
         href: "/dashboard/compliance-score",
+      },
+      {
+        label: "AI Systems",
+        value: String(stats?.aiSystemsCount || 0),
+        icon: TrendingUp,
+        href: "/dashboard/ai-act",
       },
       {
         label: "Websites",
         value: String(stats?.totalWebsites || 0),
         icon: Globe,
         href: "/dashboard/websites",
-      },
-      {
-        label: "Policies",
-        value: String(stats?.totalPolicies || 0),
-        icon: FileText,
-        href: "/dashboard/policies",
       },
       {
         label: "Open Issues",

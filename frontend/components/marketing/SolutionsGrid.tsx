@@ -10,25 +10,25 @@ const solutions = [
   {
     icon: Rocket,
     title: 'For startups',
-    text: 'Launch with privacy pages, consent settings, scanner evidence, and customer-facing trust proof.',
+    text: 'Inventory AI features, draft transparency language, and launch with supporting privacy proof.',
     href: '/solutions/startups',
   },
   {
     icon: Building2,
     title: 'For agencies',
-    text: 'Scan client sites, assign fixes, prepare handoff packets, and publish verified proof pages.',
+    text: 'Package AI readiness, website privacy checks, client handoff packets, and verified proof pages.',
     href: '/solutions/agencies',
   },
   {
     icon: Globe2,
     title: 'For ecommerce',
-    text: 'Review pixels, cookie banners, return/shipping policies, request paths, and checkout disclosures.',
+    text: 'Review AI shopping assistants, pixels, cookie banners, request paths, and checkout disclosures.',
     href: '/products',
   },
   {
     icon: ShieldCheck,
     title: 'For SaaS',
-    text: 'Track policies, AI notices, subprocessors, DSAR workflows, security FAQs, and public readiness.',
+    text: 'Track AI systems, providers, notices, subprocessors, DSAR workflows, and public readiness.',
     href: '/solutions/enterprise',
   },
 ];
@@ -36,25 +36,25 @@ const solutions = [
 const plans = [
   {
     name: 'Starter',
-    price: '$10',
+    price: '$19',
     billing: '/mo',
-    features: ['3 policies', 'Monthly scans', 'Cookie banner', 'Policy updates', 'Email support'],
+    features: ['AI inventory', '3 policies', 'Monthly scans', 'Cookie banner', 'Email support'],
     cta: 'Start Free Trial',
     popular: false,
   },
   {
     name: 'Pro',
-    price: '$15',
+    price: '$49',
     billing: '/mo',
-    features: ['Unlimited policies', 'Weekly scans', 'Consent logs', 'Public certificate', 'Priority support'],
+    features: ['AI assessments', 'Unlimited policies', 'Weekly scans', 'Consent logs', 'Public certificate'],
     cta: 'Start Free Trial',
     popular: true,
   },
   {
     name: 'Agency',
-    price: 'Custom',
-    billing: '',
-    features: ['Client workspaces', 'Proof reports', 'Team roles', 'White-label handoff', 'Setup support'],
+    price: '$119',
+    billing: '/mo',
+    features: ['Client AI readiness', 'Proof reports', 'Team roles', 'White-label handoff', 'Setup support'],
     cta: 'Talk to Sales',
     popular: false,
   },
@@ -75,10 +75,10 @@ export const SolutionsGrid = () => {
             Choose your use case
           </p>
           <h2 className="mt-3 text-h2 font-extrabold text-text-primary">
-            Compliance workflows for every team
+            AI readiness workflows for every team
           </h2>
           <p className="mt-4 text-body-lg text-text-secondary">
-            Make it easy for visitors to recognize themselves and jump into the right path.
+            Make it easy for visitors to recognize the AI governance path and the supporting privacy work.
           </p>
         </motion.div>
 
@@ -115,7 +115,7 @@ export const SolutionsGrid = () => {
           <p className="text-eyebrow font-semibold uppercase tracking-[0.25em] text-primary">
             Simple pricing
           </p>
-          <h2 className="mt-3 text-h2 font-extrabold text-text-primary">Start small, upgrade when proof matters</h2>
+          <h2 className="mt-3 text-h2 font-extrabold text-text-primary">Start with AI inventory, upgrade when proof matters</h2>
         </div>
 
         <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
@@ -132,7 +132,7 @@ export const SolutionsGrid = () => {
             >
               {plan.popular && (
                 <div className="absolute left-6 top-0 -translate-y-1/2 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-[0.08em] text-white">
-                  Most useful
+                  Most Popular
                 </div>
               )}
 

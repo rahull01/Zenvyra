@@ -9,23 +9,23 @@ import { Button } from "@/components/ui/button";
 const proofItems = [
   {
     icon: FileSearch,
-    title: "UK/US scan evidence",
-    text: "Cookie categories, tracker domains, missing disclosures, PECR signals, and US state privacy gaps.",
+    title: "AI system readiness",
+    text: "System inventory, providers, use cases, EU user exposure, transparency needs, and documentation gaps.",
   },
   {
     icon: Fingerprint,
-    title: "Consent audit trail",
-    text: "Consent state, banner version, policy version, timestamp, region, and source page in one record.",
+    title: "Privacy evidence layer",
+    text: "Cookie categories, tracker domains, consent state, banner version, policy version, timestamp, and region.",
   },
   {
     icon: Timer,
-    title: "DSAR and consumer request workflow",
-    text: "UK data requests and US consumer privacy requests move through intake, verification, response, export, and completion.",
+    title: "Human review and request workflow",
+    text: "DSAR, consumer privacy, and human review requests move through intake, verification, response, export, and completion.",
   },
   {
     icon: ShieldCheck,
     title: "Public trust certificate",
-    text: "A shareable page customers, agencies, and buyers can use to verify monitoring status.",
+    text: "A shareable page customers, agencies, and buyers can use to verify readiness and monitoring status.",
   },
 ];
 
@@ -42,15 +42,15 @@ export default function ProofPackSection() {
             className="space-y-7"
           >
             <p className="text-eyebrow font-bold uppercase tracking-[0.15em] text-primary">
-              Compliance proof pack
+              AI readiness proof pack
             </p>
               <h2 className="text-h2 font-extrabold text-text-primary">
-              Give buyers the one thing basic policy tools rarely explain: proof.
+              Give buyers the one thing basic AI compliance checklists rarely explain: proof.
               </h2>
             <p className="text-body-lg leading-relaxed text-text-secondary">
-              Policy pages and banners are easy to copy. The hard part is proving what changed,
-              when it changed, what consent was captured, which UK GDPR/PECR or US state privacy
-              checks were reviewed, and which fixes were completed. Zenvyra packages that
+              AI policy language is easy to copy. The hard part is proving which AI systems exist,
+              what they do, what oversight exists, what consent and privacy evidence supports them,
+              which checks were reviewed, and which fixes were completed. Zenvyra packages that
               evidence into a review-ready workflow with clear disclaimers and escalation points for legal counsel.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -77,7 +77,7 @@ export default function ProofPackSection() {
               <div className="flex flex-col gap-4 border-b border-border-light pb-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-caption font-bold uppercase tracking-[0.15em] text-text-tertiary">
-                    UK/US review packet
+                    AI Act review packet
                   </p>
                   <h3 className="mt-2 text-h4 font-semibold text-text-primary">example-store.com</h3>
                 </div>
@@ -105,7 +105,7 @@ export default function ProofPackSection() {
           </motion.div>
         </div>
         <p className="mt-8 max-w-3xl text-xs leading-5 text-text-tertiary">
-          Certificates are operational evidence, not a legal certification or guarantee of UK, EU, or US compliance.
+          Certificates are operational evidence, not a legal certification or guarantee of EU AI Act, UK, EU, or US compliance.
           Public certificate pages must avoid exposing private user data, consent payloads, or customer PII.
         </p>
       </div>

@@ -6,6 +6,7 @@ import {
   ArrowRight,
   BadgeCheck,
   BarChart3,
+  Bot,
   BookOpen,
   Briefcase,
   Building2,
@@ -66,29 +67,29 @@ const navLinks: NavLink[] = [
     name: "Products",
     href: "/products",
     spotlight: {
-      title: "Compliance cockpit",
-      description: "Scan risk, publish policies, collect consent, and generate proof packs from one workspace.",
-      href: "/products",
-      metric: "4 workflows",
-      label: "Policies, consent, monitoring, proof",
+      title: "EU AI Act cockpit",
+      description: "Inventory AI systems, assess readiness, publish notices, and back every claim with privacy proof.",
+      href: "/ai-act",
+      metric: "AI-first",
+      label: "Inventory, notices, oversight, proof",
     },
     items: [
       {
-        category: "Policy automation",
+        category: "AI readiness",
         links: [
+          { name: "EU AI Act Readiness", href: "/ai-act", description: "Inventory AI systems, flag gaps, and prepare evidence for counsel review.", icon: Bot, tag: "Core" },
+          { name: "AI Assistant", href: "/products/ai-assistant", description: "Ask AI governance and product compliance questions and turn answers into tasks.", icon: Sparkles, tag: "AI" },
           { name: "Privacy Policy", href: "/products/privacy-policy", description: "Generate and version GDPR, CCPA, and UK privacy notices.", icon: FileText },
           { name: "Terms & Conditions", href: "/products/terms-conditions", description: "Launch defensible terms with plain-language coverage.", icon: FileCheck2 },
-          { name: "Cookie Policy", href: "/products/cookie-policy", description: "Keep cookie disclosures aligned with scans and consent.", icon: Cookie },
-          { name: "AI Assistant", href: "/products/ai-assistant", description: "Ask product compliance questions and turn answers into tasks.", icon: Sparkles, tag: "AI" },
         ],
       },
       {
-        category: "Consent & proof",
+        category: "Privacy support stack",
         links: [
           { name: "Cookie Consent", href: "/products/cookie-consent", description: "Deploy branded consent banners with auditable logs.", icon: ShieldCheck },
           { name: "Cookie Scanner", href: "/products/cookie-scanner", description: "Detect trackers, categories, and drift before release.", icon: ScanLine },
+          { name: "Cookie Policy", href: "/products/cookie-policy", description: "Keep cookie disclosures aligned with scans and consent.", icon: Cookie },
           { name: "Competitor Audit", href: "/products/competitor-audit", description: "Benchmark trust posture against companies buyers know.", icon: Radar },
-          { name: "Privacy Center", href: "/privacy-center", description: "Give customers a clear place to inspect policies and choices.", icon: LockKeyhole },
         ],
       },
     ],
@@ -98,7 +99,7 @@ const navLinks: NavLink[] = [
     href: "/solutions",
     spotlight: {
       title: "Built by team motion",
-      description: "Founder speed, agency scale, and enterprise governance without splitting the compliance stack.",
+      description: "Founder speed, agency scale, and AI governance without splitting the compliance stack.",
       href: "/solutions",
       metric: "3 teams",
       label: "Startup, agency, enterprise",
@@ -115,9 +116,10 @@ const navLinks: NavLink[] = [
       {
         category: "By workflow",
         links: [
-          { name: "Compliance Checker", href: "/compliance-checker", description: "Run a fast readiness scan across privacy, consent, and policies.", icon: Gauge },
+          { name: "AI Act Workspace", href: "/ai-act", description: "Track AI systems, transparency, oversight, and evidence from one dashboard.", icon: Bot, tag: "Core" },
+          { name: "Compliance Checker", href: "/compliance-checker", description: "Run a fast support scan across privacy, consent, and policies.", icon: Gauge },
           { name: "Magic Scanner", href: "/magic-scanner", description: "Turn website findings into prioritized fixes your team can ship.", icon: ScanLine },
-          { name: "Monitoring", href: "/monitoring", description: "Track privacy drift, tracker changes, and proof status over time.", icon: BarChart3 },
+          { name: "Monitoring", href: "/monitoring", description: "Track AI readiness, privacy drift, tracker changes, and proof status over time.", icon: BarChart3 },
         ],
       },
     ],
@@ -157,10 +159,10 @@ const navLinks: NavLink[] = [
     href: "/about",
     spotlight: {
       title: "Founder-led trust platform",
-      description: "Zenvyra is built for teams that want compliance to become a product capability.",
+      description: "Zenvyra is built for teams that want AI governance and compliance to become a product capability.",
       href: "/about",
       metric: "AI-first",
-      label: "Privacy automation platform",
+      label: "AI readiness platform",
     },
     items: [
       {
@@ -359,7 +361,7 @@ export default function Navigation() {
             Sign In
           </Link>
           <Button asChild className="rounded-xl bg-orange-500 px-5 font-bold hover:bg-orange-600">
-            <Link href="/auth/signup">Start Free Scan</Link>
+            <Link href="/auth/signup">Start AI Readiness</Link>
           </Button>
         </div>
 
@@ -429,7 +431,7 @@ export default function Navigation() {
                 Sign In
               </Link>
               <Button asChild className="rounded-xl bg-orange-500 font-bold hover:bg-orange-600">
-                <Link href="/auth/signup" onClick={closeMenus}>Start Free Scan</Link>
+                <Link href="/auth/signup" onClick={closeMenus}>Start AI Readiness</Link>
               </Button>
             </div>
           </div>

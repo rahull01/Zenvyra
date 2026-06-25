@@ -103,7 +103,7 @@ export const competitorComparisons = {
       },
       {
         capability: "Cost profile",
-        Zenvyra: "Transparent plans from $29 to $199 for common growth and agency needs.",
+        Zenvyra: "Transparent plans from $19 to $119 for common starter, pro, and agency needs.",
         competitor: "Custom enterprise pricing can be a poor fit for smaller high-growth teams.",
       },
     ],

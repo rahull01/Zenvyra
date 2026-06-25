@@ -2,34 +2,34 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BadgeCheck, FileClock, Globe2, ShieldCheck } from 'lucide-react';
+import { BadgeCheck, Bot, FileClock, Globe2 } from 'lucide-react';
 
 const stats = [
   {
-    icon: ShieldCheck,
-    value: 'UK + EU',
-    label: 'GDPR, PECR, cookie consent, DSAR, and policy evidence workflows.',
+    icon: Bot,
+    value: 'EU AI Act',
+    label: 'AI inventory, risk indicators, transparency notices, oversight gaps, and evidence review.',
   },
   {
     icon: Globe2,
-    value: 'US privacy',
-    label: 'CPRA-style disclosures, request intake, opt-out checks, and state privacy review notes.',
+    value: 'Privacy stack',
+    label: 'GDPR, PECR, CPRA-style disclosures, request intake, opt-out checks, and policy review notes.',
   },
   {
     icon: FileClock,
     value: '24/7',
-    label: 'Scheduled scans, change alerts, policy version history, and remediation tracking.',
+    label: 'Scheduled scans, change alerts, AI readiness notes, policy version history, and remediation tracking.',
   },
   {
     icon: BadgeCheck,
-    value: 'Proof pack',
-    label: 'Public certificate, consent audit trail, policy health, and buyer-ready evidence.',
+    value: 'AI proof pack',
+    label: 'Public certificate, AI readiness summary, consent audit trail, policy health, and buyer-ready evidence.',
   },
 ];
 
 const trustPoints = [
-  'Built for agencies, SaaS teams, ecommerce brands, and launch teams.',
-  'Designed to explain what was checked, what changed, and what still needs review.',
+  'Built for AI-enabled SaaS teams, agencies, ecommerce brands, and launch teams.',
+  'Designed to explain which AI systems were checked, what changed, and what still needs review.',
   'Clear legal disclaimer: operational evidence and workflows, not law-firm advice.',
 ];
 
@@ -39,14 +39,14 @@ const StatsBar = () => {
       <div className="mx-auto max-w-[1200px] px-6 lg:px-12">
         <div className="mb-10 text-center">
           <p className="text-eyebrow font-semibold uppercase tracking-[0.25em] text-primary">
-            Compliance information users can trust
+            AI governance information users can trust
           </p>
           <h2 className="mx-auto mt-3 max-w-4xl text-h2 font-extrabold text-text-primary">
-            Everything a visitor needs before trusting your product
+            EU AI Act readiness backed by the privacy evidence buyers ask for
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-body-lg text-text-secondary">
-            Show coverage, explain workflows, surface proof, and make every next step obvious from
-            the first scroll.
+            Lead with AI system readiness, then connect the supporting consent, privacy, policy,
+            monitoring, and proof workflows in one place.
           </p>
         </div>
 

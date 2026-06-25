@@ -12,6 +12,7 @@ interface ScoreBreakdown {
 
 interface DashboardStats {
     complianceScore: number;
+    aiSystemsCount?: number;
     totalWebsites: number;
     activeAlerts: number;
     pendingDSARs: number;

@@ -6,9 +6,9 @@ import {
   BadgeCheck,
   Bot,
   Braces,
+  BrainCircuit,
   Cookie,
   FileText,
-  Globe2,
   LifeBuoy,
   RefreshCw,
   Search,
@@ -19,16 +19,16 @@ import {
 
 const coverage = [
   {
-    icon: ShieldCheck,
-    title: 'EU and UK coverage',
+    icon: BrainCircuit,
+    title: 'EU AI Act readiness',
     description:
-      'Map GDPR, UK GDPR, PECR, consent, privacy notices, and DSAR readiness into practical tasks.',
+      'Inventory AI systems, classify readiness signals, draft transparency notices, and prepare evidence for counsel review.',
   },
   {
-    icon: Globe2,
-    title: 'US state privacy checks',
+    icon: ShieldCheck,
+    title: 'Privacy evidence layer',
     description:
-      'Track CPRA-style disclosures, opt-out language, request forms, sale/share signals, and policy gaps.',
+      'Map GDPR, UK GDPR, PECR, consent, privacy notices, DSAR, and CPRA-style requirements into practical tasks.',
   },
   {
     icon: Cookie,
@@ -40,16 +40,16 @@ const coverage = [
 
 const features = [
   {
-    icon: FileText,
-    title: 'Policy generators',
+    icon: Bot,
+    title: 'AI system inventory',
     description:
-      'Create privacy, cookie, terms, refund, shipping, EULA, disclaimer, and acceptable-use policies from real business inputs.',
+      'Track system name, provider, use case, EU user exposure, automated decisions, human oversight, and retained logs.',
   },
   {
-    icon: Cookie,
-    title: 'Consent management',
+    icon: FileText,
+    title: 'AI notices and policies',
     description:
-      'Deploy banners, preference centers, consent logs, versioned notices, and region-aware cookie controls.',
+      'Create AI usage disclosures, privacy notices, cookie policies, terms, disclaimers, and review-ready clauses from real inputs.',
   },
   {
     icon: Search,
@@ -76,10 +76,10 @@ const features = [
       'Share a clean verification page with customers, agencies, procurement teams, or internal reviewers.',
   },
   {
-    icon: Bot,
-    title: 'AI compliance assistant',
+    icon: Cookie,
+    title: 'Consent management',
     description:
-      'Ask what changed, why it matters, what to fix first, and what proof should be sent to a client.',
+      'Deploy banners, preference centers, consent logs, versioned notices, and region-aware cookie controls.',
   },
   {
     icon: Braces,
@@ -118,14 +118,14 @@ const Features = () => {
           className="mx-auto mb-14 max-w-3xl text-center"
         >
           <p className="text-eyebrow font-bold uppercase tracking-[0.15em] text-primary">
-            Complete compliance stack
+            EU AI Act first, support stack included
           </p>
           <h2 className="mt-4 text-h2 font-extrabold text-text-primary">
-            Everything you need out of the box
+            The core AI readiness workflow, plus everything needed to prove it
           </h2>
           <p className="mt-4 text-body-lg text-text-secondary">
-            Visitors should not have to guess what the product does. This page now shows coverage,
-            workflows, proof, implementation help, and limitations in one place.
+            Zenvyra starts with AI system readiness, then connects the privacy, consent, policy,
+            scanner, proof, implementation, and support features that make the readiness story credible.
           </p>
         </motion.div>
 

@@ -24,11 +24,11 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
+  { name: "AI Systems", icon: Bot, href: "/dashboard/ai-act", badge: "Core" },
   { name: "Scanner", icon: ScanLine, href: "/dashboard/scanner" },
   { name: "Websites", icon: Globe, href: "/dashboard/websites" },
   { name: "Policies", icon: FileText, href: "/dashboard/policies" },
   { name: "Consent", icon: Cookie, href: "/dashboard/consent" },
-  { name: "AI Act", icon: Bot, href: "/dashboard/ai-act" },
   { name: "Analytics", icon: BarChart3, href: "/dashboard/analytics" },
   { name: "Agency Hub", icon: Building2, href: "/dashboard/agency" },
 ];
@@ -72,7 +72,7 @@ export const Sidebar = () => {
     return { used, total, percent };
   }, [usage]);
 
-  const renderItem = (item: (typeof navItems)[number]) => {
+  const renderItem = (item: (typeof navItems)[number] & { badge?: string }) => {
     const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`));
     return (
       <Link
@@ -85,7 +85,8 @@ export const Sidebar = () => {
         aria-current={isActive ? "page" : undefined}
       >
         <item.icon className={cn("h-5 w-5", isActive ? "text-accent" : "text-text-tertiary group-hover:text-text-secondary")} />
-        {item.name}
+        <span className="flex-1">{item.name}</span>
+        {item.badge && <span className="ml-auto rounded-full bg-accent/10 px-2 py-0.5 text-xs font-bold text-accent">{item.badge}</span>}
         {isActive && <div className="ml-auto h-4 w-1 rounded-full bg-accent" />}
       </Link>
     );

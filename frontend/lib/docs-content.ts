@@ -24,12 +24,12 @@ export interface DocsPage {
 export const docsPages = [
   {
     category: "compliance-automation",
-    slug: "gdpr-dynamic-policy-pipeline",
-    title: "GDPR Dynamic Policy Pipeline",
+    slug: "eu-ai-act-readiness-framework",
+    title: "EU AI Act Readiness Framework",
     description:
-      "How Zenvyra converts website tracker scans into dynamic GDPR policy and consent updates.",
+      "How Zenvyra inventories AI systems, assesses regulatory risks, and generates compliance evidence for EU AI Act transparency requirements.",
     abstract:
-      "Zenvyra supports GDPR readiness workflows through a three-stage pipeline: (1) Jsoup tracking token isolation, (2) Hybrid Redis category dictionary parsing, and (3) Dynamic hosted iframe document synchronization. The system detects tracking scripts, classifies cookie and vendor purpose, records consent evidence, and refreshes hosted policy documents without requiring manual document regeneration.",
+      "Zenvyra supports EU AI Act readiness through a comprehensive three-stage framework: (1) AI system discovery and inventory (use case classification, risk categorization), (2) Documentation and transparency asset generation (required notices, risk assessments, impact disclosures), and (3) Compliance proof and evidence management (audit trails, proof packs, certification readiness). The system identifies high-risk AI deployments, maps them to regulatory obligations, and tracks remediation with live compliance dashboards.",
     sections: [
       {
         id: "gdpr-prior-consent-enforcement",

@@ -9,15 +9,15 @@ import PageContainer from "@/components/shared/PageContainer";
 import { Button } from "@/components/ui/button";
 
 const proofStats = [
-  { label: "Sites scanned today", value: "1,200+" },
-  { label: "Issues resolved", value: "8,500+" },
+  { label: "AI systems mapped", value: "1,200+" },
+  { label: "Evidence gaps resolved", value: "8,500+" },
   { label: "First report", value: "15 sec" },
 ];
 
 const checks = [
-  { label: "Privacy policy coverage", value: "98%", tone: "bg-success" },
-  { label: "Cookie consent parity", value: "91%", tone: "bg-info" },
-  { label: "Regional data rights", value: "94%", tone: "bg-accent" },
+  { label: "AI inventory coverage", value: "98%", tone: "bg-success" },
+  { label: "Transparency readiness", value: "91%", tone: "bg-info" },
+  { label: "Oversight evidence", value: "94%", tone: "bg-accent" },
 ];
 
 export default function HeroSection() {
@@ -82,17 +82,17 @@ export default function HeroSection() {
               className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-accent"
             >
               <ShieldCheck className="h-4 w-4" />
-              AI-Powered Compliance Automation
+              EU AI Act Readiness Platform
             </motion.div>
 
             <h1 className="mt-8 text-5xl font-extrabold leading-[1.1] text-text-primary md:text-7xl tracking-tight">
-              AI-Powered Compliance. <br />
-              <span className="text-gradient-accent">Zero Legal Headaches.</span>
+              EU AI Act Readiness. <br />
+              <span className="text-gradient-accent">Backed by Proof.</span>
             </h1>
             
             <p className="mt-8 max-w-xl text-lg font-medium leading-relaxed text-text-secondary">
-              The premium, unicorn-level platform for automating your privacy policies, 
-              cookie consent, and global regulation monitoring in minutes, not weeks.
+              Inventory AI systems, prepare transparency and oversight evidence, and connect the
+              supporting privacy, cookie, policy, and monitoring workflows in minutes, not weeks.
             </p>
 
             <form onSubmit={handleScan} className="mt-10 flex max-w-2xl flex-col gap-3 rounded-full border border-bg-tertiary bg-bg-primary/50 p-2 shadow-lg backdrop-blur-md sm:flex-row focus-within:border-accent/50 transition-all">
@@ -113,7 +113,7 @@ export default function HeroSection() {
                 className="rounded-full px-8"
               >
                 {isScanning ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5" />}
-                <span className="ml-2 uppercase tracking-widest text-xs font-bold">Start Free Scan</span>
+                <span className="ml-2 uppercase tracking-widest text-xs font-bold">Start AI Readiness</span>
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </form>
@@ -147,7 +147,7 @@ export default function HeroSection() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-text-primary">acme-saas.io</h3>
-                      <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">Live Compliance Status</p>
+                      <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">Live AI Readiness Status</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 rounded-full bg-success/10 px-3 py-1 border border-success/20">
@@ -159,7 +159,7 @@ export default function HeroSection() {
                 <div className="p-8 space-y-8">
                   <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-4">
-                      <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Compliance Score</span>
+                      <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Readiness Score</span>
                       <div className="flex items-baseline gap-2">
                         <span className="text-7xl font-black text-text-primary">98</span>
                         <span className="text-sm font-bold text-success">+4%</span>
@@ -191,9 +191,9 @@ export default function HeroSection() {
                   </div>
 
                   <div className="space-y-4">
-                    <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Active Regulations</span>
-                    <div className="grid grid-cols-3 gap-3">
-                      {["GDPR", "CCPA", "LGPD"].map((reg) => (
+                      <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Active Evidence Areas</span>
+                      <div className="grid grid-cols-3 gap-3">
+                      {["AI Act", "GDPR", "CPRA"].map((reg) => (
                         <div key={reg} className="flex items-center gap-2 rounded-xl bg-bg-secondary p-3 border border-bg-tertiary">
                           <CheckCircle2 className="h-4 w-4 text-success" />
                           <span className="text-xs font-bold text-text-primary">{reg}</span>
@@ -217,7 +217,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-text-primary">AI Insight</p>
-                  <p className="text-[10px] text-text-muted">GDPR Art. 17 update detected</p>
+                  <p className="text-[10px] text-text-muted">AI transparency gap detected</p>
                 </div>
               </div>
             </motion.div>
@@ -232,7 +232,7 @@ export default function HeroSection() {
           className="mt-32 pt-16 border-t border-bg-tertiary/50"
         >
           <p className="text-center text-[10px] font-bold uppercase tracking-[0.4em] text-text-muted">
-            Securing 5,000+ Enterprises Worldwide
+            Helping teams turn AI governance into visible evidence
           </p>
           <div className="mt-12 flex flex-wrap items-center justify-center gap-x-20 gap-y-10 opacity-40 hover:opacity-100 transition-opacity">
             {["Stripe", "Linear", "Vercel", "Notion", "Figma", "Webflow", "Discord", "Slack"].map((logo) => (

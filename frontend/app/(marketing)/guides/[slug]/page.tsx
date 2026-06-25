@@ -22,42 +22,42 @@ const guideDetails: Record<string, {
   checklist: { id: string; label: string; details: string }[];
   content: { id: string; sectionTitle: string; paragraphs: string[] }[];
 }> = {
-  "gdpr-compliance-blueprint": {
-    title: "GDPR Compliance Blueprint",
-    category: "Regulation",
-    time: "25 min read",
-    lastUpdated: "May 2026",
+  "eu-ai-act-readiness-blueprint": {
+    title: "EU AI Act Readiness Blueprint",
+    category: "AI Regulation",
+    time: "28 min read",
+    lastUpdated: "Jun 2026",
     icon: Globe,
-    overview: "This blueprint guides you through the full operational and technical measures required to achieve GDPR compliance as a SaaS business.",
+    overview: "This blueprint guides you through AI system inventory, risk categorization, transparency documentation, and compliance proof management required for EU AI Act readiness.",
     checklist: [
-      { id: "gdpr-1", label: "Perform a comprehensive Data Mapping exercise", details: "Identify all personal data collected, stored, and processed by your systems." },
-      { id: "gdpr-2", label: "Update privacy policy with explicit lawful bases", details: "Detail clear reasons for processing (consent, contract, legitimate interest)." },
-      { id: "gdpr-3", label: "Implement cookie consent with granular choices", details: "Require clear opt-in consent before firing non-essential tracking scripts." },
-      { id: "gdpr-4", label: "Draft a Standard Data Processing Agreement (DPA)", details: "Ensure all sub-processors are legally bound to protect personal data." },
-      { id: "gdpr-5", label: "Establish a Data Breach Response protocol", details: "Must be capable of reporting to regulators within 72 hours of discovery." }
+      { id: "ai-act-1", label: "Inventory all AI systems and use cases", details: "Catalog AI-powered features, models, data sources, and user categories affected." },
+      { id: "ai-act-2", label: "Classify AI risk levels per EU AI Act categories", details: "Determine if systems are prohibited, high-risk, or general-purpose per regulatory definitions." },
+      { id: "ai-act-3", label: "Document required transparency notices and risk assessments", details: "Prepare user notices, bias disclosures, and documented compliance procedures." },
+      { id: "ai-act-4", label: "Establish AI system monitoring and logging", details: "Implement live dashboards to track AI behavior, failures, and compliance drift." },
+      { id: "ai-act-5", label: "Build compliance proof pack and evidence trail", details: "Maintain audit-ready documentation of all compliance measures and decisions." }
     ],
     content: [
       {
         id: "overview",
         sectionTitle: "1. Executive Overview & Scope",
         paragraphs: [
-          "The General Data Protection Regulation (GDPR) is the toughest privacy and security law in the world. Though it was drafted and passed by the European Union (EU), it imposes obligations onto organizations anywhere, so long as they target or collect data related to people in the EU.",
-          "As an enterprise SaaS platform, compliance is not just about avoiding severe fines (up to 4% of global annual turnover), but it is a critical competitive advantage that unlocks enterprise sales pipelines."
+          "The EU AI Act is the world's first comprehensive AI regulation. It creates a risk-based framework requiring transparency, documentation, and governance for AI systems used in or affecting EU residents—regardless of where the company is based.",
+          "For AI-enabled businesses, compliance is not just about avoiding fines (up to €30M or 6% of revenue); it's a competitive advantage that unlocks enterprise trust, certifications, and market differentiation."
         ]
       },
       {
         id: "principles",
-        sectionTitle: "2. The Seven Core Principles",
+        sectionTitle: "2. EU AI Act Risk-Based Framework",
         paragraphs: [
-          "GDPR compliance is built upon seven foundational concepts: Lawfulness, fairness and transparency; Purpose limitation; Data minimization; Accuracy; Storage limitation; Integrity and confidentiality (security); and Accountability.",
-          "You must demonstrate that you actively think about privacy at every stage of product design (Privacy by Design) rather than treating it as an afterthought."
+          "The EU AI Act defines four risk tiers: prohibited (e.g., social credit, subliminal manipulation), high-risk (e.g., recruitment, credit decisions, content moderation), limited-risk (transparency requirements), and general-purpose AI. Compliance is built on three foundations: system inventory, risk classification, and documented governance.",
+          "You must demonstrate that you actively assess AI risks, document required notices, maintain compliance evidence, and monitor AI behavior in production—not just at deployment."
         ]
       },
       {
         id: "implementation",
-        sectionTitle: "3. Operational Technical Controls",
+        sectionTitle: "3. AI System Inventory & Risk Mapping",
         paragraphs: [
-          "Technically, you must encrypt personal data at rest and in transit, configure secure access controls, and provide users with a clean interface to exercise their data rights (access, erasure, portability).",
+          "Start by cataloging every AI system: models, data sources, user categories, and regulatory obligations. Then classify each system against EU AI Act categories (prohibited, high-risk, limited-risk, general). For high-risk systems, document impact assessments, bias audits, and live monitoring dashboards.",
           "Ensure your infrastructure maintains immutable audit logs documenting all access, modifications, and system security events."
         ]
       }

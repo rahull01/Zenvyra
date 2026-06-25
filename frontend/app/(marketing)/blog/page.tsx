@@ -4,22 +4,22 @@ import { ArrowRight } from "lucide-react";
 
 const posts = [
   {
-    slug: "gdpr-checklist-2026",
-    title: "GDPR Compliance Checklist for 2026",
-    date: "May 15, 2026",
-    summary: "Essential steps every SaaS team should complete before your next audit.",
+    slug: "eu-ai-act-readiness-2026",
+    title: "EU AI Act Readiness: 2026 Implementation Checklist",
+    date: "Jun 10, 2026",
+    summary: "Essential steps every AI-enabled business should complete before regulatory enforcement begins.",
   },
   {
-    slug: "cookie-consent-best-practices",
-    title: "Cookie Consent Best Practices",
-    date: "May 8, 2026",
-    summary: "How to design banners that convert while staying compliant globally.",
+    slug: "ai-risk-classification-guide",
+    title: "AI Risk Classification Under EU AI Act",
+    date: "Jun 1, 2026",
+    summary: "Understanding prohibited, high-risk, limited-risk, and general-purpose AI categories.",
   },
   {
-    slug: "ccpa-vs-gdpr",
-    title: "CCPA vs GDPR: Key Differences",
-    date: "Apr 28, 2026",
-    summary: "A practical comparison for teams operating in the US and EU.",
+    slug: "high-risk-ai-transparency",
+    title: "High-Risk AI Systems: Transparency & Documentation Requirements",
+    date: "May 20, 2026",
+    summary: "How to meet EU AI Act documentation, notices, and proof pack requirements for high-risk deployments.",
   },
 ];
 

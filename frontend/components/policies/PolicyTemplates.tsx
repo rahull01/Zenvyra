@@ -6,19 +6,19 @@ import { useState } from "react";
 
 const templates = [
     {
-        id: "gdpr-basic",
-        name: "GDPR Basic",
+        id: "ai-act-basic",
+        name: "AI Act Transparency Notice",
         icon: Shield,
-        description: "Essential GDPR compliance for small businesses",
-        coverage: ["Data Collection", "User Rights", "Cookies", "Data Retention"],
+        description: "Essential EU AI Act transparency requirements for AI-enabled businesses",
+        coverage: ["AI System Disclosure", "Risk Classification", "User Notices", "Data Processing"],
         popular: true,
     },
     {
-        id: "gdpr-advanced",
-        name: "GDPR Advanced",
+        id: "ai-act-advanced",
+        name: "AI Act High-Risk Compliance",
         icon: Shield,
-        description: "Comprehensive GDPR with DPO requirements",
-        coverage: ["Data Collection", "User Rights", "Cookies", "Data Retention", "DPO", "Data Transfers", "Breach Notification"],
+        description: "Comprehensive AI Act documentation for high-risk AI systems",
+        coverage: ["Risk Assessment", "Bias Audit", "User Notices", "Monitoring Plan", "Provider Documentation", "Proof Pack", "Compliance Logs"],
         popular: false,
     },
     {
