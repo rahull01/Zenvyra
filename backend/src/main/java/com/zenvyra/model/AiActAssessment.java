@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -22,11 +23,16 @@ public class AiActAssessment {
     private String systemId;
     private String riskCategory;
     private Double confidence;
+    private Integer readinessScore;
+    private Map<String, Boolean> readinessBreakdown;
+    private List<String> riskSignals;
     private List<String> requiredTransparencyNotices;
     private List<String> humanOversightGaps;
     private List<String> documentationGaps;
     private List<String> dataHandlingGaps;
     private List<String> userDisclosureGaps;
+    private List<String> monitoringGaps;
+    private List<String> evidenceItems;
     private List<String> nextActions;
     private String counselReviewWarning;
     private LocalDateTime assessedAt;
