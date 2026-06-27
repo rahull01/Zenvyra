@@ -104,4 +104,100 @@ class AiActReadinessServiceTest {
 
         assertThrows(ApiException.class, () -> service.system(userDetails, "system-2"));
     }
+
+    @Test
+    void prohibitedUseIndicatorTakesPriority() {
+        AiSystemInventory system = baseSystem("system-prohibited")
+                .prohibitedUse(true)
+                .healthcareUse(true)
+                .build();
+
+        AiActAssessment assessment = assess(system);
+
+        assertEquals("prohibited risk indicator", assessment.getRiskCategory());
+        assertTrue(assessment.getRiskSignals().contains("Prohibited-use indicator requires immediate legal review"));
+    }
+
+    @Test
+    void highRiskDomainDoesNotRequireAutomatedDecisionMaking() {
+        AiSystemInventory system = baseSystem("system-hiring")
+                .hiringUse(true)
+                .automatedDecisionMaking(false)
+                .userFacingAiInteraction(false)
+                .build();
+
+        AiActAssessment assessment = assess(system);
+
+        assertEquals("high-risk indicator", assessment.getRiskCategory());
+        assertTrue(assessment.getRiskSignals().contains("High-risk domain: Hiring or employment use"));
+    }
+
+    @Test
+    void userFacingAiWithoutHighRiskSignalsRequiresTransparencyOnly() {
+        AiSystemInventory system = baseSystem("system-chatbot")
+                .userFacingAiInteraction(true)
+                .automatedDecisionMaking(false)
+                .build();
+
+        AiActAssessment assessment = assess(system);
+
+        assertEquals("limited-risk transparency", assessment.getRiskCategory());
+        assertTrue(assessment.getRequiredTransparencyNotices().contains("User-facing AI interaction notice"));
+        assertTrue(assessment.getRiskSignals().contains("Transparency obligation indicator: users interact with AI output"));
+    }
+
+    @Test
+    void internalReadySystemIsMinimalRiskWithFullReadinessScore() {
+        AiSystemInventory system = baseSystem("system-internal")
+                .userFacingAiInteraction(false)
+                .automatedDecisionMaking(false)
+                .technicalDocumentationReady(true)
+                .logsEvidenceRetained(true)
+                .monitoringEnabled(true)
+                .dataCategoriesSentToAi(List.of("operational metrics"))
+                .build();
+
+        AiActAssessment assessment = assess(system);
+
+        assertEquals("minimal risk", assessment.getRiskCategory());
+        assertEquals(100, assessment.getReadinessScore());
+        assertTrue(assessment.getRequiredTransparencyNotices().isEmpty());
+    }
+
+    @Test
+    void thirdPartyProviderAddsDocumentationGap() {
+        AiSystemInventory system = baseSystem("system-provider")
+                .provider("OpenAI")
+                .modelProviderType("third-party provider")
+                .technicalDocumentationReady(false)
+                .build();
+
+        AiActAssessment assessment = assess(system);
+
+        assertTrue(assessment.getRiskSignals().contains("Provider documentation needed for third-party or general-purpose AI dependency"));
+        assertTrue(assessment.getDocumentationGaps().contains("Collect provider documentation for third-party or general-purpose AI dependency"));
+    }
+
+    private AiSystemInventory.AiSystemInventoryBuilder baseSystem(String id) {
+        return AiSystemInventory.builder()
+                .id(id)
+                .userId("user-1")
+                .systemName("AI System " + id)
+                .useCase("Support workflow")
+                .euUsersAffected(true)
+                .humanOversight(true)
+                .transparencyNoticePublished(false)
+                .technicalDocumentationReady(false)
+                .logsEvidenceRetained(false)
+                .monitoringEnabled(false)
+                .dataCategoriesSentToAi(List.of("support context"));
+    }
+
+    private AiActAssessment assess(AiSystemInventory system) {
+        User user = User.builder().id("user-1").email("owner@example.com").build();
+        when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
+        when(systemRepository.findById(system.getId())).thenReturn(Optional.of(system));
+        when(assessmentRepository.save(any(AiActAssessment.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        return service.assess(userDetails, system.getId());
+    }
 }

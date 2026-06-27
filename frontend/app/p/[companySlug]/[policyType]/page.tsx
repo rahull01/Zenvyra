@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 import { publicBackendBaseUrl } from "@/lib/publicApi";
 
 export const dynamic = "force-dynamic";
@@ -16,13 +17,19 @@ type PublicPolicy = {
 };
 
 async function getPolicy(companySlug: string, policyType: string): Promise<PublicPolicy | null> {
-  const response = await fetch(
-    `${publicBackendBaseUrl()}/policies/public/${encodeURIComponent(companySlug)}/${encodeURIComponent(policyType)}`,
-    {
-      cache: "no-store",
-      headers: { Accept: "application/json" },
-    }
-  );
+  let response: Response;
+  try {
+    response = await fetchWithTimeout(
+      `${publicBackendBaseUrl()}/policies/public/${encodeURIComponent(companySlug)}/${encodeURIComponent(policyType)}`,
+      {
+        cache: "no-store",
+        headers: { Accept: "application/json" },
+      },
+      3000
+    );
+  } catch {
+    return null;
+  }
 
   if (response.status === 404) {
     return null;

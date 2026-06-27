@@ -1,12 +1,32 @@
 # Zenvyra Pricing Strategy
 
 ## Overview
-Zenvyra targets businesses that need automated compliance monitoring. Our pricing balances accessibility with enterprise value.
+Zenvyra targets AI-enabled businesses that need **EU AI Act readiness infrastructure**: AI system inventory, risk classification, compliance documentation, and proof management—with supporting privacy, cookie, and consent tools.
+
+## Market Positioning
+
+### Primary Value Driver
+**EU AI Act Readiness** (main story)
+- AI system inventory and scanning
+- Automated risk classification (high-risk, limited-risk, general-purpose)
+- Transparency notice generation
+- Compliance proof packs
+- Audit-ready documentation
+
+### Supporting Features
+- Website privacy scanning
+- Cookie/banner compliance
+- Consent logging
+- Policy generation
+- DSAR workflows
+
+**Pricing Philosophy**: Build recurring value around live AI readiness, not one-time reports that go stale after the next model deployment.
 
 ## Target Market
-- **SMBs (Small-Medium Businesses)**: 50-500 employees, need basic compliance
-- **Enterprises**: 500+ employees, need advanced features and integrations
-- **Agencies**: Manage compliance for multiple clients
+- **AI-Enabled SaaS & Startups**: 10-100 employees, deploying AI/LLMs
+- **Growth-Stage Companies**: 100-500 employees, production ML/AI
+- **Enterprises**: 500+ employees, AI governance requirements
+- **Compliance Agencies**: Scaling AI readiness services for clients
 
 ## Pricing Tiers
 

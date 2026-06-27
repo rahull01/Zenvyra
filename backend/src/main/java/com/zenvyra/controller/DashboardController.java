@@ -1,10 +1,12 @@
 package com.zenvyra.controller;
 
 import com.zenvyra.exception.ApiException;
+import com.zenvyra.model.AiSystemInventory;
 import com.zenvyra.model.Policy;
 import com.zenvyra.model.ScanAuditLog;
 import com.zenvyra.model.User;
 import com.zenvyra.model.Website;
+import com.zenvyra.repository.AiSystemInventoryRepository;
 import com.zenvyra.repository.PolicyRepository;
 import com.zenvyra.repository.ScanAuditLogRepository;
 import com.zenvyra.repository.UserRepository;
@@ -32,12 +34,14 @@ public class DashboardController {
     private final WebsiteRepository websiteRepository;
     private final PolicyRepository policyRepository;
     private final ScanAuditLogRepository scanAuditLogRepository;
+    private final AiSystemInventoryRepository aiSystemInventoryRepository;
 
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Object>> getDashboardStats(@AuthenticationPrincipal UserDetails userDetails) {
         User user = requireUser(userDetails);
         List<Website> websites = websiteRepository.findByUserId(user.getId());
         List<Policy> policies = policyRepository.findByOrganizationId(user.getEmail());
+        List<AiSystemInventory> aiSystems = aiSystemInventoryRepository.findByUserId(user.getId());
 
         double averageScore = websites.stream()
                 .map(Website::getComplianceScore)
@@ -70,6 +74,7 @@ public class DashboardController {
         response.put("activeAlerts", activeAlerts);
         response.put("pendingDSARs", 0);
         response.put("nextScan", nextScan);
+        response.put("aiSystemsCount", aiSystems.size());
         response.put("scoreBreakdown", scoreBreakdown);
         return ResponseEntity.ok(response);
     }

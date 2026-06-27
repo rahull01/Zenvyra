@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AlertTriangle, ArrowUpRight, CheckCircle2, Clock3, ShieldCheck, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 import { publicAppBaseUrl, publicBackendBaseUrl } from "@/lib/publicApi";
 
 export const dynamic = "force-dynamic";
@@ -56,10 +57,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 async function getVerification(siteId: string): Promise<VerificationPayload | null> {
-  const response = await fetch(`${publicBackendBaseUrl()}/verify/${encodeURIComponent(siteId)}`, {
+  const response = await fetchWithTimeout(`${publicBackendBaseUrl()}/verify/${encodeURIComponent(siteId)}`, {
     cache: "no-store",
     headers: { Accept: "application/json" },
-  });
+  }, 3000);
 
   if (response.status === 404 || response.status === 400) {
     return null;

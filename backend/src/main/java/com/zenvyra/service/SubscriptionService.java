@@ -432,7 +432,7 @@ public class SubscriptionService {
         }
         return switch (plan.toLowerCase()) {
             case "pro" -> "Pro";
-            case "growth" -> "Growth";
+            case "growth" -> "Starter";
             case "agency", "enterprise" -> "Agency";
             default -> "Free";
         };

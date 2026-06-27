@@ -2,42 +2,58 @@
 
 ## Executive Summary
 
-Zenvyra is launching into a $10B+ compliance software market with a unique AI-powered approach. Our GTM strategy focuses on rapid user acquisition, product validation, and scalable growth through content marketing and targeted sales.
+Zenvyra is launching into a $10B+ compliance software market with a unique approach to **EU AI Act readiness**. Our GTM strategy focuses on positioning Zenvyra as the primary tool for AI-enabled businesses to inventory systems, assess risks, document compliance, and maintain proof packs—with privacy, cookie, and consent management as supporting infrastructure. 
 
 ## Market Analysis
 
-### Market Size & Opportunity
-- **Total Addressable Market**: $15B (global compliance software)
-- **Serviceable Addressable Market**: $2B (AI-powered compliance tools)
-- **Serviceable Obtainable Market**: $200M (SMB-focused compliance automation)
+### Market Opportunity
+- **Total Addressable Market**: $15B+ (global compliance software)
+- **New Opportunity**: $3B+ (EU AI Act compliance tools for AI-enabled businesses)
+- **Zenvyra Focus**: AI systems inventory, risk classification, and proof automation for startups, SaaS, and enterprises deploying AI
+
+### Primary Market Position: **EU AI Act Readiness**
+The EU AI Act is newer, scarier, and less understood than GDPR/privacy laws. Buyers need clarity on:
+- Which AI systems are in-scope?
+- What risk category applies?
+- What documentation is required?
+- How do I prove compliance?
+
+**Zenvyra differentiator**: Live AI readiness dashboards, automated risk classification, proof pack generation, and supporting privacy/consent infrastructure.
 
 ### Target Customer Segments
-1. **Small-Medium Businesses (SMBs)**: 50-500 employees
-   - Pain: Manual compliance is time-consuming and error-prone
-   - Budget: $29-99/month
-   - Acquisition: Content marketing, SEO
+1. **AI-Enabled SaaS & Startups**: 10-100 employees, using LLMs/ML for core features
+   - Pain: Need EU AI Act roadmap without hiring lawyers/consultants
+   - Budget: $49-149/month
+   - Acquisition: Content marketing, Product Hunt, AI communities
 
-2. **Enterprises**: 500+ employees
-   - Pain: Complex compliance requirements, multiple stakeholders
-   - Budget: $299+/month
-   - Acquisition: Direct sales, partnerships
+2. **Growth-Stage Companies**: 100-500 employees, deploying ML/AI in production
+   - Pain: Complex AI compliance, multiple use cases, vendor integrations
+   - Budget: $299-999/month
+   - Acquisition: Sales + agencies
 
-3. **Compliance Agencies**: Manage compliance for clients
-   - Pain: Scaling compliance services
-   - Budget: $99-299/month
-   - Acquisition: Agency partnerships
+3. **Enterprises**: 500+ employees with AI governance requirements
+   - Pain: Multi-team coordination, compliance proof for audits/contracts
+   - Budget: $1K+/month
+   - Acquisition: Enterprise sales, partnerships
+
+4. **Compliance Agencies**: Advise clients on AI compliance
+   - Pain: Lack AI-specific tooling; opportunity to upsell AI readiness services
+   - Budget: $299-999/month
+   - Acquisition: Channel partnerships
 
 ## Competitive Landscape
 
-### Direct Competitors
-- **OneTrust**: Enterprise-focused, expensive ($50K+ setup)
-- **Legacy policy tools**: Basic tools, limited AI features
-- **TrustArc**: Legacy platform, complex UX
+### Direct Competitors (Legacy Privacy/GDPR tools)
+- **OneTrust**: Privacy-first, expensive, not AI-focused
+- **TrustArc**: Legacy compliance, lacks AI tooling
+- **CookieBot, Termly**: Cookie/banner focused, not AI Act ready
 
-### Indirect Competitors
-- Manual compliance consultants
-- Basic website scanners (Google Lighthouse)
-- Legal document services
+### Indirect Competition & Gaps
+- **Emerging AI Compliance**: Few dedicated EU AI Act tools exist
+- **LLM Providers** (OpenAI, Anthropic): Don't provide business compliance tools
+- **Consulting**: Manual, expensive AI compliance advisory
+
+**Zenvyra Advantage**: First-mover in **AI Act + privacy proof infrastructure**. We own the integration story: inventory AI, classify risk, generate notices, prove privacy/consent underneath.
 
 ### Competitive Advantages
 - **AI-Powered Automation**: 10x faster than manual processes

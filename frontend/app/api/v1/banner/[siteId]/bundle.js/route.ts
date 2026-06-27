@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { backendApiBaseUrl } from "@/lib/env";
+import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 
 export const runtime = "edge";
 export const dynamic = "force-dynamic";
@@ -621,8 +622,8 @@ export async function GET(
 
   try {
     const [configResponse, trackersResponse] = await Promise.all([
-      fetch(`${API_BASE}/api/v1/banners/public/${encodeURIComponent(siteId)}/config`),
-      fetch(`${API_BASE}/api/v1/banners/public/${encodeURIComponent(siteId)}/trackers`),
+      fetchWithTimeout(`${API_BASE}/api/v1/banners/public/${encodeURIComponent(siteId)}/config`, {}, 3000),
+      fetchWithTimeout(`${API_BASE}/api/v1/banners/public/${encodeURIComponent(siteId)}/trackers`, {}, 3000),
     ]);
     if (configResponse.ok) config = await configResponse.json();
     if (trackersResponse.ok) trackers = await trackersResponse.json();

@@ -1,21 +1,21 @@
 # Zenvyra
 
-AI-Powered Compliance Automation SaaS Platform
+EU AI Act Readiness and Compliance Evidence Platform
 
 ## Overview
 
-Zenvyra is a comprehensive SaaS platform that helps businesses automate compliance monitoring, generate legal documents, and ensure regulatory adherence using advanced AI technology.
+Zenvyra helps AI-enabled businesses inventory AI systems, prepare EU AI Act readiness evidence, and maintain the supporting privacy, cookie, policy, consent, DSAR, and proof workflows customers expect before they trust a product.
 
 ### Key Features
 
-- **Website Compliance Scanning**: Automated scanning of websites for GDPR, CCPA, and other compliance requirements
-- **AI-Powered Policy Generation**: Generate privacy policies, terms of service, and other legal documents
-- **Competitor Analysis**: Analyze competitor compliance practices
-- **Real-time Monitoring**: Continuous monitoring with alerts for compliance changes
-- **Multi-language Support**: Generate documents in multiple languages
-- **Team Collaboration**: Multi-user support with role-based access
+- **EU AI Act Readiness**: Inventory AI systems, flag high-risk indicators, draft transparency notices, and collect evidence for counsel review
+- **AI System Evidence Packs**: Track providers, use cases, EU user exposure, human oversight, logging, and documentation gaps
+- **Website Privacy Scanning**: Scan websites for privacy, cookie, tracker, consent, and disclosure gaps that support AI trust workflows
+- **Policy and Notice Generation**: Generate privacy policies, cookie notices, terms, disclaimers, AI disclosures, and operational review drafts
+- **Proof Packs and Certificates**: Package scan history, policy versions, consent evidence, AI readiness notes, and remediation status
+- **Agency and Team Workflows**: Manage multiple client sites, handoff packets, activity logs, white-label reports, and role-based access
 - **Payment Integration**: Subscription management with Dodo Payments
-- **Dashboard Analytics**: Comprehensive compliance scoring and reporting
+- **Dashboard Analytics**: Readiness scoring, monitoring, alerts, and reporting for AI governance and privacy operations
 
 ## Tech Stack
 
@@ -123,7 +123,29 @@ POST /api/auth/login
 }
 ```
 
-### Compliance Scanning
+### EU AI Act Readiness
+```bash
+# List AI systems
+GET /api/ai-act/systems
+
+# Add AI system inventory item
+POST /api/ai-act/systems
+{
+  "systemName": "Customer support assistant",
+  "provider": "OpenAI",
+  "useCase": "Answer support questions using help center context",
+  "euUsersAffected": true,
+  "userFacingAiInteraction": true,
+  "automatedDecisionMaking": false,
+  "humanOversight": true,
+  "logsEvidenceRetained": true
+}
+
+# Generate readiness assessment
+POST /api/ai-act/systems/{systemId}/assess
+```
+
+### Supporting Website Scanning
 ```bash
 # Free scan
 GET /api/scan/free?url=https://example.com
@@ -136,7 +158,7 @@ POST /api/scan/full
 }
 ```
 
-### Policy Generation
+### Policy and Notice Generation
 ```bash
 POST /api/policy/generate
 {
@@ -275,9 +297,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Roadmap
 
-- [ ] Multi-language document generation
-- [ ] Advanced AI compliance analysis
-- [ ] Integration APIs (Zapier, Slack)
-- [ ] Enterprise SSO
-- [ ] White-label solution
-- [ ] Compliance audit trails
+- [ ] Deeper EU AI Act risk classification and evidence templates
+- [ ] AI provider documentation collection and review workflows
+- [ ] Multi-language AI and privacy notice generation
+- [ ] Integration APIs for AI inventory, Slack, Zapier, and ticketing systems
+- [ ] Enterprise SSO and approval workflows
+- [ ] White-label agency AI readiness reports

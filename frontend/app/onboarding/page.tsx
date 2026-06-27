@@ -105,7 +105,7 @@ export default function OnboardingPage() {
             <div className="rounded-lg border border-border-light bg-background-secondary p-4 text-sm leading-6 text-text-secondary">
               <div className="flex gap-3">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 text-status-success" />
-                <p>Inventory your AI systems after setup; we'll assess readiness, classify risk, and prepare required notices.</p>
+                <p>We will create a starter AI inventory from this intake, then assess readiness, classify risk, and prepare required notices.</p>
               </div>
             </div>
           </Section>
