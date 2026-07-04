@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CheckCircle2, Loader2, Rocket, Sparkles, Users, Zap } from "lucide-react";
 import toast from "react-hot-toast";
 import { track } from "@/lib/analytics";
+import { Button } from "@/components/ui/button";
 import PageScaffold from "@/components/marketing/PageScaffold";
 
 const benefits = [
@@ -53,10 +54,18 @@ export default function WaitlistPage() {
   return (
     <PageScaffold
       eyebrow="Limited founder offer"
-      headline="First 100 AI startups get 50% off lifetime"
-      subheadline="Join the waitlist before our Product Hunt launch and lock in founder pricing for EU AI Act compliance."
-      primaryCta={{ label: "Join waitlist", href: "#waitlist-form" }}
-      secondaryCta={{ label: "Try free scanner", href: "/free-privacy-scanner" }}
+      title="First 100 AI startups get 50% off lifetime"
+      subtitle="Join the waitlist before our Product Hunt launch and lock in founder pricing for EU AI Act compliance."
+      heroExtra={
+        <div className="flex flex-wrap justify-center gap-4">
+          <Button asChild className="rounded-2xl">
+            <Link href="#waitlist-form">Join waitlist</Link>
+          </Button>
+          <Button asChild variant="outline" className="rounded-2xl">
+            <Link href="/free-privacy-scanner">Try free scanner</Link>
+          </Button>
+        </div>
+      }
     >
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-[1200px] px-6">

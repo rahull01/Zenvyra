@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
+import { track } from "@/lib/analytics";
 import { useAuthStore } from "@/hooks/useAuth";
 
 type ScanIssue = {

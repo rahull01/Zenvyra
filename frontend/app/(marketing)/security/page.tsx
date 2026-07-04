@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Shield, Lock, Server, Database, FileCheck, Users, Clock, Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import PageScaffold from "@/components/marketing/PageScaffold";
 
 const securityPillars = [
@@ -54,11 +55,19 @@ const contacts = [
 export default function SecurityPage() {
   return (
     <PageScaffold
-      eyebrow="Trust &amp; Security"
-      headline="Your compliance data deserves serious protection"
-      subheadline="Zenvyra is built with security-first architecture, transparent practices, and a roadmap toward SOC 2 Type II certification."
-      primaryCta={{ label: "Start a free scan", href: "/free-privacy-scanner" }}
-      secondaryCta={{ label: "Contact security", href: "mailto:security@zenvyra.com" }}
+      eyebrow="Trust & Security"
+      title="Your compliance data deserves serious protection"
+      subtitle="Zenvyra is built with security-first architecture, transparent practices, and a roadmap toward SOC 2 Type II certification."
+      heroExtra={
+        <div className="flex flex-wrap justify-center gap-4">
+          <Button asChild className="rounded-2xl">
+            <Link href="/free-privacy-scanner">Start a free scan</Link>
+          </Button>
+          <Button asChild variant="outline" className="rounded-2xl">
+            <Link href="mailto:security@zenvyra.com">Contact security</Link>
+          </Button>
+        </div>
+      }
     >
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-[1200px] px-6">

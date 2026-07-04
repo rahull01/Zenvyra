@@ -13,7 +13,7 @@ const planIcons = {
   free: Shield,
   growth: Zap,
   pro: Zap,
-  agency: Crown,
+  enterprise: Crown,
 };
 
 export default function PricingCards() {
@@ -93,8 +93,8 @@ export default function PricingCards() {
                   variant={featured ? "default" : "outline"}
                   className="h-14 w-full rounded-2xl text-xs font-bold uppercase tracking-widest"
                 >
-                  <Link href={plan.id === "agency" ? "/contact" : "/auth/signup"}>
-                    {plan.id === "agency" ? "Contact Sales" : "Get Started"}
+                  <Link href={plan.id === "enterprise" ? "/contact" : "/auth/signup"}>
+                    {plan.id === "enterprise" ? "Contact Sales" : "Get Started"}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
