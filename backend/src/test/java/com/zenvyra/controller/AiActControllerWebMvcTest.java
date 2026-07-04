@@ -1,13 +1,16 @@
 package com.zenvyra.controller;
 
-import com.zenvyra.model.AiActAssessment;
-import com.zenvyra.model.AiSystemInventory;
-import com.zenvyra.security.ApiKeyAuthenticationFilter;
+import com.zenvyra.dto.request.AiSystemInventoryRequest;
+import com.zenvyra.dto.response.AiActAssessmentResponse;
+import com.zenvyra.dto.response.AiActReadinessResponse;
+import com.zenvyra.dto.response.AiSystemInventoryResponse;
 import com.zenvyra.security.JwtAuthenticationFilter;
+import com.zenvyra.security.RedisRateLimiter;
 import com.zenvyra.service.AiActReadinessService;
 import com.zenvyra.service.ApiKeyManagementService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -16,7 +19,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -28,9 +30,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AiActController.class)
+@AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 @MockBean(ApiKeyManagementService.class)
 @MockBean(JwtAuthenticationFilter.class)
+@MockBean(RedisRateLimiter.class)
 class AiActControllerWebMvcTest {
 
     @Autowired
@@ -42,8 +46,8 @@ class AiActControllerWebMvcTest {
     @Test
     @WithMockUser(username = "owner@example.com", roles = "USER")
     void createSystemReturnsTypedResponse() throws Exception {
-        when(service.create(any(), any(AiSystemInventory.class))).thenReturn(
-                AiSystemInventory.builder()
+        when(service.create(any(), any(AiSystemInventoryRequest.class))).thenReturn(
+                AiSystemInventoryResponse.builder()
                         .id("system-1")
                         .systemName("Support Assistant")
                         .purpose("Support")
@@ -72,7 +76,7 @@ class AiActControllerWebMvcTest {
     @WithMockUser(username = "owner@example.com", roles = "USER")
     void systemsReturnsTypedResponse() throws Exception {
         when(service.systems(any())).thenReturn(List.of(
-                AiSystemInventory.builder().id("system-1").systemName("Support Assistant").build()
+                AiSystemInventoryResponse.builder().id("system-1").systemName("Support Assistant").build()
         ));
 
         mockMvc.perform(get("/ai-act/systems"))
@@ -83,8 +87,8 @@ class AiActControllerWebMvcTest {
     @Test
     @WithMockUser(username = "owner@example.com", roles = "USER")
     void updateSystemReturnsTypedResponse() throws Exception {
-        when(service.update(any(), eq("system-1"), any(AiSystemInventory.class))).thenReturn(
-                AiSystemInventory.builder()
+        when(service.update(any(), eq("system-1"), any(AiSystemInventoryRequest.class))).thenReturn(
+                AiSystemInventoryResponse.builder()
                         .id("system-1")
                         .systemName("Updated Assistant")
                         .purpose("Support")
@@ -102,7 +106,7 @@ class AiActControllerWebMvcTest {
     @WithMockUser(username = "owner@example.com", roles = "USER")
     void assessReturnsTypedResponse() throws Exception {
         when(service.assess(any(), eq("system-1"))).thenReturn(
-                AiActAssessment.builder()
+                AiActAssessmentResponse.builder()
                         .id("assessment-1")
                         .systemId("system-1")
                         .systemName("Support Assistant")
@@ -120,11 +124,13 @@ class AiActControllerWebMvcTest {
     @Test
     @WithMockUser(username = "owner@example.com", roles = "USER")
     void readinessReturnsTypedResponse() throws Exception {
-        when(service.readiness(any())).thenReturn(Map.of(
-                "aiSystemsInventoried", 2,
-                "assessmentsCompleted", 1,
-                "highRiskFlags", 0
-        ));
+        when(service.readiness(any())).thenReturn(
+                AiActReadinessResponse.builder()
+                        .aiSystemsInventoried(2)
+                        .assessmentsCompleted(1)
+                        .highRiskFlags(0L)
+                        .build()
+        );
 
         mockMvc.perform(get("/ai-act/readiness"))
                 .andExpect(status().isOk())

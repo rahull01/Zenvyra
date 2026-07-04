@@ -1,12 +1,9 @@
 package com.zenvyra.controller;
 
-import com.zenvyra.dto.request.AiSystemInventoryRequest;
-import com.zenvyra.dto.response.AiSystemInventoryResponse;
 import com.zenvyra.model.AiSystemInventory;
 import com.zenvyra.model.User;
 import com.zenvyra.repository.AiSystemInventoryRepository;
 import com.zenvyra.repository.UserRepository;
-import com.zenvyra.service.AiActReadinessService;
 import com.zenvyra.service.EmailService;
 import com.zenvyra.service.OrganizationService;
 import com.zenvyra.service.WebsiteService;
@@ -35,12 +32,10 @@ class OnboardingControllerTest {
     private final WebsiteService websiteService = mock(WebsiteService.class);
     private final EmailService emailService = mock(EmailService.class);
     private final UserRepository userRepository = mock(UserRepository.class);
-    private final AiActReadinessService aiActReadinessService = mock(AiActReadinessService.class);
     private final AiSystemInventoryRepository aiSystemInventoryRepository = mock(AiSystemInventoryRepository.class);
 
     private final OnboardingController controller = new OnboardingController(
-            organizationService, websiteService, emailService, userRepository,
-            aiActReadinessService, aiSystemInventoryRepository);
+            organizationService, websiteService, emailService, userRepository, aiSystemInventoryRepository);
 
     private UserDetails userDetails;
 
@@ -64,8 +59,6 @@ class OnboardingControllerTest {
         when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(aiSystemInventoryRepository.findByUserId("user-1")).thenReturn(new ArrayList<>());
-        when(aiActReadinessService.create(any(UserDetails.class), any(AiSystemInventoryRequest.class)))
-                .thenReturn(AiSystemInventoryResponse.builder().id("system-1").build());
 
         OnboardingController.OnboardingRequest request = OnboardingController.OnboardingRequest.builder()
                 .aiToolsUsed(List.of("ChatGPT", "Midjourney"))
@@ -75,7 +68,7 @@ class OnboardingControllerTest {
         ResponseEntity<String> response = controller.completeOnboarding(userDetails, request);
 
         assertEquals(200, response.getStatusCode().value());
-        verify(aiActReadinessService, times(2)).create(any(UserDetails.class), any(AiSystemInventoryRequest.class));
+        verify(aiSystemInventoryRepository, times(2)).save(any(AiSystemInventory.class));
     }
 
     @Test
@@ -95,7 +88,7 @@ class OnboardingControllerTest {
 
         controller.completeOnboarding(userDetails, request);
 
-        verify(aiActReadinessService, never()).create(any(UserDetails.class), any(AiSystemInventoryRequest.class));
+        verify(aiSystemInventoryRepository, never()).save(any(AiSystemInventory.class));
     }
 
     @Test
@@ -117,6 +110,6 @@ class OnboardingControllerTest {
 
         controller.completeOnboarding(userDetails, request);
 
-        verify(aiActReadinessService, never()).create(any(UserDetails.class), any(AiSystemInventoryRequest.class));
+        verify(aiSystemInventoryRepository, never()).save(any(AiSystemInventory.class));
     }
 }

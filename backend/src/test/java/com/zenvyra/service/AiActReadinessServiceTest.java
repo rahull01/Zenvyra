@@ -1,5 +1,7 @@
 package com.zenvyra.service;
 
+import com.zenvyra.dto.response.AiActAssessmentResponse;
+import com.zenvyra.dto.response.AiActReadinessResponse;
 import com.zenvyra.exception.ApiException;
 import com.zenvyra.model.AiActAssessment;
 import com.zenvyra.model.AiSystemInventory;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -63,15 +66,17 @@ class AiActReadinessServiceTest {
                 .logsEvidenceRetained(false)
                 .build();
 
+        AtomicReference<AiActAssessment> savedAssessment = new AtomicReference<>();
         when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
         when(systemRepository.findById("system-1")).thenReturn(Optional.of(system));
         when(assessmentRepository.save(any(AiActAssessment.class))).thenAnswer(invocation -> {
             AiActAssessment assessment = invocation.getArgument(0);
             assessment.setId("assessment-1");
+            savedAssessment.set(assessment);
             return assessment;
         });
 
-        AiActAssessment assessment = service.assess(userDetails, "system-1");
+        AiActAssessmentResponse assessment = service.assess(userDetails, "system-1");
 
         assertEquals("high-risk indicator", assessment.getRiskCategory());
         assertTrue(assessment.getRequiredTransparencyNotices().contains("User-facing AI interaction notice"));
@@ -79,15 +84,15 @@ class AiActReadinessServiceTest {
         assertNotNull(assessment.getAssessedAt());
 
         when(systemRepository.findByUserId("user-1")).thenReturn(List.of(system));
-        when(assessmentRepository.findByUserId("user-1")).thenReturn(List.of(assessment));
+        when(assessmentRepository.findByUserId("user-1")).thenReturn(List.of(savedAssessment.get()));
 
-        Map<String, Object> readiness = service.readiness(userDetails);
+        AiActReadinessResponse readiness = service.readiness(userDetails);
 
-        assertEquals(1, readiness.get("aiSystemsInventoried"));
-        assertEquals(1L, readiness.get("highRiskFlags"));
-        assertTrue(String.valueOf(readiness.get("disclaimer")).contains("not legal advice"));
-        assertTrue(String.valueOf(readiness.get("draftOutputs")).contains("Support Assistant"));
-        assertTrue(String.valueOf(readiness.get("latestAssessments")).contains("assessment-1"));
+        assertEquals(Integer.valueOf(1), readiness.getAiSystemsInventoried());
+        assertEquals(Long.valueOf(1L), readiness.getHighRiskFlags());
+        assertTrue(readiness.getDisclaimer().contains("not legal advice"));
+        assertTrue(String.valueOf(readiness.getDraftOutputs().get("systemNames")).contains("Support Assistant"));
+        assertTrue(String.valueOf(readiness.getLatestAssessments()).contains("assessment-1"));
     }
 
     @Test
@@ -112,7 +117,7 @@ class AiActReadinessServiceTest {
                 .healthcareUse(true)
                 .build();
 
-        AiActAssessment assessment = assess(system);
+        AiActAssessmentResponse assessment = assess(system);
 
         assertEquals("prohibited risk indicator", assessment.getRiskCategory());
         assertTrue(assessment.getRiskSignals().contains("Prohibited-use indicator requires immediate legal review"));
@@ -126,7 +131,7 @@ class AiActReadinessServiceTest {
                 .userFacingAiInteraction(false)
                 .build();
 
-        AiActAssessment assessment = assess(system);
+        AiActAssessmentResponse assessment = assess(system);
 
         assertEquals("high-risk indicator", assessment.getRiskCategory());
         assertTrue(assessment.getRiskSignals().contains("High-risk domain: Hiring or employment use"));
@@ -139,7 +144,7 @@ class AiActReadinessServiceTest {
                 .automatedDecisionMaking(false)
                 .build();
 
-        AiActAssessment assessment = assess(system);
+        AiActAssessmentResponse assessment = assess(system);
 
         assertEquals("limited-risk transparency", assessment.getRiskCategory());
         assertTrue(assessment.getRequiredTransparencyNotices().contains("User-facing AI interaction notice"));
@@ -151,13 +156,15 @@ class AiActReadinessServiceTest {
         AiSystemInventory system = baseSystem("system-internal")
                 .userFacingAiInteraction(false)
                 .automatedDecisionMaking(false)
+                .humanOversightOwner("Operations lead")
                 .technicalDocumentationReady(true)
+                .riskAssessmentCompleted(true)
                 .logsEvidenceRetained(true)
                 .monitoringEnabled(true)
                 .dataCategoriesSentToAi(List.of("operational metrics"))
                 .build();
 
-        AiActAssessment assessment = assess(system);
+        AiActAssessmentResponse assessment = assess(system);
 
         assertEquals("minimal risk", assessment.getRiskCategory());
         assertEquals(100, assessment.getReadinessScore());
@@ -172,7 +179,7 @@ class AiActReadinessServiceTest {
                 .technicalDocumentationReady(false)
                 .build();
 
-        AiActAssessment assessment = assess(system);
+        AiActAssessmentResponse assessment = assess(system);
 
         assertTrue(assessment.getRiskSignals().contains("Provider documentation needed for third-party or general-purpose AI dependency"));
         assertTrue(assessment.getDocumentationGaps().contains("Collect provider documentation for third-party or general-purpose AI dependency"));
@@ -193,7 +200,7 @@ class AiActReadinessServiceTest {
                 .dataCategoriesSentToAi(List.of("support context"));
     }
 
-    private AiActAssessment assess(AiSystemInventory system) {
+    private AiActAssessmentResponse assess(AiSystemInventory system) {
         User user = User.builder().id("user-1").email("owner@example.com").build();
         when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
         when(systemRepository.findById(system.getId())).thenReturn(Optional.of(system));

@@ -237,12 +237,12 @@ public class AiActReadinessService {
 
     private String classifyRisk(AiSystemInventory s) {
         if (Boolean.TRUE.equals(s.getProhibitedUse())) {
-            return "prohibited indicator";
+            return "prohibited risk indicator";
         }
         if (hasHighRiskDomain(s) || Boolean.TRUE.equals(s.getAutomatedDecisionMaking())) {
             return "high-risk indicator";
         }
-        if (Boolean.TRUE.equals(s.getUserFacingAiInteraction()) || Boolean.TRUE.equals(s.getEuUsersAffected())) {
+        if (Boolean.TRUE.equals(s.getUserFacingAiInteraction())) {
             return "limited-risk transparency";
         }
         return "minimal risk";
@@ -261,23 +261,53 @@ public class AiActReadinessService {
 
     private List<String> buildRiskSignals(AiSystemInventory s, String riskCategory) {
         List<String> signals = new ArrayList<>();
-        if (riskCategory.contains("high-risk")) {
-            signals.add("High-risk domain or automated decision-making detected");
+        if (riskCategory.contains("prohibited")) {
+            signals.add("Prohibited-use indicator requires immediate legal review");
         }
+        signals.addAll(highRiskDomainSignals(s));
         if (Boolean.TRUE.equals(s.getEuUsersAffected())) {
             signals.add("EU users affected");
         }
         if (Boolean.TRUE.equals(s.getUserFacingAiInteraction())) {
-            signals.add("User-facing AI interaction");
+            signals.add("Transparency obligation indicator: users interact with AI output");
         }
         if (Boolean.TRUE.equals(s.getAutomatedDecisionMaking())) {
-            signals.add("Automated decision-making");
+            signals.add("High-risk trigger: automated decision-making");
         }
-        if (Boolean.TRUE.equals(s.getProhibitedUse())) {
-            signals.add("Prohibited use flag raised");
+        if (hasThirdPartyDependency(s)) {
+            signals.add("Provider documentation needed for third-party or general-purpose AI dependency");
         }
         if (signals.isEmpty()) {
             signals.add("No strong risk signals detected");
+        }
+        return signals;
+    }
+
+    private List<String> highRiskDomainSignals(AiSystemInventory s) {
+        List<String> signals = new ArrayList<>();
+        if (Boolean.TRUE.equals(s.getHealthcareUse())) {
+            signals.add("High-risk domain: Healthcare or medical use");
+        }
+        if (Boolean.TRUE.equals(s.getHiringUse())) {
+            signals.add("High-risk domain: Hiring or employment use");
+        }
+        if (Boolean.TRUE.equals(s.getFinanceUse())) {
+            signals.add("High-risk domain: Finance or credit access use");
+        }
+        if (Boolean.TRUE.equals(s.getEducationUse())) {
+            signals.add("High-risk domain: Education or vocational training use");
+        }
+        if (Boolean.TRUE.equals(s.getBiometricUse())) {
+            signals.add("High-risk domain: Biometric identification or categorization use");
+        }
+        if (Boolean.TRUE.equals(s.getGovernmentUse())) {
+            signals.add("High-risk domain: Public services or government use");
+        }
+        if (Boolean.TRUE.equals(s.getCriticalInfrastructureUse())) {
+            signals.add("High-risk domain: Critical infrastructure use");
+        }
+        if (Boolean.TRUE.equals(s.getChildrenUse())) {
+            signals.add("High-risk domain: Children or minors affected");
         }
         return signals;
     }
@@ -289,9 +319,6 @@ public class AiActReadinessService {
         }
         if (Boolean.TRUE.equals(s.getAutomatedDecisionMaking())) {
             notices.add("Automated decision-making notice");
-        }
-        if (Boolean.TRUE.equals(s.getEuUsersAffected())) {
-            notices.add("EU AI Act transparency notice");
         }
         return notices;
     }
@@ -314,6 +341,9 @@ public class AiActReadinessService {
         }
         if (!Boolean.TRUE.equals(s.getRiskAssessmentCompleted())) {
             gaps.add("Complete risk assessment");
+        }
+        if (hasThirdPartyDependency(s) && !Boolean.TRUE.equals(s.getTechnicalDocumentationReady())) {
+            gaps.add("Collect provider documentation for third-party or general-purpose AI dependency");
         }
         return gaps;
     }
@@ -384,13 +414,26 @@ public class AiActReadinessService {
 
     private Map<String, Boolean> buildReadinessBreakdown(AiSystemInventory s, List<String> docGaps, List<String> oversightGaps, List<String> monitoringGaps) {
         Map<String, Boolean> map = new LinkedHashMap<>();
-        map.put("inventoryComplete", s.getSystemName() != null && !s.getSystemName().isBlank() && s.getPurpose() != null && !s.getPurpose().isBlank());
+        map.put("inventoryComplete", hasText(s.getSystemName()) && (hasText(s.getPurpose()) || hasText(s.getUseCase())));
         map.put("documentationReady", docGaps.isEmpty());
         map.put("humanOversightDefined", oversightGaps.isEmpty());
-        map.put("transparencyNoticePublished", Boolean.TRUE.equals(s.getTransparencyNoticePublished()));
+        map.put("transparencyNoticePublished", buildTransparencyNotices(s).isEmpty() || Boolean.TRUE.equals(s.getTransparencyNoticePublished()));
         map.put("monitoringEnabled", monitoringGaps.isEmpty());
         map.put("evidenceRetained", Boolean.TRUE.equals(s.getLogsEvidenceRetained()));
         return map;
+    }
+
+    private boolean hasThirdPartyDependency(AiSystemInventory s) {
+        String providerType = Optional.ofNullable(s.getModelProviderType()).orElse("").toLowerCase();
+        return providerType.contains("third-party")
+                || providerType.contains("third party")
+                || providerType.contains("general-purpose")
+                || providerType.contains("general purpose")
+                || providerType.contains("gpa");
+    }
+
+    private boolean hasText(String value) {
+        return value != null && !value.isBlank();
     }
 
     private int calculateReadinessScore(Map<String, Boolean> breakdown) {
