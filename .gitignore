@@ -47,6 +47,7 @@ backend/target/
 .jetro/
 .mcp/
 .mcp.json
+.codex/
 
 # ==============================
 # 🧾 LOG FILES
