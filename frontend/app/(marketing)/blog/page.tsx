@@ -6,20 +6,32 @@ const posts = [
   {
     slug: "eu-ai-act-readiness-2026",
     title: "EU AI Act Readiness: 2026 Implementation Checklist",
-    date: "Jun 10, 2026",
-    summary: "Essential steps every AI-enabled business should complete before regulatory enforcement begins.",
+    date: "Jul 4, 2026",
+    summary: "Essential steps every AI startup should complete before EU AI Act enforcement begins.",
   },
   {
     slug: "ai-risk-classification-guide",
-    title: "AI Risk Classification Under EU AI Act",
-    date: "Jun 1, 2026",
-    summary: "Understanding prohibited, high-risk, limited-risk, and general-purpose AI categories.",
+    title: "AI Risk Classification Under the EU AI Act",
+    date: "Jun 28, 2026",
+    summary: "How to tell if your AI system is prohibited, high-risk, limited-risk, or general-purpose AI.",
   },
   {
     slug: "high-risk-ai-transparency",
     title: "High-Risk AI Systems: Transparency & Documentation Requirements",
-    date: "May 20, 2026",
-    summary: "How to meet EU AI Act documentation, notices, and proof pack requirements for high-risk deployments.",
+    date: "Jun 21, 2026",
+    summary: "Documentation, notices, and proof-pack requirements for high-risk AI deployments.",
+  },
+  {
+    slug: "gpai-provider-checklist",
+    title: "GPAI Provider Checklist: EU AI Act Obligations for Foundation Models",
+    date: "Jun 14, 2026",
+    summary: "What general-purpose AI model providers must document and disclose under the EU AI Act.",
+  },
+  {
+    slug: "ai-startup-compliance-automation",
+    title: "How AI Startups Can Automate Compliance Without a Legal Team",
+    date: "Jun 7, 2026",
+    summary: "Practical compliance operations that keep engineering fast and regulators happy.",
   },
 ];
 

@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   CheckCircle,
   Clock,
+  Copy,
   ExternalLink,
   FileText,
   Globe,
@@ -15,6 +16,7 @@ import {
   RefreshCw,
   Settings,
   Shield,
+  ShieldCheck,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
@@ -59,6 +61,8 @@ export default function WebsiteDetailPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(true);
   const [isScanning, setIsScanning] = useState(false);
+  const [certificate, setCertificate] = useState<{ badgeEmbedCode?: string; verificationToken?: string; score?: number; tier?: string } | null>(null);
+  const [issuingCertificate, setIssuingCertificate] = useState(false);
 
   const loadWebsite = useCallback(async () => {
     if (!id) return;
@@ -88,6 +92,20 @@ export default function WebsiteDetailPage() {
       toast.error(error?.response?.data?.message || "Scan failed");
     } finally {
       setIsScanning(false);
+    }
+  };
+
+  const issueCertificate = async () => {
+    if (!id) return;
+    setIssuingCertificate(true);
+    try {
+      const response = await api.post<{ badgeEmbedCode?: string; verificationToken?: string; score?: number; tier?: string }>(`/certificates/issue/${id}`);
+      setCertificate(response.data);
+      toast.success("Compliance certificate issued.");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Could not issue certificate. Score must be 60+ and site active.");
+    } finally {
+      setIssuingCertificate(false);
     }
   };
 
@@ -261,6 +279,60 @@ export default function WebsiteDetailPage() {
                 ))
               )}
             </div>
+          </div>
+
+          <div className="rounded-2xl border border-border-light bg-surface-card p-6 shadow-card">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-heading-3">Public badge &amp; certificate</h3>
+              {certificate ? <CheckCircle className="h-5 w-5 text-status-success" /> : <ShieldCheck className="h-5 w-5 text-text-tertiary" />}
+            </div>
+            {!certificate ? (
+              <div className="space-y-4">
+                <p className="text-sm text-text-secondary">
+                  Issue a shareable readiness certificate and embed badge when your score is 60 or higher.
+                </p>
+                <button
+                  onClick={issueCertificate}
+                  disabled={issuingCertificate || score < 60}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-white transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {issuingCertificate ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
+                  {score < 60 ? "Score must be 60+" : "Issue certificate"}
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-sm text-text-secondary">
+                  Certificate issued. Embed this badge on your site or share the verification link.
+                </p>
+                <div className="rounded-xl border border-border-light bg-background-secondary p-3">
+                  <p className="text-xs font-bold uppercase text-text-tertiary">Embed code</p>
+                  <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-all text-xs text-text-secondary">
+                    {certificate.badgeEmbedCode || "<img src=\"/badge/" + id + "\" alt=\"Zenvyra compliance badge\" />"}
+                  </pre>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(certificate.badgeEmbedCode || `<img src="/badge/${id}" alt="Zenvyra compliance badge" />`);
+                      toast.success("Embed code copied.");
+                    }}
+                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-border-light bg-surface-card px-4 py-2 text-sm font-semibold text-text-primary transition hover:bg-background-tertiary"
+                  >
+                    <Copy className="h-4 w-4" />
+                    Copy embed code
+                  </button>
+                </div>
+                {certificate.verificationToken && (
+                  <Link
+                    href={`/verify/${id}`}
+                    target="_blank"
+                    className="flex items-center justify-center gap-2 rounded-xl border border-border-light bg-surface-card px-4 py-2.5 text-sm font-semibold text-text-primary transition hover:bg-background-tertiary"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    Open public verification page
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
         </motion.div>
       )}

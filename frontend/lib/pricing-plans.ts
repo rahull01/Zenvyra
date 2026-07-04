@@ -1,8 +1,8 @@
-export type PricingPlanId = "free" | "growth" | "pro" | "agency";
+export type PricingPlanId = "free" | "growth" | "pro" | "enterprise";
 
 export type PricingPlan = {
   id: PricingPlanId;
-  backendPlanType: "FREE" | "GROWTH" | "PRO" | "AGENCY";
+  backendPlanType: "FREE" | "GROWTH" | "PRO" | "ENTERPRISE";
   name: string;
   monthlyPrice: number;
   annualMonthlyPrice: number;
@@ -30,31 +30,31 @@ export const PRICING_PLANS: PricingPlan[] = [
     id: "growth",
     backendPlanType: "GROWTH",
     name: "Starter",
-    monthlyPrice: 19,
-    annualMonthlyPrice: 15,
-    features: ["3 websites", "AI system inventory", "Live embed", "Audit trail", "25 scans per month"],
+    monthlyPrice: 49,
+    annualMonthlyPrice: 39,
+    features: ["1 website", "AI system inventory", "Live embed", "Audit trail", "25 scans per month"],
     entitlementFeatures: ["LIVE_EMBED", "AUDIT_TRAIL"],
-    limits: { websites: 3, policies: 10, scans: 25 },
+    limits: { websites: 1, policies: 10, scans: 25 },
   },
   {
     id: "pro",
     backendPlanType: "PRO",
     name: "Pro",
-    monthlyPrice: 49,
-    annualMonthlyPrice: 39,
+    monthlyPrice: 199,
+    annualMonthlyPrice: 159,
     features: ["10 websites", "AI readiness assessments", "Live embed", "DSAR portal", "Audit trail", "100 scans per month"],
     entitlementFeatures: ["LIVE_EMBED", "DSAR_PORTAL", "AUDIT_TRAIL"],
     limits: { websites: 10, policies: 25, scans: 100 },
   },
   {
-    id: "agency",
-    backendPlanType: "AGENCY",
-    name: "Agency",
-    monthlyPrice: 119,
-    annualMonthlyPrice: 95,
-    features: ["50 websites", "AI readiness assessments", "Live embed", "DSAR portal", "Audit trail", "White-label proof packs"],
+    id: "enterprise",
+    backendPlanType: "ENTERPRISE",
+    name: "Enterprise",
+    monthlyPrice: 999,
+    annualMonthlyPrice: 799,
+    features: ["Unlimited websites", "AI readiness assessments", "Live embed", "DSAR portal", "Audit trail", "White-label proof packs", "SSO", "Dedicated support"],
     entitlementFeatures: ["LIVE_EMBED", "DSAR_PORTAL", "AUDIT_TRAIL", "WHITE_LABEL"],
-    limits: { websites: 50, policies: 100, scans: 500 },
+    limits: { websites: "unlimited", policies: "unlimited", scans: "unlimited" },
   },
 ];
 

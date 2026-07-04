@@ -432,6 +432,26 @@ public class EmailService {
                         appUrl));
     }
 
+    public void sendOpenAiCostAlertEmail(String to, double dailySpendUsd, double thresholdUsd) {
+        sendSimpleOperationalEmail(
+                to,
+                "Admin alert: OpenAI daily cost threshold exceeded",
+                String.format("""
+                        OpenAI estimated daily spend has exceeded the configured threshold.
+
+                        Estimated daily spend: $%.4f
+                        Threshold: $%.4f
+
+                        Review usage in the admin dashboard and consider adjusting rate limits or model selection.
+
+                        Review:
+                        %s/dashboard/admin
+                        """,
+                        dailySpendUsd,
+                        thresholdUsd,
+                        appUrl));
+    }
+
     public void sendAgencyClientReportEmail(String to, String clientCompanyName, String websiteUrl, String proofReportUrl) {
         sendSimpleOperationalEmail(
                 to,

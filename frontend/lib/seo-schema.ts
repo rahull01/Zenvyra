@@ -5,8 +5,8 @@ export type SchemaContext = "https://schema.org";
 export interface AggregateOfferSchema {
   "@type": "AggregateOffer";
   priceCurrency: "USD";
-  lowPrice: "29";
-  highPrice: "199";
+  lowPrice: "0";
+  highPrice: "999";
   offerCount: "4";
 }
 
@@ -14,14 +14,14 @@ export interface ZenvyraSoftwareProductSchema {
   "@context": SchemaContext;
   "@type": ["SoftwareApplication", "Product"];
   name: "Zenvyra";
-  applicationCategory: "BusinessApplication, Privacy Compliance";
+  applicationCategory: "BusinessApplication, AI Governance";
   operatingSystem: "All";
   offers: AggregateOfferSchema;
   featureList: [
-    "Set-and-Forget Live Dynamic Policy Updates via JavaScript Embeds",
-    "AI-Driven Automated Website Tracker Classification Engine",
-    "Cryptographic Consent Audit Trails for Regulatory Enforcement",
-    "Automated DSAR Portal & Deadline Tracking Workflow Engine"
+    "EU AI Act readiness scans for AI startups",
+    "AI policy generation and transparency notices",
+    "Compliance evidence packs and public trust badges",
+    "Automated cookie consent and GDPR workflows"
   ];
 }
 
@@ -44,10 +44,10 @@ export interface WebSiteSchema {
 export type SeoSchema = ZenvyraSoftwareProductSchema | OrganizationSchema | WebSiteSchema;
 
 export const ZenvyraFeatures: ZenvyraSoftwareProductSchema["featureList"] = [
-  "Set-and-Forget Live Dynamic Policy Updates via JavaScript Embeds",
-  "AI-Driven Automated Website Tracker Classification Engine",
-  "Cryptographic Consent Audit Trails for Regulatory Enforcement",
-  "Automated DSAR Portal & Deadline Tracking Workflow Engine",
+  "EU AI Act readiness scans for AI startups",
+  "AI policy generation and transparency notices",
+  "Compliance evidence packs and public trust badges",
+  "Automated cookie consent and GDPR workflows",
 ];
 
 export function getZenvyraSoftwareProductSchema(): ZenvyraSoftwareProductSchema {
@@ -55,13 +55,13 @@ export function getZenvyraSoftwareProductSchema(): ZenvyraSoftwareProductSchema 
     "@context": "https://schema.org",
     "@type": ["SoftwareApplication", "Product"],
     name: "Zenvyra",
-    applicationCategory: "BusinessApplication, Privacy Compliance",
+    applicationCategory: "BusinessApplication, AI Governance",
     operatingSystem: "All",
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: "USD",
-      lowPrice: "29",
-      highPrice: "199",
+      lowPrice: "0",
+      highPrice: "999",
       offerCount: "4",
     },
     featureList: ZenvyraFeatures,
@@ -89,7 +89,7 @@ export function getZenvyraWebSiteSchema(baseUrl = PUBLIC_APP_URL): WebSiteSchema
     name: "Zenvyra",
     url: baseUrl,
     description:
-      "AI privacy compliance platform, automated cookie consent platform, and enterprise GDPR tool for live policy updates, tracker classification, consent audit trails, and DSAR deadline workflows.",
+      "AI Act compliance for AI startups. Scan your AI product, generate compliant policies, and get audit-ready in minutes.",
   };
 }
 

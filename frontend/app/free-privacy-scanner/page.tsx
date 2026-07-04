@@ -40,10 +40,10 @@ type ScanResult = {
 };
 
 const scanPhases = [
-  "Crawling scripts",
-  "Detecting trackers",
-  "Checking UK/US readiness gaps",
-  "Preparing proof-pack preview",
+  "Mapping AI systems",
+  "Checking transparency disclosures",
+  "Reviewing human oversight evidence",
+  "Building AI Act readiness preview",
 ];
 
 const defaultIssues: ScanIssue[] = [
@@ -163,6 +163,7 @@ export default function FreePrivacyScannerPage() {
       }
 
       const companyName = inferCompanyName(lead.email, url);
+      track("signup_from_scanner", { url, email: lead.email.trim() });
       const response = await api.post("/auth/signup", {
         fullName: lead.fullName.trim(),
         email: lead.email.trim(),
@@ -216,13 +217,13 @@ export default function FreePrivacyScannerPage() {
         <div className="flex flex-col justify-center">
           <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
             <Sparkles className="h-4 w-4" />
-            Free compliance scanner
+            Free EU AI Act scanner
           </div>
           <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-normal text-text-primary md:text-6xl">
-            Preview your UK/US privacy readiness in 10 seconds.
+            Check your AI startup for EU AI Act gaps in 10 seconds.
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-text-secondary">
-            Run a fast public scan for trackers, consent gaps, policy coverage, and proof-pack gaps before you spend money on implementation.
+            Scan your public site for AI system inventory, transparency disclosures, human oversight evidence, and GPAI documentation gaps before your next launch or investor review.
           </p>
 
           <form onSubmit={handleScan} className="mt-9 rounded-2xl border border-border-light bg-surface-card p-3 shadow-card">
@@ -244,7 +245,7 @@ export default function FreePrivacyScannerPage() {
                 className="inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-accent px-7 font-bold text-white transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {scanning ? <Loader2 className="h-5 w-5 animate-spin" /> : <Search className="h-5 w-5" />}
-                Scan My Website
+                Scan for AI Act gaps
               </button>
             </div>
           </form>
@@ -270,7 +271,7 @@ export default function FreePrivacyScannerPage() {
           )}
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            {["No credit card", "Readiness language", "Full proof report unlock"].map((label) => (
+            {["No credit card", "AI Act readiness score", "Shareable preview"].map((label) => (
               <div key={label} className="flex items-center gap-2 text-sm font-medium text-text-secondary">
                 <CheckCircle2 className="h-4 w-4 text-status-success" />
                 {label}
@@ -301,7 +302,7 @@ export default function FreePrivacyScannerPage() {
               <div className="rounded-2xl bg-background-secondary p-5">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm text-text-secondary">UK/US Readiness Score</p>
+                    <p className="text-sm text-text-secondary">EU AI Act Readiness Score</p>
                     <p className="mt-1 truncate text-sm font-semibold text-accent">{result.url || url}</p>
                   </div>
                   <div className="flex h-24 w-24 items-center justify-center rounded-full border-8 border-background-tertiary">
@@ -316,25 +317,50 @@ export default function FreePrivacyScannerPage() {
                 <div className="flex gap-3">
                   <AlertTriangle className="mt-0.5 h-5 w-5 text-status-warning" />
                   <div>
-                    <p className="font-bold text-text-primary">Alert: {riskCount} readiness gaps found.</p>
-                    <p className="mt-1 text-sm text-text-secondary">Unlock the full proof report to see prioritized fixes, setup steps, and certificate readiness.</p>
+                    <p className="font-bold text-text-primary">Alert: {riskCount} AI Act gaps found.</p>
+                    <p className="mt-1 text-sm text-text-secondary">Unlock the full readiness report to see prioritized fixes, transparency drafts, and compliance evidence.</p>
                   </div>
                 </div>
               </div>
 
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    track("scanner_share", { network: "twitter", url: result.url || url, score });
+                    const text = `I just scanned ${result.url || url} for EU AI Act readiness with Zenvyra. Score: ${score}/100. Check your AI startup too:`;
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent("https://zenvyra.com/free-privacy-scanner")}`, "_blank", "noopener,noreferrer");
+                  }}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border-light bg-surface-card px-4 py-2 text-sm font-semibold text-text-primary transition hover:bg-background-tertiary"
+                >
+                  Share on X
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    track("scanner_share", { network: "linkedin", url: result.url || url, score });
+                    const text = `I just scanned ${result.url || url} for EU AI Act readiness with Zenvyra. Score: ${score}/100.`;
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://zenvyra.com/free-privacy-scanner")}&summary=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+                  }}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border-light bg-surface-card px-4 py-2 text-sm font-semibold text-text-primary transition hover:bg-background-tertiary"
+                >
+                  Share on LinkedIn
+                </button>
+              </div>
+
               <div className="grid gap-3 sm:grid-cols-2">
                 <Link
-                  href="/auth/signup?intent=setup-package"
+                  href="/auth/signup?intent=ai-act"
                   className="flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-bold text-white transition hover:bg-primary-hover"
                 >
-                  48-hour setup package
+                  Fix AI Act gaps
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  href="/pricing#agency"
+                  href="/pricing"
                   className="flex items-center justify-center gap-2 rounded-xl border border-border-light bg-surface-card px-4 py-3 text-sm font-bold text-text-primary transition hover:bg-background-tertiary"
                 >
-                  See agency plan
+                  See pricing
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -448,7 +474,7 @@ export default function FreePrivacyScannerPage() {
                 {!creatingAccount && <ArrowRight className="h-5 w-5" />}
               </button>
               <p className="text-xs leading-5 text-text-secondary">
-                No credit card required. Results are readiness evidence and implementation guidance, not legal advice.
+                No credit card required. Results are AI Act readiness evidence and implementation guidance, not legal advice.
               </p>
             </form>
           </div>

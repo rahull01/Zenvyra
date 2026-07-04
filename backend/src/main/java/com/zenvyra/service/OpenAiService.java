@@ -16,7 +16,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,7 @@ public class OpenAiService {
 
     private final WebClient openAiWebClient;
     private final ObjectMapper objectMapper;
+    private final OpenAiCostAlertService openAiCostAlertService;
 
     public String generatePolicy(String type, String companyName, String industry, String language) {
         String safeType = AiPromptGuard.forPolicyField(type);
@@ -212,15 +215,37 @@ public class OpenAiService {
                     .bodyValue(request)
                     .retrieve()
                     .bodyToMono(String.class)
+                    .retryWhen(Retry.backoff(3, Duration.ofSeconds(1))
+                            .jitter(0.5)
+                            .filter(throwable -> !(throwable instanceof ApiException))
+                            .onRetryExhaustedThrow((spec, signal) -> signal.failure()))
                     .block();
 
             JsonNode jsonResponse = objectMapper.readTree(response);
-            return jsonResponse.get("choices").get(0).get("message").get("content").asText();
+            String content = jsonResponse.get("choices").get(0).get("message").get("content").asText();
+
+            int promptTokens = jsonResponse.path("usage").path("prompt_tokens").asInt(0);
+            int completionTokens = jsonResponse.path("usage").path("completion_tokens").asInt(0);
+            openAiCostAlertService.recordUsage(model, promptTokens, completionTokens);
+
+            return content;
 
         } catch (Exception e) {
-            log.error("OpenAI API call failed: {}", LogSanitizer.exception(e));
-            throw ApiException.internalError("AI service temporarily unavailable");
+            log.error("OpenAI API call failed after retries: {}", LogSanitizer.exception(e));
+            return fallbackResponse(prompt);
         }
+    }
+
+    private String fallbackResponse(String prompt) {
+        if (prompt.contains("policy") || prompt.contains("Policy")) {
+            return "<p>We are currently unable to generate a custom policy due to high AI service demand. " +
+                   "Please try again in a few minutes, or contact support for assistance.</p>";
+        }
+        if (prompt.contains("compliance") || prompt.contains("analyze")) {
+            return "{\"analysis\":\"AI analysis temporarily unavailable. Please retry shortly.\"," +
+                   "\"recommendations\":[\"Review your privacy policy and cookie consent setup.\"]}";
+        }
+        return "AI service temporarily unavailable. Please try again later.";
     }
 
     private void requireOpenAiConfigured() {

@@ -44,17 +44,27 @@ public class RateLimitFilter extends OncePerRequestFilter {
             }
 
             if (requestURI.contains("/scan/free") || requestURI.contains("/scan/leads")) {
-                // Limit public scanner actions by Client IP: max 3 requests per hour
+                // Limit public scanner actions by Client IP: max 3 requests per hour, 5 per day
                 String clientIP = getClientIP(request);
-                String redisKey = "rate_limit:public_scanner:ip:" + clientIP;
-                
-                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(redisKey, 3, 3600);
-                if (!result.isAllowed()) {
-                    log.warn("Rate limit exceeded for {} on public scanner", LogSanitizer.ip(clientIP));
+                String hourKey = "rate_limit:public_scanner:ip:" + clientIP + ":hour";
+                String dayKey = "rate_limit:public_scanner:ip:" + clientIP + ":day";
+
+                RedisRateLimiter.RateLimitResult hourResult = redisRateLimiter.isAllowed(hourKey, 3, 3600);
+                if (!hourResult.isAllowed()) {
+                    log.warn("Rate limit exceeded for {} on public scanner (hourly)", LogSanitizer.ip(clientIP));
                     sendRateLimitExceededResponse(response, 3600);
                     return;
                 }
-                response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
+
+                RedisRateLimiter.RateLimitResult dayResult = redisRateLimiter.isAllowed(dayKey, 5, 86400);
+                if (!dayResult.isAllowed()) {
+                    log.warn("Rate limit exceeded for {} on public scanner (daily)", LogSanitizer.ip(clientIP));
+                    sendRateLimitExceededResponse(response, 86400);
+                    return;
+                }
+
+                response.setHeader("X-Rate-Limit-Remaining-Hour", String.valueOf(hourResult.getRemainingTokens()));
+                response.setHeader("X-Rate-Limit-Remaining-Day", String.valueOf(dayResult.getRemainingTokens()));
 
             } else if (requestURI.contains("/badge/")) {
                 String clientIP = getClientIP(request);
@@ -122,20 +132,35 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
 
             } else if (requestURI.contains("/scan/full")) {
-                // Limit full scan by JWT User ID: max 20 requests per day
+                // Limit full scan by plan tier + organization
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof User) {
                     User user = (User) auth.getPrincipal();
                     String userId = user.getId();
-                    String redisKey = "rate_limit:full_scan:user:" + userId;
-                    
-                    RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(redisKey, 20, 86400);
-                    if (!result.isAllowed()) {
-                        log.warn("Rate limit exceeded for {} on full scan", LogSanitizer.id("user", userId));
+                    int userLimit = resolveScanLimitForPlan(user.getPlan());
+                    String userKey = "rate_limit:full_scan:user:" + userId;
+
+                    RedisRateLimiter.RateLimitResult userResult = redisRateLimiter.isAllowed(userKey, userLimit, 86400);
+                    if (!userResult.isAllowed()) {
+                        log.warn("Rate limit exceeded for {} on full scan (user)", LogSanitizer.id("user", userId));
                         sendRateLimitExceededResponse(response, 86400);
                         return;
                     }
-                    response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
+
+                    String orgId = resolveOrgId(user);
+                    if (orgId != null && !orgId.isBlank()) {
+                        String orgKey = "rate_limit:full_scan:org:" + orgId;
+                        int orgLimit = Math.max(userLimit * 5, 50);
+                        RedisRateLimiter.RateLimitResult orgResult = redisRateLimiter.isAllowed(orgKey, orgLimit, 86400);
+                        if (!orgResult.isAllowed()) {
+                            log.warn("Rate limit exceeded for org {} on full scan", LogSanitizer.id("org", orgId));
+                            sendRateLimitExceededResponse(response, 86400);
+                            return;
+                        }
+                        response.setHeader("X-Rate-Limit-Remaining-Org", String.valueOf(orgResult.getRemainingTokens()));
+                    }
+
+                    response.setHeader("X-Rate-Limit-Remaining-User", String.valueOf(userResult.getRemainingTokens()));
                 }
                 // If not authenticated, let it pass so Spring Security's authorization handles it
             }
@@ -178,5 +203,25 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private boolean exceedsPublicWriteLimit(HttpServletRequest request) {
         long contentLength = request.getContentLengthLong();
         return contentLength > PUBLIC_WRITE_MAX_BYTES;
+    }
+
+    private int resolveScanLimitForPlan(String plan) {
+        if (plan == null) {
+            return 5;
+        }
+        return switch (plan.toLowerCase()) {
+            case "starter" -> 20;
+            case "pro" -> 100;
+            case "enterprise" -> 1000;
+            case "free", "freemium" -> 5;
+            default -> 5;
+        };
+    }
+
+    private String resolveOrgId(User user) {
+        if (user.getCompanyName() != null && !user.getCompanyName().isBlank()) {
+            return user.getCompanyName().trim().toLowerCase().replaceAll("\\s+", "-");
+        }
+        return user.getId();
     }
 }

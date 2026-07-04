@@ -30,18 +30,18 @@ const Hero = () => {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-60" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-orange-500" />
               </span>
-              <span className="truncate">EU AI Act readiness with privacy proof underneath</span>
+              <span className="truncate">AI Act compliance for AI startups</span>
             </div>
 
             <h1 className="max-w-[680px] !text-[2.55rem] font-extrabold tracking-tight !text-white !leading-[1.02] sm:!text-[3.3rem] lg:!text-[clamp(3rem,4.35vw,4.45rem)]">
-              EU AI Act readiness that turns AI risk into{' '}
+              AI Act Compliance for{' '}
               <span className="bg-gradient-to-r from-orange-300 via-orange-500 to-white bg-clip-text text-transparent">
-                clear proof.
+                AI Startups
               </span>
             </h1>
 
             <p className="max-w-lg text-base leading-7 text-white/68 sm:text-lg">
-              Inventory AI systems, map transparency and oversight gaps, then support every AI claim with privacy, consent, policy, and monitoring evidence.
+              Scan your AI product, generate compliant policies, and get audit-ready in minutes. Built for LLM and AI startups facing EU AI Act requirements.
             </p>
 
             <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
@@ -49,7 +49,7 @@ const Hero = () => {
                 href="/auth/signup"
                 className="group inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-4 text-sm font-extrabold text-white shadow-[0_18px_46px_rgba(249,115,22,0.34)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-orange-600 hover:shadow-[0_22px_58px_rgba(249,115,22,0.5)]"
               >
-                Start AI Act Readiness
+                Scan your AI product free
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
@@ -63,11 +63,11 @@ const Hero = () => {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1 text-xs font-semibold text-white/58">
               <span className="inline-flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-orange-400" />
-                AI inventory first
+                Built for LLM startups
               </span>
               <span className="inline-flex items-center gap-2">
                 <BadgeCheck className="h-4 w-4 text-orange-400" />
-                Privacy proof included
+                Audit-ready in minutes
               </span>
             </div>
           </motion.div>

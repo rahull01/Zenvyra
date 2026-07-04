@@ -1,21 +1,23 @@
 # Zenvyra
 
-EU AI Act Readiness and Compliance Evidence Platform
+AI-Powered Compliance Automation SaaS Platform
 
 ## Overview
 
-Zenvyra helps AI-enabled businesses inventory AI systems, prepare EU AI Act readiness evidence, and maintain the supporting privacy, cookie, policy, consent, DSAR, and proof workflows customers expect before they trust a product.
+Zenvyra helps AI startups achieve EU AI Act compliance in minutes — scan AI systems, fix gaps, generate policies, and issue shareable compliance certificates.
 
 ### Key Features
 
-- **EU AI Act Readiness**: Inventory AI systems, flag high-risk indicators, draft transparency notices, and collect evidence for counsel review
-- **AI System Evidence Packs**: Track providers, use cases, EU user exposure, human oversight, logging, and documentation gaps
-- **Website Privacy Scanning**: Scan websites for privacy, cookie, tracker, consent, and disclosure gaps that support AI trust workflows
-- **Policy and Notice Generation**: Generate privacy policies, cookie notices, terms, disclaimers, AI disclosures, and operational review drafts
-- **Proof Packs and Certificates**: Package scan history, policy versions, consent evidence, AI readiness notes, and remediation status
-- **Agency and Team Workflows**: Manage multiple client sites, handoff packets, activity logs, white-label reports, and role-based access
+- **EU AI Act Scanner**: Free, shareable scanner for AI Act readiness
+- **AI System Inventory**: Track high-risk and GPAI models under one roof
+- **AI Act Readiness Reports**: Export system cards and assessment summaries
+- **Shareable Compliance Badge**: Issue a public certificate/embed for your AI product
+- **AI-Powered Policy Generation**: Generate privacy policies, terms of service, and other legal documents
+- **Rate-Limited Scanning**: Tier-based per-user and organization limits to prevent abuse
+- **OpenAI Resilience & Cost Alerts**: Timeout/retry/fallback + daily spend alerts
+- **Team Collaboration**: Multi-user support with role-based access
 - **Payment Integration**: Subscription management with Dodo Payments
-- **Dashboard Analytics**: Readiness scoring, monitoring, alerts, and reporting for AI governance and privacy operations
+- **Dashboard Analytics**: Comprehensive compliance scoring and reporting
 
 ## Tech Stack
 
@@ -123,29 +125,7 @@ POST /api/auth/login
 }
 ```
 
-### EU AI Act Readiness
-```bash
-# List AI systems
-GET /api/ai-act/systems
-
-# Add AI system inventory item
-POST /api/ai-act/systems
-{
-  "systemName": "Customer support assistant",
-  "provider": "OpenAI",
-  "useCase": "Answer support questions using help center context",
-  "euUsersAffected": true,
-  "userFacingAiInteraction": true,
-  "automatedDecisionMaking": false,
-  "humanOversight": true,
-  "logsEvidenceRetained": true
-}
-
-# Generate readiness assessment
-POST /api/ai-act/systems/{systemId}/assess
-```
-
-### Supporting Website Scanning
+### Compliance Scanning
 ```bash
 # Free scan
 GET /api/scan/free?url=https://example.com
@@ -158,7 +138,7 @@ POST /api/scan/full
 }
 ```
 
-### Policy and Notice Generation
+### Policy Generation
 ```bash
 POST /api/policy/generate
 {
@@ -225,11 +205,14 @@ npm test
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `OPENAI_API_KEY` | OpenAI API key | Yes |
+| `OPENAI_COST_ALERT_THRESHOLD_USD` | Daily OpenAI spend alert threshold | No (default 50) |
+| `OPENAI_COST_ALERT_RECIPIENT` | Email recipient for OpenAI cost alerts | No (default ops) |
 | `MONGODB_URI` | MongoDB connection string | Yes |
 | `REDIS_URL` | Redis connection URL | Yes |
 | `JWT_SECRET` | JWT signing secret (64 chars) | Yes |
 | `DODO_API_KEY` | Dodo payment API key | Yes |
 | `EMAIL_HOST` | SMTP host | Yes |
+| `APP_OPS_ALERT_EMAIL` | Ops alert email address | No (default ops) |
 
 See `.env.example` for complete configuration.
 
@@ -273,8 +256,9 @@ Zenvyra/
 - JWT-based authentication
 - Password encryption (BCrypt)
 - Input validation and sanitization
-- CORS configuration
-- Rate limiting (recommended)
+- Strict CORS configuration with explicit methods/headers
+- Tier-based per-user and organization rate limiting
+- CSRF protection for cookie/session flows
 - Security headers (helmet)
 
 ## Monitoring
@@ -297,9 +281,14 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Roadmap
 
-- [ ] Deeper EU AI Act risk classification and evidence templates
-- [ ] AI provider documentation collection and review workflows
-- [ ] Multi-language AI and privacy notice generation
-- [ ] Integration APIs for AI inventory, Slack, Zapier, and ticketing systems
-- [ ] Enterprise SSO and approval workflows
-- [ ] White-label agency AI readiness reports
+- [x] EU AI Act compliance scanning & reports
+- [x] Shareable compliance badge/certificate
+- [x] OpenAI resilience, rate limiting & cost alerts
+- [ ] Product Hunt launch
+- [ ] Sentry monitoring
+- [ ] MongoDB Atlas backups & restore drill
+- [ ] Multi-language document generation
+- [ ] Integration APIs (Zapier, Slack)
+- [ ] Enterprise SSO
+- [ ] White-label solution
+- [ ] Compliance audit trails

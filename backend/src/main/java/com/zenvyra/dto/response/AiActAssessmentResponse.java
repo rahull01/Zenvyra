@@ -1,6 +1,5 @@
 package com.zenvyra.dto.response;
 
-import com.zenvyra.model.AiActAssessment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +14,11 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AiActAssessmentResponse {
+
     private String id;
+    private String userId;
     private String systemId;
+    private String systemName;
     private String riskCategory;
     private Double confidence;
     private Integer readinessScore;
@@ -32,26 +34,4 @@ public class AiActAssessmentResponse {
     private List<String> nextActions;
     private String counselReviewWarning;
     private LocalDateTime assessedAt;
-
-    public static AiActAssessmentResponse from(AiActAssessment assessment) {
-        return AiActAssessmentResponse.builder()
-                .id(assessment.getId())
-                .systemId(assessment.getSystemId())
-                .riskCategory(assessment.getRiskCategory())
-                .confidence(assessment.getConfidence())
-                .readinessScore(assessment.getReadinessScore())
-                .readinessBreakdown(assessment.getReadinessBreakdown())
-                .riskSignals(assessment.getRiskSignals())
-                .requiredTransparencyNotices(assessment.getRequiredTransparencyNotices())
-                .humanOversightGaps(assessment.getHumanOversightGaps())
-                .documentationGaps(assessment.getDocumentationGaps())
-                .dataHandlingGaps(assessment.getDataHandlingGaps())
-                .userDisclosureGaps(assessment.getUserDisclosureGaps())
-                .monitoringGaps(assessment.getMonitoringGaps())
-                .evidenceItems(assessment.getEvidenceItems())
-                .nextActions(assessment.getNextActions())
-                .counselReviewWarning(assessment.getCounselReviewWarning())
-                .assessedAt(assessment.getAssessedAt())
-                .build();
-    }
 }

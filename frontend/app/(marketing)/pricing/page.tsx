@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, BarChart3, Check, ChevronDown, ChevronUp, Clock3, FileCheck2, Gauge, ShieldCheck, Sparkles, Workflow } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PRICING_PLANS } from "@/lib/pricing-plans";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 const setupPackage = {
   name: "Founder Setup",
@@ -50,9 +51,9 @@ const comparisonRows = [
     Zenvyra: "Privacy-safe certificate, scan history, policy versions, and audit pack",
   },
   {
-    feature: "Agency economics",
-    legacyTools: "Custom agency pricing",
-    Zenvyra: "Transparent 50-site white-label plan",
+    feature: "Enterprise economics",
+    legacyTools: "Custom enterprise pricing",
+    Zenvyra: "Transparent unlimited-site Enterprise plan",
   },
 ];
 
@@ -70,8 +71,8 @@ const faqs = [
     a: "Basic policy tools focus on documents and cookie banners. Zenvyra starts with EU AI Act readiness, then supports it with continuous proof: monitoring, public certificates, DSAR deadlines, audit packs, and implementation fixes.",
   },
   {
-    q: "Can agencies resell this?",
-    a: "Yes. The agency plan is built for white-label delivery: client sites, reports, certificates, and founder-level support while the product matures.",
+    q: "Can enterprises use this?",
+    a: "Yes. The Enterprise plan is built for AI teams that need unlimited sites, SSO, white-label proof packs, and dedicated support.",
   },
 ];
 
@@ -84,9 +85,9 @@ const valueCards = [
   },
   {
     title: "Reduce client reporting work",
-    description: "Agency plans package scan movement, unresolved issues, proof links, and white-label reports for recurring retainers.",
+    description: "Enterprise plans package scan movement, unresolved issues, proof links, and white-label reports for recurring retainers.",
     icon: FileCheck2,
-    stat: "50 sites",
+    stat: "Unlimited sites",
   },
   {
     title: "Monitor drift continuously",
@@ -105,17 +106,21 @@ const implementationSteps = [
 
 export default function PricingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  useEffect(() => {
+    track("pricing_view");
+  }, []);
   const subscriptionPlans = PRICING_PLANS.map((plan) => ({
     ...plan,
     price: plan.monthlyPrice === 0 ? "$0 / GBP 0" : `$${plan.monthlyPrice}/mo`,
     description: plan.id === "free"
-      ? "For founders who want to see AI and privacy risk before buying."
-      : plan.id === "agency"
-        ? "White-label AI readiness and privacy monitoring for client websites."
-        : "Recurring AI readiness and compliance monitoring aligned with product entitlements.",
-    cta: plan.id === "agency" ? "Talk to founder" : plan.id === "free" ? "Start free scan" : "Start readiness",
-    href: plan.id === "agency" ? "/contact" : "/auth/signup",
-    badge: plan.id === "pro" ? "Most Popular" : plan.id === "agency" ? "Agency" : plan.id === "free" ? "No card" : "Starter",
+      ? "For AI founders who want to see AI Act risk before buying."
+      : plan.id === "enterprise"
+        ? "Unlimited AI Act readiness, white-label proof packs, SSO, and dedicated support."
+        : "Recurring AI Act readiness and compliance monitoring aligned with product entitlements.",
+    cta: plan.id === "enterprise" ? "Talk to founder" : plan.id === "free" ? "Start free scan" : "Start readiness",
+    href: plan.id === "enterprise" ? "/contact" : "/auth/signup",
+    badge: plan.id === "pro" ? "Most Popular" : plan.id === "enterprise" ? "Enterprise" : plan.id === "free" ? "No card" : "Starter",
     featured: plan.id === "pro",
     variant: plan.id === "pro" ? "default" as const : "outline" as const,
   }));
@@ -174,7 +179,7 @@ export default function PricingPage() {
               <p className="mt-2 text-caption font-semibold uppercase text-text-tertiary">
                 Backend plan: {plan.backendPlanType} | {plan.limits.websites} website{plan.limits.websites === 1 ? "" : "s"}
               </p>
-              <Button asChild variant={plan.variant} className="mt-7 w-full rounded-2xl">
+              <Button asChild variant={plan.variant} className="mt-7 w-full rounded-2xl" onClick={() => track("pricing_cta_click", { plan: plan.id, price: plan.monthlyPrice })}>
                 <Link href={plan.href}>
                   {plan.cta}
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -212,7 +217,7 @@ export default function PricingPage() {
                   </div>
                 ))}
               </div>
-              <Button asChild className="mt-6 rounded-2xl">
+              <Button asChild className="mt-6 rounded-2xl" onClick={() => track("pricing_setup_package_click")}>
                 <Link href={setupPackage.href}>
                   {setupPackage.cta}
                   <ArrowRight className="ml-2 h-4 w-4" />

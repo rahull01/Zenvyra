@@ -14,24 +14,24 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s | Zenvyra",
     },
     description:
-      "Zenvyra is a AI privacy compliance platform, automated cookie consent platform, and enterprise GDPR tool for live policy updates, AI tracker classification, consent audit trails, and DSAR workflows.",
+      "AI Act compliance for AI startups. Scan your AI product, generate compliant policies, and get audit-ready in minutes.",
     keywords: [
-      "AI privacy compliance platform",
-      "Automated cookie consent platform",
-      "Enterprise GDPR tool",
-      "privacy compliance software",
-      "AI tracker classification",
-      "DSAR deadline tracking",
-      "dynamic privacy policy updates",
+      "AI Act compliance",
+      "AI startup compliance",
+      "EU AI Act",
+      "LLM compliance",
+      "AI governance",
+      "AI policy generator",
+      "AI audit readiness",
     ],
     authors: [{ name: "Zenvyra" }],
     alternates: {
       canonical: "/",
     },
     openGraph: {
-      title: "Zenvyra - AI Privacy Compliance Platform for Automated Cookie Consent",
+      title: "AI Act Compliance for AI Startups",
       description:
-        "Enterprise GDPR tool for automated cookie consent, live dynamic policy updates, AI website tracker classification, consent audit trails, and DSAR deadline workflows.",
+        "Scan your AI product, generate compliant policies, and get audit-ready in minutes. Built for LLM and AI startups facing EU AI Act requirements.",
       url: siteUrl,
       siteName: "Zenvyra",
       type: "website",
@@ -47,9 +47,9 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Zenvyra - Automated Cookie Consent Platform",
+      title: "AI Act Compliance for AI Startups",
       description:
-        "AI privacy compliance platform and enterprise GDPR tool with dynamic policy updates, AI tracker classification, consent audit trails, and DSAR automation.",
+        "Scan your AI product, generate compliant policies, and get audit-ready in minutes. Built for LLM and AI startups facing EU AI Act requirements.",
       images: ["/images/og-zenvyra.png"],
     },
     robots: {
