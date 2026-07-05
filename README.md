@@ -213,6 +213,13 @@ npm test
 | `DODO_API_KEY` | Dodo payment API key | Yes |
 | `EMAIL_HOST` | SMTP host | Yes |
 | `APP_OPS_ALERT_EMAIL` | Ops alert email address | No (default ops) |
+| `SENTRY_DSN` | Backend Sentry DSN | No (optional; Sentry only reports when set) |
+| `SENTRY_ENVIRONMENT` | Backend Sentry environment | No (defaults to active Spring profile) |
+| `SENTRY_TRACES_SAMPLE_RATE` | Backend Sentry transaction sample rate (0-1) | No (default 0.1) |
+| `NEXT_PUBLIC_SENTRY_DSN` | Frontend Sentry DSN | No (optional; Sentry only reports when set) |
+| `NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE` | Frontend Sentry transaction sample rate (0-1) | No (default 0.1) |
+
+> Sentry is optional across the stack. The backend Spring Boot starter, logback integration, Next.js client/server instrumentation, and error handlers all guard on the DSN being configured; nothing is reported when these variables are left blank.
 
 See `.env.example` for complete configuration.
 

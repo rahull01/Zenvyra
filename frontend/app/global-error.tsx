@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import * as Sentry from "@sentry/nextjs";
 
 type GlobalErrorProps = {
   error: Error & { digest?: string };
@@ -9,6 +10,9 @@ type GlobalErrorProps = {
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   useEffect(() => {
+    if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
+      Sentry.captureException(error);
+    }
     fetch("/api/client-errors", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

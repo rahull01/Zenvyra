@@ -17,6 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 
+import io.sentry.Sentry;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +30,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ErrorResponse> handleApiException(ApiException e) {
         log.error("API error: {}", LogSanitizer.message(e.getMessage()));
+        if (e.getStatus() != null && e.getStatus().is5xxServerError()) {
+            Sentry.captureException(e);
+        }
         return createErrorResponse(e.getMessage(), e.getStatus());
     }
 
@@ -71,7 +76,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception e) {
         log.error("Unexpected error occurred", e);
-        return createErrorResponse("An unexpected error occurred. Please try again later.", 
+        Sentry.captureException(e);
+        return createErrorResponse("An unexpected error occurred. Please try again later.",
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

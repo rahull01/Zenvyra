@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import { getZenvyraSchemaGraph } from "@/lib/seo-schema";
+import "./sentry-client";
 import "../styles/globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://zenvyra.com";

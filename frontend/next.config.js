@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const { withSentryConfig } = require("@sentry/nextjs");
+
 const isProductionRuntime =
   process.env.VERCEL_ENV === "production" || process.env.Zenvyra_REQUIRE_PROD_ENV === "true";
 function requiredEnv(name, fallback) {
@@ -69,4 +71,7 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withSentryConfig(nextConfig, {
+  silent: true,
+  widenClientFileUpload: false,
+});
