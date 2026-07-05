@@ -4,6 +4,7 @@ import {
   getCompetitorComparison,
   getCompetitorSlugs,
 } from "@/lib/competitor-comparisons";
+import JsonLd from "@/components/JsonLd";
 
 interface PageProps {
   params: {
@@ -84,10 +85,7 @@ export default function CompetitorComparisonPage({ params }: PageProps) {
 
   return (
     <main className="bg-background-base">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <JsonLd data={faqSchema} />
 
       <article className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
         <div className="prose prose-slate max-w-none prose-headings:tracking-normal prose-table:my-8 prose-th:bg-surface-100 prose-th:p-4 prose-td:p-4 prose-td:align-top">

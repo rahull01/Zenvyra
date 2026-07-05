@@ -1,4 +1,4 @@
-﻿import PageScaffold from "@/components/marketing/PageScaffold";
+import PageScaffold from "@/components/marketing/PageScaffold";
 
 const groups = [
   { title: "Founder community", detail: "Connect with solo founders and product leads solving compliance at scale." },

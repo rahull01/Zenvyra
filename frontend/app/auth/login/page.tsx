@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 import LoginForm from "@/components/auth/LoginForm";
-import CookieConsent from "@/components/marketing/CookieConsent";
 
 export default function LoginPage() {
   return (
@@ -32,7 +31,6 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
-      <CookieConsent />
     </div>
   );
 }

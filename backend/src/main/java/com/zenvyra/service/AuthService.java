@@ -37,6 +37,14 @@ public class AuthService {
     private final OrganizationService organizationService;
     private final WebsiteRepository websiteRepository;
 
+    /**
+     * Minimum wall-clock duration (ms) for sensitive unauthenticated endpoints
+     * (password reset / email verification resend) to mitigate timing-based
+     * account enumeration. Realistic DB + bcrypt costs are well under this, so
+     * the helper only ever sleeps the remaining slack.
+     */
+    private static final long TARGET_DELAY_MS = 200;
+
     public AuthResponse signup(SignupRequest request) {
         ValidationUtil.ValidationResult validation = ValidationUtil.validateSignup(
                 request.getEmail(), request.getPassword(), request.getFullName());
@@ -171,18 +179,23 @@ public class AuthService {
      * Always responds generically to avoid account enumeration.
      */
     public void sendPasswordResetEmail(String email) {
-        if (email == null || email.isBlank()) {
-            return;
-        }
+        long start = System.nanoTime();
         try {
-            User user = userRepository.findByEmail(email.trim().toLowerCase()).orElse(null);
-            if (user == null) {
+            if (email == null || email.isBlank()) {
                 return;
             }
-            String resetToken = jwtTokenProvider.generatePasswordResetToken(user.getEmail());
-            emailService.sendPasswordResetEmail(user.getEmail(), resetToken);
-        } catch (Exception e) {
-            log.warn("Password reset flow error for {}: {}", LogSanitizer.email(email), LogSanitizer.message(e.getMessage()));
+            try {
+                User user = userRepository.findByEmail(email.trim().toLowerCase()).orElse(null);
+                if (user == null) {
+                    return;
+                }
+                String resetToken = jwtTokenProvider.generatePasswordResetToken(user.getEmail());
+                emailService.sendPasswordResetEmail(user.getEmail(), resetToken);
+            } catch (Exception e) {
+                log.warn("Password reset flow error for {}: {}", LogSanitizer.email(email), LogSanitizer.message(e.getMessage()));
+            }
+        } finally {
+            constantTimeDelay(start);
         }
     }
 
@@ -212,17 +225,22 @@ public class AuthService {
      * Always responds generically for resend to avoid account enumeration.
      */
     public void sendVerificationEmail(String email) {
-        if (email == null || email.isBlank()) {
-            return;
-        }
+        long start = System.nanoTime();
         try {
-            User user = userRepository.findByEmail(email.trim().toLowerCase()).orElse(null);
-            if (user == null || Boolean.TRUE.equals(user.getEmailVerified())) {
+            if (email == null || email.isBlank()) {
                 return;
             }
-            emailService.sendVerifyEmail(user.getEmail(), jwtTokenProvider.generateEmailVerificationToken(user.getEmail()));
-        } catch (Exception e) {
-            log.warn("Email verification resend flow error for {}: {}", LogSanitizer.email(email), LogSanitizer.message(e.getMessage()));
+            try {
+                User user = userRepository.findByEmail(email.trim().toLowerCase()).orElse(null);
+                if (user == null || Boolean.TRUE.equals(user.getEmailVerified())) {
+                    return;
+                }
+                emailService.sendVerifyEmail(user.getEmail(), jwtTokenProvider.generateEmailVerificationToken(user.getEmail()));
+            } catch (Exception e) {
+                log.warn("Email verification resend flow error for {}: {}", LogSanitizer.email(email), LogSanitizer.message(e.getMessage()));
+            }
+        } finally {
+            constantTimeDelay(start);
         }
     }
 
@@ -301,5 +319,22 @@ public class AuthService {
             case "SAAS" -> "SAAS";
             default -> "BUSINESS";
         };
+    }
+
+    /**
+     * Pads wall-clock elapsed time so callers cannot infer account existence or
+     * verification state from response latency. Sleeps at most {@code TARGET_DELAY_MS}
+     * worth of remaining time; restores interrupt status if interrupted.
+     */
+    private void constantTimeDelay(long startNs) {
+        long elapsedMs = (System.nanoTime() - startNs) / 1_000_000L;
+        long remaining = TARGET_DELAY_MS - elapsedMs;
+        if (remaining > 0) {
+            try {
+                Thread.sleep(remaining);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 }

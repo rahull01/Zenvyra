@@ -5,7 +5,8 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
-RUN npm ci
+# Using npm install because lockfile cannot be regenerated in this environment; revisit once package-lock.json is refreshed.
+RUN npm install
 
 
 # 2. Rebuild the source code only when needed

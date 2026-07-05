@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import DashboardPageFromMeta from "@/components/dashboard/DashboardPageFromMeta";
 

@@ -48,6 +48,7 @@ backend/target/
 .mcp/
 .mcp.json
 .codex/
+.kimchi/
 
 # ==============================
 # 🧾 LOG FILES

@@ -1,4 +1,4 @@
-﻿import PageScaffold from "@/components/marketing/PageScaffold";
+import PageScaffold from "@/components/marketing/PageScaffold";
 
 const fixes = [
   { title: "Banner behavior fixes", body: "Get compliant cookie banner logic aligned with consent requirements." },

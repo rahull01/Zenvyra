@@ -177,10 +177,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
     }
 
     private String getClientIP(HttpServletRequest request) {
-        String xForwardedFor = request.getHeader("X-Forwarded-For");
-        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
-            return xForwardedFor.split(",")[0].trim();
-        }
+        // ForwardedHeaderFilter resolves the real client IP from X-Forwarded-For / Forwarded headers.
         return request.getRemoteAddr();
     }
 
@@ -219,8 +216,15 @@ public class RateLimitFilter extends OncePerRequestFilter {
     }
 
     private String resolveOrgId(User user) {
-        if (user.getCompanyName() != null && !user.getCompanyName().isBlank()) {
-            return user.getCompanyName().trim().toLowerCase().replaceAll("\\s+", "-");
+        // Prefer an explicit organizationId when the User model exposes one; otherwise fall back to the user id.
+        // Both are UUID/Mongo ids and therefore safe to embed in a Redis key.
+        try {
+            String organizationId = (String) User.class.getMethod("getOrganizationId").invoke(user);
+            if (organizationId != null && !organizationId.isBlank()) {
+                return organizationId;
+            }
+        } catch (ReflectiveOperationException ignored) {
+            // User does not expose getOrganizationId(); fall through to user id.
         }
         return user.getId();
     }

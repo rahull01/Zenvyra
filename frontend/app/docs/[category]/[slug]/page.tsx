@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDocsPage, getDocsStaticParams } from "@/lib/docs-content";
+import JsonLd from "@/components/JsonLd";
 
 interface PageProps {
   params: {
@@ -52,10 +53,7 @@ export default function DocsPage({ params }: PageProps) {
 
   return (
     <main className="mx-auto max-w-4xl">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
+      <JsonLd data={articleSchema} />
 
       <article className="prose prose-slate max-w-none prose-headings:tracking-normal prose-h1:text-4xl prose-h2:border-t prose-h2:border-border-light prose-h2:pt-8 prose-li:my-1">
         <section

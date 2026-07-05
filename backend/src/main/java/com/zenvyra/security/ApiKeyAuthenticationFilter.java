@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,11 +20,15 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
+    // `/api` is the configured servlet context path; `/v1/external/**` is the servlet-relative path.
+    private static final AntPathRequestMatcher EXTERNAL_API_MATCHER =
+            new AntPathRequestMatcher("/v1/external/**");
+
     private final ApiKeyManagementService apiKeyManagementService;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getRequestURI().startsWith("/api/v1/external/");
+        return !EXTERNAL_API_MATCHER.matches(request);
     }
 
     @Override

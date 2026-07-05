@@ -1,4 +1,4 @@
-﻿import PageScaffold from "@/components/marketing/PageScaffold";
+import PageScaffold from "@/components/marketing/PageScaffold";
 
 const sections = [
   { title: "DPA-ready operations", text: "We support data processing controls and agreements for customer privacy requirements." },

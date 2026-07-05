@@ -6,6 +6,7 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
+      auto-index-creation: false
     redis:
       url: ${REDIS_URL}
 
@@ -38,6 +39,7 @@ logging:
 
 # Production settings
 server:
+  forward-headers-strategy: framework
   compression:
     enabled: true
     mime-types: application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/css
