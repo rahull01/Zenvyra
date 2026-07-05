@@ -1,5 +1,6 @@
 package com.zenvyra.security;
 
+import com.zenvyra.config.RateLimitProperties;
 import com.zenvyra.model.User;
 import com.zenvyra.util.LogSanitizer;
 import jakarta.servlet.FilterChain;
@@ -22,7 +23,7 @@ import java.io.IOException;
 public class RateLimitFilter extends OncePerRequestFilter {
 
     private final RedisRateLimiter redisRateLimiter;
-    private static final long PUBLIC_WRITE_MAX_BYTES = 64 * 1024;
+    private final RateLimitProperties rateLimitProperties;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -49,17 +50,23 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 String hourKey = "rate_limit:public_scanner:ip:" + clientIP + ":hour";
                 String dayKey = "rate_limit:public_scanner:ip:" + clientIP + ":day";
 
-                RedisRateLimiter.RateLimitResult hourResult = redisRateLimiter.isAllowed(hourKey, 3, 3600);
+                RedisRateLimiter.RateLimitResult hourResult = redisRateLimiter.isAllowed(
+                        hourKey,
+                        rateLimitProperties.getPublicScannerHourly(),
+                        rateLimitProperties.getPublicScannerHourlyWindowSeconds());
                 if (!hourResult.isAllowed()) {
                     log.warn("Rate limit exceeded for {} on public scanner (hourly)", LogSanitizer.ip(clientIP));
-                    sendRateLimitExceededResponse(response, 3600);
+                    sendRateLimitExceededResponse(response, rateLimitProperties.getPublicScannerHourlyWindowSeconds());
                     return;
                 }
 
-                RedisRateLimiter.RateLimitResult dayResult = redisRateLimiter.isAllowed(dayKey, 5, 86400);
+                RedisRateLimiter.RateLimitResult dayResult = redisRateLimiter.isAllowed(
+                        dayKey,
+                        rateLimitProperties.getPublicScannerDaily(),
+                        rateLimitProperties.getPublicScannerDailyWindowSeconds());
                 if (!dayResult.isAllowed()) {
                     log.warn("Rate limit exceeded for {} on public scanner (daily)", LogSanitizer.ip(clientIP));
-                    sendRateLimitExceededResponse(response, 86400);
+                    sendRateLimitExceededResponse(response, rateLimitProperties.getPublicScannerDailyWindowSeconds());
                     return;
                 }
 
@@ -70,10 +77,13 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:badge:ip:" + clientIP;
 
-                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(redisKey, 120, 60);
+                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(
+                        redisKey,
+                        rateLimitProperties.getBadgePerMinute(),
+                        rateLimitProperties.getBadgeWindowSeconds());
                 if (!result.isAllowed()) {
                     log.warn("Rate limit exceeded for {} on badge", LogSanitizer.ip(clientIP));
-                    sendRateLimitExceededResponse(response, 60);
+                    sendRateLimitExceededResponse(response, rateLimitProperties.getBadgeWindowSeconds());
                     return;
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
@@ -83,10 +93,13 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:public_read:ip:" + clientIP;
 
-                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(redisKey, 300, 60);
+                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(
+                        redisKey,
+                        rateLimitProperties.getPublicReadPerMinute(),
+                        rateLimitProperties.getPublicReadWindowSeconds());
                 if (!result.isAllowed()) {
                     log.warn("Rate limit exceeded for {} on public read endpoint", LogSanitizer.ip(clientIP));
-                    sendRateLimitExceededResponse(response, 60);
+                    sendRateLimitExceededResponse(response, rateLimitProperties.getPublicReadWindowSeconds());
                     return;
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
@@ -97,10 +110,13 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:auth:ip:" + clientIP;
 
-                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(redisKey, 10, 300);
+                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(
+                        redisKey,
+                        rateLimitProperties.getAuthPerWindow(),
+                        rateLimitProperties.getAuthWindowSeconds());
                 if (!result.isAllowed()) {
                     log.warn("Rate limit exceeded for {} on auth endpoint", LogSanitizer.ip(clientIP));
-                    sendRateLimitExceededResponse(response, 300);
+                    sendRateLimitExceededResponse(response, rateLimitProperties.getAuthWindowSeconds());
                     return;
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
@@ -110,10 +126,13 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:public_write:ip:" + clientIP;
 
-                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(redisKey, 60, 60);
+                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(
+                        redisKey,
+                        rateLimitProperties.getPublicWritePerMinute(),
+                        rateLimitProperties.getPublicWriteWindowSeconds());
                 if (!result.isAllowed()) {
                     log.warn("Rate limit exceeded for {} on public write endpoint", LogSanitizer.ip(clientIP));
-                    sendRateLimitExceededResponse(response, 60);
+                    sendRateLimitExceededResponse(response, rateLimitProperties.getPublicWriteWindowSeconds());
                     return;
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
@@ -123,10 +142,13 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:payment_webhook:ip:" + clientIP;
 
-                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(redisKey, 120, 60);
+                RedisRateLimiter.RateLimitResult result = redisRateLimiter.isAllowed(
+                        redisKey,
+                        rateLimitProperties.getPaymentWebhookPerMinute(),
+                        rateLimitProperties.getPaymentWebhookWindowSeconds());
                 if (!result.isAllowed()) {
                     log.warn("Rate limit exceeded for {} on payment webhook endpoint", LogSanitizer.ip(clientIP));
-                    sendRateLimitExceededResponse(response, 60);
+                    sendRateLimitExceededResponse(response, rateLimitProperties.getPaymentWebhookWindowSeconds());
                     return;
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
@@ -140,21 +162,29 @@ public class RateLimitFilter extends OncePerRequestFilter {
                     int userLimit = resolveScanLimitForPlan(user.getPlan());
                     String userKey = "rate_limit:full_scan:user:" + userId;
 
-                    RedisRateLimiter.RateLimitResult userResult = redisRateLimiter.isAllowed(userKey, userLimit, 86400);
+                    RedisRateLimiter.RateLimitResult userResult = redisRateLimiter.isAllowed(
+                            userKey,
+                            userLimit,
+                            rateLimitProperties.getFullScanWindowSeconds());
                     if (!userResult.isAllowed()) {
                         log.warn("Rate limit exceeded for {} on full scan (user)", LogSanitizer.id("user", userId));
-                        sendRateLimitExceededResponse(response, 86400);
+                        sendRateLimitExceededResponse(response, rateLimitProperties.getFullScanWindowSeconds());
                         return;
                     }
 
                     String orgId = resolveOrgId(user);
                     if (orgId != null && !orgId.isBlank()) {
                         String orgKey = "rate_limit:full_scan:org:" + orgId;
-                        int orgLimit = Math.max(userLimit * 5, 50);
-                        RedisRateLimiter.RateLimitResult orgResult = redisRateLimiter.isAllowed(orgKey, orgLimit, 86400);
+                        int orgLimit = Math.max(
+                                userLimit * rateLimitProperties.getFullScanOrgMultiplier(),
+                                rateLimitProperties.getFullScanOrgMin());
+                        RedisRateLimiter.RateLimitResult orgResult = redisRateLimiter.isAllowed(
+                                orgKey,
+                                orgLimit,
+                                rateLimitProperties.getFullScanWindowSeconds());
                         if (!orgResult.isAllowed()) {
                             log.warn("Rate limit exceeded for org {} on full scan", LogSanitizer.id("org", orgId));
-                            sendRateLimitExceededResponse(response, 86400);
+                            sendRateLimitExceededResponse(response, rateLimitProperties.getFullScanWindowSeconds());
                             return;
                         }
                         response.setHeader("X-Rate-Limit-Remaining-Org", String.valueOf(orgResult.getRemainingTokens()));
@@ -199,19 +229,19 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
     private boolean exceedsPublicWriteLimit(HttpServletRequest request) {
         long contentLength = request.getContentLengthLong();
-        return contentLength > PUBLIC_WRITE_MAX_BYTES;
+        return contentLength > rateLimitProperties.getPublicWriteMaxBytes();
     }
 
     private int resolveScanLimitForPlan(String plan) {
         if (plan == null) {
-            return 5;
+            return rateLimitProperties.getFullScanFree();
         }
         return switch (plan.toLowerCase()) {
-            case "starter" -> 20;
-            case "pro" -> 100;
-            case "enterprise" -> 1000;
-            case "free", "freemium" -> 5;
-            default -> 5;
+            case "starter" -> rateLimitProperties.getFullScanStarter();
+            case "pro" -> rateLimitProperties.getFullScanPro();
+            case "enterprise" -> rateLimitProperties.getFullScanEnterprise();
+            case "free", "freemium" -> rateLimitProperties.getFullScanFree();
+            default -> rateLimitProperties.getFullScanFree();
         };
     }
 

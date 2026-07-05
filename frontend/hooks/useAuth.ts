@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { setAuthToken, removeAuthToken } from "../lib/auth";
 
 interface User {
     id: string;
@@ -21,7 +22,7 @@ interface AuthState {
     isAuthenticated: boolean;
     isLoading: boolean;
 
-    login: (user: User) => void;
+    login: (user: User, token?: string) => void;
     logout: () => void;
     updateUser: (user: Partial<User>) => void;
     setLoading: (loading: boolean) => void;
@@ -34,7 +35,10 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
             isLoading: true,
 
-            login: (user) => {
+            login: (user, token) => {
+                if (token) {
+                    setAuthToken(token);
+                }
                 set({
                     user,
                     isAuthenticated: true,
@@ -43,6 +47,7 @@ export const useAuthStore = create<AuthState>()(
             },
 
             logout: () => {
+                removeAuthToken();
                 set({
                     user: null,
                     isAuthenticated: false,

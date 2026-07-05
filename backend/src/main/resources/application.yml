@@ -126,3 +126,30 @@ app-meta:
   version: 1.0.0
   description: AI-Powered Compliance Automation
   support-email: support@zenvyra.com
+
+# Rate limiting defaults (overridable per profile; matches RateLimitProperties).
+# Keys align with com.zenvyra.config.RateLimitProperties fields.
+rate-limit:
+  public-scanner-hourly: 3
+  public-scanner-hourly-window-seconds: 3600
+  public-scanner-daily: 5
+  public-scanner-daily-window-seconds: 86400
+  badge-per-minute: 120
+  badge-window-seconds: 60
+  public-read-per-minute: 300
+  public-read-window-seconds: 60
+  auth-per-window: 10
+  auth-window-seconds: 300
+  public-write-per-minute: 60
+  public-write-window-seconds: 60
+  payment-webhook-per-minute: 120
+  payment-webhook-window-seconds: 60
+  full-scan-free: 5
+  full-scan-starter: 20
+  full-scan-pro: 100
+  full-scan-enterprise: 1000
+  full-scan-window-seconds: 86400
+  full-scan-org-multiplier: 5
+  full-scan-org-min: 50
+  public-write-max-bytes: 65536
+  in-memory-fallback-enabled: false

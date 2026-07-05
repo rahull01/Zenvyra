@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Bell, ChevronDown, HelpCircle, LogOut, Search, User } from "lucide-react";
 import { useAuthStore } from "@/hooks/useAuth";
 import api from "@/lib/api";
+import { removeAuthToken } from "@/lib/auth";
 
 export const TopBar = () => {
   const router = useRouter();
@@ -27,6 +28,7 @@ export const TopBar = () => {
     } catch {
       // Local sign-out should still complete if the network is unavailable.
     }
+    removeAuthToken();
     logout();
     router.push("/auth/login");
   };

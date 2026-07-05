@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAuthToken } from "./auth";
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL || "/api",
@@ -35,6 +36,12 @@ async function ensureCsrfToken() {
 api.interceptors.request.use(async (config) => {
     const method = (config.method || "get").toLowerCase();
     const isCsrfFetch = typeof config.url === "string" && config.url.includes("/csrf");
+
+    const token = getAuthToken();
+    if (token) {
+        config.headers = config.headers || {};
+        config.headers["Authorization"] = `Bearer ${token}`;
+    }
 
     if (unsafeMethods.has(method) && !isCsrfFetch) {
         await ensureCsrfToken();

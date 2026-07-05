@@ -101,7 +101,9 @@ class RateLimitFilterTest {
 
     @Test
     void oversizedPublicWriteRequestReturns413() throws Exception {
-        RateLimitFilter filter = new RateLimitFilter(mock(RedisRateLimiter.class));
+        RateLimitFilter filter = new RateLimitFilter(
+                mock(RedisRateLimiter.class),
+                new com.zenvyra.config.RateLimitProperties());
         MockHttpServletRequest request = new MockHttpServletRequest("POST", "/scan/free");
         request.setContentType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE);
         request.setContent(new byte[(65 * 1024)]);
