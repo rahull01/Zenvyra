@@ -17,7 +17,6 @@ const ROUTE_LABELS: Record<string, string> = {
     "/ai-insights": "AI Insights",
     "/monitor": "Monitoring",
     "/consent": "Consent Center",
-    "/monitor": "Audit Logs",
     "/scan": "Magic Scanner",
     "/policies": "Policies",
     "/websites": "Websites",
