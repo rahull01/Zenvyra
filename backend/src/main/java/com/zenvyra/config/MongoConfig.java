@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableMongoRepositories(basePackages = "com.zenvyra.repository")
@@ -43,13 +44,13 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
                 .applyToConnectionPoolSettings(builder -> builder
                         .minSize(10)
                         .maxSize(50)
-                        .maxWaitTime(Duration.ofSeconds(5))
-                        .maxConnectionIdleTime(Duration.ofMinutes(10)))
+                        .maxWaitTime(Duration.ofSeconds(5).toMillis(), TimeUnit.MILLISECONDS)
+                        .maxConnectionIdleTime(Duration.ofMinutes(10).toMillis(), TimeUnit.MILLISECONDS))
                 .applyToSocketSettings(builder -> builder
-                        .connectTimeout(Duration.ofSeconds(5))
-                        .readTimeout(Duration.ofSeconds(10)))
+                        .connectTimeout((int) Duration.ofSeconds(5).toMillis(), TimeUnit.MILLISECONDS)
+                        .readTimeout((int) Duration.ofSeconds(10).toMillis(), TimeUnit.MILLISECONDS))
                 .applyToServerSettings(builder -> builder
-                        .heartbeatFrequency(Duration.ofSeconds(10), Duration.ofSeconds(5)))
+                        .heartbeatFrequency(Duration.ofSeconds(10).toMillis(), TimeUnit.MILLISECONDS))
                 .build();
     }
 
