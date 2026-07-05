@@ -25,7 +25,7 @@ export default function ProofReportPage({ params }: { params: { id: string } }) 
       title="Proof Report"
       subtitle="Privacy and AI readiness evidence pack for internal review, customer trust, and counsel handoff."
       icon={FileText}
-      actions={[{ label: "Back to website", href: `/dashboard/websites/${params.id}` }]}
+      actions={[{ label: "Back to website", href: `/websites/${params.id}` }]}
     >
       {loading ? (
         <div className="standard-card text-center text-text-secondary">

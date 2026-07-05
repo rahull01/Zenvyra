@@ -183,9 +183,9 @@ export default function FreePrivacyScannerPage() {
       if (url) {
         try {
           await api.post("/websites", { url });
-          router.push("/dashboard/websites");
+          router.push("/websites");
         } catch {
-          router.push("/dashboard/scanner");
+          router.push("/scanner");
         }
       } else {
         router.push("/dashboard");

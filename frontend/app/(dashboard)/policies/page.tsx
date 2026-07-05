@@ -166,10 +166,10 @@ export default function PoliciesPage() {
               <div className="flex items-center justify-between pt-4 border-t border-surface-800/50">
                 <span className="text-xs text-surface-500">Updated {formatRelative(policy.updatedAt)}</span>
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Link href={`/dashboard/policies/${policy.id}/preview`} className="p-2 hover:bg-surface-800 rounded-lg transition-colors" title="Preview">
+                  <Link href={`/policies/${policy.id}/preview`} className="p-2 hover:bg-surface-800 rounded-lg transition-colors" title="Preview">
                     <Eye className="w-4 h-4 text-surface-400" />
                   </Link>
-                  <Link href={`/dashboard/policies/${policy.id}`} className="p-2 hover:bg-surface-800 rounded-lg transition-colors" title="Edit">
+                  <Link href={`/policies/${policy.id}`} className="p-2 hover:bg-surface-800 rounded-lg transition-colors" title="Edit">
                     <Edit className="w-4 h-4 text-surface-400" />
                   </Link>
                 </div>

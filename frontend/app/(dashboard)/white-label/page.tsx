@@ -28,7 +28,7 @@ export default function WhiteLabelSettingsPage() {
       subtitle="Customize domains, styles, logos, and layouts to embed your legal policies seamlessly."
       icon={Palette}
       actions={[
-        { label: "Save Custom Branding", href: "/dashboard/white-label", primary: true, onClick: handleSave },
+        { label: "Save Custom Branding", href: "/white-label", primary: true, onClick: handleSave },
       ]}
     >
       <div className="grid gap-6 lg:grid-cols-12 items-start">

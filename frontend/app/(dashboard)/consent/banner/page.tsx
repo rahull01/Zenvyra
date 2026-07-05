@@ -140,7 +140,7 @@ export default function ConsentBannerPage() {
       subtitle="Customize how visitors see and manage cookies on your website."
       icon={Cookie}
       actions={[
-        { label: "Save Changes", href: "/dashboard/consent/banner", primary: true, onClick: handleSave },
+        { label: "Save Changes", href: "/consent/banner", primary: true, onClick: handleSave },
       ]}
     >
       {loading ? (

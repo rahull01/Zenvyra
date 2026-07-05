@@ -47,7 +47,7 @@ export default function EulaGeneratorPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mt-10 flex justify-center"
             >
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="bg-primary hover:bg-primary-hover text-white px-8 py-6 rounded-xl text-base font-semibold shadow-button">
                   Generate EULA Agreement
                   <ChevronRight className="ml-2 h-4 w-4" />
@@ -130,7 +130,7 @@ export default function EulaGeneratorPage() {
               <p className="text-sm text-text-secondary leading-relaxed mb-4">
                 Terms of Service govern web interactions, whereas a EULA is specific to installed software. If a user downloads software onto a phone, PC, or server, a EULA is legally necessary to control the license usage.
               </p>
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="bg-primary hover:bg-primary-hover text-white rounded-lg">
                   Start EULA Generator
                 </Button>

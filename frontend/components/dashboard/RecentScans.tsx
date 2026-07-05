@@ -48,7 +48,7 @@ export default function RecentScans() {
             <p className="mt-2 text-xs font-bold uppercase tracking-widest text-text-secondary">Historical Scans</p>
           </div>
         </div>
-        <Link href="/dashboard/scanner" className="flex items-center gap-2 rounded-xl border border-border-light bg-background-secondary px-4 py-2 text-xs font-black uppercase tracking-widest text-text-secondary transition hover:border-accent hover:bg-accent hover:text-white">
+        <Link href="/scanner" className="flex items-center gap-2 rounded-xl border border-border-light bg-background-secondary px-4 py-2 text-xs font-black uppercase tracking-widest text-text-secondary transition hover:border-accent hover:bg-accent hover:text-white">
           Scanner
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>

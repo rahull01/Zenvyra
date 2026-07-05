@@ -65,7 +65,7 @@ export default function PolicyPreviewPage({ params }: { params: { id: string } }
     <main className="min-h-screen bg-background-secondary p-6 text-text-primary print:bg-white print:p-0 md:p-10">
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4 print:hidden">
         <div className="flex items-center gap-3">
-          <Link href={`/dashboard/policies/${params.id}`} className="text-text-muted transition-colors hover:text-text-primary">
+          <Link href={`/policies/${params.id}`} className="text-text-muted transition-colors hover:text-text-primary">
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
@@ -79,7 +79,7 @@ export default function PolicyPreviewPage({ params }: { params: { id: string } }
             <Printer className="h-4 w-4" />
             Print / PDF
           </Button>
-          <Link href={`/dashboard/policies/${params.id}/edit`}>
+          <Link href={`/policies/${params.id}/edit`}>
             <Button className="gap-2 rounded-xl bg-secondary-dark font-bold text-white hover:bg-primary">
               <Edit className="h-4 w-4" />
               Edit Draft
@@ -117,7 +117,7 @@ export default function PolicyPreviewPage({ params }: { params: { id: string } }
             <p className="text-caption leading-relaxed text-text-tertiary">
               Publish this policy to make `/p/{companySlug}/{policyType}` available to customers and embeds.
             </p>
-            <Link href="/dashboard/integrations/api" className="block text-caption font-bold text-primary hover:underline">
+            <Link href="/integrations/api" className="block text-caption font-bold text-primary hover:underline">
               Manage API access
             </Link>
           </div>

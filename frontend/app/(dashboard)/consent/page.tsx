@@ -11,8 +11,8 @@ export default function ConsentRootPage() {
       subtitle="Manage your cookie banner, visitor preferences, and consent flows from one place."
       icon={Cookie}
       actions={[
-        { label: "Edit Cookie Banner", href: "/dashboard/consent/banner", primary: false },
-        { label: "Manage Preferences", href: "/dashboard/consent/preferences", primary: true },
+        { label: "Edit Cookie Banner", href: "/consent/banner", primary: false },
+        { label: "Manage Preferences", href: "/consent/preferences", primary: true },
       ]}
     >
       <div className="grid gap-6 lg:grid-cols-2">
@@ -23,10 +23,10 @@ export default function ConsentRootPage() {
             Use the banner settings to update messaging, styling, and consent behavior.
           </p>
           <div className="mt-6 space-y-3">
-            <Link href="/dashboard/consent/banner" className="btn-secondary w-full text-center">
+            <Link href="/consent/banner" className="btn-secondary w-full text-center">
               Configure banner
             </Link>
-            <Link href="/dashboard/consent/preferences" className="btn-primary w-full text-center">
+            <Link href="/consent/preferences" className="btn-primary w-full text-center">
               Open preference center
             </Link>
           </div>

@@ -27,7 +27,7 @@ export default function NewWebsitePage() {
     >
       <div className="mb-6">
         <Link
-          href="/dashboard/websites"
+          href="/websites"
           className="inline-flex items-center gap-2 text-caption font-bold text-text-secondary hover:text-primary transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />

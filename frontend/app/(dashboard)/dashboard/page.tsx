@@ -102,25 +102,25 @@ export default function DashboardPage() {
         label: "AI Readiness Score",
         value: `${Math.round(stats?.complianceScore || 0)}/100`,
         icon: ShieldCheck,
-        href: "/dashboard/compliance-score",
+        href: "/compliance-score",
       },
       {
         label: "AI Systems",
         value: String(stats?.aiSystemsCount || 0),
         icon: TrendingUp,
-        href: "/dashboard/ai-act",
+        href: "/ai-act",
       },
       {
         label: "Websites",
         value: String(stats?.totalWebsites || 0),
         icon: Globe,
-        href: "/dashboard/websites",
+        href: "/websites",
       },
       {
         label: "Open Issues",
         value: String(stats?.activeAlerts || 0),
         icon: AlertTriangle,
-        href: "/dashboard/ai-insights",
+        href: "/ai-insights",
       },
     ],
     [stats],
@@ -172,13 +172,13 @@ export default function DashboardPage() {
                   <h2 className="text-lg font-bold text-text-primary">Recent Scans</h2>
                   <p className="mt-1 text-sm text-text-secondary">Latest website scan records stored in MongoDB.</p>
                 </div>
-                <Link href="/dashboard/scanner" className="text-sm font-semibold text-accent hover:underline">
+                <Link href="/scanner" className="text-sm font-semibold text-accent hover:underline">
                   New scan
                 </Link>
               </div>
               <div className="divide-y divide-border-light">
                 {scans.length === 0 ? (
-                  <EmptyState text="No scans yet. Run your first scan to populate this table." href="/dashboard/scanner" label="Open scanner" />
+                  <EmptyState text="No scans yet. Run your first scan to populate this table." href="/scanner" label="Open scanner" />
                 ) : (
                   scans.map((scan) => (
                     <div key={scan.id} className="flex items-center justify-between gap-4 p-5">

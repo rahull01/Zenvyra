@@ -61,7 +61,7 @@ export default function NewPolicyWizardPage() {
             Step {step} of 5 — {step === 1 ? "Business Profile" : step === 2 ? "Data Collection" : step === 3 ? "Third Parties" : step === 4 ? "User Rights" : "Review & Publish"}
           </p>
         </div>
-        <Link href="/dashboard/policies">
+        <Link href="/policies">
           <Button variant="outline" className="border-border-medium rounded-xl text-caption font-bold">
             Exit Wizard
           </Button>
@@ -303,7 +303,7 @@ export default function NewPolicyWizardPage() {
           </Button>
 
           {step === 5 ? (
-            <Link href="/dashboard/policies">
+            <Link href="/policies">
               <Button
                 onClick={handlePublish}
                 className="bg-primary hover:bg-primary-hover text-white rounded-xl font-bold px-6"

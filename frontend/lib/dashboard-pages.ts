@@ -13,15 +13,15 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     title: "Policy Generator",
     subtitle: "Answer a few questions and we'll generate a compliant policy for you.",
     iconName: "FileText",
-    actions: [{ label: "Save as Draft", href: "/dashboard/policies", primary: false }],
+    actions: [{ label: "Save as Draft", href: "/policies", primary: false }],
   },
   "consent/banner": {
     title: "Cookie Consent Banner",
     subtitle: "Customize how visitors see and manage cookies on your website.",
     iconName: "Cookie",
     actions: [
-      { label: "Preview on Site", href: "/dashboard/consent/preferences", primary: false },
-      { label: "Save Changes", href: "/dashboard/consent/banner", primary: true },
+      { label: "Preview on Site", href: "/consent/preferences", primary: false },
+      { label: "Save Changes", href: "/consent/banner", primary: true },
     ],
   },
   "consent/preferences": {
@@ -76,13 +76,13 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
       { label: "Cookie consent", value: "92%" },
       { label: "Terms & conditions", value: "70%" },
     ],
-    actions: [{ label: "Export Report", href: "/dashboard/analytics", primary: true }],
+    actions: [{ label: "Export Report", href: "/analytics", primary: true }],
   },
   dsar: {
     title: "DSAR Form Builder",
     subtitle: "Create data subject access request forms for GDPR and CCPA workflows.",
     iconName: "UserCheck",
-    actions: [{ label: "View Requests", href: "/dashboard/dsar/requests", primary: true }],
+    actions: [{ label: "View Requests", href: "/dsar/requests", primary: true }],
   },
   "dsar/requests": {
     title: "DSAR Requests",
@@ -99,7 +99,7 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     title: "Add Website",
     subtitle: "Connect a new domain to scan, monitor, and deploy compliance assets.",
     iconName: "Globe",
-    actions: [{ label: "Add Website", href: "/dashboard/websites", primary: true }],
+    actions: [{ label: "Add Website", href: "/websites", primary: true }],
   },
   "billing/invoices": {
     title: "Invoices",
@@ -110,7 +110,7 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     title: "Account Settings",
     subtitle: "Manage your profile, preferences, and security.",
     iconName: "Settings",
-    actions: [{ label: "Save Changes", href: "/dashboard/settings/account", primary: true }],
+    actions: [{ label: "Save Changes", href: "/settings/account", primary: true }],
   },
   "settings/notifications": {
     title: "Notification Settings",
@@ -121,13 +121,13 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     title: "Integrations",
     subtitle: "Connect WordPress, Shopify, Zapier, Google Tag Manager, and more.",
     iconName: "Plug",
-    actions: [{ label: "Browse API Docs", href: "/dashboard/integrations/api", primary: false }],
+    actions: [{ label: "Browse API Docs", href: "/integrations/api", primary: false }],
   },
   "integrations/api": {
     title: "API Keys",
     subtitle: "Generate and manage API keys for programmatic access.",
     iconName: "Key",
-    actions: [{ label: "Generate New Key", href: "/dashboard/integrations/api", primary: true }],
+    actions: [{ label: "Generate New Key", href: "/integrations/api", primary: true }],
   },
   "white-label": {
     title: "White-Label Settings",

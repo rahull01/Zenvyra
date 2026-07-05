@@ -174,7 +174,7 @@ export default function IntegrationsPage() {
             <p className="text-xs text-text-tertiary leading-relaxed">
               Generate credentials to write custom integrations, query audit logs programmatically, or synchronize user consent settings.
             </p>
-            <Link href="/dashboard/integrations/api" className="block pt-2">
+            <Link href="/integrations/api" className="block pt-2">
               <Button className="w-full bg-primary hover:bg-primary-hover text-white text-caption font-bold py-2.5 rounded-xl gap-1">
                 Manage API Keys
                 <ArrowUpRight className="h-3.5 w-3.5" />

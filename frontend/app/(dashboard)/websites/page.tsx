@@ -212,7 +212,7 @@ export default function WebsitesPage() {
                     {scanningId === website.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
                     {scanningId === website.id ? "Scanning" : "Rescan"}
                   </button>
-                  <Link href={`/dashboard/websites/${website.id}`} className="text-sm font-medium text-primary hover:text-primary-hover">
+                  <Link href={`/websites/${website.id}`} className="text-sm font-medium text-primary hover:text-primary-hover">
                     View Details
                   </Link>
                 </div>

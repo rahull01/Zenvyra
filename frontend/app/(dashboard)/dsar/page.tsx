@@ -30,7 +30,7 @@ export default function DsarFormBuilderPage() {
       subtitle="Design privacy intake forms for customers to submit data erasure and access requests."
       icon={Fingerprint}
       actions={[
-        { label: "Save Form Setup", href: "/dashboard/dsar", primary: true, onClick: handleSave },
+        { label: "Save Form Setup", href: "/dsar", primary: true, onClick: handleSave },
       ]}
     >
       <div className="grid gap-6 lg:grid-cols-12 items-start">

@@ -49,7 +49,7 @@ export const RecentPoliciesTable = () => {
     <div className="overflow-hidden rounded-2xl border border-border-light bg-background-primary shadow-card">
       <div className="flex items-center justify-between border-b border-border-light p-6">
         <h3 className="text-lg font-bold text-text-primary">Recent Policies</h3>
-        <Link href="/dashboard/policies" className="text-sm font-bold text-primary hover:underline">
+        <Link href="/policies" className="text-sm font-bold text-primary hover:underline">
           View All
         </Link>
       </div>
@@ -97,10 +97,10 @@ export const RecentPoliciesTable = () => {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                        <Link href={`/dashboard/policies/${policy.id}`} className="rounded-lg p-2 text-text-tertiary transition-all hover:bg-primary-light hover:text-primary">
+                        <Link href={`/policies/${policy.id}`} className="rounded-lg p-2 text-text-tertiary transition-all hover:bg-primary-light hover:text-primary">
                           <FileEdit className="h-4 w-4" />
                         </Link>
-                        <Link href={`/dashboard/policies/${policy.id}/preview`} className="rounded-lg p-2 text-text-tertiary transition-all hover:bg-background-secondary">
+                        <Link href={`/policies/${policy.id}/preview`} className="rounded-lg p-2 text-text-tertiary transition-all hover:bg-background-secondary">
                           <MoreHorizontal className="h-4 w-4" />
                         </Link>
                       </div>

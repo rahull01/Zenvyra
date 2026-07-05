@@ -23,7 +23,7 @@ export default function ConsentPreferencesPage() {
       subtitle="Configure default behaviors and categories for user opt-in selections."
       icon={Cookie}
       actions={[
-        { label: "Save Configuration", href: "/dashboard/consent/preferences", primary: true, onClick: handleSave },
+        { label: "Save Configuration", href: "/consent/preferences", primary: true, onClick: handleSave },
       ]}
     >
       <div className="grid gap-6 lg:grid-cols-12 items-start">

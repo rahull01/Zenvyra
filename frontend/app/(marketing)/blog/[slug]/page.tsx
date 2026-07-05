@@ -249,7 +249,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               <p className="text-xs text-text-secondary leading-relaxed mb-6">
                 Use our automated generator tool to launch GDPR and CCPA policies in less than 5 minutes.
               </p>
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3 rounded-xl shadow-button">
                   Generate Policy Now
                 </Button>

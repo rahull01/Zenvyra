@@ -34,8 +34,8 @@ export default function ScanResultsPage() {
         { label: "Compliance Score", value: "78/100", trend: "Needs remediation" },
       ]}
       actions={[
-        { label: "Run New Scan", href: "/dashboard/scanner", primary: false },
-        { label: "Fix with AI", href: "/dashboard/ai-chat", primary: true },
+        { label: "Run New Scan", href: "/scanner", primary: false },
+        { label: "Fix with AI", href: "/ai-chat", primary: true },
       ]}
     >
       <div className="p-4 rounded-xl bg-warning/10 border border-warning/30 text-warning text-sm">
@@ -155,7 +155,7 @@ export default function ScanResultsPage() {
             <p className="text-caption text-text-tertiary leading-relaxed">
               Enable the automated consent cookie banner configuration. The script blocking engine will dynamically intercept the identified third party trackers until explicit user consent is registered.
             </p>
-            <Link href="/dashboard/consent/banner" className="block">
+            <Link href="/consent/banner" className="block">
               <Button className="w-full bg-primary hover:bg-primary-hover text-white text-caption font-bold py-2 rounded-xl">
                 Configure Consent Center
               </Button>

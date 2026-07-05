@@ -47,7 +47,7 @@ export default function ShippingPolicyGeneratorPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mt-10 flex justify-center"
             >
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="bg-primary hover:bg-primary-hover text-white px-8 py-6 rounded-xl text-base font-semibold shadow-button">
                   Generate Shipping Policy
                   <ChevronRight className="ml-2 h-4 w-4" />
@@ -123,7 +123,7 @@ export default function ShippingPolicyGeneratorPage() {
               <p className="text-sm text-text-secondary leading-relaxed mb-4">
                 Clearly state handling times (e.g. 1-2 business days for fulfillment) separately from carrier transit times to avoid customer complaints over minor fulfillment delays.
               </p>
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="bg-primary hover:bg-primary-hover text-white">
                   Create Shipping Policy
                 </Button>

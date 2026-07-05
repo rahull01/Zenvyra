@@ -48,7 +48,7 @@ export default function DisclaimerGeneratorPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mt-10 flex justify-center"
             >
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="bg-primary hover:bg-primary-hover text-white px-8 py-6 rounded-xl text-base font-semibold shadow-button">
                   Generate Custom Disclaimer
                   <ChevronRight className="ml-2 h-4 w-4" />

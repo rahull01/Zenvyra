@@ -323,7 +323,7 @@ function SetupTaskTable({
               </td>
               <td className="py-3 pr-4">
                 {row.websiteId ? (
-                  <Link href={`/dashboard/websites/${row.websiteId}/proof-report`} className="text-xs font-bold text-accent hover:underline">
+                  <Link href={`/websites/${row.websiteId}/proof-report`} className="text-xs font-bold text-accent hover:underline">
                     Open report
                   </Link>
                 ) : (

@@ -69,7 +69,7 @@ export default function PrivacyPolicyPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mt-10 flex flex-wrap justify-center gap-4"
             >
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="bg-primary hover:bg-primary-hover text-white px-8 py-6 rounded-xl text-base font-semibold shadow-button">
                   Generate Your Policy
                   <ChevronRight className="ml-2 h-4 w-4" />
@@ -186,7 +186,7 @@ export default function PrivacyPolicyPage() {
             Join thousands of startups, SaaS founders, and enterprise companies using Zenvyra.
           </p>
           <div className="mt-8 flex justify-center">
-            <Link href="/dashboard/policies/new">
+            <Link href="/policies/new">
               <Button className="bg-primary hover:bg-primary-hover text-white font-bold px-8 py-6 rounded-xl shadow-button">
                 Create Privacy Policy Now
               </Button>
@@ -249,7 +249,7 @@ export default function PrivacyPolicyPage() {
                 <Button variant="outline" onClick={() => setIsPreviewOpen(false)}>
                   Cancel
                 </Button>
-                <Link href="/dashboard/policies/new">
+                <Link href="/policies/new">
                   <Button className="bg-primary hover:bg-primary-hover text-white">
                     Generate with this law
                   </Button>

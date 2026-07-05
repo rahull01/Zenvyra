@@ -62,7 +62,7 @@ export const PRODUCT_PAGES: Record<string, ProductPageContent> = {
       "Real-time preview before publishing",
     ],
     ctaLabel: "Set Up Consent Banner",
-    ctaHref: "/dashboard/consent/banner",
+    ctaHref: "/consent/banner",
   },
   "cookie-scanner": {
     slug: "cookie-scanner",
@@ -160,7 +160,7 @@ export const PRODUCT_PAGES: Record<string, ProductPageContent> = {
       "Export chat transcripts for legal review",
     ],
     ctaLabel: "Try AI Assistant",
-    ctaHref: "/dashboard/ai-insights",
+    ctaHref: "/ai-insights",
   },
   "competitor-audit": {
     slug: "competitor-audit",
@@ -177,7 +177,7 @@ export const PRODUCT_PAGES: Record<string, ProductPageContent> = {
       "Exportable PDF audit reports",
     ],
     ctaLabel: "Run Competitor Audit",
-    ctaHref: "/dashboard/competitors",
+    ctaHref: "/competitors",
   },
 };
 

@@ -57,7 +57,7 @@ export default function CookieConsentPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mt-10 flex flex-wrap justify-center gap-4"
             >
-              <Link href="/dashboard/consent/banner">
+              <Link href="/consent/banner">
                 <Button className="bg-primary hover:bg-primary-hover text-white px-8 py-6 rounded-xl text-base font-semibold shadow-button">
                   Configure Consent Banner
                   <ChevronRight className="ml-2 h-4 w-4" />
@@ -218,7 +218,7 @@ export default function CookieConsentPage() {
             Install one line of JavaScript on your site. We take care of compliance updates automatically.
           </p>
           <div className="mt-8 flex justify-center">
-            <Link href="/dashboard/consent/banner">
+            <Link href="/consent/banner">
               <Button className="bg-primary hover:bg-primary-hover text-white font-bold px-8 py-6 rounded-xl shadow-button">
                 Build Your Consent Banner
               </Button>

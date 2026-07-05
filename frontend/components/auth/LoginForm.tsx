@@ -100,8 +100,8 @@ export default function LoginForm() {
 }
 
 function authRedirectPath(user: any) {
-  if (user?.role === "ROLE_ADMIN") return "/dashboard/admin";
+  if (user?.role === "ROLE_ADMIN") return "/admin";
   if (user?.onboardingCompleted === false) return "/onboarding";
-  if (String(user?.accountType || "").toUpperCase() === "AGENCY") return "/dashboard/agency";
+  if (String(user?.accountType || "").toUpperCase() === "AGENCY") return "/agency";
   return "/dashboard";
 }

@@ -47,7 +47,7 @@ export default function ReturnPolicyGeneratorPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mt-10 flex justify-center"
             >
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="bg-primary hover:bg-primary-hover text-white px-8 py-6 rounded-xl text-base font-semibold shadow-button">
                   Create Return Policy
                   <ChevronRight className="ml-2 h-4 w-4" />
@@ -123,7 +123,7 @@ export default function ReturnPolicyGeneratorPage() {
               <p className="text-sm text-text-secondary leading-relaxed mb-4">
                 For SaaS products, return policies explain trial terms, pro-rated billing refunds, and subscription cancellation grace periods, protecting your digital business from unwarranted chargeback claims.
               </p>
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="bg-primary hover:bg-primary-hover text-white">
                   Generate Return Policy
                 </Button>

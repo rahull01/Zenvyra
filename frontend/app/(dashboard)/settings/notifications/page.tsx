@@ -23,7 +23,7 @@ export default function NotificationsSettingsPage() {
       subtitle="Configure email digests, regulatory action alerts, and external compliance webhooks."
       icon={Settings}
       actions={[
-        { label: "Save Configuration", href: "/dashboard/settings/notifications", primary: true, onClick: handleSave },
+        { label: "Save Configuration", href: "/settings/notifications", primary: true, onClick: handleSave },
       ]}
     >
       <div className="grid gap-6 lg:grid-cols-12 items-start">

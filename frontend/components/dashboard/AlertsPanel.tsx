@@ -79,7 +79,7 @@ export default function AlertsPanel() {
         )}
       </div>
 
-      <Link href="/dashboard/ai-insights" className="relative z-10 mt-8 flex items-center justify-center gap-3 rounded-2xl border border-bg-tertiary bg-bg-primary py-4 text-[10px] font-black uppercase tracking-[0.25em] text-text-primary transition-all hover:border-accent/40 hover:bg-bg-secondary">
+      <Link href="/ai-insights" className="relative z-10 mt-8 flex items-center justify-center gap-3 rounded-2xl border border-bg-tertiary bg-bg-primary py-4 text-[10px] font-black uppercase tracking-[0.25em] text-text-primary transition-all hover:border-accent/40 hover:bg-bg-secondary">
         Insight Archive
         <ArrowRight className="h-4 w-4 text-accent transition-transform group-hover:translate-x-1" />
       </Link>

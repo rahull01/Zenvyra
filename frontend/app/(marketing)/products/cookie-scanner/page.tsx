@@ -187,7 +187,7 @@ export default function CookieScannerProductPage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link href="/dashboard/scanner" className="flex-1">
+                  <Link href="/scanner" className="flex-1">
                     <Button className="w-full bg-primary hover:bg-primary-hover text-white rounded-xl py-3 font-semibold">
                       Unlock Full Vulnerability Audit
                     </Button>

@@ -109,7 +109,7 @@ export default function WebsiteHandoffPage({ params }: { params: { id: string } 
                 <PackageCheck className="h-4 w-4" />
                 Open certificate
               </Link>
-              <Link className="btn-secondary justify-center" href={`/dashboard/websites/${params.id}/proof-report`}>
+              <Link className="btn-secondary justify-center" href={`/websites/${params.id}/proof-report`}>
                 <FileText className="h-4 w-4" />
                 Open proof report
               </Link>

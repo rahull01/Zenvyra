@@ -8,9 +8,9 @@ import Link from "next/link";
 
 export default function ComplianceScorePage() {
   const issues = [
-    { id: 1, type: "critical", msg: "Cookie banner loads marketing trackers before user opt-in", fix: "/dashboard/consent/banner" },
-    { id: 2, type: "warning", msg: "Missing specific CCPA 'Do Not Sell My Info' preference switch", fix: "/dashboard/consent/preferences" },
-    { id: 3, type: "info", msg: "Terms & Conditions draft has not been updated in 90 days", fix: "/dashboard/policies" },
+    { id: 1, type: "critical", msg: "Cookie banner loads marketing trackers before user opt-in", fix: "/consent/banner" },
+    { id: 2, type: "warning", msg: "Missing specific CCPA 'Do Not Sell My Info' preference switch", fix: "/consent/preferences" },
+    { id: 3, type: "info", msg: "Terms & Conditions draft has not been updated in 90 days", fix: "/policies" },
   ];
 
   return (

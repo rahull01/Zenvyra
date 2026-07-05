@@ -48,14 +48,14 @@ export const TopBar = () => {
       <div className="flex shrink-0 items-center gap-2 sm:gap-4 lg:gap-6">
         <div className="flex items-center gap-1 border-r border-border-light pr-2 sm:gap-3 sm:pr-4 lg:pr-6">
           <Link
-            href="/dashboard/ai-insights"
+            href="/ai-insights"
             className="relative rounded-lg p-2 text-text-secondary transition-colors hover:bg-background-secondary"
             aria-label="Notifications"
           >
             <Bell className="h-5 w-5" />
           </Link>
           <Link
-            href="/dashboard/support"
+            href="/support"
             className="hidden rounded-lg p-2 text-text-secondary transition-colors hover:bg-background-secondary sm:inline-flex"
             aria-label="Help"
           >
@@ -88,7 +88,7 @@ export const TopBar = () => {
                 <p className="mt-1 truncate text-xs text-text-secondary">{user?.email}</p>
               </div>
               <Link
-                href="/dashboard/settings/account"
+                href="/settings/account"
                 className="flex items-center gap-2 px-4 py-3 text-sm text-text-secondary transition-colors hover:bg-background-secondary hover:text-text-primary"
               >
                 <User className="h-4 w-4" />

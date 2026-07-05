@@ -83,7 +83,7 @@ export default function TermsConditionsPage() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="mt-10 flex flex-wrap justify-center gap-4"
             >
-              <Link href="/dashboard/policies/new">
+              <Link href="/policies/new">
                 <Button className="bg-primary hover:bg-primary-hover text-white px-8 py-6 rounded-xl text-base font-semibold shadow-button">
                   Generate Terms & Conditions
                   <ChevronRight className="ml-2 h-4 w-4" />
@@ -223,7 +223,7 @@ export default function TermsConditionsPage() {
             Takes less than 5 minutes to set up your custom terms, host them with us, and gain legal protection.
           </p>
           <div className="mt-8 flex justify-center">
-            <Link href="/dashboard/policies/new">
+            <Link href="/policies/new">
               <Button className="bg-primary hover:bg-primary-hover text-white font-bold px-8 py-6 rounded-xl shadow-button">
                 Generate Terms & Conditions
               </Button>

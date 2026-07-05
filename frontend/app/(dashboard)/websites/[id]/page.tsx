@@ -142,7 +142,7 @@ export default function WebsiteDetailPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard/websites" className="rounded-lg p-2 transition-colors hover:bg-background-tertiary">
+          <Link href="/websites" className="rounded-lg p-2 transition-colors hover:bg-background-tertiary">
             <ArrowLeft className="h-5 w-5 text-text-tertiary" />
           </Link>
           <div>
@@ -169,14 +169,14 @@ export default function WebsiteDetailPage() {
             {isScanning ? "Scanning..." : "Scan Now"}
           </button>
           <Link
-            href={`/dashboard/websites/${id}/handoff`}
+            href={`/websites/${id}/handoff`}
             className="flex items-center gap-2 rounded-xl border border-border-light px-4 py-2 text-text-secondary transition-all hover:bg-background-secondary"
           >
             <Shield className="h-4 w-4" />
             Setup Handoff
           </Link>
           <Link
-            href={`/dashboard/websites/${id}/proof-report`}
+            href={`/websites/${id}/proof-report`}
             className="flex items-center gap-2 rounded-xl border border-border-light px-4 py-2 text-text-secondary transition-all hover:bg-background-secondary"
           >
             <FileText className="h-4 w-4" />

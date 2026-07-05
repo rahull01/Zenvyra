@@ -99,7 +99,7 @@ export default function PolicyDetailPage() {
     <div className="mx-auto max-w-5xl space-y-8">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Link href="/dashboard/policies" className="rounded-xl p-2 transition-colors hover:bg-background-secondary">
+          <Link href="/policies" className="rounded-xl p-2 transition-colors hover:bg-background-secondary">
             <ChevronLeft className="h-6 w-6 text-text-secondary" />
           </Link>
           <div>
@@ -183,7 +183,7 @@ export default function PolicyDetailPage() {
               Version
             </h3>
             <p className="text-sm text-text-secondary">Current database record updated {formatRelative(policy.updatedAt)}.</p>
-            <Link href={`/dashboard/policies/${policy.id}/preview`} className="mt-4 inline-block text-sm font-semibold text-accent hover:underline">
+            <Link href={`/policies/${policy.id}/preview`} className="mt-4 inline-block text-sm font-semibold text-accent hover:underline">
               Open hosted preview
             </Link>
           </div>

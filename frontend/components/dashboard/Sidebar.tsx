@@ -24,20 +24,20 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { name: "AI Systems", icon: Bot, href: "/dashboard/ai-act", badge: "Core" },
-  { name: "Scanner", icon: ScanLine, href: "/dashboard/scanner" },
-  { name: "Websites", icon: Globe, href: "/dashboard/websites" },
-  { name: "Policies", icon: FileText, href: "/dashboard/policies" },
-  { name: "Consent", icon: Cookie, href: "/dashboard/consent" },
-  { name: "Analytics", icon: BarChart3, href: "/dashboard/analytics" },
-  { name: "Agency Hub", icon: Building2, href: "/dashboard/agency" },
+  { name: "AI Systems", icon: Bot, href: "/ai-act", badge: "Core" },
+  { name: "Scanner", icon: ScanLine, href: "/scanner" },
+  { name: "Websites", icon: Globe, href: "/websites" },
+  { name: "Policies", icon: FileText, href: "/policies" },
+  { name: "Consent", icon: Cookie, href: "/consent" },
+  { name: "Analytics", icon: BarChart3, href: "/analytics" },
+  { name: "Agency Hub", icon: Building2, href: "/agency" },
 ];
 
 const secondaryItems = [
-  { name: "Admin Ops", icon: Monitor, href: "/dashboard/admin" },
-  { name: "Billing", icon: CreditCard, href: "/dashboard/billing" },
-  { name: "Settings", icon: Settings, href: "/dashboard/settings/account" },
-  { name: "Support", icon: HelpCircle, href: "/dashboard/support" },
+  { name: "Admin Ops", icon: Monitor, href: "/admin" },
+  { name: "Billing", icon: CreditCard, href: "/billing" },
+  { name: "Settings", icon: Settings, href: "/settings/account" },
+  { name: "Support", icon: HelpCircle, href: "/support" },
 ];
 
 type Usage = {
@@ -125,7 +125,7 @@ export const Sidebar = () => {
             <div className="h-full bg-accent" style={{ width: `${usageSummary.percent}%` }} />
           </div>
           <Link
-            href="/dashboard/billing"
+            href="/billing"
             className="mt-3 inline-block text-caption font-bold text-accent hover:underline"
             aria-label="Upgrade plan"
           >
