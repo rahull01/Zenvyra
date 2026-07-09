@@ -3,29 +3,29 @@
 ## Product
 
 - **Name:** Zenvyra
-- **Tagline:** AI Act compliance for AI startups — scan, fix, certify in minutes.
+- **Tagline:** EU AI Act readiness proof packs for AI startups.
 - **URL:** https://www.zenvyra.com
 - **Category:** Productivity / Developer Tools / Legal & Compliance
 
 ## Description
 
-Zenvyra helps AI startups get compliant with the EU AI Act and GDPR without hiring a lawyer first.
+Zenvyra helps AI startups organize EU AI Act readiness evidence before enterprise diligence, security reviews, or counsel review.
 
-1. **Scan your AI product** — paste your URL and get an instant AI Act risk score, gap analysis, and top-priority fixes.
-2. **Generate compliant policies** — privacy, terms, cookie, and AI system documentation tailored to your product.
-3. **Export readiness reports & badge** — download audit-ready PDFs and embed a public compliance badge on your site.
+1. **Inventory your AI systems** - capture intended purpose, providers, high-risk indicators, EU exposure, and operational controls.
+2. **Map obligations and evidence gaps** - review AI Act readiness signals, transparency needs, GPAI/provider dependencies, and next actions.
+3. **Export proof-pack documents** - generate system cards, transparency notices, assessment summaries, evidence checklists, and public verification pages.
 
-Built for LLM startups, AI agents, and SaaS companies that need to prove trust to enterprise buyers and regulators.
+Built for LLM startups, AI agents, and SaaS companies that need to show operational readiness evidence to enterprise buyers, auditors, and counsel.
 
-**Pricing:** Free (1 scan/month) · Starter $49/mo · Pro $199/mo · Enterprise $999+/mo
+**Pricing:** Free (1 readiness scan/month) - Starter $49/mo - Pro $199/mo - Enterprise $999+/mo
 
 ## Gallery Images (3–5)
 
-1. **Hero / Scanner** — "AI Act Compliance Scan" landing page with URL input and score preview.
+1. **Hero / Scanner** - "AI Act Readiness Scan" landing page with URL input and score preview.
 2. **Dashboard** — AI system inventory, risk cards, and readiness score.
-3. **Policy Generator** — one-click privacy/terms/cookie policy tailored to the user’s product.
-4. **Readiness Report Export** — audit-ready PDF with gaps, fixes, and compliance status.
-5. **Compliance Badge** — shareable embed code and public verification page.
+3. **Policy Generator** - privacy/terms/cookie policy drafts tailored to the user's product.
+4. **Readiness Report Export** - proof-pack export with gaps, next actions, evidence status, and disclaimer.
+5. **Verification Page** - shareable badge/embed and public verification page.
 
 ## First Comment (Maker)
 
@@ -33,12 +33,12 @@ Built for LLM startups, AI agents, and SaaS companies that need to prove trust t
 >
 > I’m Rahul, solo founder of Zenvyra. Over the last few months I’ve watched AI startups lose enterprise deals because they couldn’t answer security & compliance questionnaires fast enough. Lawyers are expensive and slow, and generic policy templates don’t cover AI-specific risks.
 >
-> So I built Zenvyra to give AI startups a fast, affordable compliance layer:
-> - 60-second AI Act scan with a concrete risk score
-> - Auto-generated policies (privacy, terms, cookies, AI system docs)
-> - Exportable readiness reports and a public compliance badge
+> So I built Zenvyra to give AI startups a fast, affordable readiness evidence layer:
+> - AI system inventory with risk indicators and obligation mapping
+> - Policy and transparency-notice drafts for review
+> - Exportable proof-pack documents and a public verification page
 >
-> Free tier gets 1 scan/month so you can validate the value before paying. Would love your feedback, especially if you’re selling AI tools into regulated industries.
+> Free tier gets 1 readiness scan/month so you can validate the value before paying. Zenvyra is operational software, not legal advice, and I would love feedback from teams selling AI tools into regulated industries.
 >
 > Happy to answer questions in the comments.
 
@@ -55,4 +55,4 @@ Built for LLM startups, AI agents, and SaaS companies that need to prove trust t
 
 ## Keywords / Topics
 
-AI Act, GDPR, compliance automation, AI governance, policy generator, LLM compliance, EU AI Act, startup compliance, trust center.
+AI Act, GDPR, readiness automation, AI governance, policy generator, LLM readiness, EU AI Act, startup readiness, trust center, proof pack.

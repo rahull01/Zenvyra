@@ -13,7 +13,7 @@
 ## Strategic Decisions (Lock These First)
 
 1. **ICP**: AI startups building LLM products, worried about EU AI Act + GDPR.
-2. **Positioning**: "AI Act compliance for AI startups — scan, fix, certify in minutes."
+2. **Positioning**: "EU AI Act readiness evidence for AI startups — inventory, classify, collect proof."
 3. **Pricing**:
    - Free: 1 scan/month
    - Starter: $49/month
@@ -32,7 +32,7 @@
   - Modify: `frontend/lib/seo-schema.ts`
   - Modify: `frontend/app/layout.tsx`
 - **Steps:**
-  - [ ] Rewrite hero headline to "AI Act compliance for AI startups"
+  - [x] Rewrite hero headline to "AI Act Readiness Evidence for AI Startups"
   - [ ] Update meta description to focus on AI Act + GDPR
   - [ ] Update SEO schema
   - [ ] Verify with `npm run build`

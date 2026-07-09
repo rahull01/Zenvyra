@@ -136,7 +136,7 @@ Zenvyra targets AI-enabled businesses that need **EU AI Act readiness infrastruc
 ## Customer Acquisition Channels
 
 ### 1. Content Marketing (40% of acquisition)
-- Blog posts on compliance topics
+- Blog posts on AI Act readiness, privacy operations, and trust topics
 - SEO-optimized landing pages
 - Webinars and tutorials
 - Case studies
@@ -144,10 +144,10 @@ Zenvyra targets AI-enabled businesses that need **EU AI Act readiness infrastruc
 ### 2. Social Selling (30% of acquisition)
 - LinkedIn outreach
 - Twitter engagement
-- Compliance communities (Reddit, forums)
+- AI governance and startup readiness communities (Reddit, forums)
 
 ### 3. Paid Advertising (20% of acquisition)
-- Google Ads (compliance keywords)
+- Google Ads (AI Act readiness keywords)
 - LinkedIn Ads (targeted by industry)
 - Retargeting campaigns
 
