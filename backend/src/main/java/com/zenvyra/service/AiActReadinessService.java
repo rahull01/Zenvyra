@@ -1,5 +1,8 @@
 package com.zenvyra.service;
 
+import com.zenvyra.domain.aiact.AiActRuleCatalog;
+import com.zenvyra.domain.aiact.AiActRuleCatalogFactory;
+import com.zenvyra.domain.aiact.RiskLevel;
 import com.zenvyra.dto.request.AiSystemInventoryRequest;
 import com.zenvyra.dto.response.AiActAssessmentResponse;
 import com.zenvyra.dto.response.AiActReadinessResponse;
@@ -27,10 +30,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AiActReadinessService {
+    private static final String COUNSEL_REVIEW_WARNING =
+            "This assessment is an operational indicator, not legal advice. Consult qualified counsel before filing conformity declarations.";
 
     private final UserRepository userRepository;
     private final AiSystemInventoryRepository systemRepository;
     private final AiActAssessmentRepository assessmentRepository;
+    private final AiActRuleCatalogFactory ruleCatalogFactory;
 
     public AiSystemInventoryResponse create(UserDetails userDetails, AiSystemInventoryRequest request) {
         User user = resolveUser(userDetails);
@@ -122,19 +128,35 @@ public class AiActReadinessService {
     public AiActAssessmentResponse assess(UserDetails userDetails, String id) {
         User user = resolveUser(userDetails);
         AiSystemInventory inventory = loadSystemForUser(user, id);
+        AiActRuleCatalog catalog = ruleCatalogFactory.current();
 
-        String riskCategory = classifyRisk(inventory);
-        List<String> riskSignals = buildRiskSignals(inventory, riskCategory);
-        List<String> transparencyNotices = buildTransparencyNotices(inventory);
-        List<String> humanOversightGaps = buildHumanOversightGaps(inventory);
-        List<String> documentationGaps = buildDocumentationGaps(inventory);
-        List<String> dataHandlingGaps = buildDataHandlingGaps(inventory);
-        List<String> userDisclosureGaps = buildUserDisclosureGaps(inventory);
-        List<String> monitoringGaps = buildMonitoringGaps(inventory);
-        List<String> evidenceItems = buildEvidenceItems(inventory);
-        List<String> nextActions = buildNextActions(inventory, riskCategory, documentationGaps, humanOversightGaps);
+        RiskLevel riskLevel = catalog.classifyRisk(inventory);
+        String riskCategory = riskLevel.getLabel();
+        List<String> riskSignals = catalog.riskSignals(inventory, riskLevel);
+        List<String> annexIIIUseCases = catalog.annexIIIUseCases(inventory);
+        List<String> applicableObligations = catalog.applicableObligations(inventory, riskLevel);
+        List<String> transparencyNotices = catalog.transparencyNotices(inventory);
+        List<String> humanOversightGaps = catalog.humanOversightGaps(inventory);
+        List<String> documentationGaps = catalog.documentationGaps(inventory);
+        List<String> dataHandlingGaps = catalog.dataHandlingGaps(inventory);
+        List<String> userDisclosureGaps = catalog.userDisclosureGaps(inventory);
+        List<String> monitoringGaps = catalog.monitoringGaps(inventory);
+        List<String> aiLiteracyGaps = catalog.aiLiteracyGaps(inventory);
+        List<String> gpaiProviderDocumentationGaps = catalog.gpaiProviderDocumentationGaps(inventory);
+        List<String> conformityAssessmentGaps = catalog.conformityAssessmentGaps(inventory, riskLevel);
+        Map<String, String> evidenceChecklist = catalog.evidenceChecklist(inventory, riskLevel);
+        List<String> evidenceItems = catalog.evidenceItems(inventory);
+        List<String> nextActions = buildNextActions(
+                riskLevel,
+                documentationGaps,
+                humanOversightGaps,
+                userDisclosureGaps,
+                monitoringGaps,
+                aiLiteracyGaps,
+                gpaiProviderDocumentationGaps,
+                conformityAssessmentGaps);
 
-        Map<String, Boolean> readinessBreakdown = buildReadinessBreakdown(inventory, documentationGaps, humanOversightGaps, monitoringGaps);
+        Map<String, Boolean> readinessBreakdown = catalog.readinessBreakdown(inventory);
         int readinessScore = calculateReadinessScore(readinessBreakdown);
 
         AiActAssessment assessment = AiActAssessment.builder()
@@ -144,16 +166,23 @@ public class AiActReadinessService {
                 .confidence(0.75)
                 .readinessScore(readinessScore)
                 .readinessBreakdown(readinessBreakdown)
+                .rulesetVersion(catalog.version())
                 .riskSignals(riskSignals)
+                .applicableObligations(applicableObligations)
+                .annexIIIUseCases(annexIIIUseCases)
                 .requiredTransparencyNotices(transparencyNotices)
                 .humanOversightGaps(humanOversightGaps)
                 .documentationGaps(documentationGaps)
                 .dataHandlingGaps(dataHandlingGaps)
                 .userDisclosureGaps(userDisclosureGaps)
                 .monitoringGaps(monitoringGaps)
+                .aiLiteracyGaps(aiLiteracyGaps)
+                .gpaiProviderDocumentationGaps(gpaiProviderDocumentationGaps)
+                .conformityAssessmentGaps(conformityAssessmentGaps)
+                .evidenceChecklist(evidenceChecklist)
                 .evidenceItems(evidenceItems)
                 .nextActions(nextActions)
-                .counselReviewWarning("This assessment is an operational indicator, not legal advice. Consult qualified counsel before filing conformity declarations.")
+                .counselReviewWarning(COUNSEL_REVIEW_WARNING)
                 .assessedAt(LocalDateTime.now())
                 .build();
         return toResponse(assessmentRepository.save(assessment), inventory);
@@ -181,17 +210,30 @@ public class AiActReadinessService {
         User user = resolveUser(userDetails);
         List<AiSystemInventory> systems = systemRepository.findByUserId(user.getId());
         List<AiActAssessment> assessments = assessmentRepository.findByUserId(user.getId());
+        AiActRuleCatalog catalog = ruleCatalogFactory.current();
 
         long highRiskFlags = systems.stream()
-                .filter(s -> classifyRisk(s).toLowerCase().contains("high-risk"))
+                .filter(s -> catalog.classifyRisk(s) == RiskLevel.HIGH_RISK)
                 .count();
 
-        int overallReadinessScore = calculateOverallReadinessScore(systems);
+        int overallReadinessScore = calculateOverallReadinessScore(systems, catalog);
 
         Map<String, Object> draftOutputs = new LinkedHashMap<>();
+        draftOutputs.put("rulesetVersion", catalog.version());
         draftOutputs.put("systemCount", systems.size());
         draftOutputs.put("systemNames", systems.stream().map(AiSystemInventory::getSystemName).collect(Collectors.toList()));
         draftOutputs.put("assessmentCount", assessments.size());
+        draftOutputs.put("highRiskSystemNames", systems.stream()
+                .filter(s -> catalog.classifyRisk(s) == RiskLevel.HIGH_RISK)
+                .map(AiSystemInventory::getSystemName)
+                .collect(Collectors.toList()));
+        draftOutputs.put("gpaiDependencyCount", systems.stream().filter(s -> hasThirdPartyDependency(s)).count());
+        draftOutputs.put("topEvidenceGaps", systems.stream()
+                .flatMap(s -> catalog.evidenceChecklist(s, catalog.classifyRisk(s)).entrySet().stream()
+                        .filter(entry -> entry.getValue().startsWith("GAP"))
+                        .map(entry -> s.getSystemName() + ": " + entry.getKey()))
+                .limit(8)
+                .collect(Collectors.toList()));
 
         return AiActReadinessResponse.builder()
                 .aiSystemsInventoried(systems.size())
@@ -209,6 +251,9 @@ public class AiActReadinessService {
                             m.put("systemId", a.getSystemId());
                             m.put("riskCategory", a.getRiskCategory());
                             m.put("readinessScore", a.getReadinessScore());
+                            m.put("rulesetVersion", a.getRulesetVersion());
+                            m.put("applicableObligations", a.getApplicableObligations());
+                            m.put("annexIIIUseCases", a.getAnnexIIIUseCases());
                             m.put("assessedAt", a.getAssessedAt());
                             return m;
                         })
@@ -235,192 +280,33 @@ public class AiActReadinessService {
         return loadSystemForUser(user, id);
     }
 
-    private String classifyRisk(AiSystemInventory s) {
-        if (Boolean.TRUE.equals(s.getProhibitedUse())) {
-            return "prohibited risk indicator";
-        }
-        if (hasHighRiskDomain(s) || Boolean.TRUE.equals(s.getAutomatedDecisionMaking())) {
-            return "high-risk indicator";
-        }
-        if (Boolean.TRUE.equals(s.getUserFacingAiInteraction())) {
-            return "limited-risk transparency";
-        }
-        return "minimal risk";
-    }
-
-    private boolean hasHighRiskDomain(AiSystemInventory s) {
-        return Boolean.TRUE.equals(s.getHealthcareUse())
-                || Boolean.TRUE.equals(s.getHiringUse())
-                || Boolean.TRUE.equals(s.getFinanceUse())
-                || Boolean.TRUE.equals(s.getEducationUse())
-                || Boolean.TRUE.equals(s.getBiometricUse())
-                || Boolean.TRUE.equals(s.getGovernmentUse())
-                || Boolean.TRUE.equals(s.getCriticalInfrastructureUse())
-                || Boolean.TRUE.equals(s.getChildrenUse());
-    }
-
-    private List<String> buildRiskSignals(AiSystemInventory s, String riskCategory) {
-        List<String> signals = new ArrayList<>();
-        if (riskCategory.contains("prohibited")) {
-            signals.add("Prohibited-use indicator requires immediate legal review");
-        }
-        signals.addAll(highRiskDomainSignals(s));
-        if (Boolean.TRUE.equals(s.getEuUsersAffected())) {
-            signals.add("EU users affected");
-        }
-        if (Boolean.TRUE.equals(s.getUserFacingAiInteraction())) {
-            signals.add("Transparency obligation indicator: users interact with AI output");
-        }
-        if (Boolean.TRUE.equals(s.getAutomatedDecisionMaking())) {
-            signals.add("High-risk trigger: automated decision-making");
-        }
-        if (hasThirdPartyDependency(s)) {
-            signals.add("Provider documentation needed for third-party or general-purpose AI dependency");
-        }
-        if (signals.isEmpty()) {
-            signals.add("No strong risk signals detected");
-        }
-        return signals;
-    }
-
-    private List<String> highRiskDomainSignals(AiSystemInventory s) {
-        List<String> signals = new ArrayList<>();
-        if (Boolean.TRUE.equals(s.getHealthcareUse())) {
-            signals.add("High-risk domain: Healthcare or medical use");
-        }
-        if (Boolean.TRUE.equals(s.getHiringUse())) {
-            signals.add("High-risk domain: Hiring or employment use");
-        }
-        if (Boolean.TRUE.equals(s.getFinanceUse())) {
-            signals.add("High-risk domain: Finance or credit access use");
-        }
-        if (Boolean.TRUE.equals(s.getEducationUse())) {
-            signals.add("High-risk domain: Education or vocational training use");
-        }
-        if (Boolean.TRUE.equals(s.getBiometricUse())) {
-            signals.add("High-risk domain: Biometric identification or categorization use");
-        }
-        if (Boolean.TRUE.equals(s.getGovernmentUse())) {
-            signals.add("High-risk domain: Public services or government use");
-        }
-        if (Boolean.TRUE.equals(s.getCriticalInfrastructureUse())) {
-            signals.add("High-risk domain: Critical infrastructure use");
-        }
-        if (Boolean.TRUE.equals(s.getChildrenUse())) {
-            signals.add("High-risk domain: Children or minors affected");
-        }
-        return signals;
-    }
-
-    private List<String> buildTransparencyNotices(AiSystemInventory s) {
-        List<String> notices = new ArrayList<>();
-        if (Boolean.TRUE.equals(s.getUserFacingAiInteraction())) {
-            notices.add("User-facing AI interaction notice");
-        }
-        if (Boolean.TRUE.equals(s.getAutomatedDecisionMaking())) {
-            notices.add("Automated decision-making notice");
-        }
-        return notices;
-    }
-
-    private List<String> buildHumanOversightGaps(AiSystemInventory s) {
-        List<String> gaps = new ArrayList<>();
-        if (!Boolean.TRUE.equals(s.getHumanOversight())) {
-            gaps.add("Document human review and escalation workflow");
-        }
-        if (Boolean.TRUE.equals(s.getHumanOversight()) && (s.getHumanOversightOwner() == null || s.getHumanOversightOwner().isBlank())) {
-            gaps.add("Assign a named human oversight owner");
-        }
-        return gaps;
-    }
-
-    private List<String> buildDocumentationGaps(AiSystemInventory s) {
-        List<String> gaps = new ArrayList<>();
-        if (!Boolean.TRUE.equals(s.getTechnicalDocumentationReady())) {
-            gaps.add("Prepare technical documentation");
-        }
-        if (!Boolean.TRUE.equals(s.getRiskAssessmentCompleted())) {
-            gaps.add("Complete risk assessment");
-        }
-        if (hasThirdPartyDependency(s) && !Boolean.TRUE.equals(s.getTechnicalDocumentationReady())) {
-            gaps.add("Collect provider documentation for third-party or general-purpose AI dependency");
-        }
-        return gaps;
-    }
-
-    private List<String> buildDataHandlingGaps(AiSystemInventory s) {
-        List<String> gaps = new ArrayList<>();
-        if (s.getDataCategoriesSentToAi() == null || s.getDataCategoriesSentToAi().isEmpty()) {
-            gaps.add("Document data categories sent to AI");
-        }
-        if (!Boolean.TRUE.equals(s.getLogsEvidenceRetained())) {
-            gaps.add("Enable evidence retention for inputs/outputs");
-        }
-        return gaps;
-    }
-
-    private List<String> buildUserDisclosureGaps(AiSystemInventory s) {
-        List<String> gaps = new ArrayList<>();
-        if (Boolean.TRUE.equals(s.getUserFacingAiInteraction()) && !Boolean.TRUE.equals(s.getTransparencyNoticePublished())) {
-            gaps.add("Publish user-facing AI transparency notice");
-        }
-        return gaps;
-    }
-
-    private List<String> buildMonitoringGaps(AiSystemInventory s) {
-        List<String> gaps = new ArrayList<>();
-        if (!Boolean.TRUE.equals(s.getMonitoringEnabled())) {
-            gaps.add("Enable post-deployment monitoring");
-        }
-        return gaps;
-    }
-
-    private List<String> buildEvidenceItems(AiSystemInventory s) {
-        List<String> items = new ArrayList<>();
-        items.add("System inventory record: " + s.getSystemName());
-        if (Boolean.TRUE.equals(s.getTechnicalDocumentationReady())) {
-            items.add("Technical documentation");
-        }
-        if (Boolean.TRUE.equals(s.getRiskAssessmentCompleted())) {
-            items.add("Risk assessment");
-        }
-        if (Boolean.TRUE.equals(s.getHumanOversight())) {
-            items.add("Human oversight policy");
-        }
-        if (Boolean.TRUE.equals(s.getLogsEvidenceRetained())) {
-            items.add("Evidence retention logs");
-        }
-        return items;
-    }
-
-    private List<String> buildNextActions(AiSystemInventory s, String riskCategory, List<String> docGaps, List<String> oversightGaps) {
+    private List<String> buildNextActions(
+            RiskLevel riskLevel,
+            List<String> docGaps,
+            List<String> oversightGaps,
+            List<String> userDisclosureGaps,
+            List<String> monitoringGaps,
+            List<String> aiLiteracyGaps,
+            List<String> gpaiProviderDocumentationGaps,
+            List<String> conformityAssessmentGaps) {
         List<String> actions = new ArrayList<>();
-        if (riskCategory.contains("prohibited")) {
+        if (riskLevel == RiskLevel.PROHIBITED) {
             actions.add("Urgent: review prohibited use classification with counsel");
         }
-        if (riskCategory.contains("high-risk")) {
-            actions.add("Initiate conformity assessment for high-risk AI system");
+        if (riskLevel == RiskLevel.HIGH_RISK) {
+            actions.add("Open high-risk AI conformity assessment workstream");
         }
         actions.addAll(docGaps.stream().map(g -> "Complete: " + g).collect(Collectors.toList()));
         actions.addAll(oversightGaps.stream().map(g -> "Complete: " + g).collect(Collectors.toList()));
-        if (!Boolean.TRUE.equals(s.getTransparencyNoticePublished())) {
-            actions.add("Publish transparency notice");
-        }
+        actions.addAll(userDisclosureGaps.stream().map(g -> "Publish: " + g).collect(Collectors.toList()));
+        actions.addAll(monitoringGaps.stream().map(g -> "Configure: " + g).collect(Collectors.toList()));
+        actions.addAll(aiLiteracyGaps.stream().map(g -> "Train: " + g).collect(Collectors.toList()));
+        actions.addAll(gpaiProviderDocumentationGaps.stream().map(g -> "Collect: " + g).collect(Collectors.toList()));
+        actions.addAll(conformityAssessmentGaps.stream().map(g -> "Evidence: " + g).collect(Collectors.toList()));
         if (actions.isEmpty()) {
             actions.add("Maintain monitoring and periodic reassessment");
         }
         return actions;
-    }
-
-    private Map<String, Boolean> buildReadinessBreakdown(AiSystemInventory s, List<String> docGaps, List<String> oversightGaps, List<String> monitoringGaps) {
-        Map<String, Boolean> map = new LinkedHashMap<>();
-        map.put("inventoryComplete", hasText(s.getSystemName()) && (hasText(s.getPurpose()) || hasText(s.getUseCase())));
-        map.put("documentationReady", docGaps.isEmpty());
-        map.put("humanOversightDefined", oversightGaps.isEmpty());
-        map.put("transparencyNoticePublished", buildTransparencyNotices(s).isEmpty() || Boolean.TRUE.equals(s.getTransparencyNoticePublished()));
-        map.put("monitoringEnabled", monitoringGaps.isEmpty());
-        map.put("evidenceRetained", Boolean.TRUE.equals(s.getLogsEvidenceRetained()));
-        return map;
     }
 
     private boolean hasThirdPartyDependency(AiSystemInventory s) {
@@ -444,23 +330,21 @@ public class AiActReadinessService {
         return (int) Math.round((passed * 100.0) / breakdown.size());
     }
 
-    private int calculateOverallReadinessScore(List<AiSystemInventory> systems) {
+    private int calculateOverallReadinessScore(List<AiSystemInventory> systems, AiActRuleCatalog catalog) {
         if (systems.isEmpty()) {
             return 0;
         }
         int total = 0;
         for (AiSystemInventory s : systems) {
-            Map<String, Boolean> breakdown = buildReadinessBreakdown(s,
-                    buildDocumentationGaps(s), buildHumanOversightGaps(s), buildMonitoringGaps(s));
-            total += calculateReadinessScore(breakdown);
+            total += calculateReadinessScore(catalog.readinessBreakdown(s));
         }
         return (int) Math.round(total / (double) systems.size());
     }
 
     private AiSystemInventoryResponse toResponse(AiSystemInventory s) {
-        String riskCategory = classifyRisk(s);
-        Map<String, Boolean> breakdown = buildReadinessBreakdown(s,
-                buildDocumentationGaps(s), buildHumanOversightGaps(s), buildMonitoringGaps(s));
+        AiActRuleCatalog catalog = ruleCatalogFactory.current();
+        RiskLevel riskLevel = catalog.classifyRisk(s);
+        Map<String, Boolean> breakdown = catalog.readinessBreakdown(s);
         return AiSystemInventoryResponse.builder()
                 .id(s.getId())
                 .userId(s.getUserId())
@@ -493,7 +377,7 @@ public class AiActReadinessService {
                 .governmentUse(s.getGovernmentUse())
                 .criticalInfrastructureUse(s.getCriticalInfrastructureUse())
                 .prohibitedUse(s.getProhibitedUse())
-                .riskCategory(riskCategory)
+                .riskCategory(riskLevel.getLabel())
                 .readinessScore(calculateReadinessScore(breakdown))
                 .createdAt(s.getCreatedAt())
                 .updatedAt(s.getUpdatedAt())
@@ -510,13 +394,20 @@ public class AiActReadinessService {
                 .confidence(a.getConfidence())
                 .readinessScore(a.getReadinessScore())
                 .readinessBreakdown(a.getReadinessBreakdown())
+                .rulesetVersion(a.getRulesetVersion())
                 .riskSignals(a.getRiskSignals())
+                .applicableObligations(a.getApplicableObligations())
+                .annexIIIUseCases(a.getAnnexIIIUseCases())
                 .requiredTransparencyNotices(a.getRequiredTransparencyNotices())
                 .humanOversightGaps(a.getHumanOversightGaps())
                 .documentationGaps(a.getDocumentationGaps())
                 .dataHandlingGaps(a.getDataHandlingGaps())
                 .userDisclosureGaps(a.getUserDisclosureGaps())
                 .monitoringGaps(a.getMonitoringGaps())
+                .aiLiteracyGaps(a.getAiLiteracyGaps())
+                .gpaiProviderDocumentationGaps(a.getGpaiProviderDocumentationGaps())
+                .conformityAssessmentGaps(a.getConformityAssessmentGaps())
+                .evidenceChecklist(a.getEvidenceChecklist())
                 .evidenceItems(a.getEvidenceItems())
                 .nextActions(a.getNextActions())
                 .counselReviewWarning(a.getCounselReviewWarning())

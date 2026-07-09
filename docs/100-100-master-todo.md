@@ -78,28 +78,28 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 
 ## Phase 3 - Real AI Act Engine
 
-- [ ] Add versioned AI Act rule catalog.
-- [ ] Add ruleset version to each assessment.
-- [ ] Map prohibited-use indicators.
-- [ ] Map Annex III high-risk category indicators.
-- [ ] Map limited-risk transparency obligations.
-- [ ] Map minimal-risk operational obligations.
-- [ ] Map Article 4 AI literacy requirement.
-- [ ] Map Article 50 user-facing AI transparency requirement.
-- [ ] Map high-risk provider-style requirements: risk management, data governance, technical documentation, logs, transparency, human oversight, accuracy, robustness, cybersecurity.
-- [ ] Map deployer/operator evidence requirements.
-- [ ] Map GPAI/provider dependency documentation requirements.
-- [ ] Add risk classification rationale.
-- [ ] Add confidence explanation.
+- [x] Add versioned AI Act rule catalog. (`com.zenvyra.domain.aiact` package with `AiActRuleCatalog`, `AiActRuleCatalogV2026_07`, `AiActRuleCatalogFactory`, `RiskLevel`; 2026-07-09, verified: 120 backend tests pass)
+- [x] Add ruleset version to each assessment. (model and response already store `rulesetVersion`; service stamps `catalog.version()`)
+- [x] Map prohibited-use indicators. (`RiskLevel.PROHIBITED` + risk signal + obligation)
+- [x] Map Annex III high-risk category indicators. (`annexIIIUseCases`)
+- [x] Map limited-risk transparency obligations. (`transparencyNotices`, Article 50 obligation)
+- [x] Map minimal-risk operational obligations. (minimal-risk path + Article 4 literacy)
+- [x] Map Article 4 AI literacy requirement. (`applicableObligations`, `aiLiteracyGaps`)
+- [x] Map Article 50 user-facing AI transparency requirement. (`applicableObligations`, `transparencyNotices`)
+- [x] Map high-risk provider-style requirements: risk management, data governance, technical documentation, logs, transparency, human oversight, accuracy, robustness, cybersecurity. (`applicableObligations`, `conformityAssessmentGaps`)
+- [x] Map deployer/operator evidence requirements. (`evidenceChecklist`)
+- [x] Map GPAI/provider dependency documentation requirements. (`gpaiProviderDocumentationGaps`)
+- [ ] Add risk classification rationale. (risk signals exist; dedicated rationale field pending)
+- [ ] Add confidence explanation. (confidence currently hardcoded)
 - [ ] Add high-risk "why this is high-risk" explanation.
 - [ ] Add limited-risk "why transparency applies" explanation.
 - [ ] Add minimal-risk "why no major trigger found" explanation.
-- [ ] Add counsel-review warning to every assessment.
-- [ ] Add tests for prohibited-risk priority.
-- [ ] Add tests for high-risk categories.
-- [ ] Add tests for user-facing transparency.
-- [ ] Add tests for GPAI/provider dependency gaps.
-- [ ] Add tests for readiness score calculation.
+- [x] Add counsel-review warning to every assessment. (service constant + model/response field)
+- [x] Add tests for prohibited-risk priority. (`AiActRuleCatalogV2026_07Test`, 2026-07-09, verified)
+- [x] Add tests for high-risk categories. (verified)
+- [x] Add tests for user-facing transparency. (verified)
+- [x] Add tests for GPAI/provider dependency gaps. (verified)
+- [x] Add tests for readiness score calculation. (verified)
 
 ## Phase 4 - Evidence Model And Audit Trail
 

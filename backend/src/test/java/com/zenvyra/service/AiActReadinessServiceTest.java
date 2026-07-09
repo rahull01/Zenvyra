@@ -1,5 +1,7 @@
 package com.zenvyra.service;
 
+import com.zenvyra.domain.aiact.AiActRuleCatalogFactory;
+import com.zenvyra.domain.aiact.AiActRuleCatalogV2026_07;
 import com.zenvyra.dto.response.AiActAssessmentResponse;
 import com.zenvyra.dto.response.AiActReadinessResponse;
 import com.zenvyra.exception.ApiException;
@@ -43,7 +45,8 @@ class AiActReadinessServiceTest {
 
     @BeforeEach
     void setUp() {
-        service = new AiActReadinessService(userRepository, systemRepository, assessmentRepository);
+        AiActRuleCatalogFactory ruleCatalogFactory = new AiActRuleCatalogFactory(new AiActRuleCatalogV2026_07());
+        service = new AiActReadinessService(userRepository, systemRepository, assessmentRepository, ruleCatalogFactory);
         userDetails = org.springframework.security.core.userdetails.User
                 .withUsername("owner@example.com")
                 .password("password")
@@ -79,8 +82,11 @@ class AiActReadinessServiceTest {
         AiActAssessmentResponse assessment = service.assess(userDetails, "system-1");
 
         assertEquals("high-risk indicator", assessment.getRiskCategory());
+        assertEquals("EU_AI_ACT_READINESS_2026_07", assessment.getRulesetVersion());
         assertTrue(assessment.getRequiredTransparencyNotices().contains("User-facing AI interaction notice"));
         assertTrue(assessment.getHumanOversightGaps().contains("Document human review and escalation workflow"));
+        assertTrue(assessment.getApplicableObligations().contains("Article 4: AI literacy for staff and operators involved with this AI system"));
+        assertTrue(assessment.getEvidenceChecklist().containsKey("AI literacy training evidence"));
         assertNotNull(assessment.getAssessedAt());
 
         when(systemRepository.findByUserId("user-1")).thenReturn(List.of(system));
@@ -121,6 +127,7 @@ class AiActReadinessServiceTest {
 
         assertEquals("prohibited risk indicator", assessment.getRiskCategory());
         assertTrue(assessment.getRiskSignals().contains("Prohibited-use indicator requires immediate legal review"));
+        assertTrue(assessment.getApplicableObligations().contains("Immediate legal review: prohibited-practice indicator should not proceed without counsel"));
     }
 
     @Test
@@ -135,6 +142,8 @@ class AiActReadinessServiceTest {
 
         assertEquals("high-risk indicator", assessment.getRiskCategory());
         assertTrue(assessment.getRiskSignals().contains("High-risk domain: Hiring or employment use"));
+        assertTrue(assessment.getAnnexIIIUseCases().contains("Annex III: employment, worker management or recruitment indicator"));
+        assertTrue(assessment.getApplicableObligations().contains("High-risk AI: risk management system"));
     }
 
     @Test
@@ -149,11 +158,13 @@ class AiActReadinessServiceTest {
         assertEquals("limited-risk transparency", assessment.getRiskCategory());
         assertTrue(assessment.getRequiredTransparencyNotices().contains("User-facing AI interaction notice"));
         assertTrue(assessment.getRiskSignals().contains("Transparency obligation indicator: users interact with AI output"));
+        assertTrue(assessment.getApplicableObligations().contains("Article 50: disclose that users are interacting with an AI system"));
     }
 
     @Test
     void internalReadySystemIsMinimalRiskWithFullReadinessScore() {
         AiSystemInventory system = baseSystem("system-internal")
+                .euUsersAffected(false)
                 .userFacingAiInteraction(false)
                 .automatedDecisionMaking(false)
                 .humanOversightOwner("Operations lead")
@@ -183,6 +194,25 @@ class AiActReadinessServiceTest {
 
         assertTrue(assessment.getRiskSignals().contains("Provider documentation needed for third-party or general-purpose AI dependency"));
         assertTrue(assessment.getDocumentationGaps().contains("Collect provider documentation for third-party or general-purpose AI dependency"));
+        assertTrue(assessment.getGpaiProviderDocumentationGaps().contains("Record the model name/version and provider release channel"));
+        assertTrue(assessment.getEvidenceChecklist().containsKey("GPAI/provider documentation"));
+    }
+
+    @Test
+    void euExposedSystemRequiresAiLiteracyEvidence() {
+        AiSystemInventory system = baseSystem("system-ai-literacy")
+                .technicalDocumentationReady(true)
+                .riskAssessmentCompleted(true)
+                .logsEvidenceRetained(true)
+                .monitoringEnabled(true)
+                .humanOversightOwner("Operations lead")
+                .transparencyNoticePublished(true)
+                .build();
+
+        AiActAssessmentResponse assessment = assess(system);
+
+        assertTrue(assessment.getAiLiteracyGaps().contains("Document AI literacy training for staff who deploy, monitor, or escalate this AI system"));
+        assertEquals("GAP", assessment.getEvidenceChecklist().get("AI literacy training evidence"));
     }
 
     private AiSystemInventory.AiSystemInventoryBuilder baseSystem(String id) {
