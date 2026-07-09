@@ -131,7 +131,7 @@ export default function DashboardPage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-4xl font-bold tracking-tight text-text-primary">Dashboard</h1>
-          <p className="mt-2 text-sm text-text-secondary">Live compliance status from your scans, policies, and usage.</p>
+          <p className="mt-2 text-sm text-text-secondary">Live readiness signals from your scans, policies, and AI Act inventory.</p>
         </div>
         <button
           onClick={loadDashboard}

@@ -56,7 +56,7 @@ export default function ScanPage() {
                     Magic Scanner
                 </h1>
                 <p className="text-body-large text-text-secondary">
-                    Enter any website URL and get a complete compliance analysis in seconds.
+                    Enter any website URL and get a readiness analysis of privacy and AI-disclosure signals in seconds.
                 </p>
             </motion.div>
 
@@ -196,10 +196,10 @@ export default function ScanPage() {
                                         <h2 className="text-heading-2 mb-2">Scan Results for {displayedScan.url}</h2>
                                         <p className="text-text-secondary">
                                             {displayedScan.score >= 80
-                                                ? "Great job! Your website is mostly compliant."
+                                                ? "Great start! Your surface looks mostly ready, but review the findings with counsel before claiming compliance."
                                                 : displayedScan.score >= 60
-                                                    ? "Good start, but there are some issues to fix."
-                                                    : "Critical issues found. Immediate action recommended."}
+                                                    ? "Good start, but there are readiness gaps to address."
+                                                    : "Critical gaps found. Review and remediate before sharing readiness evidence."}
                                         </p>
                                     </div>
 

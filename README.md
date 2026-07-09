@@ -1,23 +1,25 @@
 # Zenvyra
 
-AI-Powered Compliance Automation SaaS Platform
+EU AI Act readiness evidence platform for AI startups
 
 ## Overview
 
-Zenvyra helps AI startups achieve EU AI Act compliance in minutes — scan AI systems, fix gaps, generate policies, and issue shareable compliance certificates.
+Zenvyra helps AI startups selling to enterprise customers build and maintain an EU AI Act readiness record: inventory AI systems, classify risk indicators, map obligations, track evidence gaps, export proof-pack documents, and publish shareable verification pages for customer diligence.
+
+Zenvyra is an operational readiness tool, not a law firm or a legal conformity declaration. It does not guarantee compliance. Teams should review outputs with qualified counsel before making regulatory filings or compliance claims.
 
 ### Key Features
 
-- **EU AI Act Scanner**: Free, shareable scanner for AI Act readiness
-- **AI System Inventory**: Track high-risk and GPAI models under one roof
-- **AI Act Readiness Reports**: Export system cards and assessment summaries
-- **Shareable Compliance Badge**: Issue a public certificate/embed for your AI product
-- **AI-Powered Policy Generation**: Generate privacy policies, terms of service, and other legal documents
-- **Rate-Limited Scanning**: Tier-based per-user and organization limits to prevent abuse
+- **EU AI Act Readiness Engine**: Classify prohibited, high-risk, limited-risk, and minimal-risk indicators and map the obligations and evidence gaps most startups need to address
+- **AI System Inventory**: Track intended purpose, providers, model details, EU exposure, high-risk flags, and operational controls
+- **AI Act Proof-Pack Export**: Export system cards, transparency notices, assessment summaries, and evidence checklists to share with customers and counsel
+- **Shareable Verification Pages**: Publish scoped, public proof pages that show readiness status without exposing private evidence
+- **AI-Powered Policy Drafting**: Generate first-draft privacy policies, terms of service, and other legal documents for counsel review
+- **Rate-Limited Website Scanning**: Tier-based per-user and organization limits to surface privacy and AI-disclosure signals
 - **OpenAI Resilience & Cost Alerts**: Timeout/retry/fallback + daily spend alerts
 - **Team Collaboration**: Multi-user support with role-based access
 - **Payment Integration**: Subscription management with Dodo Payments
-- **Dashboard Analytics**: Comprehensive compliance scoring and reporting
+- **Dashboard Analytics**: Readiness scoring and gap reporting for AI Act workflows
 
 ## Tech Stack
 
@@ -91,10 +93,19 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
+On Windows PowerShell, make sure `JAVA_HOME` points to the JDK root, not the `bin` directory:
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot"
+.\mvnw.cmd test
+```
+
 #### Frontend
 ```bash
 cd frontend
-npm install
+npm ci
+npm test
+npm run build
 npm run dev
 ```
 
@@ -161,6 +172,7 @@ cd backend
 ```bash
 cd frontend
 npm test
+npm run build
 ```
 
 ## Deployment
@@ -288,8 +300,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Roadmap
 
-- [x] EU AI Act compliance scanning & reports
-- [x] Shareable compliance badge/certificate
+- [x] EU AI Act readiness scanning & reports
+- [x] Shareable readiness verification pages
 - [x] OpenAI resilience, rate limiting & cost alerts
 - [ ] Product Hunt launch
 - [ ] Sentry monitoring
@@ -298,4 +310,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [ ] Integration APIs (Zapier, Slack)
 - [ ] Enterprise SSO
 - [ ] White-label solution
-- [ ] Compliance audit trails
+- [ ] Readiness evidence audit trails

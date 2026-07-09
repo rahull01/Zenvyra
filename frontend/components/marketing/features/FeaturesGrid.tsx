@@ -67,12 +67,12 @@ export default function FeaturesGrid() {
                         <span className="text-xs font-bold text-text-primary uppercase tracking-widest">Enterprise Grade</span>
                     </motion.div>
                     <h2 className="text-4xl md:text-6xl font-extrabold text-text-primary mb-6 tracking-tight">
-                        Powering the next generation of <br/>
-                        <span className="text-gradient-accent">Compliance Automation.</span>
+                        Build an evidence-backed <br/>
+                        <span className="text-gradient-accent">AI Act readiness record.</span>
                     </h2>
                     <p className="mx-auto max-w-2xl text-lg text-text-secondary font-medium leading-relaxed">
-                        A comprehensive suite of AI-driven tools engineered to eliminate legal complexity
-                        and secure your digital presence across 50+ global jurisdictions.
+                        A focused set of AI-assisted tools to inventory systems, classify risk, map obligations,
+                        and collect the evidence your customers and counsel need to review.
                     </p>
                 </div>
 

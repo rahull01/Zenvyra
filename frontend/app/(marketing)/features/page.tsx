@@ -18,7 +18,7 @@ const features = [
     description: "The most advanced cookie banner system. Geolocation-based targeting ensures you only show banners where required.",
     icon: Cookie,
     color: "bg-primary-light text-primary",
-    capabilities: ["IAB TCF 2.3 Certified", "Google Consent Mode", "Deep scanning", "Custom UI themes"]
+    capabilities: ["IAB TCF 2.2 ready", "Google Consent Mode", "Deep scanning", "Custom UI themes"]
   },
   {
     title: "Compliance Monitoring",

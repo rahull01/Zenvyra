@@ -98,7 +98,7 @@ export default function PolicyGenerator({ onGenerate }: PolicyGeneratorProps) {
                     <Sparkles className="absolute inset-0 m-auto w-8 h-8 text-brand-400" />
                 </div>
                 <h3 className="text-heading-2 mb-2">Generating Policy...</h3>
-                <p className="text-surface-400 mb-6">Our AI is crafting a legally compliant policy for you</p>
+                <p className="text-surface-400 mb-6">Our AI is crafting a policy draft for your team and counsel to review</p>
                 <div className="space-y-2 max-w-xs mx-auto">
                     {["Analyzing requirements", "Drafting policy", "Legal compliance check", "Finalizing"].map((s, i) => (
                         <motion.div
@@ -125,7 +125,7 @@ export default function PolicyGenerator({ onGenerate }: PolicyGeneratorProps) {
                 </div>
                 <div>
                     <h2 className="text-heading-2">AI Policy Generator</h2>
-                    <p className="text-sm text-surface-500">Generate legally compliant policies in seconds</p>
+                    <p className="text-sm text-surface-500">Generate policy drafts for counsel review in seconds</p>
                 </div>
             </div>
 

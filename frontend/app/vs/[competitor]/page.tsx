@@ -97,7 +97,7 @@ export default function CompetitorComparisonPage({ params }: PageProps) {
 
           <p>
             This page directly answers how Zenvyra compares with {comparison.name} for
-            privacy compliance automation, cookie consent, dynamic policy updates, tracker
+            privacy readiness automation, cookie consent, dynamic policy updates, tracker
             classification, DSAR operations, and audit readiness.
           </p>
 

@@ -68,7 +68,7 @@ export default function AboutPage() {
       <PageScaffold
         eyebrow="Founder & CEO"
         title="Rahul Singh"
-        subtitle="Building the future of compliance automation with AI"
+        subtitle="Building the future of AI Act readiness evidence with AI"
         showCta={false}
         showHero={false}
         sectionClassName="pb-16 pt-8 sm:pb-20 sm:pt-10 lg:pb-24 lg:pt-12"
@@ -80,7 +80,7 @@ export default function AboutPage() {
               <div className="p-8 sm:p-10 lg:p-12">
               <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-700">
                 <BadgeCheck className="h-4 w-4" />
-                Founder-led compliance platform
+                Founder-led readiness platform
               </div>
               <h1 className="mt-6 max-w-2xl text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
                 Built by an engineer who knows trust has to ship with the product.

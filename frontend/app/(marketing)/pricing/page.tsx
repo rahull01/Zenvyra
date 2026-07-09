@@ -60,7 +60,7 @@ const comparisonRows = [
 const faqs = [
   {
     q: "Is this legal advice?",
-    a: "No. Zenvyra is compliance automation software, not a law firm. It helps teams create EU AI Act readiness evidence, detect issues, and maintain policy/consent workflows. High-risk legal decisions should still be reviewed by qualified counsel.",
+    a: "No. Zenvyra is readiness automation software, not a law firm. It helps teams create EU AI Act readiness evidence, detect issues, and maintain policy/consent workflows. High-risk legal decisions should still be reviewed by qualified counsel.",
   },
   {
     q: "Why is there a setup package?",

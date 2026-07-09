@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ShieldCheck, AlertTriangle, CheckCircle, Clock, Sparkles, ArrowUpRight } from "lucide-react";
+import { ShieldCheck, AlertTriangle, CheckCircle, Clock, Sparkles, ArrowUpRight, Info } from "lucide-react";
 import DashboardPageShell from "@/components/dashboard/DashboardPageShell";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -83,6 +83,12 @@ export default function ComplianceScorePage() {
             ))}
           </div>
         </div>
+      </div>
+      <div className="rounded-2xl border border-status-info/30 bg-status-info/10 p-4 flex gap-3">
+        <Info className="mt-0.5 h-5 w-5 text-status-info shrink-0" />
+        <p className="text-sm text-text-secondary">
+          Zenvyra surfaces readiness signals and policy drafts for your team and counsel to review. It is not a law firm and does not guarantee legal compliance.
+        </p>
       </div>
     </DashboardPageShell>
   );

@@ -89,7 +89,7 @@ export function getZenvyraWebSiteSchema(baseUrl = PUBLIC_APP_URL): WebSiteSchema
     name: "Zenvyra",
     url: baseUrl,
     description:
-      "AI Act compliance for AI startups. Scan your AI product, generate compliant policies, and get audit-ready in minutes.",
+      "EU AI Act readiness evidence for AI startups. Inventory systems, classify risk, map obligations, collect evidence, and export a proof pack for customer diligence.",
   };
 }
 

@@ -108,7 +108,7 @@ export default function PoliciesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-display-3 font-display text-surface-100 mb-2">Policies</h1>
-          <p className="text-surface-400">AI-generated compliance policies for your websites</p>
+          <p className="text-surface-400">AI-generated policy drafts for your websites. Review with qualified counsel before publishing.</p>
         </div>
         <motion.button
           whileHover={{ scale: 1.05 }}

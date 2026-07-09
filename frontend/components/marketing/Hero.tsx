@@ -30,18 +30,18 @@ const Hero = () => {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-60" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-orange-500" />
               </span>
-              <span className="truncate">AI Act compliance for AI startups</span>
+              <span className="truncate">EU AI Act readiness evidence for AI startups</span>
             </div>
 
             <h1 className="max-w-[680px] !text-[2.55rem] font-extrabold tracking-tight !text-white !leading-[1.02] sm:!text-[3.3rem] lg:!text-[clamp(3rem,4.35vw,4.45rem)]">
-              AI Act Compliance for{' '}
+              AI Act Readiness Evidence for{' '}
               <span className="bg-gradient-to-r from-orange-300 via-orange-500 to-white bg-clip-text text-transparent">
                 AI Startups
               </span>
             </h1>
 
             <p className="max-w-lg text-base leading-7 text-white/68 sm:text-lg">
-              Scan your AI product, generate compliant policies, and get audit-ready in minutes. Built for LLM and AI startups facing EU AI Act requirements.
+              Inventory your AI systems, classify risk, map obligations, collect evidence, and export a proof pack your customers and counsel can review. Built for LLM and AI startups facing EU AI Act diligence.
             </p>
 
             <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
@@ -67,7 +67,7 @@ const Hero = () => {
               </span>
               <span className="inline-flex items-center gap-2">
                 <BadgeCheck className="h-4 w-4 text-orange-400" />
-                Audit-ready in minutes
+                Evidence-backed readiness record
               </span>
             </div>
           </motion.div>

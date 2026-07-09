@@ -96,7 +96,7 @@ export default function AboutUsSection({ embedded = false }: AboutUsSectionProps
                 {[
                   { value: "10K+", label: "Businesses served" },
                   { value: "150+", label: "Countries covered" },
-                  { value: "AI-first", label: "Compliance automation" },
+                  { value: "AI-first", label: "Readiness automation" },
                 ].map((stat) => (
                   <div key={stat.label}>
                     <p className="text-lg font-bold text-text-primary">{stat.value}</p>

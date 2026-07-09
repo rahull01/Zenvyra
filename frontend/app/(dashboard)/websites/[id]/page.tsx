@@ -308,11 +308,11 @@ export default function WebsiteDetailPage() {
                 <div className="rounded-xl border border-border-light bg-background-secondary p-3">
                   <p className="text-xs font-bold uppercase text-text-tertiary">Embed code</p>
                   <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-all text-xs text-text-secondary">
-                    {certificate.badgeEmbedCode || "<img src=\"/badge/" + id + "\" alt=\"Zenvyra compliance badge\" />"}
+                    {certificate.badgeEmbedCode || "<img src=\"/badge/" + id + "\" alt=\"Zenvyra readiness badge\" />"}
                   </pre>
                   <button
                     onClick={() => {
-                      navigator.clipboard.writeText(certificate.badgeEmbedCode || `<img src="/badge/${id}" alt="Zenvyra compliance badge" />`);
+                      navigator.clipboard.writeText(certificate.badgeEmbedCode || `<img src="/badge/${id}" alt="Zenvyra readiness badge" />`);
                       toast.success("Embed code copied.");
                     }}
                     className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-border-light bg-surface-card px-4 py-2 text-sm font-semibold text-text-primary transition hover:bg-background-tertiary"

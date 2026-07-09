@@ -16,14 +16,14 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s | Zenvyra",
     },
     description:
-      "AI Act compliance for AI startups. Scan your AI product, generate compliant policies, and get audit-ready in minutes.",
+      "EU AI Act readiness evidence for AI startups. Inventory systems, classify risk, map obligations, collect evidence, and export a proof pack for customer diligence.",
     keywords: [
-      "AI Act compliance",
-      "AI startup compliance",
+      "AI Act readiness",
+      "AI startup readiness",
       "EU AI Act",
-      "LLM compliance",
-      "AI governance",
-      "AI policy generator",
+      "LLM governance",
+      "AI evidence pack",
+      "AI policy drafting",
       "AI audit readiness",
     ],
     authors: [{ name: "Zenvyra" }],
@@ -31,9 +31,9 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: "/",
     },
     openGraph: {
-      title: "AI Act Compliance for AI Startups",
+      title: "AI Act Readiness Evidence for AI Startups",
       description:
-        "Scan your AI product, generate compliant policies, and get audit-ready in minutes. Built for LLM and AI startups facing EU AI Act requirements.",
+        "Inventory your AI systems, classify risk, map obligations, collect evidence, and export a proof pack your customers and counsel can review. Built for LLM and AI startups facing EU AI Act diligence.",
       url: siteUrl,
       siteName: "Zenvyra",
       type: "website",
@@ -43,15 +43,15 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/images/og-zenvyra.png",
           width: 1200,
           height: 630,
-          alt: "Zenvyra automated privacy compliance platform",
+          alt: "Zenvyra EU AI Act readiness and privacy proof dashboard",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "AI Act Compliance for AI Startups",
+      title: "AI Act Readiness Evidence for AI Startups",
       description:
-        "Scan your AI product, generate compliant policies, and get audit-ready in minutes. Built for LLM and AI startups facing EU AI Act requirements.",
+        "Inventory your AI systems, classify risk, map obligations, collect evidence, and export a proof pack your customers and counsel can review. Built for LLM and AI startups facing EU AI Act diligence.",
       images: ["/images/og-zenvyra.png"],
     },
     robots: {

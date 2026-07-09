@@ -68,10 +68,10 @@ export default function CTASection() {
                         
                         <div className="mt-16 flex flex-wrap items-center justify-center gap-10">
                             {[
-                                "SOC-2 Type II Certified",
-                                "GDPR & CCPA Compliant",
-                                "99.9% Uptime Guarantee",
-                                "Zero Configuration"
+                                "EU AI Act focused",
+                                "Readiness evidence workflows",
+                                "99.9% Uptime target",
+                                "Guided setup"
                             ].map((label) => (
                                 <div key={label} className="flex items-center gap-2">
                                     <ShieldCheck className="w-5 h-5 text-success" />

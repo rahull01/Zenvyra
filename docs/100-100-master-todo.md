@@ -66,11 +66,11 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 
 ## Phase 2 - Product Promise And Positioning
 
-- [ ] Rewrite README promise away from "compliance in minutes" toward readiness evidence and proof automation.
-- [ ] Align README feature list with shipped product.
-- [ ] Update landing page H1 and primary offer.
-- [ ] Add clear "not legal advice" language wherever compliance output is shown.
-- [ ] Remove unsupported "certified compliant" style language.
+- [x] Rewrite README promise away from "compliance in minutes" toward readiness evidence and proof automation. (README.md updated, 2026-07-09, verified: build passes)
+- [x] Align README feature list with shipped product. (README.md feature list aligned with inventory, proof-pack, verification pages, 2026-07-09, verified: build passes)
+- [x] Update landing page H1 and primary offer. (`frontend/app/(marketing)/page.tsx`, `frontend/app/layout.tsx`, `frontend/components/marketing/Hero.tsx`, `frontend/lib/seo-schema.ts` updated, 2026-07-09, verified: build passes)
+- [x] Add clear "not legal advice" language wherever compliance output is shown. (Added disclaimers to AI Act page, compliance score, policies, scanner results, public verification, free scanner; 2026-07-09, verified: build passes)
+- [x] Remove unsupported "certified compliant" style language. (Removed SOC-2/GDPR/CCPA certified claims, "compliance automation" overclaim, "legally compliant" policy language, "compliance badge" wording; 2026-07-09, verified: build passes)
 - [ ] Align Product Hunt/GTM docs with real launch scope.
 - [ ] Define the core wedge: EU AI Act Readiness Proof Pack for AI startups selling to enterprise customers.
 - [ ] Define ideal first customer profile.

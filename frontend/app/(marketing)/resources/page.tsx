@@ -25,7 +25,7 @@ const resourceCategories = [
   { title: "Templates", description: "Launch-ready checklists for policy updates, cookie audits, vendor reviews, and consent QA.", icon: ClipboardCheck, href: "/templates", count: "22 templates" },
   { title: "Documentation", description: "Developer instructions for banners, embeds, public proof pages, and API workflows.", icon: FileText, href: "/documentation", count: "API + setup" },
   { title: "Webinars", description: "Practical sessions on privacy operations for founders, agencies, and product teams.", icon: Headphones, href: "/webinars", count: "Monthly" },
-  { title: "Blog", description: "Operator notes on compliance automation, trust pages, policy drift, and AI governance.", icon: Newspaper, href: "/blog", count: "Weekly" },
+  { title: "Blog", description: "Operator notes on readiness automation, trust pages, policy drift, and AI governance.", icon: Newspaper, href: "/blog", count: "Weekly" },
   { title: "Help Center", description: "Fast answers for setup, scanning, consent logs, billing, and team workspaces.", icon: HelpCircle, href: "/help", count: "Support" },
 ];
 
