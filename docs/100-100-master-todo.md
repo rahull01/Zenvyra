@@ -73,7 +73,7 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 - [x] Remove unsupported "certified compliant" style language. (Removed SOC-2/GDPR/CCPA certified claims, "compliance automation" overclaim, "legally compliant" policy language, "compliance badge" wording; 2026-07-09, verified: build passes)
 - [x] Align Product Hunt/GTM docs with real launch scope. (`docs/launch/product-hunt-assets.md`, `docs/go-to-market-strategy.md`, `docs/pricing-strategy.md`, `docs/superpowers/plans/2026-07-04-zenvyra-unicorn-launch.md` updated, 2026-07-09, verified: no frontend code changed)
 - [x] Define the core wedge: EU AI Act Readiness Proof Pack for AI startups selling to enterprise customers. (`docs/core-wedge.md`, 2026-07-09, verified: doc written)
-- [ ] Define ideal first customer profile.
+- [x] Define ideal first customer profile. (`docs/ideal-customer-profile.md`, 2026-07-09, verified: doc written)
 - [ ] Define design-partner onboarding flow.
 
 ## Phase 3 - Real AI Act Engine
