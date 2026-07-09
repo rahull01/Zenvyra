@@ -37,6 +37,8 @@ public class AiActReadinessService {
     private final AiSystemInventoryRepository systemRepository;
     private final AiActAssessmentRepository assessmentRepository;
     private final AiActRuleCatalogFactory ruleCatalogFactory;
+    private final EvidenceItemService evidenceItemService;
+    private final AiActAuditService aiActAuditService;
 
     public AiSystemInventoryResponse create(UserDetails userDetails, AiSystemInventoryRequest request) {
         User user = resolveUser(userDetails);
@@ -75,7 +77,9 @@ public class AiActReadinessService {
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
-        return toResponse(systemRepository.save(inventory));
+        AiSystemInventory savedInventory = systemRepository.save(inventory);
+        aiActAuditService.logSystemCreated(userDetails, savedInventory);
+        return toResponse(savedInventory);
     }
 
     public List<AiSystemInventoryResponse> systems(UserDetails userDetails) {
@@ -122,7 +126,9 @@ public class AiActReadinessService {
         existing.setCriticalInfrastructureUse(Boolean.TRUE.equals(request.getCriticalInfrastructureUse()));
         existing.setProhibitedUse(Boolean.TRUE.equals(request.getProhibitedUse()));
         existing.setUpdatedAt(LocalDateTime.now());
-        return toResponse(systemRepository.save(existing));
+        AiSystemInventory savedInventory = systemRepository.save(existing);
+        aiActAuditService.logSystemUpdated(userDetails, savedInventory);
+        return toResponse(savedInventory);
     }
 
     public AiActAssessmentResponse assess(UserDetails userDetails, String id) {
@@ -191,7 +197,10 @@ public class AiActReadinessService {
                 .counselReviewWarning(COUNSEL_REVIEW_WARNING)
                 .assessedAt(LocalDateTime.now())
                 .build();
-        return toResponse(assessmentRepository.save(assessment), inventory);
+        AiActAssessment savedAssessment = assessmentRepository.save(assessment);
+        evidenceItemService.createFromGaps(userDetails, savedAssessment);
+        aiActAuditService.logAssessmentCreated(userDetails, savedAssessment);
+        return toResponse(savedAssessment, inventory);
     }
 
     public AiActAssessmentResponse assessment(UserDetails userDetails, String id) {
@@ -209,6 +218,7 @@ public class AiActReadinessService {
     public void delete(UserDetails userDetails, String id) {
         User user = resolveUser(userDetails);
         AiSystemInventory system = loadSystemForUser(user, id);
+        aiActAuditService.logSystemDeleted(userDetails, system);
         systemRepository.delete(system);
     }
 

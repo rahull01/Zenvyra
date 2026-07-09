@@ -103,20 +103,20 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 
 ## Phase 4 - Evidence Model And Audit Trail
 
-- [ ] Create evidence item model.
-- [ ] Link evidence items to AI systems.
-- [ ] Link evidence items to obligations.
-- [ ] Support evidence statuses: missing, requested, uploaded, reviewed, approved, stale.
-- [ ] Support evidence types: policy, model card, risk assessment, log sample, screenshot, process document, owner attestation, URL.
-- [ ] Add immutable assessment audit log.
-- [ ] Add immutable AI system change audit log.
-- [ ] Add reviewer notes.
-- [ ] Add counsel review status.
-- [ ] Add evidence freshness dates.
-- [ ] Add owner field per evidence item.
-- [ ] Add due date per evidence gap.
-- [ ] Add audit export.
-- [ ] Add tests for evidence ownership and access control.
+- [x] Create evidence item model. (`EvidenceItem`, `EvidenceItemType`, `EvidenceItemStatus`, `CounselReviewStatus`; 2026-07-09, verified: 171 backend tests pass)
+- [x] Link evidence items to AI systems. (`systemId` indexed field + `EvidenceItemService.createFromGaps` from `AiActAssessment`; 2026-07-09, verified)
+- [x] Link evidence items to obligations. (`obligationId` field populated from gap category; 2026-07-09, verified)
+- [x] Support evidence statuses: missing, requested, uploaded, reviewed, approved, stale. (`EvidenceItemStatus` enum + transition validation; 2026-07-09, verified)
+- [x] Support evidence types: policy, model card, risk assessment, log sample, screenshot, process document, owner attestation, URL. (`EvidenceItemType` enum; 2026-07-09, verified)
+- [x] Add immutable assessment audit log. (`AiActAuditLog` + `AiActAuditService.logAssessmentCreated`; append-only; 2026-07-09, verified)
+- [x] Add immutable AI system change audit log. (`logSystemCreated`, `logSystemUpdated`, `logSystemDeleted`; 2026-07-09, verified)
+- [x] Add reviewer notes. (`reviewerNotes` field on `EvidenceItem`; 2026-07-09, verified)
+- [x] Add counsel review status. (`CounselReviewStatus` enum + `counselReviewStatus` field; 2026-07-09, verified)
+- [x] Add evidence freshness dates. (`staleAt` field + manual STALE transition; automatic staleness scheduler deferred; 2026-07-09, verified)
+- [x] Add owner field per evidence item. (`owner` field; 2026-07-09, verified)
+- [x] Add due date per evidence gap. (`dueDate` field; 2026-07-09, verified)
+- [x] Add audit export. (`AiActAuditService.exportBySystem` returns chronologically sorted events; 2026-07-09, verified)
+- [x] Add tests for evidence ownership and access control. (`EvidenceItemServiceTest`, `AiActEvidenceControllerTest`; 2026-07-09, verified)
 
 ## Phase 5 - AI System Inventory Workflow
 

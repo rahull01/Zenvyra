@@ -1,0 +1,10 @@
+package com.zenvyra.model;
+
+public enum AiActAuditEventType {
+    SYSTEM_CREATED,
+    SYSTEM_UPDATED,
+    SYSTEM_DELETED,
+    ASSESSMENT_CREATED,
+    EVIDENCE_ITEM_CREATED,
+    EVIDENCE_ITEM_STATUS_CHANGED
+}

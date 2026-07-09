@@ -28,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,6 +41,10 @@ class AiActReadinessServiceTest {
     private AiSystemInventoryRepository systemRepository;
     @Mock
     private AiActAssessmentRepository assessmentRepository;
+    @Mock
+    private EvidenceItemService evidenceItemService;
+    @Mock
+    private AiActAuditService aiActAuditService;
 
     private AiActReadinessService service;
     private UserDetails userDetails;
@@ -46,7 +52,8 @@ class AiActReadinessServiceTest {
     @BeforeEach
     void setUp() {
         AiActRuleCatalogFactory ruleCatalogFactory = new AiActRuleCatalogFactory(new AiActRuleCatalogV2026_07());
-        service = new AiActReadinessService(userRepository, systemRepository, assessmentRepository, ruleCatalogFactory);
+        service = new AiActReadinessService(userRepository, systemRepository, assessmentRepository,
+                ruleCatalogFactory, evidenceItemService, aiActAuditService);
         userDetails = org.springframework.security.core.userdetails.User
                 .withUsername("owner@example.com")
                 .password("password")
@@ -81,6 +88,8 @@ class AiActReadinessServiceTest {
 
         AiActAssessmentResponse assessment = service.assess(userDetails, "system-1");
 
+        verify(evidenceItemService).createFromGaps(eq(userDetails), any(AiActAssessment.class));
+        verify(aiActAuditService).logAssessmentCreated(eq(userDetails), any(AiActAssessment.class));
         assertEquals("high-risk indicator", assessment.getRiskCategory());
         assertTrue(assessment.getRiskClassificationRationale().contains("high-risk indicator"));
         assertTrue(assessment.getConfidenceExplanation().contains("self-reported inventory answers"));
