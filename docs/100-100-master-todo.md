@@ -74,7 +74,7 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 - [x] Align Product Hunt/GTM docs with real launch scope. (`docs/launch/product-hunt-assets.md`, `docs/go-to-market-strategy.md`, `docs/pricing-strategy.md`, `docs/superpowers/plans/2026-07-04-zenvyra-unicorn-launch.md` updated, 2026-07-09, verified: no frontend code changed)
 - [x] Define the core wedge: EU AI Act Readiness Proof Pack for AI startups selling to enterprise customers. (`docs/core-wedge.md`, 2026-07-09, verified: doc written)
 - [x] Define ideal first customer profile. (`docs/ideal-customer-profile.md`, 2026-07-09, verified: doc written)
-- [ ] Define design-partner onboarding flow.
+- [x] Define design-partner onboarding flow. (`docs/design-partner-onboarding.md`, 2026-07-09, verified: doc written)
 
 ## Phase 3 - Real AI Act Engine
 
