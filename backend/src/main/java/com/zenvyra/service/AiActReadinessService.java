@@ -133,6 +133,9 @@ public class AiActReadinessService {
         RiskLevel riskLevel = catalog.classifyRisk(inventory);
         String riskCategory = riskLevel.getLabel();
         List<String> riskSignals = catalog.riskSignals(inventory, riskLevel);
+        String riskClassificationRationale = catalog.riskClassificationRationale(inventory, riskLevel);
+        String confidenceExplanation = catalog.confidenceExplanation(inventory, riskLevel);
+        String riskLevelExplanation = catalog.riskLevelExplanation(inventory, riskLevel);
         List<String> annexIIIUseCases = catalog.annexIIIUseCases(inventory);
         List<String> applicableObligations = catalog.applicableObligations(inventory, riskLevel);
         List<String> transparencyNotices = catalog.transparencyNotices(inventory);
@@ -168,6 +171,9 @@ public class AiActReadinessService {
                 .readinessBreakdown(readinessBreakdown)
                 .rulesetVersion(catalog.version())
                 .riskSignals(riskSignals)
+                .riskClassificationRationale(riskClassificationRationale)
+                .confidenceExplanation(confidenceExplanation)
+                .riskLevelExplanation(riskLevelExplanation)
                 .applicableObligations(applicableObligations)
                 .annexIIIUseCases(annexIIIUseCases)
                 .requiredTransparencyNotices(transparencyNotices)
@@ -396,6 +402,9 @@ public class AiActReadinessService {
                 .readinessBreakdown(a.getReadinessBreakdown())
                 .rulesetVersion(a.getRulesetVersion())
                 .riskSignals(a.getRiskSignals())
+                .riskClassificationRationale(a.getRiskClassificationRationale())
+                .confidenceExplanation(a.getConfidenceExplanation())
+                .riskLevelExplanation(a.getRiskLevelExplanation())
                 .applicableObligations(a.getApplicableObligations())
                 .annexIIIUseCases(a.getAnnexIIIUseCases())
                 .requiredTransparencyNotices(a.getRequiredTransparencyNotices())

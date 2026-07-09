@@ -89,11 +89,11 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 - [x] Map high-risk provider-style requirements: risk management, data governance, technical documentation, logs, transparency, human oversight, accuracy, robustness, cybersecurity. (`applicableObligations`, `conformityAssessmentGaps`)
 - [x] Map deployer/operator evidence requirements. (`evidenceChecklist`)
 - [x] Map GPAI/provider dependency documentation requirements. (`gpaiProviderDocumentationGaps`)
-- [ ] Add risk classification rationale. (risk signals exist; dedicated rationale field pending)
-- [ ] Add confidence explanation. (confidence currently hardcoded)
-- [ ] Add high-risk "why this is high-risk" explanation.
-- [ ] Add limited-risk "why transparency applies" explanation.
-- [ ] Add minimal-risk "why no major trigger found" explanation.
+- [x] Add risk classification rationale. (`riskClassificationRationale` field on model/response + catalog method; 2026-07-09, verified: 123 backend tests pass)
+- [x] Add confidence explanation. (`confidenceExplanation` field + catalog method; 2026-07-09, verified)
+- [x] Add high-risk "why this is high-risk" explanation. (`riskLevelExplanation` covers high-risk; 2026-07-09, verified)
+- [x] Add limited-risk "why transparency applies" explanation. (`riskLevelExplanation` covers limited-risk; 2026-07-09, verified)
+- [x] Add minimal-risk "why no major trigger found" explanation. (`riskLevelExplanation` covers minimal-risk; 2026-07-09, verified)
 - [x] Add counsel-review warning to every assessment. (service constant + model/response field)
 - [x] Add tests for prohibited-risk priority. (`AiActRuleCatalogV2026_07Test`, 2026-07-09, verified)
 - [x] Add tests for high-risk categories. (verified)

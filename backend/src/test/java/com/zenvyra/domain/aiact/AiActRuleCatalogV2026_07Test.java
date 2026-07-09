@@ -425,4 +425,34 @@ class AiActRuleCatalogV2026_07Test {
                 () -> factory.get("UNKNOWN_VERSION"));
         assertTrue(ex.getMessage().contains("UNKNOWN_VERSION"));
     }
+
+    @Test
+    void riskClassificationRationaleExplainsEachRiskLevel() {
+        AiSystemInventory prohibited = AiSystemInventory.builder().systemName("Bad").prohibitedUse(true).build();
+        AiSystemInventory highRisk = AiSystemInventory.builder().systemName("HR").automatedDecisionMaking(true).build();
+        AiSystemInventory limited = AiSystemInventory.builder().systemName("Chat").userFacingAiInteraction(true).build();
+        AiSystemInventory minimal = AiSystemInventory.builder().systemName("Internal").build();
+
+        assertTrue(catalog.riskClassificationRationale(prohibited, RiskLevel.PROHIBITED).contains("prohibited practice"));
+        assertTrue(catalog.riskClassificationRationale(highRisk, RiskLevel.HIGH_RISK).contains("automated decision-making"));
+        assertTrue(catalog.riskClassificationRationale(limited, RiskLevel.LIMITED_RISK).contains("Transparency obligations apply"));
+        assertTrue(catalog.riskClassificationRationale(minimal, RiskLevel.MINIMAL_RISK).contains("no prohibited practice, high-risk domain"));
+    }
+
+    @Test
+    void confidenceExplanationMentionsSelfReportedAnswersAndCounsel() {
+        AiSystemInventory inventory = AiSystemInventory.builder().systemName("Any").build();
+        String explanation = catalog.confidenceExplanation(inventory, RiskLevel.MINIMAL_RISK);
+        assertTrue(explanation.contains("self-reported inventory answers"));
+        assertTrue(explanation.contains("Counsel"));
+    }
+
+    @Test
+    void riskLevelExplanationMatchesEachRiskLevel() {
+        AiSystemInventory inventory = AiSystemInventory.builder().systemName("Any").build();
+        assertTrue(catalog.riskLevelExplanation(inventory, RiskLevel.PROHIBITED).contains("Stop development"));
+        assertTrue(catalog.riskLevelExplanation(inventory, RiskLevel.HIGH_RISK).contains("high-risk AI system"));
+        assertTrue(catalog.riskLevelExplanation(inventory, RiskLevel.LIMITED_RISK).contains("transparency"));
+        assertTrue(catalog.riskLevelExplanation(inventory, RiskLevel.MINIMAL_RISK).contains("No major EU AI Act trigger"));
+    }
 }

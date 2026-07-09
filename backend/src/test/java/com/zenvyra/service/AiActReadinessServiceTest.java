@@ -82,6 +82,9 @@ class AiActReadinessServiceTest {
         AiActAssessmentResponse assessment = service.assess(userDetails, "system-1");
 
         assertEquals("high-risk indicator", assessment.getRiskCategory());
+        assertTrue(assessment.getRiskClassificationRationale().contains("high-risk indicator"));
+        assertTrue(assessment.getConfidenceExplanation().contains("self-reported inventory answers"));
+        assertTrue(assessment.getRiskLevelExplanation().contains("high-risk AI system"));
         assertEquals("EU_AI_ACT_READINESS_2026_07", assessment.getRulesetVersion());
         assertTrue(assessment.getRequiredTransparencyNotices().contains("User-facing AI interaction notice"));
         assertTrue(assessment.getHumanOversightGaps().contains("Document human review and escalation workflow"));

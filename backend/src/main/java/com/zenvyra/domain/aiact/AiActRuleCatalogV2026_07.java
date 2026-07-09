@@ -68,6 +68,72 @@ public class AiActRuleCatalogV2026_07 implements AiActRuleCatalog {
     }
 
     @Override
+    public String riskClassificationRationale(AiSystemInventory inventory, RiskLevel riskLevel) {
+        StringBuilder rationale = new StringBuilder();
+        rationale.append("This system was classified as ").append(riskLevel.getLabel()).append(" because ");
+        switch (riskLevel) {
+            case PROHIBITED:
+                rationale.append("the inventory indicates a prohibited practice under the EU AI Act. ");
+                rationale.append("This classification should be treated as a red flag and reviewed by qualified counsel immediately.");
+                break;
+            case HIGH_RISK:
+                if (Boolean.TRUE.equals(inventory.getAutomatedDecisionMaking())) {
+                    rationale.append("it performs automated decision-making with potential significant effects on individuals. ");
+                }
+                List<String> domains = highRiskDomainLabels(inventory);
+                if (!domains.isEmpty()) {
+                    rationale.append("it operates in a high-risk domain: ").append(String.join(", ", domains)).append(". ");
+                }
+                rationale.append("These factors trigger the high-risk obligations under the EU AI Act.");
+                break;
+            case LIMITED_RISK:
+                rationale.append("it interacts with users without qualifying as high-risk. ");
+                rationale.append("Transparency obligations apply so users know they are interacting with an AI system.");
+                break;
+            case MINIMAL_RISK:
+                rationale.append("no prohibited practice, high-risk domain, automated decision-making, or user-facing AI interaction indicators were reported. ");
+                rationale.append("Only general AI literacy and operational best-practice expectations apply.");
+                break;
+        }
+        return rationale.toString();
+    }
+
+    @Override
+    public String confidenceExplanation(AiSystemInventory inventory, RiskLevel riskLevel) {
+        return "The confidence score reflects how directly the classification follows from the self-reported inventory answers. "
+                + "It does not replace legal review. Counsel should validate the intended purpose, deployment context, and EU exposure before any regulatory filing.";
+    }
+
+    @Override
+    public String riskLevelExplanation(AiSystemInventory inventory, RiskLevel riskLevel) {
+        switch (riskLevel) {
+            case PROHIBITED:
+                return "A prohibited-practice indicator means the described use case may be banned under the EU AI Act. Stop development or deployment until counsel confirms the activity is permissible.";
+            case HIGH_RISK:
+                return "This is a high-risk AI system. Before marketing or deploying it in the EU, the team must complete risk management, data governance, technical documentation, human oversight, logging, monitoring, and conformity assessment evidence.";
+            case LIMITED_RISK:
+                return "This system is limited-risk. The main obligation is transparency: tell users they are interacting with AI, publish clear disclosures, and maintain human escalation paths.";
+            case MINIMAL_RISK:
+                return "No major EU AI Act trigger was reported for this system. Continue documenting the system, train staff on AI literacy, and re-assess if the use case changes.";
+            default:
+                return "Review the classification with counsel.";
+        }
+    }
+
+    private List<String> highRiskDomainLabels(AiSystemInventory inventory) {
+        List<String> labels = new ArrayList<>();
+        if (Boolean.TRUE.equals(inventory.getHealthcareUse())) labels.add("healthcare");
+        if (Boolean.TRUE.equals(inventory.getHiringUse())) labels.add("hiring or employment");
+        if (Boolean.TRUE.equals(inventory.getFinanceUse())) labels.add("finance or credit access");
+        if (Boolean.TRUE.equals(inventory.getEducationUse())) labels.add("education or vocational training");
+        if (Boolean.TRUE.equals(inventory.getBiometricUse())) labels.add("biometric identification");
+        if (Boolean.TRUE.equals(inventory.getGovernmentUse())) labels.add("public services or government");
+        if (Boolean.TRUE.equals(inventory.getCriticalInfrastructureUse())) labels.add("critical infrastructure");
+        if (Boolean.TRUE.equals(inventory.getChildrenUse())) labels.add("children or minors");
+        return labels;
+    }
+
+    @Override
     public List<String> annexIIIUseCases(AiSystemInventory inventory) {
         List<String> useCases = new ArrayList<>();
         if (Boolean.TRUE.equals(inventory.getBiometricUse())) {

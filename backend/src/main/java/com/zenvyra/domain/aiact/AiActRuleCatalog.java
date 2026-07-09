@@ -32,6 +32,21 @@ public interface AiActRuleCatalog {
     List<String> riskSignals(AiSystemInventory inventory, RiskLevel riskLevel);
 
     /**
+     * @return a prose rationale for the risk classification based on the inventory answers.
+     */
+    String riskClassificationRationale(AiSystemInventory inventory, RiskLevel riskLevel);
+
+    /**
+     * @return a prose explanation of the confidence level and its limitations.
+     */
+    String confidenceExplanation(AiSystemInventory inventory, RiskLevel riskLevel);
+
+    /**
+     * @return a prose explanation of why the risk level applies and what it means for the team.
+     */
+    String riskLevelExplanation(AiSystemInventory inventory, RiskLevel riskLevel);
+
+    /**
      * @return Annex III categories that apply to the inventory.
      */
     List<String> annexIIIUseCases(AiSystemInventory inventory);
