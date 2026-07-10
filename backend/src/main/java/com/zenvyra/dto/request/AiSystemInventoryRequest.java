@@ -1,11 +1,13 @@
 package com.zenvyra.dto.request;
 
+import com.zenvyra.model.ReleaseStatus;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -49,4 +51,13 @@ public class AiSystemInventoryRequest {
     private Boolean governmentUse;
     private Boolean criticalInfrastructureUse;
     private Boolean prohibitedUse;
+
+    private String deploymentContext;
+    private String modelProviderVersion;
+    private Boolean trainingOrFineTuning;
+    private Boolean customerFacing;
+    private String decisionImpactLevel;
+    private ReleaseStatus releaseStatus;
+    private LocalDateTime lastReviewedAt;
+    private LocalDateTime nextReviewAt;
 }

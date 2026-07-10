@@ -48,6 +48,14 @@ public class AiSystemInventory {
     private Boolean governmentUse;
     private Boolean criticalInfrastructureUse;
     private Boolean prohibitedUse;
+    private String deploymentContext;
+    private String modelProviderVersion;
+    private Boolean trainingOrFineTuning;
+    private Boolean customerFacing;
+    private String decisionImpactLevel;
+    private ReleaseStatus releaseStatus;
+    private LocalDateTime lastReviewedAt;
+    private LocalDateTime nextReviewAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

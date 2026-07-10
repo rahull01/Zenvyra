@@ -120,19 +120,19 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 
 ## Phase 5 - AI System Inventory Workflow
 
-- [ ] Expand inventory fields for intended purpose.
-- [ ] Add deployment context.
-- [ ] Add model/provider version.
-- [ ] Add training/fine-tuning indicator.
-- [ ] Add customer-facing/internal indicator.
-- [ ] Add data categories.
-- [ ] Add affected user groups.
-- [ ] Add geography/EU exposure.
-- [ ] Add decision impact level.
-- [ ] Add human escalation owner.
-- [ ] Add release status: draft, pilot, production, retired.
-- [ ] Add last reviewed date.
-- [ ] Add next review date.
+- [x] Expand inventory fields for intended purpose. (`purpose`, `useCase` retained; 2026-07-10, verified: 178 backend tests pass)
+- [x] Add deployment context. (`deploymentContext` field + validation; 2026-07-10, verified)
+- [x] Add model/provider version. (`modelProviderVersion` field; 2026-07-10, verified)
+- [x] Add training/fine-tuning indicator. (`trainingOrFineTuning` field; 2026-07-10, verified)
+- [x] Add customer-facing/internal indicator. (`customerFacing` field; 2026-07-10, verified)
+- [x] Add data categories. (`dataCategoriesSentToAi` field; 2026-07-10, verified)
+- [x] Add affected user groups. (`userGroups` field; 2026-07-10, verified)
+- [x] Add geography/EU exposure. (`countries`, `euUsersAffected` fields; 2026-07-10, verified)
+- [x] Add decision impact level. (`decisionImpactLevel` field + validation; 2026-07-10, verified)
+- [x] Add human escalation owner. (`humanOversightOwner` field; 2026-07-10, verified)
+- [x] Add release status: draft, pilot, production, retired. (`ReleaseStatus` enum + `releaseStatus` field; defaults to DRAFT; 2026-07-10, verified)
+- [x] Add last reviewed date. (`lastReviewedAt` field; 2026-07-10, verified)
+- [x] Add next review date. (`nextReviewAt` field; 2026-07-10, verified)
 - [ ] Add per-system dashboard detail page improvements.
 - [ ] Add edit/update workflow from frontend.
 - [ ] Add delete/archive workflow with audit trail.

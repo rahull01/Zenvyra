@@ -10,6 +10,7 @@ import com.zenvyra.dto.response.AiSystemInventoryResponse;
 import com.zenvyra.exception.ApiException;
 import com.zenvyra.model.AiActAssessment;
 import com.zenvyra.model.AiSystemInventory;
+import com.zenvyra.model.ReleaseStatus;
 import com.zenvyra.model.User;
 import com.zenvyra.repository.AiActAssessmentRepository;
 import com.zenvyra.repository.AiSystemInventoryRepository;
@@ -23,8 +24,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +35,11 @@ import java.util.stream.Collectors;
 public class AiActReadinessService {
     private static final String COUNSEL_REVIEW_WARNING =
             "This assessment is an operational indicator, not legal advice. Consult qualified counsel before filing conformity declarations.";
+
+    private static final Set<String> ALLOWED_DEPLOYMENT_CONTEXTS = Set.of(
+            "cloud", "on-premise", "edge", "saas", "hybrid", "mobile", "api-only");
+    private static final Set<String> ALLOWED_DECISION_IMPACT_LEVELS = Set.of(
+            "low", "medium", "high", "critical");
 
     private final UserRepository userRepository;
     private final AiSystemInventoryRepository systemRepository;
@@ -42,6 +50,7 @@ public class AiActReadinessService {
 
     public AiSystemInventoryResponse create(UserDetails userDetails, AiSystemInventoryRequest request) {
         User user = resolveUser(userDetails);
+        validateInventoryFields(request);
         LocalDateTime now = LocalDateTime.now();
         AiSystemInventory inventory = AiSystemInventory.builder()
                 .userId(user.getId())
@@ -74,6 +83,14 @@ public class AiActReadinessService {
                 .governmentUse(Boolean.TRUE.equals(request.getGovernmentUse()))
                 .criticalInfrastructureUse(Boolean.TRUE.equals(request.getCriticalInfrastructureUse()))
                 .prohibitedUse(Boolean.TRUE.equals(request.getProhibitedUse()))
+                .deploymentContext(normalizeDeploymentContext(request.getDeploymentContext()))
+                .modelProviderVersion(request.getModelProviderVersion())
+                .trainingOrFineTuning(Boolean.TRUE.equals(request.getTrainingOrFineTuning()))
+                .customerFacing(Boolean.TRUE.equals(request.getCustomerFacing()))
+                .decisionImpactLevel(normalizeDecisionImpactLevel(request.getDecisionImpactLevel()))
+                .releaseStatus(request.getReleaseStatus() != null ? request.getReleaseStatus() : ReleaseStatus.DRAFT)
+                .lastReviewedAt(request.getLastReviewedAt())
+                .nextReviewAt(request.getNextReviewAt())
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
@@ -95,6 +112,7 @@ public class AiActReadinessService {
 
     public AiSystemInventoryResponse update(UserDetails userDetails, String id, AiSystemInventoryRequest request) {
         User user = resolveUser(userDetails);
+        validateInventoryFields(request);
         AiSystemInventory existing = loadSystemForUser(user, id);
         existing.setOrganizationId(request.getOrganizationId());
         existing.setSystemName(request.getSystemName());
@@ -125,6 +143,16 @@ public class AiActReadinessService {
         existing.setGovernmentUse(Boolean.TRUE.equals(request.getGovernmentUse()));
         existing.setCriticalInfrastructureUse(Boolean.TRUE.equals(request.getCriticalInfrastructureUse()));
         existing.setProhibitedUse(Boolean.TRUE.equals(request.getProhibitedUse()));
+        existing.setDeploymentContext(normalizeDeploymentContext(request.getDeploymentContext()));
+        existing.setModelProviderVersion(request.getModelProviderVersion());
+        existing.setTrainingOrFineTuning(Boolean.TRUE.equals(request.getTrainingOrFineTuning()));
+        existing.setCustomerFacing(Boolean.TRUE.equals(request.getCustomerFacing()));
+        existing.setDecisionImpactLevel(normalizeDecisionImpactLevel(request.getDecisionImpactLevel()));
+        if (request.getReleaseStatus() != null) {
+            existing.setReleaseStatus(request.getReleaseStatus());
+        }
+        existing.setLastReviewedAt(request.getLastReviewedAt());
+        existing.setNextReviewAt(request.getNextReviewAt());
         existing.setUpdatedAt(LocalDateTime.now());
         AiSystemInventory savedInventory = systemRepository.save(existing);
         aiActAuditService.logSystemUpdated(userDetails, savedInventory);
@@ -338,6 +366,35 @@ public class AiActReadinessService {
         return value != null && !value.isBlank();
     }
 
+    private void validateInventoryFields(AiSystemInventoryRequest request) {
+        String deploymentContext = normalizeDeploymentContext(request.getDeploymentContext());
+        if (request.getDeploymentContext() != null && deploymentContext == null) {
+            throw ApiException.badRequest("deploymentContext must be one of: "
+                    + String.join(", ", ALLOWED_DEPLOYMENT_CONTEXTS));
+        }
+        String decisionImpactLevel = normalizeDecisionImpactLevel(request.getDecisionImpactLevel());
+        if (request.getDecisionImpactLevel() != null && decisionImpactLevel == null) {
+            throw ApiException.badRequest("decisionImpactLevel must be one of: "
+                    + String.join(", ", ALLOWED_DECISION_IMPACT_LEVELS));
+        }
+    }
+
+    private String normalizeDeploymentContext(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        String normalized = value.trim().toLowerCase(Locale.ROOT);
+        return ALLOWED_DEPLOYMENT_CONTEXTS.contains(normalized) ? normalized : null;
+    }
+
+    private String normalizeDecisionImpactLevel(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        String normalized = value.trim().toLowerCase(Locale.ROOT);
+        return ALLOWED_DECISION_IMPACT_LEVELS.contains(normalized) ? normalized : null;
+    }
+
     private int calculateReadinessScore(Map<String, Boolean> breakdown) {
         if (breakdown.isEmpty()) {
             return 0;
@@ -393,6 +450,14 @@ public class AiActReadinessService {
                 .governmentUse(s.getGovernmentUse())
                 .criticalInfrastructureUse(s.getCriticalInfrastructureUse())
                 .prohibitedUse(s.getProhibitedUse())
+                .deploymentContext(s.getDeploymentContext())
+                .modelProviderVersion(s.getModelProviderVersion())
+                .trainingOrFineTuning(s.getTrainingOrFineTuning())
+                .customerFacing(s.getCustomerFacing())
+                .decisionImpactLevel(s.getDecisionImpactLevel())
+                .releaseStatus(s.getReleaseStatus())
+                .lastReviewedAt(s.getLastReviewedAt())
+                .nextReviewAt(s.getNextReviewAt())
                 .riskCategory(riskLevel.getLabel())
                 .readinessScore(calculateReadinessScore(breakdown))
                 .createdAt(s.getCreatedAt())

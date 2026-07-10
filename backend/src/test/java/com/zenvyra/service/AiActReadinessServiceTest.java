@@ -7,6 +7,7 @@ import com.zenvyra.dto.response.AiActReadinessResponse;
 import com.zenvyra.exception.ApiException;
 import com.zenvyra.model.AiActAssessment;
 import com.zenvyra.model.AiSystemInventory;
+import com.zenvyra.model.ReleaseStatus;
 import com.zenvyra.model.User;
 import com.zenvyra.repository.AiActAssessmentRepository;
 import com.zenvyra.repository.AiSystemInventoryRepository;
@@ -239,7 +240,8 @@ class AiActReadinessServiceTest {
                 .technicalDocumentationReady(false)
                 .logsEvidenceRetained(false)
                 .monitoringEnabled(false)
-                .dataCategoriesSentToAi(List.of("support context"));
+                .dataCategoriesSentToAi(List.of("support context"))
+                .releaseStatus(ReleaseStatus.DRAFT);
     }
 
     private AiActAssessmentResponse assess(AiSystemInventory system) {

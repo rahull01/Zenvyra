@@ -1,5 +1,6 @@
 package com.zenvyra.dto.response;
 
+import com.zenvyra.model.ReleaseStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,6 +49,15 @@ public class AiSystemInventoryResponse {
     private Boolean governmentUse;
     private Boolean criticalInfrastructureUse;
     private Boolean prohibitedUse;
+
+    private String deploymentContext;
+    private String modelProviderVersion;
+    private Boolean trainingOrFineTuning;
+    private Boolean customerFacing;
+    private String decisionImpactLevel;
+    private ReleaseStatus releaseStatus;
+    private LocalDateTime lastReviewedAt;
+    private LocalDateTime nextReviewAt;
 
     private String riskCategory;
     private Integer readinessScore;
