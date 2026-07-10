@@ -1,7 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { AlertTriangle, Bot, Download, FileSearch, Loader2, Plus, ShieldAlert } from "lucide-react";
+import Link from "next/link";
+import { AlertTriangle, Bot, Download, Eye, FileSearch, Loader2, Plus, ShieldAlert } from "lucide-react";
 import toast from "react-hot-toast";
 import DashboardPageShell from "@/components/dashboard/DashboardPageShell";
 import api from "@/lib/api";
@@ -171,6 +172,10 @@ export default function AiActPage() {
                         <FileSearch className="h-4 w-4" />
                         Assess
                       </button>
+                      <Link href={`/ai-act/systems/${system.id}`} className="btn-secondary justify-center">
+                        <Eye className="h-4 w-4" />
+                        View details
+                      </Link>
                       <button onClick={() => downloadReport(`/ai-act/export/systems/${system.id}/system-card`, `${system.systemName}-system-card.md`)} className="btn-secondary justify-center">
                         <Download className="h-4 w-4" />
                         Card

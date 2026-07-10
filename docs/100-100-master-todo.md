@@ -133,9 +133,9 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 - [x] Add release status: draft, pilot, production, retired. (`ReleaseStatus` enum + `releaseStatus` field; defaults to DRAFT; 2026-07-10, verified)
 - [x] Add last reviewed date. (`lastReviewedAt` field; 2026-07-10, verified)
 - [x] Add next review date. (`nextReviewAt` field; 2026-07-10, verified)
-- [ ] Add per-system dashboard detail page improvements.
-- [ ] Add edit/update workflow from frontend.
-- [ ] Add delete/archive workflow with audit trail.
+- [x] Add per-system dashboard detail page improvements. (created `/ai-act/systems/[id]` detail page with identity, assessment, evidence, audit log, edit mode, archive action; 2026-07-10, verified: `npm test` + `npm run build` pass)
+- [x] Add edit/update workflow from frontend. (in-place edit form on detail page, PUT to `/api/ai-act/systems/{id}`; 2026-07-10, verified)
+- [x] Add delete/archive workflow with audit trail. (archive sets `releaseStatus` to `RETIRED`, which triggers backend audit log; 2026-07-10, verified)
 
 ## Phase 6 - Proof Pack Exports
 
