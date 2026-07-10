@@ -47,6 +47,13 @@ public class AiActExportController {
         return markdownResponse(body, "assessment-summary.md");
     }
 
+    @GetMapping("/systems/{systemId}/proof-pack")
+    public ResponseEntity<String> proofPack(@AuthenticationPrincipal UserDetails userDetails,
+                                            @PathVariable String systemId) {
+        String body = exportService.exportFullProofPack(userDetails, systemId);
+        return markdownResponse(body, "ai-act-proof-pack.md");
+    }
+
     private ResponseEntity<String> markdownResponse(String body, String filename) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_MARKDOWN);

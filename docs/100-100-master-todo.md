@@ -139,20 +139,20 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 
 ## Phase 6 - Proof Pack Exports
 
-- [ ] Upgrade system card export.
-- [ ] Upgrade transparency notice export.
-- [ ] Upgrade evidence checklist export.
-- [ ] Upgrade assessment summary export.
-- [ ] Add full proof-pack export.
-- [ ] Include system inventory.
-- [ ] Include risk classification rationale.
-- [ ] Include obligations.
-- [ ] Include gaps.
-- [ ] Include evidence table.
-- [ ] Include next actions.
-- [ ] Include version/ruleset/date.
-- [ ] Include legal disclaimer.
-- [ ] Add markdown export tests.
+- [x] Upgrade system card export. (includes all Phase 5 inventory fields + readiness score + ruleset version; 2026-07-10, verified)
+- [x] Upgrade transparency notice export. (includes data categories, EU exposure, countries, oversight owner, human-review language, not-legal-advice disclaimer; 2026-07-10, verified)
+- [x] Upgrade evidence checklist export. (merges real `EvidenceItem` records with assessment checklist; 2026-07-10, verified)
+- [x] Upgrade assessment summary export. (includes rationale, risk/impact explanations, evidence items, audit log; 2026-07-10, verified)
+- [x] Add full proof-pack export. (`GET /api/ai-act/export/systems/{systemId}/proof-pack` returns combined markdown; 2026-07-10, verified)
+- [x] Include system inventory. (all inventory fields in proof-pack table; 2026-07-10, verified)
+- [x] Include risk classification rationale. (assessment rationale + risk-level explanation; 2026-07-10, verified)
+- [x] Include obligations. (applicable obligations list; 2026-07-10, verified)
+- [x] Include gaps. (grouped gap register; 2026-07-10, verified)
+- [x] Include evidence table. (merged evidence checklist + real evidence items; 2026-07-10, verified)
+- [x] Include next actions. (from assessment; 2026-07-10, verified)
+- [x] Include version/ruleset/date. (ruleset version + generated-at timestamp; 2026-07-10, verified)
+- [x] Include legal disclaimer. (not legal advice / not a conformity declaration; 2026-07-10, verified)
+- [x] Add markdown export tests. (`AiActExportServiceTest` expanded to 11 tests; 2026-07-10, verified)
 - [ ] Add PDF export or planned PDF path.
 
 ## Phase 7 - Public Verification And Trust Pages
