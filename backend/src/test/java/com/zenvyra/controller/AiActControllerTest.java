@@ -4,7 +4,9 @@ import com.zenvyra.dto.request.AiSystemInventoryRequest;
 import com.zenvyra.dto.response.AiActAssessmentResponse;
 import com.zenvyra.dto.response.AiActReadinessResponse;
 import com.zenvyra.dto.response.AiSystemInventoryResponse;
+import com.zenvyra.service.AiActCertificateService;
 import com.zenvyra.service.AiActReadinessService;
+import com.zenvyra.service.AiActScannerIntegrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.User;
@@ -24,7 +26,9 @@ import static org.mockito.Mockito.when;
 class AiActControllerTest {
 
     private final AiActReadinessService service = mock(AiActReadinessService.class);
-    private final AiActController controller = new AiActController(service);
+    private final AiActCertificateService certificateService = mock(AiActCertificateService.class);
+    private final AiActScannerIntegrationService scannerIntegrationService = mock(AiActScannerIntegrationService.class);
+    private final AiActController controller = new AiActController(service, certificateService, scannerIntegrationService);
     private UserDetails userDetails;
 
     @BeforeEach

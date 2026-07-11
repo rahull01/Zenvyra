@@ -142,6 +142,9 @@ public class Scanner {
             boolean hasConsentMarkup = doc.select("[class*=cookie], [id*=cookie], [class*=consent], [id*=consent], [data-cookie], [data-consent]").size() > 0;
             boolean hasForms = doc.select("form, input[type=email], input[name*=email], input[name*=phone]").size() > 0;
 
+            // 6. Detect AI disclosure signals
+            AiDisclosureSignals aiSignals = detectAiDisclosureSignals(doc, url);
+
             // Compile into optimized JSON metadata payload
             Map<String, Object> metadata = new HashMap<>();
             metadata.put("url", url);
@@ -152,6 +155,7 @@ public class Scanner {
             metadata.put("complianceLinks", complianceLinks);
             metadata.put("hasConsentMarkup", hasConsentMarkup);
             metadata.put("hasPersonalDataForms", hasForms);
+            metadata.put("aiDisclosureSignals", aiSignals);
 
             String jsonPayload = objectMapper.writeValueAsString(metadata);
             response.setRawData(jsonPayload);
@@ -165,5 +169,108 @@ public class Scanner {
         }
 
         return response;
+    }
+
+    /**
+     * Scan visible text, link text/hrefs, and inline script data for AI disclosure
+     * signals. Returns up to {@link AiDisclosureSignals#MAX_EVIDENCE_SNIPPETS}
+     * snippets trimmed to {@link AiDisclosureSignals#MAX_EVIDENCE_SNIPPET_LENGTH}
+     * characters each, suffixed with the source URL where found.
+     */
+    public AiDisclosureSignals detectAiDisclosureSignals(Document doc, String url) {
+        if (doc == null) {
+            return AiDisclosureSignals.none();
+        }
+        List<String> evidence = new ArrayList<>();
+        String pageText = doc.body() != null ? doc.body().text() : "";
+        addEvidenceIfMatches(evidence, pageText, url);
+
+        Elements scripts = doc.select("script");
+        for (Element script : scripts) {
+            String data = script.data();
+            if (data != null && !data.isBlank()) {
+                addEvidenceIfMatches(evidence, data, url);
+            }
+        }
+
+        Elements links = doc.select("a[href]");
+        for (Element link : links) {
+            String linkText = link.text();
+            String href = link.attr("abs:href");
+            if (href == null || href.isBlank()) {
+                href = link.attr("href");
+            }
+            String combined = linkText + " " + href;
+            addEvidenceIfMatches(evidence, combined, href != null && !href.isBlank() ? href : url);
+        }
+
+        // Trim to max evidence snippets.
+        if (evidence.size() > AiDisclosureSignals.MAX_EVIDENCE_SNIPPETS) {
+            evidence = new ArrayList<>(evidence.subList(0, AiDisclosureSignals.MAX_EVIDENCE_SNIPPETS));
+        }
+        return AiDisclosureSignals.fromEvidence(evidence);
+    }
+
+    private static void addEvidenceIfMatches(List<String> evidence, String text, String sourceUrl) {
+        if (text == null || text.isBlank()) {
+            return;
+        }
+        if (evidence.size() >= AiDisclosureSignals.MAX_EVIDENCE_SNIPPETS) {
+            return;
+        }
+        String snippet = extractSnippet(text);
+        if (snippet == null) {
+            return;
+        }
+        String source = sourceUrl != null ? sourceUrl : "";
+        String entry = source.isBlank() ? snippet : (snippet + " [src=" + source + "]");
+        if (entry.length() > AiDisclosureSignals.MAX_EVIDENCE_SNIPPET_LENGTH) {
+            entry = entry.substring(0, AiDisclosureSignals.MAX_EVIDENCE_SNIPPET_LENGTH - 3) + "...";
+        }
+        evidence.add(entry);
+    }
+
+    private static String extractSnippet(String text) {
+        String compact = text.replaceAll("\\s+", " ").trim();
+        if (compact.isEmpty()) {
+            return null;
+        }
+        int matchIndex = findFirstKeywordIndex(compact);
+        if (matchIndex < 0) {
+            return null;
+        }
+        int window = 80;
+        int start = Math.max(0, matchIndex - window);
+        int end = Math.min(compact.length(), matchIndex + window);
+        String snippet = compact.substring(start, end);
+        if (start > 0) {
+            snippet = "..." + snippet;
+        }
+        if (end < compact.length()) {
+            snippet = snippet + "...";
+        }
+        return snippet;
+    }
+
+    private static int findFirstKeywordIndex(String compact) {
+        String lower = compact.toLowerCase();
+        int best = -1;
+        String[][] groups = new String[][] {
+                AiDisclosureSignals.ChatbotKeywords.PHRASES,
+                AiDisclosureSignals.AutomatedDecisionKeywords.PHRASES,
+                AiDisclosureSignals.AiTransparencyKeywords.PHRASES,
+                AiDisclosureSignals.ModelProviderKeywords.PHRASES,
+                AiDisclosureSignals.HumanReviewKeywords.PHRASES,
+                AiDisclosureSignals.GeneralAiKeywords.PHRASES
+        };
+        for (String[] group : groups) {
+            for (String keyword : group) {
+                int idx = lower.indexOf(keyword);
+                if (idx >= 0 && (best < 0 || idx < best)) {
+                    best = idx;
+                }
+            }
+        }
+        return best;
     }
 }

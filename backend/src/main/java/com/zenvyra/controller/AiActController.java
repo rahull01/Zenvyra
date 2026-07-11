@@ -7,6 +7,7 @@ import com.zenvyra.dto.response.AiSystemInventoryResponse;
 import com.zenvyra.model.AiActCertificate;
 import com.zenvyra.service.AiActCertificateService;
 import com.zenvyra.service.AiActReadinessService;
+import com.zenvyra.service.AiActScannerIntegrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +23,7 @@ public class AiActController {
 
     private final AiActReadinessService service;
     private final AiActCertificateService certificateService;
+    private final AiActScannerIntegrationService scannerIntegrationService;
 
     @PostMapping("/systems")
     public AiSystemInventoryResponse create(@AuthenticationPrincipal UserDetails userDetails,
@@ -65,6 +67,13 @@ public class AiActController {
     public AiActCertificate issueCertificate(@AuthenticationPrincipal UserDetails userDetails,
                                              @PathVariable String systemId) {
         return certificateService.issueCertificate(userDetails, systemId);
+    }
+
+    @PostMapping("/systems/{systemId}/scan-disclosures")
+    public AiSystemInventoryResponse scanDisclosures(@AuthenticationPrincipal UserDetails userDetails,
+                                                     @PathVariable String systemId,
+                                                     @RequestParam String url) {
+        return scannerIntegrationService.scanAndMapDisclosures(userDetails, systemId, url);
     }
 
     @DeleteMapping("/systems/{systemId}/certificate")

@@ -170,17 +170,17 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 
 ## Phase 8 - Scanner Upgrade
 
-- [ ] Keep website scanner for privacy/cookie/legal surface scan.
-- [ ] Add AI disclosure detection on public website.
-- [ ] Detect chatbot/AI assistant mentions.
-- [ ] Detect automated decision-making language.
-- [ ] Detect AI policy/transparency pages.
-- [ ] Detect model/provider mentions where public.
-- [ ] Add dynamic crawler/headless-browser scanner path.
-- [ ] Add screenshot evidence capture plan.
-- [ ] Add false-positive review queue.
-- [ ] Add scanner result to AI Act readiness flow.
-- [ ] Add tests for scanner signal mapping.
+- [x] Keep website scanner for privacy/cookie/legal surface scan. (existing Scanner remains unchanged for cookies/scripts/storage/compliance links; 2026-07-11, verified)
+- [x] Add AI disclosure detection on public website. (`Scanner.detectAiDisclosureSignals` added; 2026-07-11, verified)
+- [x] Detect chatbot/AI assistant mentions. (pattern detection for chatbot/assistant/virtual assistant; 2026-07-11, verified)
+- [x] Detect automated decision-making language. (pattern detection for automated/algorithmic/AI decision language; 2026-07-11, verified)
+- [x] Detect AI policy/transparency pages. (link/text detection for AI policy/transparency/usage pages; 2026-07-11, verified)
+- [x] Detect model/provider mentions where public. (OpenAI, Anthropic, Google, Meta, Mistral, Microsoft, DeepMind detection; 2026-07-11, verified)
+- [ ] Add dynamic crawler/headless-browser scanner path. (deferred — requires browser automation dependency decision)
+- [ ] Add screenshot evidence capture plan. (deferred — tied to headless browser work)
+- [ ] Add false-positive review queue. (deferred — future operational feature)
+- [x] Add scanner result to AI Act readiness flow. (`AiActScannerIntegrationService.scanAndMapDisclosures` updates inventory flags and creates evidence items; POST `/api/ai-act/systems/{id}/scan-disclosures`; 2026-07-11, verified)
+- [x] Add tests for scanner signal mapping. (`ScannerTest` 8 tests + `AiActScannerIntegrationServiceTest` 7 tests; 2026-07-11, verified)
 
 ## Phase 9 - Integrations And Imports
 

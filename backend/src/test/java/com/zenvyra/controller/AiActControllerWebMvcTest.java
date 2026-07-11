@@ -6,7 +6,9 @@ import com.zenvyra.dto.response.AiActReadinessResponse;
 import com.zenvyra.dto.response.AiSystemInventoryResponse;
 import com.zenvyra.security.JwtAuthenticationFilter;
 import com.zenvyra.security.RedisRateLimiter;
+import com.zenvyra.service.AiActCertificateService;
 import com.zenvyra.service.AiActReadinessService;
+import com.zenvyra.service.AiActScannerIntegrationService;
 import com.zenvyra.service.ApiKeyManagementService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,12 @@ class AiActControllerWebMvcTest {
 
     @MockBean
     private AiActReadinessService service;
+
+    @MockBean
+    private AiActCertificateService certificateService;
+
+    @MockBean
+    private AiActScannerIntegrationService scannerIntegrationService;
 
     @Test
     @WithMockUser(username = "owner@example.com", roles = "USER")
