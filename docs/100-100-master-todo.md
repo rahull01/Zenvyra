@@ -157,16 +157,16 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 
 ## Phase 7 - Public Verification And Trust Pages
 
-- [ ] Review current public verification service.
-- [ ] Add AI Act readiness certificate type.
-- [ ] Add public verification page for AI systems/proof packs.
-- [ ] Show score, last assessed date, scope, disclaimer.
-- [ ] Show evidence categories without leaking private documents.
-- [ ] Add revocation/expiry.
-- [ ] Add badge embed.
-- [ ] Add public proof URL in dashboard.
-- [ ] Rate-limit public verification.
-- [ ] Add tests for public/private data boundaries.
+- [x] Review current public verification service. (existing `/verify/{siteId}` reviewed; AI Act variant modeled after it; 2026-07-11, verified)
+- [x] Add AI Act readiness certificate type. (`AiActCertificate` model + repository + service; 2026-07-11, verified)
+- [x] Add public verification page for AI systems/proof packs. (`/verify/ai/{token}` public page + `/badge/ai/{token}` badge endpoint; 2026-07-11, verified)
+- [x] Show score, last assessed date, scope, disclaimer. (public verification page shows readiness score, risk category, assessedAt, ruleset version, disclaimer; 2026-07-11, verified)
+- [x] Show evidence categories without leaking private documents. (only evidence types exposed in public response; 2026-07-11, verified)
+- [x] Add revocation/expiry. (issue revokes previous active cert; revoke sets active=false + revokedAt; expiry 90 days; public verify rejects expired/revoked; 2026-07-11, verified)
+- [x] Add badge embed. (`AiActCertificate.badgeEmbedCode` + `/badge/ai/{token}` PNG; 2026-07-11, verified)
+- [x] Add public proof URL in dashboard. (system detail page shows public URL + embed code + issue/revoke actions; 2026-07-11, verified)
+- [x] Rate-limit public verification. (`/verify/ai/**` and `/badge/ai/**` wired into existing public_read/badge rate limits; 2026-07-11, verified)
+- [x] Add tests for public/private data boundaries. (`AiActCertificateServiceTest` 13 tests; full backend 198 tests pass; 2026-07-11, verified)
 
 ## Phase 8 - Scanner Upgrade
 

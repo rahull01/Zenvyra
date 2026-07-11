@@ -29,14 +29,14 @@ public class RateLimitFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String requestURI = request.getRequestURI();
-        if (requestURI != null && requestURI.contains("/health")) {
+        String path = path(request);
+        if (path != null && path.contains("/health")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         // Apply rate limiting based on route
-        if (requestURI != null) {
+        if (path != null) {
             if (isPublicWriteEndpoint(request) && exceedsPublicWriteLimit(request)) {
                 response.setStatus(HttpStatus.PAYLOAD_TOO_LARGE.value());
                 response.setContentType("application/json");
@@ -44,7 +44,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 return;
             }
 
-            if (requestURI.contains("/scan/free") || requestURI.contains("/scan/leads")) {
+            if (path.contains("/scan/free") || path.contains("/scan/leads")) {
                 // Limit public scanner actions by Client IP: max 3 requests per hour, 5 per day
                 String clientIP = getClientIP(request);
                 String hourKey = "rate_limit:public_scanner:ip:" + clientIP + ":hour";
@@ -73,7 +73,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 response.setHeader("X-Rate-Limit-Remaining-Hour", String.valueOf(hourResult.getRemainingTokens()));
                 response.setHeader("X-Rate-Limit-Remaining-Day", String.valueOf(dayResult.getRemainingTokens()));
 
-            } else if (requestURI.contains("/badge/")) {
+            } else if (path.contains("/badge/") || path.contains("/badge/ai/")) {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:badge:ip:" + clientIP;
 
@@ -88,8 +88,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
 
-            } else if (requestURI.contains("/verify/") || requestURI.contains("/policies/public/")
-                    || requestURI.contains("/banners/public/") || requestURI.contains("/consent/sync")) {
+            } else if (path.contains("/verify/") || path.contains("/verify/ai/") || path.contains("/policies/public/")
+                    || path.contains("/banners/public/") || path.contains("/consent/sync")) {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:public_read:ip:" + clientIP;
 
@@ -104,9 +104,9 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
 
-            } else if (requestURI.contains("/auth/login") || requestURI.contains("/auth/signup")
-                    || requestURI.contains("/auth/forgot-password") || requestURI.contains("/auth/send-verification")
-                    || requestURI.contains("/auth/verify-email")) {
+            } else if (path.contains("/auth/login") || path.contains("/auth/signup")
+                    || path.contains("/auth/forgot-password") || path.contains("/auth/send-verification")
+                    || path.contains("/auth/verify-email")) {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:auth:ip:" + clientIP;
 
@@ -121,8 +121,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
 
-            } else if (requestURI.contains("/consent/log") || requestURI.contains("/consent/audit-log")
-                    || requestURI.contains("/dsar/submit")) {
+            } else if (path.contains("/consent/log") || path.contains("/consent/audit-log")
+                    || path.contains("/dsar/submit")) {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:public_write:ip:" + clientIP;
 
@@ -137,8 +137,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
 
-            } else if (requestURI.contains("/dodo/webhooks") || requestURI.contains("/webhooks/payment")
-                    || requestURI.contains("/payments/dodo-webhook")) {
+            } else if (path.contains("/dodo/webhooks") || path.contains("/webhooks/payment")
+                    || path.contains("/payments/dodo-webhook")) {
                 String clientIP = getClientIP(request);
                 String redisKey = "rate_limit:payment_webhook:ip:" + clientIP;
 
@@ -153,7 +153,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 }
                 response.setHeader("X-Rate-Limit-Remaining", String.valueOf(result.getRemainingTokens()));
 
-            } else if (requestURI.contains("/scan/full")) {
+            } else if (path.contains("/scan/full")) {
                 // Limit full scan by plan tier + organization
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof User) {
@@ -216,7 +216,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
         if (!"POST".equalsIgnoreCase(method) && !"PUT".equalsIgnoreCase(method) && !"PATCH".equalsIgnoreCase(method)) {
             return false;
         }
-        String path = request.getRequestURI();
+        String path = path(request);
         return path != null && (
                 path.contains("/scan/free")
                         || path.contains("/scan/leads")
@@ -225,6 +225,22 @@ public class RateLimitFilter extends OncePerRequestFilter {
                         || path.contains("/consent/sync")
                         || path.contains("/dsar/submit")
         );
+    }
+
+    private String path(HttpServletRequest request) {
+        String servletPath = request.getServletPath();
+        if (servletPath != null && !servletPath.isBlank()) {
+            return servletPath;
+        }
+        String requestUri = request.getRequestURI();
+        if (requestUri == null || requestUri.isBlank()) {
+            return "";
+        }
+        String contextPath = request.getContextPath();
+        if (contextPath != null && !contextPath.isBlank() && requestUri.startsWith(contextPath)) {
+            return requestUri.substring(contextPath.length());
+        }
+        return requestUri;
     }
 
     private boolean exceedsPublicWriteLimit(HttpServletRequest request) {

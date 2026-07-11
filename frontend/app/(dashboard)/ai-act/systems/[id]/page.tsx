@@ -10,18 +10,22 @@ import {
   Bot,
   ChevronLeft,
   ClipboardList,
+  Copy,
   Edit3,
+  ExternalLink,
   FileSearch,
   History,
   Loader2,
   Play,
   Save,
   ShieldAlert,
+  ShieldCheck,
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import DashboardPageShell from "@/components/dashboard/DashboardPageShell";
 import api from "@/lib/api";
+import { publicAppBaseUrl } from "@/lib/publicApi";
 
 type ReleaseStatus = "DRAFT" | "PILOT" | "PRODUCTION" | "RETIRED";
 
@@ -113,6 +117,20 @@ type AuditLogEntry = {
   eventData?: Record<string, unknown>;
 };
 
+type AiActCertificate = {
+  id?: string;
+  systemId?: string;
+  verificationToken?: string;
+  badgeEmbedCode?: string;
+  active?: boolean;
+  issuedAt?: string;
+  expiresAt?: string;
+  revokedAt?: string;
+  revokeReason?: string;
+  readinessScore?: number;
+  riskCategory?: string;
+};
+
 const RELEASE_STATUSES: ReleaseStatus[] = ["DRAFT", "PILOT", "PRODUCTION", "RETIRED"];
 const IMPACT_LEVELS = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 const MODEL_PROVIDER_TYPES = ["first-party model", "third-party provider", "open-source model", "unknown"];
@@ -164,12 +182,15 @@ export default function AiSystemDetailPage() {
   const [latestAssessment, setLatestAssessment] = useState<AiActAssessmentDetail | null>(null);
   const [evidence, setEvidence] = useState<EvidenceItem[]>([]);
   const [audit, setAudit] = useState<AuditLogEntry[]>([]);
+  const [certificate, setCertificate] = useState<AiActCertificate | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [assessing, setAssessing] = useState(false);
   const [archiving, setArchiving] = useState(false);
+  const [issuingCertificate, setIssuingCertificate] = useState(false);
+  const [revokingCertificate, setRevokingCertificate] = useState(false);
   const [form, setForm] = useState<typeof DEFAULT_FORM>(DEFAULT_FORM);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -211,6 +232,13 @@ export default function AiSystemDetailPage() {
         setAudit(auditResponse.data || []);
       } catch (innerError: any) {
         setAudit([]);
+      }
+
+      try {
+        const certificateResponse = await api.get<AiActCertificate>(`/ai-act/systems/${systemId}/certificate`);
+        setCertificate(certificateResponse.data || null);
+      } catch (innerError: any) {
+        setCertificate(null);
       }
     } catch (error: any) {
       if (error?.response?.status === 404) {
@@ -329,6 +357,41 @@ export default function AiSystemDetailPage() {
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Unable to archive system");
       setArchiving(false);
+    }
+  };
+
+  const issueCertificate = async () => {
+    if (!systemId) return;
+    setIssuingCertificate(true);
+    try {
+      const response = await api.post<AiActCertificate>(`/ai-act/systems/${systemId}/certificate`);
+      setCertificate(response.data || null);
+      toast.success("Public AI Act readiness proof issued.");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Unable to issue public proof");
+    } finally {
+      setIssuingCertificate(false);
+    }
+  };
+
+  const revokeCertificate = async () => {
+    if (!systemId) return;
+    if (typeof window !== "undefined") {
+      const reason = window.prompt("Reason for revoking the public proof (optional):") ?? "";
+      if (!window.confirm("Revoke the public AI Act readiness proof? The public link will stop working.")) {
+        return;
+      }
+      setRevokingCertificate(true);
+      try {
+        const params = reason.trim() ? `?reason=${encodeURIComponent(reason.trim())}` : "";
+        await api.delete(`/ai-act/systems/${systemId}/certificate${params}`);
+        setCertificate(null);
+        toast.success("Public AI Act readiness proof revoked.");
+      } catch (error: any) {
+        toast.error(error?.response?.data?.message || "Unable to revoke public proof");
+      } finally {
+        setRevokingCertificate(false);
+      }
     }
   };
 
@@ -476,6 +539,100 @@ export default function AiSystemDetailPage() {
                   <Flag label="Critical infrastructure use" value={system.criticalInfrastructureUse} />
                   <Flag label="Prohibited use" value={system.prohibitedUse} />
                 </div>
+              </div>
+
+              <div className="rounded-lg border border-border-light bg-background-secondary p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase text-text-tertiary">Public proof</p>
+                    <p className="mt-1 text-xs text-text-secondary">
+                      Shareable AI Act readiness proof and embeddable badge.
+                    </p>
+                  </div>
+                  {certificate?.active ? (
+                    <span className="rounded-full bg-status-success/15 px-2 py-0.5 text-xs font-semibold text-status-success">
+                      Active
+                    </span>
+                  ) : certificate ? (
+                    <span className="rounded-full bg-status-warning/15 px-2 py-0.5 text-xs font-semibold text-status-warning">
+                      Revoked
+                    </span>
+                  ) : (
+                    <ShieldCheck className="h-5 w-5 text-text-tertiary" />
+                  )}
+                </div>
+
+                {certificate && certificate.active && certificate.verificationToken ? (
+                  <div className="mt-4 space-y-3">
+                    <div className="rounded-lg border border-border-light bg-background-primary p-3">
+                      <p className="text-xs font-bold uppercase text-text-tertiary">Public URL</p>
+                      <a
+                        href={`${publicAppBaseUrl()}/verify/ai/${encodeURIComponent(certificate.verificationToken)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 flex items-center gap-2 break-all text-sm font-semibold text-accent hover:underline"
+                      >
+                        {`${publicAppBaseUrl()}/verify/ai/${encodeURIComponent(certificate.verificationToken)}`}
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </div>
+                    <div className="rounded-lg border border-border-light bg-background-primary p-3">
+                      <p className="text-xs font-bold uppercase text-text-tertiary">Embed code</p>
+                      <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-all text-xs text-text-secondary">
+                        {certificate.badgeEmbedCode ||
+                          `<img src="${publicAppBaseUrl().replace(/\/$/, "")}/badge/ai/${encodeURIComponent(certificate.verificationToken)}" alt="Zenvyra AI Act readiness badge" />`}
+                      </pre>
+                      <button
+                        onClick={() => {
+                          const token = certificate.verificationToken || "";
+                          const embed =
+                            certificate.badgeEmbedCode ||
+                            `<img src="${publicAppBaseUrl().replace(/\/$/, "")}/badge/ai/${encodeURIComponent(token)}" alt="Zenvyra AI Act readiness badge" />`;
+                          if (typeof navigator !== "undefined" && navigator.clipboard) {
+                            navigator.clipboard
+                              .writeText(embed)
+                              .then(() => toast.success("Embed code copied."))
+                              .catch(() => toast.error("Unable to copy embed code."));
+                          }
+                        }}
+                        className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-border-light bg-background-secondary px-4 py-2 text-sm font-semibold text-text-primary transition hover:bg-background-primary"
+                      >
+                        <Copy className="h-4 w-4" />
+                        Copy embed code
+                      </button>
+                    </div>
+                    <button
+                      onClick={revokeCertificate}
+                      disabled={revokingCertificate}
+                      className="btn-secondary !px-4 !py-2 text-sm"
+                    >
+                      {revokingCertificate ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldAlert className="h-4 w-4" />}
+                      Revoke public proof
+                    </button>
+                  </div>
+                ) : (
+                  <div className="mt-4 space-y-3">
+                    {certificate && !certificate.active ? (
+                      <p className="text-xs text-text-secondary">
+                        The previous public proof was revoked
+                        {certificate.revokedAt ? ` on ${formatDateTime(certificate.revokedAt)}` : ""}.
+                        Issue a new one when ready.
+                      </p>
+                    ) : (
+                      <p className="text-xs text-text-secondary">
+                        Issue a public readiness proof to share a verification link and embeddable badge.
+                      </p>
+                    )}
+                    <button
+                      onClick={issueCertificate}
+                      disabled={issuingCertificate}
+                      className="btn-primary !px-4 !py-2 text-sm"
+                    >
+                      {issuingCertificate ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
+                      Issue public proof
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
