@@ -8,6 +8,8 @@
     "build": "next build",
     "build:clean": "npm run clean && next build",
     "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck",
     "lint": "next lint"
   },
   "dependencies": {

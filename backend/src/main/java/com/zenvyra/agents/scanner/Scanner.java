@@ -1,6 +1,7 @@
 package com.zenvyra.agents.scanner;
 
 import com.zenvyra.agents.model.AgentResponse;
+import com.zenvyra.service.DynamicCrawlerService;
 import com.zenvyra.service.SafeWebFetchService;
 import com.zenvyra.util.LogSanitizer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,9 +32,11 @@ public class Scanner {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final SafeWebFetchService safeWebFetchService;
+    private final DynamicCrawlerService dynamicCrawlerService;
 
-    public Scanner(SafeWebFetchService safeWebFetchService) {
+    public Scanner(SafeWebFetchService safeWebFetchService, DynamicCrawlerService dynamicCrawlerService) {
         this.safeWebFetchService = safeWebFetchService;
+        this.dynamicCrawlerService = dynamicCrawlerService;
     }
 
     public AgentResponse execute(String url) {
@@ -45,7 +49,8 @@ public class Scanner {
         }
 
         try {
-            Document doc = safeWebFetchService.fetchDocument(url);
+            ScannerFetchResult fetchResult = fetchDocumentWithMode(url);
+            Document doc = fetchResult.document();
             
             List<String> cookieNames = new ArrayList<>();
 
@@ -149,6 +154,7 @@ public class Scanner {
             Map<String, Object> metadata = new HashMap<>();
             metadata.put("url", url);
             metadata.put("title", doc.title());
+            metadata.put("renderMode", fetchResult.renderMode());
             metadata.put("cookies", cookieNames);
             metadata.put("scriptDomains", scriptDomains);
             metadata.put("storageKeys", storageKeys);
@@ -169,6 +175,18 @@ public class Scanner {
         }
 
         return response;
+    }
+
+    public Document fetchDocumentForScan(String url) throws IOException {
+        return fetchDocumentWithMode(url).document();
+    }
+
+    private ScannerFetchResult fetchDocumentWithMode(String url) throws IOException {
+        Optional<Document> dynamicDocument = dynamicCrawlerService.fetchRenderedDocument(url);
+        if (dynamicDocument.isPresent()) {
+            return new ScannerFetchResult(dynamicDocument.get(), "dynamic");
+        }
+        return new ScannerFetchResult(safeWebFetchService.fetchDocument(url), "static");
     }
 
     /**
@@ -273,4 +291,6 @@ public class Scanner {
         }
         return best;
     }
+
+    private record ScannerFetchResult(Document document, String renderMode) {}
 }

@@ -21,12 +21,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -442,5 +444,24 @@ class AiActExportServiceTest {
 
         assertTrue(result.contains("Legal disclaimer"));
         assertTrue(result.contains("not legal advice"));
+    }
+
+    @Test
+    void exportFullProofPackPdfRendersPdfFromProofPack() {
+        User user = User.builder().id("user-1").email("owner@example.com").build();
+        AiSystemInventory system = AiSystemInventory.builder()
+                .id("system-1")
+                .userId("user-1")
+                .systemName("Support Assistant")
+                .purpose("Customer support automation")
+                .build();
+
+        when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
+        when(systemRepository.findById("system-1")).thenReturn(Optional.of(system));
+
+        byte[] result = exportService.exportFullProofPackPdf(userDetails, "system-1");
+
+        assertTrue(result.length > 500);
+        assertEquals("%PDF", new String(result, 0, 4, StandardCharsets.US_ASCII));
     }
 }

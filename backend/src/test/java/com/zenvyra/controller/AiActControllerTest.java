@@ -5,6 +5,7 @@ import com.zenvyra.dto.response.AiActAssessmentResponse;
 import com.zenvyra.dto.response.AiActReadinessResponse;
 import com.zenvyra.dto.response.AiSystemInventoryResponse;
 import com.zenvyra.service.AiActCertificateService;
+import com.zenvyra.service.AiActImportService;
 import com.zenvyra.service.AiActReadinessService;
 import com.zenvyra.service.AiActScannerIntegrationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +29,8 @@ class AiActControllerTest {
     private final AiActReadinessService service = mock(AiActReadinessService.class);
     private final AiActCertificateService certificateService = mock(AiActCertificateService.class);
     private final AiActScannerIntegrationService scannerIntegrationService = mock(AiActScannerIntegrationService.class);
-    private final AiActController controller = new AiActController(service, certificateService, scannerIntegrationService);
+    private final AiActImportService importService = mock(AiActImportService.class);
+    private final AiActController controller = new AiActController(service, certificateService, scannerIntegrationService, importService);
     private UserDetails userDetails;
 
     @BeforeEach

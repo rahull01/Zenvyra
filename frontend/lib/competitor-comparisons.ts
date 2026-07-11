@@ -41,7 +41,7 @@ export const competitorComparisons = {
       },
       {
         capability: "Trust before purchase",
-        Zenvyra: "Public compliance certificates and sample proof reports help prospects see operational evidence before buying.",
+        Zenvyra: "Public verification pages and sample proof reports help prospects see scoped operational evidence before buying.",
         competitor: "Trust is anchored in brand maturity, legal expert backing, and CMP credibility.",
       },
     ],

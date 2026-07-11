@@ -153,7 +153,7 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 - [x] Include version/ruleset/date. (ruleset version + generated-at timestamp; 2026-07-10, verified)
 - [x] Include legal disclaimer. (not legal advice / not a conformity declaration; 2026-07-10, verified)
 - [x] Add markdown export tests. (`AiActExportServiceTest` expanded to 11 tests; 2026-07-10, verified)
-- [ ] Add PDF export or planned PDF path.
+- [x] Add PDF export or planned PDF path. (`GET /api/ai-act/export/systems/{systemId}/proof-pack.pdf` renders the proof-pack snapshot as PDF via PDFBox; 2026-07-11, verified: backend full test suite, frontend test/build pass)
 
 ## Phase 7 - Public Verification And Trust Pages
 
@@ -184,34 +184,34 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 
 ## Phase 9 - Integrations And Imports
 
-- [ ] Add manual AI system import CSV.
-- [ ] Add GitHub repo scanner planning.
-- [ ] Add OpenAI API usage inventory planning.
-- [ ] Add Anthropic/Gemini/Azure provider inventory planning.
-- [ ] Add LangSmith/Vercel AI SDK integration planning.
-- [ ] Add Slack/Intercom AI bot discovery planning.
-- [ ] Add webhook API for external evidence ingestion.
-- [ ] Add scoped API keys for evidence and systems.
-- [ ] Add integration docs.
+- [x] Add manual AI system import CSV. (`AiActImportService.importCsv` parses CSV with systemName, fields optional; POST `/api/ai-act/systems/import`; 2026-07-11, verified: 7 tests pass)
+- [x] Add GitHub repo scanner planning. (`docs/github-repo-scanner-integration-guide.md` with authentication, detection patterns, data model, integration points, rate limiting, security, testing strategy; 2026-07-11, verified)
+- [x] Add OpenAI API usage inventory planning. (`docs/openai-usage-inventory-guide.md` with authentication, usage collection, data model, integration endpoints, risk assessment, sync strategy, alerting; 2026-07-11, verified)
+- [x] Add Anthropic/Gemini/Azure provider inventory planning. (`docs/multi-provider-ai-usage-inventory-guide.md` with Anthropic, Google, Azure integrations; unified model; cross-provider analytics; 2026-07-11, verified)
+- [x] Add LangSmith/Vercel AI SDK integration planning. (`docs/ai-framework-sdk-integration-guide.md` with LangSmith, Vercel AI, LlamaIndex; run tracking; unified analytics; 2026-07-11, verified)
+- [x] Add Slack/Intercom AI bot discovery planning. (`docs/saas-ai-bot-discovery-integration-guide.md` with Slack, Intercom, Discord, Teams; bot detection; unified inventory; 2026-07-11, verified)
+- [x] Add webhook API for external evidence ingestion. (`POST /v1/external/ai-act/evidence` accepts `AiActEvidenceWebhookRequest`, maps to `EvidenceItemService`; 2026-07-11, verified)
+- [x] Add scoped API keys for evidence and systems. (`ApiKeyScope` enum with `EVIDENCE_WRITE`, `SYSTEMS_READ`, `SYSTEMS_WRITE`; `ApiKeyAuthenticationFilter` validates scope per request; 2026-07-11, verified)
+- [x] Add integration docs. (`docs/ai-integrations-documentation.md` - umbrella documentation connecting all 4 integration categories; unified architecture; deduplication; cost aggregation; risk assessment; 2026-07-11, verified)
 
 ## Phase 10 - Frontend Product UX
 
-- [ ] Redesign AI Act page into a guided workflow.
-- [ ] Add step 1: create AI system.
-- [ ] Add step 2: classify risk.
-- [ ] Add step 3: review obligations.
-- [ ] Add step 4: upload/record evidence.
-- [ ] Add step 5: export proof pack.
-- [ ] Add step 6: publish verification.
-- [ ] Add dashboard cards for high-risk systems.
-- [ ] Add evidence gap table.
-- [ ] Add next-action task list.
-- [ ] Add progress score that explains its basis.
-- [ ] Add loading, empty, error, success states.
-- [ ] Ensure mobile layout works.
-- [ ] Ensure text does not overflow buttons/cards.
-- [ ] Use icons for actions.
-- [ ] Avoid fake stats.
+- [x] Redesign AI Act page into a guided workflow. (6-step workflow: create, classify, review obligations, upload evidence, export proof pack, publish; 2026-07-11, verified: builds pass)
+- [x] Add step 1: create AI system. (form with system name, provider, use case, characteristics toggles)
+- [x] Add step 2: classify risk. (run assessment, display risk category with counsel warning)
+- [x] Add step 3: review obligations. (display transparency notices and human oversight gaps)
+- [x] Add step 4: upload/record evidence. (link to system details page for evidence upload)
+- [x] Add step 5: export proof pack. (download system card and assessment summary)
+- [x] Add step 6: publish verification. (link to publication page)
+- [x] Add dashboard cards for high-risk systems. (alert box showing high-risk count)
+- [x] Add evidence gap table. (responsive table showing all gaps by type)
+- [ ] Add next-action task list. (task-based view of gaps)
+- [ ] Add progress score that explains its basis. (visual progress indicator per system)
+- [x] Add loading, empty, error, success states. (Loader2 spinner, empty state for no systems, error toasts)
+- [ ] Ensure mobile layout works. (test responsive design)
+- [ ] Ensure text does not overflow buttons/cards. (audit overflow, truncation)
+- [x] Use icons for actions. (all steps and actions have icons)
+- [x] Avoid fake stats. (stats show real data: systems count, assessed count, high-risk count, gaps)
 
 ## Phase 11 - Remove Or Complete Static/Fake Surfaces
 

@@ -5,6 +5,7 @@ import com.zenvyra.exception.ApiException;
 import com.zenvyra.model.AiActAssessment;
 import com.zenvyra.model.AiActAuditEventType;
 import com.zenvyra.model.AiActAuditLog;
+import com.zenvyra.model.AiActCertificate;
 import com.zenvyra.model.AiSystemInventory;
 import com.zenvyra.model.EvidenceItem;
 import com.zenvyra.model.EvidenceItemStatus;
@@ -92,6 +93,38 @@ public class AiActAuditService {
         data.put("status", item.getStatus());
         data.put("obligationId", item.getObligationId());
         saveEvent(user, system, null, AiActAuditEventType.EVIDENCE_ITEM_CREATED, data);
+    }
+
+    public void logCertificateIssued(UserDetails userDetails, AiActCertificate certificate) {
+        User user = resolveUser(userDetails);
+        if (certificate == null || certificate.getSystemId() == null) {
+            throw ApiException.badRequest("Certificate must reference a system");
+        }
+        AiSystemInventory system = loadOwnedSystem(user, certificate.getSystemId());
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("certificateId", certificate.getId());
+        data.put("verificationToken", certificate.getVerificationToken());
+        data.put("systemName", certificate.getSystemName());
+        data.put("riskCategory", certificate.getRiskCategory());
+        data.put("readinessScore", certificate.getReadinessScore());
+        data.put("issuedAt", certificate.getIssuedAt());
+        data.put("expiresAt", certificate.getExpiresAt());
+        saveEvent(user, system, null, AiActAuditEventType.CERTIFICATE_ISSUED, data);
+    }
+
+    public void logCertificateRevoked(UserDetails userDetails, AiActCertificate certificate, String reason) {
+        User user = resolveUser(userDetails);
+        if (certificate == null || certificate.getSystemId() == null) {
+            throw ApiException.badRequest("Certificate must reference a system");
+        }
+        AiSystemInventory system = loadOwnedSystem(user, certificate.getSystemId());
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("certificateId", certificate.getId());
+        data.put("verificationToken", certificate.getVerificationToken());
+        data.put("systemName", certificate.getSystemName());
+        data.put("revokeReason", reason);
+        data.put("revokedAt", certificate.getRevokedAt());
+        saveEvent(user, system, null, AiActAuditEventType.CERTIFICATE_REVOKED, data);
     }
 
     public void logEvidenceItemStatusChanged(UserDetails userDetails,

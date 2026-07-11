@@ -13,10 +13,17 @@ import com.zenvyra.repository.AiActAssessmentRepository;
 import com.zenvyra.repository.AiSystemInventoryRepository;
 import com.zenvyra.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +38,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AiActExportService {
+
+    private static final float PDF_MARGIN = 54f;
+    private static final float PDF_FONT_SIZE = 10f;
+    private static final float PDF_HEADING_FONT_SIZE = 12f;
+    private static final float PDF_LINE_HEIGHT = 14f;
 
     private final UserRepository userRepository;
     private final AiSystemInventoryRepository systemRepository;
@@ -501,6 +513,10 @@ public class AiActExportService {
         return sb.toString();
     }
 
+    public byte[] exportFullProofPackPdf(UserDetails userDetails, String systemId) {
+        return renderMarkdownAsPdf(exportFullProofPack(userDetails, systemId));
+    }
+
     private AiSystemInventory loadOwnedSystem(UserDetails userDetails, String systemId) {
         User user = resolveUser(userDetails);
         AiSystemInventory system = systemRepository.findById(systemId)
@@ -664,5 +680,178 @@ public class AiActExportService {
             return "Training record";
         }
         return "Operational evidence";
+    }
+
+    private byte[] renderMarkdownAsPdf(String markdown) {
+        try (PDDocument document = new PDDocument();
+             ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            PdfRenderState state = new PdfRenderState(document);
+            state.openNewPage();
+
+            for (String sourceLine : normalizeForPdf(markdown).split("\\R", -1)) {
+                String line = sourceLine.stripTrailing();
+                boolean heading = line.startsWith("#");
+                String text = plainTextLine(line);
+                if (text.isBlank()) {
+                    state.blankLine();
+                    continue;
+                }
+
+                PDType1Font font = heading ? PDType1Font.HELVETICA_BOLD : PDType1Font.HELVETICA;
+                float fontSize = heading ? PDF_HEADING_FONT_SIZE : PDF_FONT_SIZE;
+                for (String wrappedLine : wrapText(text, font, fontSize, state.contentWidth())) {
+                    state.writeLine(wrappedLine, font, fontSize);
+                }
+                if (heading) {
+                    state.blankLine();
+                }
+            }
+
+            state.close();
+            document.save(output);
+            return output.toByteArray();
+        } catch (IOException ex) {
+            throw new ApiException("Unable to render AI Act proof pack PDF", HttpStatus.INTERNAL_SERVER_ERROR, "PDF_EXPORT_FAILED");
+        }
+    }
+
+    private String normalizeForPdf(String text) {
+        String normalized = Optional.ofNullable(text).orElse("")
+                .replace("\u2014", "-")
+                .replace("\u2013", "-")
+                .replace("\u2018", "'")
+                .replace("\u2019", "'")
+                .replace("\u201c", "\"")
+                .replace("\u201d", "\"")
+                .replace("\u2022", "-")
+                .replace("\u00a0", " ")
+                .replace("\u20ac", "EUR");
+        StringBuilder safe = new StringBuilder(normalized.length());
+        for (int i = 0; i < normalized.length(); i++) {
+            char c = normalized.charAt(i);
+            if (c == '\n' || c == '\r' || c == '\t' || (c >= 32 && c <= 126)) {
+                safe.append(c);
+            } else {
+                safe.append("?");
+            }
+        }
+        return safe.toString();
+    }
+
+    private String plainTextLine(String line) {
+        String text = line.strip();
+        if (text.startsWith("#")) {
+            text = text.replaceFirst("^#+\\s*", "");
+        }
+        if (text.matches("^\\|[\\s\\-:|]+\\|$")) {
+            return "";
+        }
+        return text.replace("**", "").replace("*", "");
+    }
+
+    private List<String> wrapText(String text, PDType1Font font, float fontSize, float maxWidth) throws IOException {
+        if (text.isBlank()) {
+            return List.of("");
+        }
+        List<String> lines = new ArrayList<>();
+        StringBuilder current = new StringBuilder();
+        for (String word : text.split("\\s+")) {
+            String candidate = current.isEmpty() ? word : current + " " + word;
+            if (textWidth(candidate, font, fontSize) <= maxWidth) {
+                current.setLength(0);
+                current.append(candidate);
+                continue;
+            }
+
+            if (!current.isEmpty()) {
+                lines.add(current.toString());
+                current.setLength(0);
+            }
+
+            if (textWidth(word, font, fontSize) <= maxWidth) {
+                current.append(word);
+            } else {
+                List<String> fragments = splitLongWord(word, font, fontSize, maxWidth);
+                lines.addAll(fragments.subList(0, Math.max(0, fragments.size() - 1)));
+                if (!fragments.isEmpty()) {
+                    current.append(fragments.get(fragments.size() - 1));
+                }
+            }
+        }
+        if (!current.isEmpty()) {
+            lines.add(current.toString());
+        }
+        return lines;
+    }
+
+    private List<String> splitLongWord(String word, PDType1Font font, float fontSize, float maxWidth) throws IOException {
+        List<String> fragments = new ArrayList<>();
+        StringBuilder current = new StringBuilder();
+        for (int i = 0; i < word.length(); i++) {
+            String candidate = current.toString() + word.charAt(i);
+            if (!current.isEmpty() && textWidth(candidate, font, fontSize) > maxWidth) {
+                fragments.add(current.toString());
+                current.setLength(0);
+            }
+            current.append(word.charAt(i));
+        }
+        if (!current.isEmpty()) {
+            fragments.add(current.toString());
+        }
+        return fragments;
+    }
+
+    private float textWidth(String text, PDType1Font font, float fontSize) throws IOException {
+        return font.getStringWidth(text) / 1000f * fontSize;
+    }
+
+    private static class PdfRenderState {
+        private final PDDocument document;
+        private PDPageContentStream contentStream;
+        private float y;
+
+        private PdfRenderState(PDDocument document) {
+            this.document = document;
+        }
+
+        private void openNewPage() throws IOException {
+            close();
+            PDPage page = new PDPage(PDRectangle.LETTER);
+            document.addPage(page);
+            contentStream = new PDPageContentStream(document, page);
+            y = page.getMediaBox().getHeight() - PDF_MARGIN;
+        }
+
+        private float contentWidth() {
+            return PDRectangle.LETTER.getWidth() - (PDF_MARGIN * 2);
+        }
+
+        private void writeLine(String text, PDType1Font font, float fontSize) throws IOException {
+            ensureSpace();
+            contentStream.beginText();
+            contentStream.setFont(font, fontSize);
+            contentStream.newLineAtOffset(PDF_MARGIN, y);
+            contentStream.showText(text);
+            contentStream.endText();
+            y -= PDF_LINE_HEIGHT;
+        }
+
+        private void blankLine() throws IOException {
+            ensureSpace();
+            y -= PDF_LINE_HEIGHT;
+        }
+
+        private void ensureSpace() throws IOException {
+            if (y <= PDF_MARGIN) {
+                openNewPage();
+            }
+        }
+
+        private void close() throws IOException {
+            if (contentStream != null) {
+                contentStream.close();
+                contentStream = null;
+            }
+        }
     }
 }

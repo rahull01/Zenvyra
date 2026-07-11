@@ -7,6 +7,7 @@ import com.zenvyra.dto.response.AiSystemInventoryResponse;
 import com.zenvyra.security.JwtAuthenticationFilter;
 import com.zenvyra.security.RedisRateLimiter;
 import com.zenvyra.service.AiActCertificateService;
+import com.zenvyra.service.AiActImportService;
 import com.zenvyra.service.AiActReadinessService;
 import com.zenvyra.service.AiActScannerIntegrationService;
 import com.zenvyra.service.ApiKeyManagementService;
@@ -50,6 +51,9 @@ class AiActControllerWebMvcTest {
 
     @MockBean
     private AiActScannerIntegrationService scannerIntegrationService;
+
+    @MockBean
+    private AiActImportService importService;
 
     @Test
     @WithMockUser(username = "owner@example.com", roles = "USER")

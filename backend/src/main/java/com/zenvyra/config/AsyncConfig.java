@@ -50,4 +50,25 @@ public class AsyncConfig {
         executor.initialize();
         return executor;
     }
+
+    /**
+     * Executor used by {@code ApiKeyManagementService} to asynchronously update
+     * {@code ApiKey.lastUsed} after a Redis cache hit during token verification.
+     *
+     * <p>The update is best-effort and must never block or slow down the request
+     * thread, so {@link ThreadPoolExecutor.DiscardPolicy} is used: if the pool and
+     * queue are saturated the task is silently dropped rather than running inline
+     * (which would defeat the purpose of moving the write off the hot path).
+     */
+    @Bean(name = "apiKeyExecutor")
+    public Executor apiKeyExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(8);
+        executor.setQueueCapacity(5000);
+        executor.setThreadNamePrefix("api-key-");
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
+        executor.initialize();
+        return executor;
+    }
 }

@@ -8,5 +8,6 @@ public enum EvidenceItemType {
     SCREENSHOT,
     PROCESS_DOCUMENT,
     OWNER_ATTESTATION,
-    URL
+    URL,
+    SCANNER_FINDING
 }

@@ -2,10 +2,12 @@ package com.zenvyra.controller;
 
 import com.zenvyra.dto.request.AiSystemInventoryRequest;
 import com.zenvyra.dto.response.AiActAssessmentResponse;
+import com.zenvyra.dto.response.AiActImportResult;
 import com.zenvyra.dto.response.AiActReadinessResponse;
 import com.zenvyra.dto.response.AiSystemInventoryResponse;
 import com.zenvyra.model.AiActCertificate;
 import com.zenvyra.service.AiActCertificateService;
+import com.zenvyra.service.AiActImportService;
 import com.zenvyra.service.AiActReadinessService;
 import com.zenvyra.service.AiActScannerIntegrationService;
 import jakarta.validation.Valid;
@@ -13,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,6 +28,7 @@ public class AiActController {
     private final AiActReadinessService service;
     private final AiActCertificateService certificateService;
     private final AiActScannerIntegrationService scannerIntegrationService;
+    private final AiActImportService importService;
 
     @PostMapping("/systems")
     public AiSystemInventoryResponse create(@AuthenticationPrincipal UserDetails userDetails,
@@ -87,5 +92,16 @@ public class AiActController {
     public AiActCertificate getCertificate(@AuthenticationPrincipal UserDetails userDetails,
                                            @PathVariable String systemId) {
         return certificateService.getSystemCertificate(userDetails, systemId);
+    }
+
+    @PostMapping(value = "/systems/import", consumes = "multipart/form-data")
+    public AiActImportResult importSystems(@AuthenticationPrincipal UserDetails userDetails,
+                                           @RequestParam("file") MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            throw com.zenvyra.exception.ApiException.badRequest("Upload file is required");
+        }
+        try (var input = file.getInputStream()) {
+            return importService.importCsv(userDetails, input);
+        }
     }
 }

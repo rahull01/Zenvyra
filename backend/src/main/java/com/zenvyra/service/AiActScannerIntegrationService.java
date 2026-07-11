@@ -27,7 +27,6 @@ public class AiActScannerIntegrationService {
     private final UserRepository userRepository;
     private final AiSystemInventoryRepository systemRepository;
     private final Scanner scanner;
-    private final SafeWebFetchService safeWebFetchService;
     private final EvidenceItemService evidenceItemService;
     private final AiActReadinessService readinessService;
 
@@ -52,7 +51,7 @@ public class AiActScannerIntegrationService {
 
         Document doc;
         try {
-            doc = safeWebFetchService.fetchDocument(url);
+            doc = scanner.fetchDocumentForScan(url);
         } catch (IllegalArgumentException e) {
             throw ApiException.badRequest("Unsafe URL: " + e.getMessage());
         } catch (IOException e) {

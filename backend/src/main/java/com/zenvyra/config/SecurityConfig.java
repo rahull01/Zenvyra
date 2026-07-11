@@ -66,6 +66,19 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(csrfRequestHandler)
+                        // CSRF is enforced for every state-changing authenticated request because the SPA
+                        // stores the JWT in a cookie that the browser will happily attach to cross-origin
+                        // form submissions. The three groups below are the documented exceptions:
+                        //   1. /auth/**           - unauthenticated; the user has no session/CSRF cookie yet,
+                        //                           so CSRF cannot be checked at this layer.
+                        //   2. /dodo/webhooks/**, /webhooks/payment, /payments/dodo-webhook
+                        //                         - third-party payment providers; they authenticate by
+                        //                           signature, not by a browser-held CSRF cookie.
+                        //   3. /scan/free, /scan/leads, /consent/log, /consent/audit-log, /consent/sync
+                        //                         - public fire-and-forget endpoints (scanners and the
+                        //                           consent banner) called from third-party scripts that
+                        //                           do not carry a CSRF cookie. They are protected by CORS
+                        //                           origin checks and per-IP rate limits instead of CSRF.
                         .ignoringRequestMatchers(
                                 new AntPathRequestMatcher("/auth/signup", "POST"),
                                 new AntPathRequestMatcher("/auth/login", "POST"),

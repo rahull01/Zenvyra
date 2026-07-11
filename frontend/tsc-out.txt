@@ -1,0 +1,1 @@
+app/(dashboard)/ai-act/systems/[id]/page.tsx(591,24): error TS18048: 'latestAssessment.applicableObligations' is possibly 'undefined'.

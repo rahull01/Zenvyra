@@ -153,3 +153,11 @@ rate-limit:
   full-scan-org-min: 50
   public-write-max-bytes: 65536
   in-memory-fallback-enabled: false
+
+scanner:
+  dynamic:
+    enabled: ${SCANNER_DYNAMIC_ENABLED:false}
+    render-endpoint: ${SCANNER_DYNAMIC_RENDER_ENDPOINT:}
+    api-key: ${SCANNER_DYNAMIC_API_KEY:}
+    timeout-ms: ${SCANNER_DYNAMIC_TIMEOUT_MS:10000}
+    max-html-bytes: ${SCANNER_DYNAMIC_MAX_HTML_BYTES:1000000}

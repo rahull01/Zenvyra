@@ -45,8 +45,6 @@ class AiActScannerIntegrationServiceTest {
     @Mock
     private Scanner scanner;
     @Mock
-    private SafeWebFetchService safeWebFetchService;
-    @Mock
     private EvidenceItemService evidenceItemService;
     @Mock
     private AiActReadinessService readinessService;
@@ -60,7 +58,6 @@ class AiActScannerIntegrationServiceTest {
                 userRepository,
                 systemRepository,
                 scanner,
-                safeWebFetchService,
                 evidenceItemService,
                 readinessService);
         userDetails = org.springframework.security.core.userdetails.User
@@ -85,7 +82,7 @@ class AiActScannerIntegrationServiceTest {
 
         when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
         when(systemRepository.findById("system-1")).thenReturn(Optional.of(system));
-        when(safeWebFetchService.fetchDocument("https://example.com/ai")).thenReturn(new Document("https://example.com/ai"));
+        when(scanner.fetchDocumentForScan("https://example.com/ai")).thenReturn(new Document("https://example.com/ai"));
         when(scanner.detectAiDisclosureSignals(any(Document.class), eq("https://example.com/ai")))
                 .thenReturn(AiDisclosureSignals.builder()
                         .chatbotDetected(true)
@@ -119,7 +116,7 @@ class AiActScannerIntegrationServiceTest {
 
         when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
         when(systemRepository.findById("system-1")).thenReturn(Optional.of(system));
-        when(safeWebFetchService.fetchDocument("https://example.com/ai")).thenReturn(new Document("https://example.com/ai"));
+        when(scanner.fetchDocumentForScan("https://example.com/ai")).thenReturn(new Document("https://example.com/ai"));
         when(scanner.detectAiDisclosureSignals(any(Document.class), eq("https://example.com/ai")))
                 .thenReturn(AiDisclosureSignals.builder()
                         .chatbotDetected(true)
@@ -164,7 +161,7 @@ class AiActScannerIntegrationServiceTest {
 
         when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
         when(systemRepository.findById("system-1")).thenReturn(Optional.of(system));
-        when(safeWebFetchService.fetchDocument("https://example.com/ai")).thenReturn(new Document("https://example.com/ai"));
+        when(scanner.fetchDocumentForScan("https://example.com/ai")).thenReturn(new Document("https://example.com/ai"));
         when(scanner.detectAiDisclosureSignals(any(Document.class), eq("https://example.com/ai")))
                 .thenReturn(AiDisclosureSignals.builder()
                         .modelOrProviderMentioned(true)
@@ -191,7 +188,7 @@ class AiActScannerIntegrationServiceTest {
 
         when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
         when(systemRepository.findById("system-1")).thenReturn(Optional.of(system));
-        when(safeWebFetchService.fetchDocument("https://example.com/ai")).thenReturn(new Document("https://example.com/ai"));
+        when(scanner.fetchDocumentForScan("https://example.com/ai")).thenReturn(new Document("https://example.com/ai"));
         when(scanner.detectAiDisclosureSignals(any(Document.class), eq("https://example.com/ai")))
                 .thenReturn(AiDisclosureSignals.builder()
                         .modelOrProviderMentioned(true)
@@ -217,7 +214,7 @@ class AiActScannerIntegrationServiceTest {
 
         when(userRepository.findByEmail("owner@example.com")).thenReturn(Optional.of(user));
         when(systemRepository.findById("system-1")).thenReturn(Optional.of(system));
-        when(safeWebFetchService.fetchDocument("https://example.com")).thenReturn(new Document("https://example.com"));
+        when(scanner.fetchDocumentForScan("https://example.com")).thenReturn(new Document("https://example.com"));
         when(scanner.detectAiDisclosureSignals(any(Document.class), eq("https://example.com")))
                 .thenReturn(AiDisclosureSignals.builder().build());
         when(systemRepository.save(any(AiSystemInventory.class))).thenAnswer(invocation -> invocation.getArgument(0));

@@ -54,9 +54,25 @@ public class AiActExportController {
         return markdownResponse(body, "ai-act-proof-pack.md");
     }
 
+    @GetMapping("/systems/{systemId}/proof-pack.pdf")
+    public ResponseEntity<byte[]> proofPackPdf(@AuthenticationPrincipal UserDetails userDetails,
+                                               @PathVariable String systemId) {
+        byte[] body = exportService.exportFullProofPackPdf(userDetails, systemId);
+        return pdfResponse(body, "ai-act-proof-pack.pdf");
+    }
+
     private ResponseEntity<String> markdownResponse(String body, String filename) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_MARKDOWN);
+        headers.setContentDispositionFormData("attachment", filename);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(body);
+    }
+
+    private ResponseEntity<byte[]> pdfResponse(byte[] body, String filename) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("attachment", filename);
         return ResponseEntity.ok()
                 .headers(headers)

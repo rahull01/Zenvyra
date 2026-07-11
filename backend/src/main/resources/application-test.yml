@@ -54,6 +54,10 @@ dodo:
 rate-limit:
   in-memory-fallback-enabled: true
 
+scanner:
+  dynamic:
+    enabled: false
+
 frontend:
   url: http://localhost:3000
 cors:

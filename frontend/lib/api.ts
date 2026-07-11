@@ -11,7 +11,7 @@ const api = axios.create({
 
 const unsafeMethods = new Set(["post", "put", "patch", "delete"]);
 let csrfToken: string | null = null;
-let csrfHeaderName = "X-XSRF-TOKEN";
+let csrfHeaderName = "X-CSRF-TOKEN";
 let csrfPromise: Promise<void> | null = null;
 
 async function ensureCsrfToken() {
@@ -22,7 +22,7 @@ async function ensureCsrfToken() {
     if (!csrfPromise) {
         csrfPromise = api.get("/csrf", { headers: { "X-CSRF-Intent": "fetch" } })
             .then((response) => {
-                csrfHeaderName = response.data?.headerName || "X-XSRF-TOKEN";
+                csrfHeaderName = response.data?.headerName || "X-CSRF-TOKEN";
                 csrfToken = response.data?.token || null;
             })
             .finally(() => {
