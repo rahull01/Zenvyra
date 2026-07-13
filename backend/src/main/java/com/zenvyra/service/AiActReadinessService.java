@@ -228,6 +228,19 @@ public class AiActReadinessService {
         AiActAssessment savedAssessment = assessmentRepository.save(assessment);
         evidenceItemService.createFromGaps(userDetails, savedAssessment);
         aiActAuditService.logAssessmentCreated(userDetails, savedAssessment);
+
+        // Onboarding nudge: first-time assessment complete email. We only
+        // fire this on the customer's first assessment (count == 1 after
+        // save) so we don't spam on every re-classification.
+        long assessmentCount = assessmentRepository.countByUserId(user.getId());
+        if (assessmentCount == 1L) {
+            String summaryUrl = appUrl + "/ai-act?systemId=" + inventory.getId();
+            emailService.sendFirstAssessmentCompleteEmail(
+                    user.getEmail(),
+                    user.getFullName(),
+                    inventory.getSystemName(),
+                    summaryUrl);
+        }
         return toResponse(savedAssessment, inventory);
     }
 

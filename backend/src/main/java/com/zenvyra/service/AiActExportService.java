@@ -49,6 +49,10 @@ public class AiActExportService {
     private final AiActAssessmentRepository assessmentRepository;
     private final EvidenceItemService evidenceItemService;
     private final AiActAuditService auditService;
+    private final EmailService emailService;
+
+    @Value("${app.url:http://localhost:3000}")
+    private String appUrl;
 
     public String exportTransparencyNotice(UserDetails userDetails, String systemId) {
         AiSystemInventory system = loadOwnedSystem(userDetails, systemId);
@@ -510,6 +514,26 @@ public class AiActExportService {
         sb.append("---\n\n");
         sb.append("*This proof pack is a snapshot of operational state at the generated-at timestamp. ")
                 .append("It is not legal advice and does not constitute a conformity declaration under the EU AI Act.*");
+
+        // Onboarding nudge: first-time proof-pack email. We only fire this
+        // when the user has exactly one AI system (i.e. this is the first
+        // proof pack they will have exported) so we don't spam on every
+        // re-export of additional systems.
+        try {
+            User owner = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
+            if (owner != null && systemRepository.countByUserId(owner.getId()) == 1L) {
+                String downloadUrl = appUrl + "/ai-act?systemId=" + systemId;
+                emailService.sendFirstProofPackReadyEmail(
+                        owner.getEmail(),
+                        owner.getFullName(),
+                        system.getSystemName(),
+                        downloadUrl);
+            }
+        } catch (Exception ex) {
+            log.warn("Failed to send first-proof-pack email for system {}: {}",
+                    LogSanitizer.id("system", systemId),
+                    LogSanitizer.exception(ex));
+        }
         return sb.toString();
     }
 

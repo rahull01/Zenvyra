@@ -85,6 +85,11 @@ public class AuthService {
 
         emailService.sendWelcomeEmail(user.getEmail(), user.getFullName());
         emailService.sendVerifyEmail(user.getEmail(), jwtTokenProvider.generateEmailVerificationToken(user.getEmail()));
+        // Onboarding nudge: first-time signup gets a single-call-to-action
+        // email asking them to add their first AI system. This is the
+        // highest-leverage onboarding step; without it most users never
+        // see an assessment.
+        emailService.sendFirstAiSystemEmail(user.getEmail(), user.getFullName());
 
         return buildAuthResponse(user, accessToken, refreshToken, "Account created successfully");
     }
