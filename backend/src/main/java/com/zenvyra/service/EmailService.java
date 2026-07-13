@@ -131,6 +131,34 @@ public class EmailService {
         }
     }
 
+    /**
+     * Sends a tokenized team-invite email. The token in the URL is the
+     * accept endpoint's opaque identifier; the invitee must be signed up
+     * with the same email address before they can accept.
+     */
+    public void sendTeamInviteEmail(String toEmail, String token, String organizationName, String role) {
+        String acceptUrl = appUrl + "/team/invite/" + token;
+        sendSimpleOperationalEmail(
+                toEmail,
+                "You're invited to join " + organizationName + " on Zenvyra",
+                String.format("""
+                        Hi,
+
+                        You have been invited to join %s on Zenvyra as %s.
+
+                        Accept invite:
+                        %s
+
+                        This invite expires in 7 days. If you do not yet have a Zenvyra account, you will be asked to sign up first.
+
+                        Best regards,
+                        The Zenvyra Team
+                        """,
+                        valueOr(organizationName, "an organization"),
+                        valueOr(role, "member"),
+                        acceptUrl));
+    }
+
     public void sendLowScoreEmail(String to, String url, double score) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);

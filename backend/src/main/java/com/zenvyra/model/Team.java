@@ -1,5 +1,6 @@
 package com.zenvyra.model;
 
+import com.zenvyra.domain.organization.OrganizationRole;
 import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,14 @@ public class Team {
     private String name;
     private String ownerId; // user who created
 
+    /**
+     * Organization that owns this team. Required for RBAC: every team-scoped
+     * endpoint must check that the authenticated user is a member of this
+     * organization. The legacy code only used {@link #ownerId} (a user id),
+     * which made cross-tenant authorization impossible.
+     */
+    private String organizationId;
+
     private List<Member> members;
     private List<String> websites; // shared websites
 
@@ -38,7 +47,11 @@ public class Team {
     public static class Member {
         private String userId;
         private String email;
-        private String role; // admin, compliance_officer, developer, viewer
+        /**
+         * Role of this member inside the team. Typed as {@link OrganizationRole}
+         * so we don't have to validate free-form strings at every call site.
+         */
+        private OrganizationRole role;
         private LocalDateTime joinedAt;
         private List<String> permissions;
     }

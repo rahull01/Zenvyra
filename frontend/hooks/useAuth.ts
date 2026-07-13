@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { setAuthToken, removeAuthToken } from "../lib/auth";
 
 interface User {
     id: string;
@@ -22,7 +21,7 @@ interface AuthState {
     isAuthenticated: boolean;
     isLoading: boolean;
 
-    login: (user: User, token?: string) => void;
+    login: (user: User) => void;
     logout: () => void;
     updateUser: (user: Partial<User>) => void;
     setLoading: (loading: boolean) => void;
@@ -35,10 +34,12 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
             isLoading: true,
 
-            login: (user, token) => {
-                if (token) {
-                    setAuthToken(token);
-                }
+            login: (user) => {
+                // The backend already sets the HttpOnly `zenvyra_access` /
+                // `zenvyra_refresh` cookies on a successful login response.
+                // The JWT lives in HttpOnly cookies and is sent automatically
+                // by the browser. We do NOT attempt to read or store the JWT
+                // here.
                 set({
                     user,
                     isAuthenticated: true,
@@ -47,7 +48,10 @@ export const useAuthStore = create<AuthState>()(
             },
 
             logout: () => {
-                removeAuthToken();
+                // The backend `/auth/logout` endpoint clears the HttpOnly
+                // cookies. Callers should invoke `/auth/logout` before calling
+                // this so the cookies are cleared server-side. We just clear
+                // local state here.
                 set({
                     user: null,
                     isAuthenticated: false,

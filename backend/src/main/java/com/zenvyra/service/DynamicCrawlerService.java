@@ -28,6 +28,7 @@ public class DynamicCrawlerService {
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient;
 
+    @org.springframework.beans.factory.annotation.Autowired
     public DynamicCrawlerService(DynamicCrawlerProperties properties, ObjectMapper objectMapper) {
         this(properties, objectMapper, HttpClient.newBuilder()
                 .followRedirects(HttpClient.Redirect.NEVER)

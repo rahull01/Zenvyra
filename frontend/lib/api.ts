@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getAuthToken } from "./auth";
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL || "/api",
@@ -37,11 +36,14 @@ api.interceptors.request.use(async (config) => {
     const method = (config.method || "get").toLowerCase();
     const isCsrfFetch = typeof config.url === "string" && config.url.includes("/csrf");
 
-    const token = getAuthToken();
-    if (token) {
-        config.headers = config.headers || {};
-        config.headers["Authorization"] = `Bearer ${token}`;
-    }
+    // The backend reads the JWT from the HttpOnly `zenvyra_access` cookie,
+    // which is set by the backend on login. The browser attaches it
+    // automatically because the api instance uses `withCredentials: true`.
+    // We deliberately do NOT set an `Authorization: Bearer <token>` header
+    // from client-side code, because:
+    //   1. HttpOnly cookies cannot be read from JavaScript.
+    //   2. Setting an Authorization header from JS would bypass HttpOnly
+    //      protections and be visible to any XSS payload.
 
     if (unsafeMethods.has(method) && !isCsrfFetch) {
         await ensureCsrfToken();
@@ -54,7 +56,6 @@ api.interceptors.request.use(async (config) => {
     return config;
 });
 
-// Response interceptor
 api.interceptors.response.use(
     (response) => response,
     (error) => {

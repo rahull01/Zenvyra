@@ -112,6 +112,10 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/login/oauth2/**").permitAll()
+                        // Public lookup of a team-invite by token so the
+                        // accept-invite page can render before sign-in.
+                        // Accept/revoke still require authentication.
+                        .requestMatchers(HttpMethod.GET, "/team/invite/*").permitAll()
                         .requestMatchers("/verify/**").permitAll()
                         .requestMatchers("/badge/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/csrf").permitAll()
@@ -178,7 +182,9 @@ public class SecurityConfig {
                 "Access-Control-Request-Headers",
                 "X-Api-Key",
                 "X-Correlation-Id",
-                "X-CSRF-TOKEN"));
+                "X-CSRF-TOKEN",
+                "X-XSRF-TOKEN",
+                "X-CSRF-Intent"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

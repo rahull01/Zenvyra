@@ -1,21 +1,31 @@
 package com.zenvyra.service;
 
+import com.zenvyra.domain.organization.OrganizationRole;
 import com.zenvyra.exception.ApiException;
+import com.zenvyra.model.ActivityLog;
+import com.zenvyra.model.Organization;
+import com.zenvyra.model.OrganizationMember;
 import com.zenvyra.model.Team;
 import com.zenvyra.model.TeamInvite;
 import com.zenvyra.model.User;
+import com.zenvyra.repository.ActivityLogRepository;
+import com.zenvyra.repository.OrganizationMemberRepository;
+import com.zenvyra.repository.OrganizationRepository;
 import com.zenvyra.repository.TeamInviteRepository;
 import com.zenvyra.repository.TeamRepository;
 import com.zenvyra.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TeamService {
@@ -23,19 +33,55 @@ public class TeamService {
     private final TeamInviteRepository inviteRepository;
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
+    private final OrganizationRepository organizationRepository;
+    private final OrganizationMemberRepository organizationMemberRepository;
+    private final ActivityLogRepository activityLogRepository;
+    private final EmailService emailService;
 
     public TeamInvite createInvite(String organizationId, String email, String role, String invitedBy) {
+        Organization org = organizationRepository.findById(organizationId)
+                .orElseThrow(() -> ApiException.notFound("Organization"));
+
+        // Disallow inviting an existing member.
+        if (organizationMemberRepository.existsByOrganizationIdAndEmail(organizationId, email)) {
+            throw ApiException.conflict("User is already a member of this organization");
+        }
+        // Disallow duplicate pending invites.
+        inviteRepository.findByOrganizationIdAndEmailAndStatus(organizationId, email, "pending")
+                .ifPresent(existing -> {
+                    throw ApiException.conflict("A pending invite already exists for this email");
+                });
+
         TeamInvite invite = TeamInvite.builder()
                 .organizationId(organizationId)
                 .email(email)
-                .role(role)
+                .role(role == null ? OrganizationRole.MEMBER.name() : role)
                 .invitedBy(invitedBy)
                 .token(UUID.randomUUID().toString())
                 .status("pending")
                 .expiresAt(LocalDateTime.now().plusDays(7))
                 .createdAt(LocalDateTime.now())
                 .build();
-        return inviteRepository.save(invite);
+        TeamInvite saved = inviteRepository.save(invite);
+
+        try {
+            emailService.sendTeamInviteEmail(
+                    email, saved.getToken(), org.getName(), saved.getRole());
+        } catch (Exception e) {
+            log.warn("Failed to send invite email to {}: {}", email, e.getMessage());
+        }
+
+        logActivity(invitedBy, organizationId, "TEAM_INVITE_CREATED", saved.getId(),
+                Map.of("email", email, "role", saved.getRole()));
+        return saved;
+    }
+
+    public Optional<TeamInvite> getInviteByToken(String token) {
+        return inviteRepository.findByToken(token);
+    }
+
+    public Optional<TeamInvite> getInviteById(String inviteId) {
+        return inviteRepository.findById(inviteId);
     }
 
     public List<TeamInvite> getInvites(String organizationId) {
@@ -46,36 +92,103 @@ public class TeamService {
         inviteRepository.deleteById(inviteId);
     }
 
+    /**
+     * Accept a pending invite. The supplied email must match the invite
+     * email; the corresponding user must already exist (i.e. must have
+     * signed up). The user is added to the org as an OrganizationMember
+     * with the role from the invite, and the invite is marked accepted.
+     */
+    public Organization acceptInvite(String token, String acceptingEmail) {
+        TeamInvite invite = inviteRepository.findByToken(token)
+                .orElseThrow(() -> ApiException.notFound("Invite"));
+
+        if (!"pending".equalsIgnoreCase(invite.getStatus())) {
+            throw ApiException.badRequest("Invite is no longer pending");
+        }
+        if (invite.getExpiresAt() != null && invite.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw ApiException.badRequest("Invite has expired");
+        }
+        if (invite.getEmail() == null
+                || !invite.getEmail().equalsIgnoreCase(acceptingEmail)) {
+            // Do not reveal whether the invite exists for a different email.
+            throw ApiException.forbidden("This invite is for a different email address");
+        }
+
+        User user = userRepository.findByEmail(acceptingEmail.trim().toLowerCase())
+                .orElseThrow(() -> ApiException.badRequest(
+                        "You need to sign up before accepting this invite"));
+
+        OrganizationRole role;
+        try {
+            role = OrganizationRole.valueOf(invite.getRole() == null
+                    ? "MEMBER" : invite.getRole().toUpperCase());
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            role = OrganizationRole.MEMBER;
+        }
+
+        OrganizationMember membership = OrganizationMember.builder()
+                .organizationId(invite.getOrganizationId())
+                .userId(user.getId())
+                .email(user.getEmail())
+                .role(role)
+                .status("active")
+                .invitedBy(invite.getInvitedBy())
+                .invitedAt(invite.getCreatedAt())
+                .joinedAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        organizationMemberRepository.save(membership);
+
+        invite.setStatus("accepted");
+        inviteRepository.save(invite);
+
+        if (user.getOrganizationId() == null) {
+            user.setOrganizationId(invite.getOrganizationId());
+            userRepository.save(user);
+        }
+
+        logActivity(user.getId(), invite.getOrganizationId(), "TEAM_INVITE_ACCEPTED",
+                invite.getId(), Map.of("email", acceptingEmail, "role", role.name()));
+
+        return organizationRepository.findById(invite.getOrganizationId())
+                .orElseThrow(() -> ApiException.notFound("Organization"));
+    }
+
     public List<User> getTeamMembers(String organizationId) {
-        List<Team> teams = teamRepository.findByOwnerId(organizationId);
-        List<String> emails = teams.stream()
-                .flatMap(team -> team.getMembers() == null ? java.util.stream.Stream.<Team.Member>empty() : team.getMembers().stream())
-                .map(Team.Member::getEmail)
-                .filter(email -> email != null && !email.isBlank())
-                .distinct()
-                .toList();
-        return emails.stream()
-                .map(userRepository::findByEmail)
+        return organizationMemberRepository.findByOrganizationId(organizationId).stream()
+                .map(m -> userRepository.findByEmail(m.getEmail()))
                 .flatMap(Optional::stream)
+                .distinct()
                 .toList();
     }
 
     public Team createTeam(String ownerId, Team team) {
         team.setOwnerId(ownerId);
+        if (team.getOrganizationId() == null) {
+            team.setOrganizationId(organizationMemberRepository
+                    .findFirstByEmailOrderByCreatedAtAsc(ownerId)
+                    .map(OrganizationMember::getOrganizationId)
+                    .orElse(null));
+        }
         team.setCreatedAt(LocalDateTime.now());
         team.setUpdatedAt(LocalDateTime.now());
         if (team.getMembers() == null) {
             team.setMembers(new ArrayList<>());
         }
-        // Add owner as a default admin member
+        // Add owner as a default admin member.
         team.getMembers().add(Team.Member.builder()
                 .userId(ownerId)
-                .email(ownerId) // or resolve actual email
-                .role("admin")
+                .email(ownerId)
+                .role(OrganizationRole.ADMIN)
                 .joinedAt(LocalDateTime.now())
                 .permissions(List.of("ALL"))
                 .build());
-        return teamRepository.save(team);
+        Team saved = teamRepository.save(team);
+
+        logActivity(ownerId, team.getOrganizationId(), "TEAM_CREATED", saved.getId(),
+                Map.of("name", saved.getName()));
+        return saved;
     }
 
     public List<Team> getUserTeams(String ownerId) {
@@ -83,65 +196,80 @@ public class TeamService {
     }
 
     public Team addMember(String requesterId, String teamId, String email, String role) {
-        Optional<Team> optTeam = teamRepository.findById(teamId);
-        if (optTeam.isPresent()) {
-            Team team = optTeam.get();
-            // Verify permission (only owner/admin can add member)
-            if (!team.getOwnerId().equals(requesterId)) {
-                boolean isAdmin = team.getMembers().stream()
-                        .anyMatch(m -> m.getUserId().equals(requesterId) && "admin".equalsIgnoreCase(m.getRole()));
-                if (!isAdmin) {
-                    throw ApiException.forbidden("Only owners or admins can invite members");
-                }
-            }
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> ApiException.notFound("Team"));
 
-            if (team.getMembers() == null) {
-                team.setMembers(new ArrayList<>());
-            }
-
-            // Check if already exists
-            boolean exists = team.getMembers().stream().anyMatch(m -> m.getEmail().equalsIgnoreCase(email));
-            if (exists) {
-                throw ApiException.conflict("User is already a member of this team");
-            }
-
-            User user = userRepository.findByEmail(email.trim().toLowerCase())
-                    .orElseThrow(() -> ApiException.badRequest("Team member must register before being added"));
-
-            team.getMembers().add(Team.Member.builder()
-                    .userId(user.getEmail())
-                    .email(user.getEmail())
-                    .role(role)
-                    .joinedAt(LocalDateTime.now())
-                    .permissions(List.of("READ", "WRITE"))
-                    .build());
-
-            team.setUpdatedAt(LocalDateTime.now());
-            return teamRepository.save(team);
+        if (team.getMembers() == null) {
+            team.setMembers(new ArrayList<>());
         }
-        throw ApiException.notFound("Team");
+
+        boolean exists = team.getMembers().stream()
+                .anyMatch(m -> m.getEmail() != null && m.getEmail().equalsIgnoreCase(email));
+        if (exists) {
+            throw ApiException.conflict("User is already a member of this team");
+        }
+
+        User user = userRepository.findByEmail(email.trim().toLowerCase())
+                .orElseThrow(() -> ApiException.badRequest("Team member must register before being added"));
+
+        OrganizationRole memberRole;
+        try {
+            memberRole = OrganizationRole.valueOf(role == null ? "MEMBER" : role.toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            memberRole = OrganizationRole.MEMBER;
+        }
+
+        team.getMembers().add(Team.Member.builder()
+                .userId(user.getEmail())
+                .email(user.getEmail())
+                .role(memberRole)
+                .joinedAt(LocalDateTime.now())
+                .permissions(List.of("READ", "WRITE"))
+                .build());
+
+        team.setUpdatedAt(LocalDateTime.now());
+        Team saved = teamRepository.save(team);
+
+        logActivity(requesterId, team.getOrganizationId(), "TEAM_MEMBER_ADDED",
+                saved.getId(), Map.of("email", email, "role", memberRole.name()));
+        return saved;
     }
 
     public void removeMember(String requesterId, String teamId, String memberId) {
-        Optional<Team> optTeam = teamRepository.findById(teamId);
-        if (optTeam.isPresent()) {
-            Team team = optTeam.get();
-            // Verify permission
-            if (!team.getOwnerId().equals(requesterId)) {
-                boolean isAdmin = team.getMembers().stream()
-                        .anyMatch(m -> m.getUserId().equals(requesterId) && "admin".equalsIgnoreCase(m.getRole()));
-                if (!isAdmin) {
-                    throw ApiException.forbidden("Only owners or admins can remove members");
-                }
-            }
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> ApiException.notFound("Team"));
 
-            if (team.getMembers() != null) {
-                team.getMembers().removeIf(m -> m.getUserId().equals(memberId));
-                team.setUpdatedAt(LocalDateTime.now());
-                teamRepository.save(team);
-            }
-            return;
+        Team.Member removed = team.getMembers() == null ? null
+                : team.getMembers().stream()
+                    .filter(m -> m.getUserId().equals(memberId)
+                            || (m.getEmail() != null && m.getEmail().equals(memberId)))
+                    .findFirst().orElse(null);
+
+        if (team.getMembers() != null) {
+            team.getMembers().removeIf(m -> m.getUserId().equals(memberId));
+            team.setUpdatedAt(LocalDateTime.now());
+            teamRepository.save(team);
         }
-        throw ApiException.notFound("Team");
+
+        logActivity(requesterId, team.getOrganizationId(), "TEAM_MEMBER_REMOVED",
+                teamId, Map.of(
+                        "memberId", memberId,
+                        "email", removed != null && removed.getEmail() != null ? removed.getEmail() : ""));
+    }
+
+    private void logActivity(String actorUserId, String organizationId, String action,
+                              String targetId, Map<String, ?> details) {
+        try {
+            activityLogRepository.save(ActivityLog.builder()
+                    .userId(actorUserId)
+                    .organizationId(organizationId)
+                    .action(action)
+                    .target(targetId)
+                    .details(details == null ? Map.of() : Map.copyOf(details))
+                    .timestamp(LocalDateTime.now())
+                    .build());
+        } catch (Exception e) {
+            log.warn("Failed to write activity log entry {}: {}", action, e.getMessage());
+        }
     }
 }

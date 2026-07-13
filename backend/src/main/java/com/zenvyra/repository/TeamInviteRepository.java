@@ -9,6 +9,11 @@ import java.util.Optional;
 
 @Repository
 public interface TeamInviteRepository extends MongoRepository<TeamInvite, String> {
+
     List<TeamInvite> findByOrganizationId(String organizationId);
+
     Optional<TeamInvite> findByToken(String token);
+
+    Optional<TeamInvite> findByOrganizationIdAndEmailAndStatus(
+            String organizationId, String email, String status);
 }
