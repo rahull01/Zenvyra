@@ -159,6 +159,114 @@ public class EmailService {
                         acceptUrl));
     }
 
+    /**
+     * Day-1 onboarding email. Sent shortly after signup to nudge the
+     * user to add their first AI system. Replaces the legacy combined
+     * "welcome + setup" email with a focused, single-call-to-action
+     * message.
+     */
+    public void sendFirstAiSystemEmail(String toEmail, String userName) {
+        sendSimpleOperationalEmail(
+                toEmail,
+                "Add your first AI system in Zenvyra",
+                String.format("""
+                        Hi %s,
+
+                        Welcome to Zenvyra. The fastest way to see value: add your first AI system so we can run an initial EU AI Act readiness assessment.
+
+                        Add an AI system:
+                        %s/ai-act/systems/new
+
+                        The assessment classifies the system (prohibited, high-risk, limited-risk, or minimal-risk) and lists applicable obligations. Results are operational readiness evidence, not legal advice.
+
+                        Best regards,
+                        The Zenvyra Team
+                        """, valueOr(userName, "there"), appUrl));
+    }
+
+    /**
+     * Sent after a user's first readiness assessment completes. Points
+     * them at the assessment summary and the evidence gap list.
+     */
+    public void sendFirstAssessmentCompleteEmail(
+            String toEmail, String userName, String systemName, String summaryUrl) {
+        sendSimpleOperationalEmail(
+                toEmail,
+                "First AI Act assessment is ready",
+                String.format("""
+                        Hi %s,
+
+                        The readiness assessment for %s is ready.
+
+                        Open the summary:
+                        %s
+
+                        You'll see the risk classification, applicable obligations, and the gap register. Review the gaps and upload or link evidence for the high-priority items.
+
+                        Best regards,
+                        The Zenvyra Team
+                        """,
+                        valueOr(userName, "there"),
+                        valueOr(systemName, "your AI system"),
+                        valueOr(summaryUrl, appUrl + "/ai-act")));
+    }
+
+    /**
+     * Sent when the user generates their first proof pack. Includes the
+     * download link and a reminder that the pack is operational
+     * readiness evidence, not a legal opinion.
+     */
+    public void sendFirstProofPackReadyEmail(
+            String toEmail, String userName, String systemName, String downloadUrl) {
+        sendSimpleOperationalEmail(
+                toEmail,
+                "First proof pack is ready",
+                String.format("""
+                        Hi %s,
+
+                        Your proof pack for %s is ready.
+
+                        Download:
+                        %s
+
+                        The pack contains your inventory, risk classification, applicable obligations, gap register, evidence table, audit log, and a not-legal-advice disclaimer. Share it with procurement, legal, or enterprise customers as readiness evidence.
+
+                        Best regards,
+                        The Zenvyra Team
+                        """,
+                        valueOr(userName, "there"),
+                        valueOr(systemName, "your AI system"),
+                        valueOr(downloadUrl, appUrl + "/dashboard")));
+    }
+
+    /**
+     * Sent 7 days before the user's free trial ends (or before a paid
+     * renewal if billing is set to expire). Quiet, non-urgent tone.
+     */
+    public void sendTrialEndingEmail(
+            String toEmail, String userName, int daysRemaining, String billingUrl) {
+        sendSimpleOperationalEmail(
+                toEmail,
+                "Your Zenvyra trial is ending soon",
+                String.format("""
+                        Hi %s,
+
+                        Your free Zenvyra trial ends in %d day%s. After that, your workspace moves to the Free plan unless you upgrade.
+
+                        Review plans:
+                        %s
+
+                        You can keep using the Free plan on one site indefinitely.
+
+                        Best regards,
+                        The Zenvyra Team
+                        """,
+                        valueOr(userName, "there"),
+                        daysRemaining,
+                        daysRemaining == 1 ? "" : "s",
+                        valueOr(billingUrl, appUrl + "/dashboard/billing")));
+    }
+
     public void sendLowScoreEmail(String to, String url, double score) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);

@@ -4,9 +4,13 @@ This file is the main handover document for the project after cleanup. It explai
 
 ## 1. Project Summary
 
-Zenvyra is an AI-powered compliance automation SaaS platform. It helps businesses scan websites for privacy and compliance issues, generate legal policies, manage consent, monitor compliance changes, create proof reports, support DSAR workflows, and handle subscription-based access.
+Zenvyra is an AI-readiness automation SaaS platform. It helps businesses scan websites for privacy and compliance issues, generate legal policies, manage consent, monitor compliance changes, create proof reports, support DSAR workflows, and handle subscription-based access.
 
-The main problem it solves is that small and growing businesses usually do not have enough time, legal knowledge, or engineering support to keep privacy compliance updated across GDPR, CCPA, cookie consent, policy pages, tracker usage, data requests, and AI governance. Zenvyra combines scanning, automation, AI-generated guidance, dashboards, and integrations so a business can detect issues, understand risk, fix common problems, and maintain records.
+The main problem it solves is that small and growing businesses usually do not have enough time, legal knowledge, or engineering support to keep privacy compliance updated across GDPR, CCPA, cookie consent, policy pages, tracker usage, data requests, and AI governance. Zenvyra combines scanning, automation, AI-generated guidance, dashboards, and integrations so a business can detect issues, understand risk, fix common problems, and maintain readiness evidence.
+
+> Zenvyra is readiness automation software, not a law firm. Output is
+> operational evidence — not legal advice, not a conformity
+> assessment, not regulatory certification. See `docs/legal-disclaimer.md`.
 
 ## 2. Core Product Flow
 
