@@ -34,6 +34,12 @@ export default function InvoicesPage() {
         </Link>
       </div>
 
+      <div className="mb-6 rounded-xl border border-status-warning/30 bg-status-warning/10 p-4 text-sm text-text-secondary">
+        <p>
+          Invoices below are sample data for preview. Real billing history will appear once a subscription is active.
+        </p>
+      </div>
+
       {/* Invoices table card */}
       <div className="bg-background-primary border border-border-light rounded-3xl overflow-hidden shadow-card">
         <div className="overflow-x-auto">

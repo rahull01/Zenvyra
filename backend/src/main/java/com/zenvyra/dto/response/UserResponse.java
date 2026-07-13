@@ -16,6 +16,7 @@ public class UserResponse {
     private String email;
     private String fullName;
     private String role;
+    private String organizationId;
     private String accountType;
     private String status;
     private String companyName;
@@ -48,6 +49,7 @@ public class UserResponse {
                 .email(user.getEmail())
                 .fullName(user.getFullName())
                 .role(user.getRole())
+                .organizationId(user.getOrganizationId())
                 .accountType(user.getAccountType())
                 .status(user.getStatus())
                 .companyName(user.getCompanyName())

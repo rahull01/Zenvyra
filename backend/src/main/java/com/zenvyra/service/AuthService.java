@@ -142,7 +142,9 @@ public class AuthService {
                             .updatedAt(now)
                             .lastLoginAt(now)
                             .build();
-                    return userRepository.save(newUser);
+                    User saved = userRepository.save(newUser);
+                    organizationService.createOrUpdateDefaultOrganization(saved, saved.getWebsiteUrl());
+                    return saved;
                 });
 
         String accessToken = jwtTokenProvider.generateAccessToken(user.getEmail());

@@ -44,6 +44,11 @@ type AiActAssessment = {
   humanOversightGaps?: string[];
   documentationGaps?: string[];
   dataHandlingGaps?: string[];
+  userDisclosureGaps?: string[];
+  monitoringGaps?: string[];
+  aiLiteracyGaps?: string[];
+  gpaiProviderDocumentationGaps?: string[];
+  conformityAssessmentGaps?: string[];
   nextActions?: string[];
   counselReviewWarning?: string;
 };
@@ -75,6 +80,18 @@ export default function AiActPage() {
   const selectedSystem = selectedSystemId ? systems.find((s) => s.id === selectedSystemId) : undefined;
   const selectedAssessment = selectedSystemId ? assessments[selectedSystemId] : undefined;
 
+  const evidenceGapsCount = selectedAssessment
+    ? (selectedAssessment.requiredTransparencyNotices?.length || 0) +
+      (selectedAssessment.humanOversightGaps?.length || 0) +
+      (selectedAssessment.documentationGaps?.length || 0) +
+      (selectedAssessment.dataHandlingGaps?.length || 0) +
+      (selectedAssessment.userDisclosureGaps?.length || 0) +
+      (selectedAssessment.monitoringGaps?.length || 0) +
+      (selectedAssessment.aiLiteracyGaps?.length || 0) +
+      (selectedAssessment.gpaiProviderDocumentationGaps?.length || 0) +
+      (selectedAssessment.conformityAssessmentGaps?.length || 0)
+    : 0;
+
   // Calculate progress: 0-100%
   const getProgressPercentage = () => {
     if (!selectedSystem) return 0;
@@ -99,19 +116,27 @@ export default function AiActPage() {
 
   const getNextActions = (): string[] => {
     if (!selectedAssessment) return ["Run an assessment to classify risk"];
+    const backendActions = selectedAssessment.nextActions || [];
+    if (backendActions.length > 0) {
+      return backendActions;
+    }
     const actions: string[] = [];
-    if ((selectedAssessment.requiredTransparencyNotices?.length || 0) > 0) {
-      actions.push(`Add ${selectedAssessment.requiredTransparencyNotices?.length} transparency notice(s)`);
+    const risk = selectedAssessment.riskCategory || "";
+    if (risk.includes("PROHIBITED")) {
+      actions.push("Urgent: review prohibited use classification with counsel");
     }
-    if ((selectedAssessment.humanOversightGaps?.length || 0) > 0) {
-      actions.push(`Document ${selectedAssessment.humanOversightGaps?.length} human oversight measure(s)`);
+    if (risk.includes("HIGH")) {
+      actions.push("Open high-risk AI conformity assessment workstream");
     }
-    if ((selectedAssessment.documentationGaps?.length || 0) > 0) {
-      actions.push(`Create ${selectedAssessment.documentationGaps?.length} documentation file(s)`);
-    }
-    if ((selectedAssessment.dataHandlingGaps?.length || 0) > 0) {
-      actions.push(`Update data handling for ${selectedAssessment.dataHandlingGaps?.length} gap(s)`);
-    }
+    (selectedAssessment.documentationGaps || []).forEach((gap) => actions.push(`Complete: ${gap}`));
+    (selectedAssessment.humanOversightGaps || []).forEach((gap) => actions.push(`Document: ${gap}`));
+    (selectedAssessment.requiredTransparencyNotices || []).forEach((gap) => actions.push(`Publish: ${gap}`));
+    (selectedAssessment.userDisclosureGaps || []).forEach((gap) => actions.push(`Publish: ${gap}`));
+    (selectedAssessment.monitoringGaps || []).forEach((gap) => actions.push(`Configure: ${gap}`));
+    (selectedAssessment.aiLiteracyGaps || []).forEach((gap) => actions.push(`Train: ${gap}`));
+    (selectedAssessment.gpaiProviderDocumentationGaps || []).forEach((gap) => actions.push(`Collect: ${gap}`));
+    (selectedAssessment.conformityAssessmentGaps || []).forEach((gap) => actions.push(`Evidence: ${gap}`));
+    (selectedAssessment.dataHandlingGaps || []).forEach((gap) => actions.push(`Update: ${gap}`));
     if (actions.length === 0) {
       actions.push("Export proof pack", "Publish verification page");
     }
@@ -228,7 +253,7 @@ export default function AiActPage() {
         { label: "AI Systems", value: String(systems.length || 0) },
         { label: "Assessed", value: String(Object.keys(assessments).length || 0) },
         { label: "High-Risk", value: String(Object.values(assessments).filter((a) => a.riskCategory?.includes("HIGH")).length || 0) },
-        { label: "Evidence Gaps", value: String(selectedAssessment?.requiredTransparencyNotices?.length || 0) },
+        { label: "Evidence Gaps", value: String(evidenceGapsCount) },
       ]}
     >
       {loading ? (
@@ -242,7 +267,7 @@ export default function AiActPage() {
           <div className="rounded-lg border border-status-warning/30 bg-status-warning/10 p-4 text-sm text-text-secondary">
             <div className="flex gap-3">
               <ShieldAlert className="mt-0.5 h-5 w-5 flex-shrink-0 text-status-warning" />
-              <p>{readiness.disclaimer || "AI Act readiness is evidence support, not legal advice. Always consult legal counsel."}</p>
+              <p className="min-w-0 flex-1 break-words">{readiness.disclaimer || "AI Act readiness is evidence support, not legal advice. Always consult legal counsel."}</p>
             </div>
           </div>
 
@@ -643,7 +668,7 @@ function Step3ReviewObligations({
                 {assessment.requiredTransparencyNotices.map((notice, i) => (
                   <li key={i} className="flex gap-2 text-sm text-text-secondary">
                     <span className="text-accent">→</span>
-                    {notice}
+                    <span className="break-words">{notice}</span>
                   </li>
                 ))}
               </ul>
@@ -656,7 +681,7 @@ function Step3ReviewObligations({
                 {assessment.humanOversightGaps.map((gap, i) => (
                   <li key={i} className="flex gap-2 text-sm text-text-secondary">
                     <span className="text-accent">→</span>
-                    {gap}
+                    <span className="break-words">{gap}</span>
                   </li>
                 ))}
               </ul>
@@ -807,6 +832,11 @@ function EvidenceSummaryTable({ assessment }: { assessment: AiActAssessment }) {
     ...(assessment.humanOversightGaps || []).map((g) => ({ gap: g, type: "Oversight" })),
     ...(assessment.documentationGaps || []).map((g) => ({ gap: g, type: "Documentation" })),
     ...(assessment.dataHandlingGaps || []).map((g) => ({ gap: g, type: "Data Handling" })),
+    ...(assessment.userDisclosureGaps || []).map((g) => ({ gap: g, type: "User Disclosure" })),
+    ...(assessment.monitoringGaps || []).map((g) => ({ gap: g, type: "Monitoring" })),
+    ...(assessment.aiLiteracyGaps || []).map((g) => ({ gap: g, type: "AI Literacy" })),
+    ...(assessment.gpaiProviderDocumentationGaps || []).map((g) => ({ gap: g, type: "GPAI" })),
+    ...(assessment.conformityAssessmentGaps || []).map((g) => ({ gap: g, type: "Conformity" })),
   ];
 
   if (allGaps.length === 0) return null;
@@ -832,7 +862,7 @@ function EvidenceSummaryTable({ assessment }: { assessment: AiActAssessment }) {
                     {item.type}
                   </span>
                 </td>
-                <td className="py-3 px-2 text-text-secondary">{item.gap}</td>
+                <td className="py-3 px-2 text-text-secondary break-words">{item.gap}</td>
               </tr>
             ))}
           </tbody>
@@ -875,10 +905,39 @@ function ProgressIndicator({ percentage, explanation }: { percentage: number; ex
             />
           </div>
         </div>
-        <p className="text-sm text-text-secondary italic">{explanation}</p>
+        <p className="text-sm text-text-secondary italic break-words">{explanation}</p>
       </div>
     </div>
   );
+}
+
+function taskCategory(action: string): { label: string; className: string } {
+  const prefix = action.split(":")[0];
+  switch (prefix) {
+    case "Urgent":
+      return { label: "Legal", className: "bg-status-error/15 text-status-error" };
+    case "Open":
+    case "Evidence":
+      return { label: "Conformity", className: "bg-status-warning/15 text-status-warning" };
+    case "Complete":
+      return { label: "Documentation", className: "bg-accent/15 text-accent" };
+    case "Document":
+      return { label: "Oversight", className: "bg-accent/15 text-accent" };
+    case "Publish":
+      return { label: "Disclosure", className: "bg-status-warning/15 text-status-warning" };
+    case "Configure":
+      return { label: "Monitoring", className: "bg-accent/15 text-accent" };
+    case "Train":
+      return { label: "AI Literacy", className: "bg-accent/15 text-accent" };
+    case "Collect":
+      return { label: "GPAI", className: "bg-accent/15 text-accent" };
+    case "Update":
+      return { label: "Data Handling", className: "bg-status-warning/15 text-status-warning" };
+    case "Maintain":
+      return { label: "Maintenance", className: "bg-status-success/15 text-status-success" };
+    default:
+      return { label: "Action", className: "bg-background-secondary text-text-secondary" };
+  }
 }
 
 function NextActionsPanel({ actions }: { actions: string[] }) {
@@ -888,17 +947,27 @@ function NextActionsPanel({ actions }: { actions: string[] }) {
     <div className="standard-card hover:!translate-y-0 border-accent/20">
       <h3 className="font-bold text-text-primary mb-3 flex items-center gap-2">
         <ZapOff className="h-5 w-5 text-accent" />
-        Next Steps ({actions.length})
+        Next actions ({actions.length})
       </h3>
       <div className="space-y-2">
-        {actions.map((action, i) => (
-          <div key={i} className="flex gap-3 rounded-lg bg-background-secondary p-3">
-            <div className="h-6 w-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 text-xs font-bold text-accent">
-              {i + 1}
+        {actions.map((action, i) => {
+          const category = taskCategory(action);
+          return (
+            <div key={i} className="flex gap-3 rounded-lg bg-background-secondary p-3">
+              <div className="h-6 w-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 text-xs font-bold text-accent">
+                {i + 1}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${category.className}`}>
+                    {category.label}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm text-text-secondary leading-relaxed break-words">{action}</p>
+              </div>
             </div>
-            <p className="text-sm text-text-secondary leading-relaxed">{action}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -29,7 +29,6 @@ const navItems = [
   { name: "Websites", icon: Globe, href: "/websites" },
   { name: "Policies", icon: FileText, href: "/policies" },
   { name: "Consent", icon: Cookie, href: "/consent" },
-  { name: "Analytics", icon: BarChart3, href: "/analytics" },
   { name: "Agency Hub", icon: Building2, href: "/agency" },
 ];
 

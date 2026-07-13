@@ -33,22 +33,11 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     title: "Consent Logs",
     subtitle: "Review consent events, timestamps, and user choices across your properties.",
     iconName: "Cookie",
-    stats: [
-      { label: "Events today", value: "1,284", trend: "+8% vs yesterday" },
-      { label: "Accept rate", value: "72%", trend: "+2% this week" },
-      { label: "Reject rate", value: "18%" },
-      { label: "Customize rate", value: "10%" },
-    ],
   },
   "consent/blockchain": {
     title: "Blockchain Consent Ledger",
     subtitle: "Immutable consent records verified on-chain for audit trails.",
     iconName: "Blocks",
-    stats: [
-      { label: "Total records", value: "48,291" },
-      { label: "Last verified", value: "2 min ago" },
-      { label: "Network status", value: "Operational", trend: "Verified" },
-    ],
   },
   "consent/voice": {
     title: "Voice-Enabled Consent",
@@ -59,23 +48,11 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     title: "Analytics & Reports",
     subtitle: "Track banner views, consent rates, and compliance trends over time.",
     iconName: "BarChart3",
-    stats: [
-      { label: "Banner views (30d)", value: "2.4M" },
-      { label: "Unique visitors", value: "890K" },
-      { label: "Avg. consent time", value: "4.2s" },
-      { label: "Policy page views", value: "156K" },
-    ],
   },
   "compliance-score": {
     title: "Compliance Score",
     subtitle: "AI-powered score with breakdowns and prioritized fix recommendations.",
     iconName: "ShieldCheck",
-    stats: [
-      { label: "Overall score", value: "85/100", trend: "+3 this week" },
-      { label: "Privacy policy", value: "85%" },
-      { label: "Cookie consent", value: "92%" },
-      { label: "Terms & conditions", value: "70%" },
-    ],
     actions: [{ label: "Export Report", href: "/analytics", primary: true }],
   },
   dsar: {
@@ -88,12 +65,6 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     title: "DSAR Requests",
     subtitle: "Manage incoming data subject requests and response deadlines.",
     iconName: "UserCheck",
-    stats: [
-      { label: "Open requests", value: "7" },
-      { label: "Completed (30d)", value: "24" },
-      { label: "Avg. response time", value: "3.2 days" },
-      { label: "Overdue", value: "1", trend: "Needs attention" },
-    ],
   },
   "websites/new": {
     title: "Add Website",
@@ -138,12 +109,6 @@ export const DASHBOARD_PAGE_META: Record<string, DashboardPageMeta> = {
     title: "Compliance Journey",
     subtitle: "Earn badges, track streaks, and level up your compliance posture.",
     iconName: "Trophy",
-    stats: [
-      { label: "Current level", value: "Compliance Pro" },
-      { label: "Streak", value: "12 days", trend: "🔥 Active" },
-      { label: "Badges earned", value: "8/24" },
-      { label: "Team rank", value: "#2" },
-    ],
   },
   "compliance/regions": {
     title: "Multi-Region AI Compliance Hub",

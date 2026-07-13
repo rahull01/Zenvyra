@@ -1,7 +1,10 @@
 package com.zenvyra.service;
 
+import com.zenvyra.domain.organization.OrganizationRole;
 import com.zenvyra.model.Organization;
+import com.zenvyra.model.OrganizationMember;
 import com.zenvyra.model.User;
+import com.zenvyra.repository.OrganizationMemberRepository;
 import com.zenvyra.repository.OrganizationRepository;
 import com.zenvyra.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import java.time.LocalDateTime;
 public class OrganizationService {
 
     private final OrganizationRepository organizationRepository;
+    private final OrganizationMemberRepository organizationMemberRepository;
     private final UserRepository userRepository;
 
     public Organization getOrganizationByOwner(String ownerId) {
@@ -45,7 +49,29 @@ public class OrganizationService {
         organization.setWebsite(websiteUrl);
         organization.setPlan(user.getPlan());
         organization.setUpdatedAt(LocalDateTime.now());
-        return organizationRepository.save(organization);
+        Organization saved = organizationRepository.save(organization);
+        linkUserToOrganization(user, saved.getId(), OrganizationRole.OWNER);
+        return saved;
+    }
+
+    public void linkUserToOrganization(User user, String organizationId, OrganizationRole role) {
+        if (user.getOrganizationId() == null) {
+            user.setOrganizationId(organizationId);
+            userRepository.save(user);
+        }
+        if (!organizationMemberRepository.existsByOrganizationIdAndEmail(organizationId, user.getEmail())) {
+            OrganizationMember member = OrganizationMember.builder()
+                    .organizationId(organizationId)
+                    .userId(user.getId())
+                    .email(user.getEmail())
+                    .role(role)
+                    .status("active")
+                    .joinedAt(LocalDateTime.now())
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+            organizationMemberRepository.save(member);
+        }
     }
 
     private Organization createDefaultOrganization(String ownerId) {

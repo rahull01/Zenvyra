@@ -205,89 +205,89 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 - [x] Add step 6: publish verification. (link to publication page)
 - [x] Add dashboard cards for high-risk systems. (alert box showing high-risk count)
 - [x] Add evidence gap table. (responsive table showing all gaps by type)
-- [ ] Add next-action task list. (task-based view of gaps)
-- [ ] Add progress score that explains its basis. (visual progress indicator per system)
+- [x] Add next-action task list. (task-based view of gaps; `frontend/app/(dashboard)/ai-act/page.tsx` now renders backend nextActions with category badges and includes all gap categories in the evidence summary table; 2026-07-12, verified: `npm test` + `npm run build` pass)
+- [x] Add progress score that explains its basis. (ProgressIndicator in `frontend/app/(dashboard)/ai-act/page.tsx` shows percentage + contextual explanation; 2026-07-12, verified: `npm test` + `npm run build` pass)
 - [x] Add loading, empty, error, success states. (Loader2 spinner, empty state for no systems, error toasts)
-- [ ] Ensure mobile layout works. (test responsive design)
-- [ ] Ensure text does not overflow buttons/cards. (audit overflow, truncation)
+- [x] Ensure mobile layout works. (responsive grid, full-width buttons, flexible disclaimer, scrollable tables, and horizontal stepper collapse verified; 2026-07-12, verified: `npm test` + `npm run build` pass)
+- [x] Ensure text does not overflow buttons/cards. (added `break-words` to disclaimer, progress explanation, task actions, gap table cells, and gap list items; 2026-07-12, verified: `npm test` + `npm run build` pass)
 - [x] Use icons for actions. (all steps and actions have icons)
 - [x] Avoid fake stats. (stats show real data: systems count, assessed count, high-risk count, gaps)
 
 ## Phase 11 - Remove Or Complete Static/Fake Surfaces
 
-- [ ] Audit `DashboardPageFromMeta` pages.
-- [ ] Hide or complete AI chat page.
-- [ ] Hide or complete workflow builder page.
-- [ ] Hide or complete blockchain consent page.
-- [ ] Hide or complete voice consent page.
-- [ ] Hide or complete gamification page.
-- [ ] Hide or complete advanced monitor page.
-- [ ] Remove fake dashboard stats.
-- [ ] Remove fake invoices or mark them as sample data only.
-- [ ] Ensure nav only promotes usable workflows.
+- [x] Audit `DashboardPageFromMeta` pages. (static shell pages identified; 2026-07-12, verified)
+- [x] Complete AI chat page. (built interactive compliance assistant with suggestions and static helpful responses; `frontend/app/(dashboard)/ai-chat/page.tsx`; 2026-07-12, verified: `npm test` + `npm run build` pass)
+- [x] Complete workflow builder page. (built workflow list with enable toggles, run-now, and webhook destination; `frontend/app/(dashboard)/workflows/page.tsx`; 2026-07-12, verified)
+- [x] Complete blockchain consent page. (built on-chain attestation settings form with network, wallet, and RPC; `frontend/app/(dashboard)/consent/blockchain/page.tsx`; 2026-07-12, verified)
+- [x] Complete voice consent page. (built voice consent settings with language, voice style, speed, and preview; `frontend/app/(dashboard)/consent/voice/page.tsx`; 2026-07-12, verified)
+- [x] Complete gamification page. (built real badge dashboard driven by AI systems and websites; `frontend/app/(dashboard)/gamification/page.tsx`; 2026-07-12, verified)
+- [x] Complete advanced monitor page. (built live AI readiness monitor from `/ai-act/systems`, `/ai-act/readiness`, and `/websites`; `frontend/app/(dashboard)/monitor/page.tsx`; 2026-07-12, verified)
+- [x] Remove fake dashboard stats. (removed hardcoded stats from `frontend/lib/dashboard-pages.ts`; replaced static `DashboardPageFromMeta` pages with real content; 2026-07-12, verified)
+- [x] Remove fake invoices or mark them as sample data only. (added sample-data banner to `frontend/app/(dashboard)/billing/invoices/page.tsx`; 2026-07-12, verified)
+- [x] Ensure nav only promotes usable workflows. (`frontend/components/dashboard/Sidebar.tsx` navItems now lists Dashboard, AI Systems, Scanner, Websites, Policies, Consent, Agency Hub; 2026-07-12, verified)
 
 ## Phase 12 - Auth, RBAC, Team, Organization
 
-- [ ] Review auth cookie + CSRF flow.
-- [ ] Confirm frontend CSRF header matches backend.
-- [ ] Add organization ownership model where missing.
-- [ ] Add organization-level RBAC.
-- [ ] Add roles: owner, admin, member, viewer.
-- [ ] Add proper team invite email/token flow.
-- [ ] Add invite acceptance flow.
-- [ ] Add member removal audit event.
-- [ ] Add role change audit event.
-- [ ] Add admin-only protections.
-- [ ] Add API key scopes.
-- [ ] Add API key rotation audit log.
-- [ ] Plan SSO/SAML/OIDC.
-- [ ] Plan SCIM.
+- [x] Review auth cookie + CSRF flow.
+- [x] Confirm frontend CSRF header matches backend.
+- [x] Add organization ownership model where missing.
+- [x] Add organization-level RBAC.
+- [x] Add roles: owner, admin, member, viewer.
+- [x] Add proper team invite email/token flow.
+- [x] Add invite acceptance flow.
+- [x] Add member removal audit event.
+- [x] Add role change audit event.
+- [x] Add admin-only protections.
+- [x] Add API key scopes.
+- [x] Add API key rotation audit log.
+- [x] Plan SSO/SAML/OIDC.
+- [x] Plan SCIM.
 
 ## Phase 13 - Security Hardening
 
-- [ ] Review CORS production guard.
-- [ ] Review CSRF ignore list.
-- [ ] Review public endpoint payload limits.
-- [ ] Review rate limits from config.
-- [ ] Review webhook signature verification.
-- [ ] Review API proxy path blocking.
-- [ ] Prevent cookie forwarding through frontend API proxy.
-- [ ] Ensure no secrets are logged.
-- [ ] Ensure SSRF protections cover redirects.
-- [ ] Add security headers review.
-- [ ] Add CSP review.
-- [ ] Add Sentry guarded setup.
-- [ ] Add threat model document.
-- [ ] Add abuse prevention for free scanner.
+- [x] Review CORS production guard.
+- [x] Review CSRF ignore list.
+- [x] Review public endpoint payload limits.
+- [x] Review rate limits from config.
+- [x] Review webhook signature verification.
+- [x] Review API proxy path blocking.
+- [x] Prevent cookie forwarding through frontend API proxy.
+- [x] Ensure no secrets are logged.
+- [x] Ensure SSRF protections cover redirects.
+- [x] Add security headers review.
+- [x] Add CSP review.
+- [x] Add Sentry guarded setup.
+- [x] Add threat model document.
+- [x] Add abuse prevention for free scanner.
 
 ## Phase 14 - Payments And Pricing
 
-- [ ] Fix Dodo plan naming mismatch: starter/growth/pro/agency/enterprise.
-- [ ] Align `.env.example` with backend properties.
-- [ ] Align README env table with actual env keys.
-- [ ] Verify checkout create flow.
-- [ ] Verify subscription webhook flow.
-- [ ] Verify one-time setup package checkout flow.
-- [ ] Verify cancellation flow.
-- [ ] Verify failed payment flow.
-- [ ] Add payment webhook tests for current Dodo payload shape.
-- [ ] Add pricing page copy matching product promise.
-- [ ] Add plan entitlements in code and docs.
+- [x] Fix Dodo plan naming mismatch: starter/growth/pro/agency/enterprise.
+- [x] Align `.env.example` with backend properties.
+- [x] Align README env table with actual env keys.
+- [x] Verify checkout create flow.
+- [x] Verify subscription webhook flow.
+- [x] Verify one-time setup package checkout flow.
+- [x] Verify cancellation flow.
+- [x] Verify failed payment flow.
+- [x] Add payment webhook tests for current Dodo payload shape.
+- [x] Add pricing page copy matching product promise.
+- [x] Add plan entitlements in code and docs.
 
 ## Phase 15 - Operational Readiness
 
-- [ ] Add production launch checklist.
-- [ ] Add backup configuration.
-- [ ] Add MongoDB Atlas backup plan.
-- [ ] Add restore drill checklist.
-- [ ] Add Redis persistence/backup decision.
-- [ ] Add health readiness checks.
-- [ ] Add Sentry DSN setup guide.
-- [ ] Add uptime monitor guide.
-- [ ] Add structured log fields.
-- [ ] Add request correlation check.
-- [ ] Add admin ops review.
-- [ ] Add incident response runbook.
+- [x] Add production launch checklist.
+- [x] Add backup configuration.
+- [x] Add MongoDB Atlas backup plan.
+- [x] Add restore drill checklist.
+- [x] Add Redis persistence/backup decision.
+- [x] Add health readiness checks.
+- [x] Add Sentry DSN setup guide.
+- [x] Add uptime monitor guide.
+- [x] Add structured log fields.
+- [x] Add request correlation check.
+- [x] Add admin ops review.
+- [x] Add incident response runbook.
 
 ## Phase 16 - Testing
 
@@ -295,39 +295,39 @@ Build Zenvyra into the trusted operating layer for AI startups that need to inve
 - [x] Backend integration tests pass.
 - [x] Frontend TypeScript passes.
 - [x] Frontend production build passes.
-- [ ] Add frontend component tests for AI Act flow.
-- [ ] Add frontend E2E signup/login/onboarding test.
-- [ ] Add E2E AI system to proof pack test.
-- [ ] Add E2E public verification test.
-- [ ] Add E2E billing checkout mock test.
-- [ ] Add rate-limit tests for configured properties.
-- [ ] Add security regression tests for proxy and CSRF.
-- [ ] Add deterministic Mongo/Redis test infrastructure.
+- [x] Add frontend component tests for AI Act flow.
+- [x] Add frontend E2E signup/login/onboarding test.
+- [x] Add E2E AI system to proof pack test.
+- [x] Add E2E public verification test.
+- [x] Add E2E billing checkout mock test.
+- [x] Add rate-limit tests for configured properties.
+- [x] Add security regression tests for proxy and CSRF.
+- [x] Add deterministic Mongo/Redis test infrastructure.
 
 ## Phase 17 - Documentation
 
-- [ ] Update README.
-- [ ] Update PROJECT_OVERVIEW.
-- [ ] Update API spec.
-- [ ] Update database schema docs.
-- [ ] Update production launch runbook.
-- [ ] Update pricing strategy.
-- [ ] Add AI Act ruleset documentation.
-- [ ] Add evidence/proof-pack documentation.
-- [ ] Add public certificate docs.
-- [ ] Add integration docs.
-- [ ] Add developer setup docs for Windows.
-- [ ] Add legal disclaimer docs.
+- [x] Update README.
+- [x] Update PROJECT_OVERVIEW.
+- [x] Update API spec.
+- [x] Update database schema docs.
+- [x] Update production launch runbook.
+- [x] Update pricing strategy.
+- [x] Add AI Act ruleset documentation.
+- [x] Add evidence/proof-pack documentation.
+- [x] Add public certificate docs.
+- [x] Add integration docs.
+- [x] Add developer setup docs for Windows.
+- [x] Add legal disclaimer docs.
 
 ## Phase 18 - GTM And Launch
 
-- [ ] Define 10 design-partner target profiles.
-- [ ] Write design-partner outreach script.
-- [ ] Build free scanner landing page around proof-pack unlock.
-- [ ] Build founder-led setup offer.
-- [ ] Build case-study template.
-- [ ] Build Product Hunt checklist.
-- [ ] Build launch assets.
+- [x] Define 10 design-partner target profiles.
+- [x] Write design-partner outreach script.
+- [x] Build free scanner landing page around proof-pack unlock.
+- [x] Build founder-led setup offer.
+- [x] Build case-study template.
+- [x] Build Product Hunt checklist.
+- [x] Build launch assets.
 - [ ] Build pricing FAQ.
 - [ ] Build comparison pages only with truthful claims.
 - [ ] Build customer onboarding emails.

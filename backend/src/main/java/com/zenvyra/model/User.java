@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private String password;
     private String fullName;
     private String role;
+    private String organizationId;
     private String accountType; // STANDARD, AGENCY
     private String status;
     private String companyName;
