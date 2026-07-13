@@ -42,6 +42,13 @@ public class Subscription {
     private LocalDateTime cancelledAt;
     private String cancellationReason;
 
+    /**
+     * First time the subscription entered the {@code past_due} state.
+     * Set once on the first payment failure and preserved across retries
+     * so the grace-period window can be computed reliably.
+     */
+    private LocalDateTime pastDueAt;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

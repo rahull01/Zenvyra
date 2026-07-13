@@ -115,15 +115,44 @@ public class SubscriptionService {
                 .orElseThrow(() -> ApiException.unauthorized("User not found"));
 
         Subscription subscription = subscriptionRepository.findByUserId(user.getId()).orElse(null);
-        if (subscription != null) {
-            dodoClient.cancelSubscription(subscription.getDodoSubscriptionId());
-            subscription.setStatus("cancelled");
-            subscription.setPlanStatus(PlanStatus.CANCELED);
-            subscription.setCancelledAt(LocalDateTime.now());
-            subscriptionRepository.save(subscription);
-
-            applyPlanToUser(user, PlanType.FREE, PlanStatus.ACTIVE, null, null);
+        if (subscription == null) {
+            throw ApiException.notFound("No active subscription");
         }
+
+        // Idempotency: if the subscription is already cancelled, return success
+        // without calling the payment provider again.
+        if (PlanStatus.CANCELED.name().equalsIgnoreCase(subscription.getPlanStatus().name())
+                || "cancelled".equalsIgnoreCase(subscription.getStatus())) {
+            return;
+        }
+
+        // Call Dodo FIRST so we never desynchronise the local DB.
+        // If Dodo fails, we leave local state untouched and surface the
+        // error to the caller — the user can retry safely.
+        String dodoSubId = subscription.getDodoSubscriptionId();
+        if (dodoSubId != null && !dodoSubId.isBlank()) {
+            try {
+                dodoClient.cancelSubscription(dodoSubId);
+            } catch (Exception ex) {
+                log.error("Dodo cancel API failed for {}: {}",
+                        LogSanitizer.id("subscription", dodoSubId),
+                        LogSanitizer.exception(ex));
+                throw new ApiException(
+                        "Failed to cancel subscription with payment provider: "
+                                + ex.getMessage(),
+                        org.springframework.http.HttpStatus.BAD_GATEWAY,
+                        "BAD_GATEWAY");
+            }
+        }
+
+        subscription.setStatus("cancelled");
+        subscription.setPlanStatus(PlanStatus.CANCELED);
+        subscription.setCancelledAt(LocalDateTime.now());
+        subscription.setUpdatedAt(LocalDateTime.now());
+        subscriptionRepository.save(subscription);
+
+        applyPlanToUser(user, PlanType.FREE, PlanStatus.ACTIVE, null, null);
+        log.info("Subscription cancelled for {}", LogSanitizer.email(user.getEmail()));
     }
 
     public String upgradePlan(String userEmail, String plan) {
@@ -300,10 +329,21 @@ public class SubscriptionService {
         if (subscription != null) {
             subscription.setStatus("past_due");
             subscription.setPlanStatus(PlanStatus.PAST_DUE);
+            subscription.setUpdatedAt(LocalDateTime.now());
+            if (subscription.getPastDueAt() == null) {
+                subscription.setPastDueAt(LocalDateTime.now());
+            }
             subscriptionRepository.save(subscription);
             user.setPlanStatus(PlanStatus.PAST_DUE);
             userRepository.save(user);
+
+            // Notify the user, but keep them on their current tier for the
+            // configured grace period (default 7 days). Restriction logic
+            // lives in the auth / rate-limit layers; this service only
+            // records the state transition.
             emailService.sendPaymentFailedEmail(user.getEmail());
+            log.warn("Payment failed for {} (subscription past_due); grace period begins",
+                    LogSanitizer.email(user.getEmail()));
         }
     }
 

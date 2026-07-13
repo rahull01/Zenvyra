@@ -20,6 +20,30 @@ const policyPageCsp = [
   "font-src 'self' https:",
 ].join("; ");
 
+/**
+ * Strict CSP for production. Removes `'unsafe-inline'` and `'unsafe-eval'`
+ * from script-src; Tailwind + Sentry inline styles are handled with hashed
+ * nonces by Next.js when CSP is enforced.
+ */
+const policyEnforced = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https: blob:",
+  "font-src 'self' https: data:",
+  `connect-src 'self' ${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api'} ${process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8080/api/ws'} https://*.sentry.io https://*.ingest.sentry.io`,
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
+/**
+ * Lenient CSP for non-production builds where Next.js dev server uses
+ * `'unsafe-eval'` for HMR. We send this as `Content-Security-Policy-Report-Only`
+ * in dev so it does not break local development.
+ */
 const policyReportOnly = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
@@ -66,6 +90,12 @@ const nextConfig = {
     ];
   },
   async headers() {
+    // Production: ENFORCE CSP. Non-production: report-only so local dev
+    // keeps working (Next.js dev server relies on 'unsafe-eval' for HMR).
+    const mainCspHeader = isProductionRuntime
+      ? { key: "Content-Security-Policy", value: policyEnforced }
+      : { key: "Content-Security-Policy-Report-Only", value: policyReportOnly };
+
     return [
       {
         source: "/:path*",
@@ -75,7 +105,7 @@ const nextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-          { key: "Content-Security-Policy-Report-Only", value: policyReportOnly },
+          mainCspHeader,
         ],
       },
       {
