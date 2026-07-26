@@ -134,8 +134,7 @@ export default function SignupForm() {
         aiUsage: formData.aiUsage,
       });
 
-      const tokenFromResponse = response.data?.token || response.data?.accessToken || response.data?.jwtToken;
-      login(response.data.user, tokenFromResponse);
+      login(response.data.user);
       toast.success("Account created.");
       router.push("/onboarding");
     } catch (error: any) {

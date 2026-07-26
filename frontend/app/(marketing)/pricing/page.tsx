@@ -115,12 +115,12 @@ export default function PricingPage() {
     price: plan.monthlyPrice === 0 ? "$0 / GBP 0" : `$${plan.monthlyPrice}/mo`,
     description: plan.id === "free"
       ? "For AI founders who want to see AI Act risk before buying."
-      : plan.id === "enterprise"
+      : plan.id === "agency"
         ? "Unlimited AI Act readiness, white-label proof packs, SSO, and dedicated support."
         : "Recurring AI Act readiness and compliance monitoring aligned with product entitlements.",
-    cta: plan.id === "enterprise" ? "Talk to founder" : plan.id === "free" ? "Start free scan" : "Start readiness",
-    href: plan.id === "enterprise" ? "/contact" : "/auth/signup",
-    badge: plan.id === "pro" ? "Most Popular" : plan.id === "enterprise" ? "Enterprise" : plan.id === "free" ? "No card" : "Starter",
+    cta: plan.id === "agency" ? "Talk to founder" : plan.id === "free" ? "Start free scan" : "Start readiness",
+    href: plan.id === "agency" ? "/contact" : "/auth/signup",
+    badge: plan.id === "pro" ? "Most Popular" : plan.id === "agency" ? "Enterprise" : plan.id === "free" ? "No card" : "Starter",
     featured: plan.id === "pro",
     variant: plan.id === "pro" ? "default" as const : "outline" as const,
   }));

@@ -17,4 +17,5 @@ public interface PolicyRepository extends MongoRepository<Policy, String> {
             String type,
             String status
     );
+    long countByUserId(String userId);
 }

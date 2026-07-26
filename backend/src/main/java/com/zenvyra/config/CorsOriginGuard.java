@@ -26,6 +26,6 @@ public final class CorsOriginGuard {
     private static boolean isNonProduction(Environment environment) {
         return Arrays.stream(environment.getActiveProfiles())
                 .map(String::toLowerCase)
-                .anyMatch(profile -> profile.equals("dev") || profile.equals("test") || profile.equals("local"));
+                .anyMatch(profile -> profile.equals("dev") || profile.equals("test") || profile.equals("local") || profile.equals("staging"));
     }
 }

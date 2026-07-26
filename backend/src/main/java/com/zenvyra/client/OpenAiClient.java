@@ -1,6 +1,7 @@
 package com.zenvyra.client;
 
 import com.zenvyra.exception.ApiException;
+import com.zenvyra.util.AiPromptGuard;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +66,10 @@ public class OpenAiClient {
 
     public String generatePolicy(String type, String companyName, String industry, String language) {
         String systemPrompt = "You are a legal compliance expert specializing in GDPR, CCPA, and global privacy laws.";
+        String safeType = AiPromptGuard.forPolicyField(type);
+        String safeCompany = AiPromptGuard.forPolicyField(companyName);
+        String safeIndustry = AiPromptGuard.forPolicyField(industry);
+        String safeLanguage = AiPromptGuard.forPolicyField(language);
 
         String userPrompt = String.format("""
                 Generate a comprehensive %s policy for %s, a %s company.
@@ -79,13 +84,17 @@ public class OpenAiClient {
                 6. Use proper HTML formatting with sections
 
                 Generate complete HTML policy.
-                """, type, companyName, industry, language, LocalDate.now());
+                """, safeType, safeCompany, safeIndustry, safeLanguage, LocalDate.now());
 
         return generateCompletion(systemPrompt, userPrompt, 4000);
     }
 
     public String analyzeWebsiteCompliance(String url, String htmlContent, List<String> issues) {
         String systemPrompt = "You are a compliance auditing expert. Analyze websites for legal and security compliance.";
+        String safeUrl = AiPromptGuard.forUserProvidedUrl(url);
+        String safeIssues = issues != null
+                ? String.join(", ", issues.stream().map(i -> AiPromptGuard.forPolicyField(i)).toList())
+                : "";
 
         String userPrompt = String.format("""
                 Analyze compliance for website: %s
@@ -99,13 +108,15 @@ public class OpenAiClient {
                 4. Compliance framework references (GDPR, CCPA, etc.)
 
                 Format as structured JSON.
-                """, url, String.join(", ", issues));
+                """, safeUrl, safeIssues);
 
         return generateCompletion(systemPrompt, userPrompt, 3000);
     }
 
     public String generateFixSuggestion(String issueType, String issueDescription) {
         String systemPrompt = "You are a technical compliance expert. Provide specific code and configuration fixes.";
+        String safeType = AiPromptGuard.forPolicyField(issueType);
+        String safeDescription = AiPromptGuard.forPolicyField(issueDescription);
 
         String userPrompt = String.format("""
                 Issue Type: %s
@@ -118,7 +129,7 @@ public class OpenAiClient {
                 4. Prevention tips
 
                 Be concise and actionable.
-                """, issueType, issueDescription);
+                """, safeType, safeDescription);
 
         return generateCompletion(systemPrompt, userPrompt, 2000);
     }

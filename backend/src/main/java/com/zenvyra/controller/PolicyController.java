@@ -1,7 +1,9 @@
 package com.zenvyra.controller;
 
+import com.zenvyra.model.PlanType;
 import com.zenvyra.model.Policy;
 import com.zenvyra.model.PolicyVersion;
+import com.zenvyra.security.RequiresCompliancePlan;
 import com.zenvyra.service.PolicyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ public class PolicyController {
     private final PolicyService policyService;
 
     @PostMapping
+    @RequiresCompliancePlan(value = PlanType.FREE, enforcePolicyQuota = true)
     public ResponseEntity<Policy> createPolicy(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody Map<String, String> request) {

@@ -43,6 +43,8 @@ class AiActReadinessServiceInventoryExpansionTest {
     private EvidenceItemService evidenceItemService;
     @Mock
     private AiActAuditService aiActAuditService;
+    @Mock
+    private EmailService emailService;
 
     private AiActReadinessService service;
     private UserDetails userDetails;
@@ -52,7 +54,7 @@ class AiActReadinessServiceInventoryExpansionTest {
     void setUp() {
         AiActRuleCatalogFactory ruleCatalogFactory = new AiActRuleCatalogFactory(new AiActRuleCatalogV2026_07());
         service = new AiActReadinessService(userRepository, systemRepository, assessmentRepository,
-                ruleCatalogFactory, evidenceItemService, aiActAuditService);
+                ruleCatalogFactory, evidenceItemService, aiActAuditService, emailService);
         userDetails = org.springframework.security.core.userdetails.User
                 .withUsername("owner@example.com")
                 .password("password")

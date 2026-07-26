@@ -16,6 +16,7 @@ import com.zenvyra.repository.AiActAssessmentRepository;
 import com.zenvyra.repository.AiSystemInventoryRepository;
 import com.zenvyra.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,10 @@ public class AiActReadinessService {
     private final AiActRuleCatalogFactory ruleCatalogFactory;
     private final EvidenceItemService evidenceItemService;
     private final AiActAuditService aiActAuditService;
+    private final EmailService emailService;
+
+    @Value("${app.url}")
+    private String appUrl;
 
     public AiSystemInventoryResponse create(UserDetails userDetails, AiSystemInventoryRequest request) {
         User user = resolveUser(userDetails);

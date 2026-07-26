@@ -10,4 +10,5 @@ import java.util.List;
 public interface AiActAssessmentRepository extends MongoRepository<AiActAssessment, String> {
     List<AiActAssessment> findByUserId(String userId);
     List<AiActAssessment> findBySystemId(String systemId);
+    long countByUserId(String userId);
 }

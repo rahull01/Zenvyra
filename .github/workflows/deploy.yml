@@ -1,0 +1,88 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main, staging]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deploy target'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: temurin
+          cache: maven
+      - name: Backend tests
+        run: mvn -B test
+        working-directory: backend
+        env:
+          JWT_SECRET: test-32-byte-secret-for-ci-only-ok-000000
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Frontend build
+        run: |
+          npm ci
+          npm run lint
+          npm run build
+        working-directory: frontend
+
+  deploy-staging:
+    needs: [test]
+    if: github.ref == 'refs/heads/staging' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to staging
+        env:
+          DEPLOY_HOST: ${{ secrets.STAGING_HOST }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          echo "$DEPLOY_KEY" > deploy_key && chmod 600 deploy_key
+          rsync -e "ssh -i deploy_key -o StrictHostKeyChecking=no" \
+            docker-compose.staging.yml docker-compose.yml nginx/ \
+            backend/ frontend/ .env.staging \
+            $DEPLOY_HOST:/opt/zenvyra/
+          ssh -i deploy_key -o StrictHostKeyChecking=no $DEPLOY_HOST << 'ENDSSH'
+            cd /opt/zenvyra
+            docker compose -f docker-compose.staging.yml up -d --build
+            docker system prune -f
+          ENDSSH
+
+  deploy-production:
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to production
+        env:
+          DEPLOY_HOST: ${{ secrets.PROD_HOST }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          echo "$DEPLOY_KEY" > deploy_key && chmod 600 deploy_key
+          rsync -e "ssh -i deploy_key -o StrictHostKeyChecking=no" \
+            docker-compose.yml nginx/ backend/ frontend/ .env.production \
+            $DEPLOY_HOST:/opt/zenvyra/
+          ssh -i deploy_key -o StrictHostKeyChecking=no $DEPLOY_HOST << 'ENDSSH'
+            cd /opt/zenvyra
+            docker compose pull
+            docker compose up -d --build
+            docker system prune -f
+          ENDSSH

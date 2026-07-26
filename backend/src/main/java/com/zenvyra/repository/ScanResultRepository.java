@@ -14,4 +14,6 @@ public interface ScanResultRepository extends MongoRepository<ScanResult, String
     List<ScanResult> findByUserId(String userId);
 
     List<ScanResult> findByWebsiteIdOrderByScannedAtDesc(String websiteId);
+
+    long countByUserId(String userId);
 }

@@ -4,6 +4,8 @@ import com.zenvyra.exception.ApiException;
 import com.zenvyra.model.PlanStatus;
 import com.zenvyra.model.PlanType;
 import com.zenvyra.model.User;
+import com.zenvyra.repository.PolicyRepository;
+import com.zenvyra.repository.ScanResultRepository;
 import com.zenvyra.repository.UserRepository;
 import com.zenvyra.repository.WebsiteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +30,8 @@ public class CompliancePlanInterceptor implements HandlerInterceptor {
 
     private final UserRepository userRepository;
     private final WebsiteRepository websiteRepository;
+    private final ScanResultRepository scanResultRepository;
+    private final PolicyRepository policyRepository;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -62,6 +66,19 @@ public class CompliancePlanInterceptor implements HandlerInterceptor {
         if (allowed && requirement.enforceWebsiteQuota()) {
             int max = user.getMaxWebsitesAllowed() == null ? planType.getMaxWebsitesAllowed() : user.getMaxWebsitesAllowed();
             allowed = websiteRepository.countByUserId(user.getId()) < max;
+        }
+
+        // Enforce scan quota (daily count)
+        if (allowed && requirement.enforceScanQuota()) {
+            int max = planType.getMaxScansAllowed();
+            allowed = scanResultRepository.countByUserId(user.getId()) < max;
+        }
+
+        // Enforce policy quota
+        if (allowed && requirement.enforcePolicyQuota()) {
+            int max = planType.getMaxPoliciesAllowed();
+            long current = policyRepository.countByUserId(user.getId());
+            allowed = current < max;
         }
 
         if (!allowed) {

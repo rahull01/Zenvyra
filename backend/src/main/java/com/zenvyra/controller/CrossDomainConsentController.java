@@ -26,7 +26,7 @@ public class CrossDomainConsentController {
     private final CrossDomainConsentTokenRepository repository;
     private final ObjectMapper objectMapper;
 
-    @Value("${app.audit.consent-salt:${JWT_SECRET:dev-consent-audit-salt-change-me}}")
+    @Value("${app.audit.consent-salt:${JWT_SECRET:}}")
     private String consentAuditSalt;
 
     @GetMapping

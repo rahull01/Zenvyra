@@ -49,6 +49,8 @@ class AiActExportServiceTest {
     private EvidenceItemService evidenceItemService;
     @Mock
     private AiActAuditService auditService;
+    @Mock
+    private EmailService emailService;
 
     private AiActExportService exportService;
     private UserDetails userDetails;
@@ -60,7 +62,8 @@ class AiActExportServiceTest {
                 systemRepository,
                 assessmentRepository,
                 evidenceItemService,
-                auditService);
+                auditService,
+                emailService);
         userDetails = org.springframework.security.core.userdetails.User
                 .withUsername("owner@example.com")
                 .password("password")

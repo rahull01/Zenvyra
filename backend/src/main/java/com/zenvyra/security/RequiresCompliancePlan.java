@@ -13,4 +13,6 @@ public @interface RequiresCompliancePlan {
     PlanType value() default PlanType.FREE;
     String feature() default "";
     boolean enforceWebsiteQuota() default false;
+    boolean enforceScanQuota() default false;
+    boolean enforcePolicyQuota() default false;
 }

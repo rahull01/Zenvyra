@@ -23,17 +23,23 @@ import java.util.List;
  * </ul>
  */
 public enum PlanType {
-    FREE(1, List.of()),
-    GROWTH(3, List.of("LIVE_EMBED", "AUDIT_TRAIL")),
-    PRO(10, List.of("LIVE_EMBED", "DSAR_PORTAL", "AUDIT_TRAIL")),
-    AGENCY(50, List.of("LIVE_EMBED", "DSAR_PORTAL", "AUDIT_TRAIL", "WHITE_LABEL"));
+    FREE(1, List.of(), 10, 3, 3),
+    GROWTH(3, List.of("LIVE_EMBED", "AUDIT_TRAIL"), 25, 10, 10),
+    PRO(10, List.of("LIVE_EMBED", "DSAR_PORTAL", "AUDIT_TRAIL"), 100, 25, 25),
+    AGENCY(50, List.of("LIVE_EMBED", "DSAR_PORTAL", "AUDIT_TRAIL", "WHITE_LABEL"), Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     private final int maxWebsitesAllowed;
     private final List<String> featuresEnabled;
+    private final int maxScansAllowed;
+    private final int maxPoliciesAllowed;
+    private final int maxAiSystemsAllowed;
 
-    PlanType(int maxWebsitesAllowed, List<String> featuresEnabled) {
+    PlanType(int maxWebsitesAllowed, List<String> featuresEnabled, int maxScansAllowed, int maxPoliciesAllowed, int maxAiSystemsAllowed) {
         this.maxWebsitesAllowed = maxWebsitesAllowed;
         this.featuresEnabled = featuresEnabled;
+        this.maxScansAllowed = maxScansAllowed;
+        this.maxPoliciesAllowed = maxPoliciesAllowed;
+        this.maxAiSystemsAllowed = maxAiSystemsAllowed;
     }
 
     public int getMaxWebsitesAllowed() {
@@ -42,6 +48,18 @@ public enum PlanType {
 
     public List<String> getFeaturesEnabled() {
         return featuresEnabled;
+    }
+
+    public int getMaxScansAllowed() {
+        return maxScansAllowed;
+    }
+
+    public int getMaxPoliciesAllowed() {
+        return maxPoliciesAllowed;
+    }
+
+    public int getMaxAiSystemsAllowed() {
+        return maxAiSystemsAllowed;
     }
 
     /**

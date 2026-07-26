@@ -4,6 +4,7 @@ import com.zenvyra.dto.request.ConsentAuditLogRequest;
 import com.zenvyra.model.ConsentAuditLog;
 import com.zenvyra.repository.ConsentAuditLogRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -18,8 +19,17 @@ public class ConsentAuditLogService {
     private final ConsentAuditLogRepository consentAuditLogRepository;
     private final ObjectMapper objectMapper;
 
-    @Value("${app.audit.consent-salt:${JWT_SECRET:dev-consent-audit-salt-change-me}}")
+    @Value("${app.audit.consent-salt:${JWT_SECRET:}}")
     private String consentAuditSalt;
+
+    @PostConstruct
+    void validateSalt() {
+        if (consentAuditSalt == null || consentAuditSalt.isBlank()) {
+            throw new IllegalStateException(
+                    "consentAuditSalt is not configured. Set app.audit.consent-salt or JWT_SECRET."
+            );
+        }
+    }
 
     @Async("consentAuditExecutor")
     public void ingestAsync(ConsentAuditLogRequest request, String resolvedCountry) {

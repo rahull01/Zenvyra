@@ -21,9 +21,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RedisRateLimiter {
 
     private final StringRedisTemplate stringRedisTemplate;
+    /**
+     * Maximum number of in-memory rate-limit buckets. Beyond this, new buckets
+     * are rejected and the request is allowed (fallback-open). This prevents
+     * unbounded map growth during extended Redis outages.
+     */
+    private static final int MAX_IN_MEMORY_BUCKETS = 100_000;
+
     private final Map<String, LocalBucket> inMemoryBuckets = new ConcurrentHashMap<>();
 
-    @Value("${rate-limit.in-memory-fallback-enabled:false}")
+    @Value("${rate-limit.in-memory-fallback-enabled:true}")
     private boolean inMemoryFallbackEnabled;
 
     private static final String LUA_SCRIPT =
@@ -118,6 +125,10 @@ public class RedisRateLimiter {
 
     private RateLimitResult isAllowedInMemory(String key, int capacity, long refillIntervalSeconds) {
         long nowMs = Instant.now().toEpochMilli();
+        if (!inMemoryBuckets.containsKey(key) && inMemoryBuckets.size() >= MAX_IN_MEMORY_BUCKETS) {
+            // Bucket limit reached — allow the request to preserve availability.
+            return new RateLimitResult(true, capacity - 1);
+        }
         LocalBucket bucket = inMemoryBuckets.computeIfAbsent(key, ignored -> new LocalBucket(capacity, nowMs));
         synchronized (bucket) {
             long elapsed = Math.max(0, nowMs - bucket.lastRefillMs);

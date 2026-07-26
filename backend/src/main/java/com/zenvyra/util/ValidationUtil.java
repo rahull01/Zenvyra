@@ -12,6 +12,9 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
+
 @Slf4j
 public class ValidationUtil {
 
@@ -149,17 +152,21 @@ public class ValidationUtil {
         return validIndustries.contains(industry.toLowerCase());
     }
 
+    /**
+     * Sanitizes user-supplied input by stripping all HTML tags, attributes, and
+     * script content using Jsoup's whitelist-based cleaner. Returns {@code null}
+     * when the input is {@code null}.
+     * <p>
+     * Uses {@link Safelist#none()} which permits no HTML elements — only plain
+     * text survives. This is a deliberate choice for user-supplied text fields
+     * that should never contain markup.
+     */
     public static String sanitizeInput(String input) {
         if (input == null) {
             return null;
         }
-
-        return input
-                .trim()
-                .replaceAll("<script>", "")
-                .replaceAll("</script>", "")
-                .replaceAll("javascript:", "")
-                .replaceAll("on\\w+=", "");
+        // Jsoup.clean preserves line breaks but strips all tags and attributes.
+        return Jsoup.clean(input.trim(), Safelist.none()).trim();
     }
 
     /**

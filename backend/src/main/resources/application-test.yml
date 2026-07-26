@@ -31,6 +31,8 @@ app:
   url: http://localhost:3000
   security:
     hsts-enabled: false
+  audit:
+    consent-salt: test-consent-salt-for-testing
 
 openai:
   api-key: test-openai-disabled

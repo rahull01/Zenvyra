@@ -26,7 +26,7 @@ export default function LoginForm() {
     try {
       const response = await api.post("/auth/login", { email, password });
       const tokenFromResponse = response.data?.token || response.data?.accessToken || response.data?.jwtToken;
-      login(response.data.user, tokenFromResponse);
+      login(response.data.user);
       toast.success("Signed in.");
       router.push(authRedirectPath(response.data.user));
     } catch (error: any) {

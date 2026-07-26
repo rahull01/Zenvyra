@@ -26,6 +26,8 @@ app:
   auth:
     cookies:
       secure: false
+  audit:
+    consent-salt: test-consent-salt-for-ci
 
 openai:
   api-key: ${OPENAI_API_KEY:sk-test-placeholder}

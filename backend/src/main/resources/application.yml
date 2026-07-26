@@ -74,7 +74,7 @@ app:
     hsts-enabled: ${APP_SECURITY_HSTS_ENABLED:false}
   auth:
     cookies:
-      secure: ${APP_AUTH_COOKIES_SECURE:false}
+      secure: ${APP_AUTH_COOKIES_SECURE:true}
   backup:
     enabled: ${APP_BACKUP_ENABLED:false}
     provider: ${APP_BACKUP_PROVIDER:}
@@ -152,7 +152,7 @@ rate-limit:
   full-scan-org-multiplier: 5
   full-scan-org-min: 50
   public-write-max-bytes: 65536
-  in-memory-fallback-enabled: false
+  in-memory-fallback-enabled: true
 
 scanner:
   dynamic:

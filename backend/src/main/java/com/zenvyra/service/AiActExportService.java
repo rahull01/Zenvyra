@@ -12,7 +12,9 @@ import com.zenvyra.model.User;
 import com.zenvyra.repository.AiActAssessmentRepository;
 import com.zenvyra.repository.AiSystemInventoryRepository;
 import com.zenvyra.repository.UserRepository;
+import com.zenvyra.util.LogSanitizer;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -36,6 +38,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AiActExportService {

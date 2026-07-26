@@ -4,7 +4,9 @@ import com.zenvyra.dto.request.ScanRequest;
 import com.zenvyra.dto.response.ComplianceScoreResponse;
 import com.zenvyra.dto.response.ScanResponse;
 import com.zenvyra.exception.ApiException;
+import com.zenvyra.model.PlanType;
 import com.zenvyra.model.User;
+import com.zenvyra.security.RequiresCompliancePlan;
 import com.zenvyra.model.WebsiteScanResult;
 import com.zenvyra.repository.UserRepository;
 import com.zenvyra.repository.WebsiteScanResultRepository;
@@ -42,6 +44,7 @@ public class ScanController {
 
     // AUTHENTICATED: Full scan with details
     @PostMapping("/full")
+    @RequiresCompliancePlan(value = PlanType.FREE, enforceScanQuota = true)
     public ResponseEntity<ScanResponse> fullScan(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody ScanRequest request) {
